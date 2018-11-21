@@ -1,0 +1,18 @@
+.pageContent
+  %h1 Buy The GradeCraft
+
+  %p For a lowly 50 Galleons you can license your copy of GradeCraft, enabling helpful extra features such as "LTI integration" and "students."
+
+  = render partial: "layouts/alerts", locals: { model: @license }
+
+  = simple_form_for @license, :method => :post do |f|
+
+    %section.form-section
+      .form-item
+        = f.input :first_name, :label => "First Name"
+      .form-item
+        = f.input :last_name, :label => "Last Name"
+      .form-item
+        = f.input :organization, :label => "Organization"
+      .form-item
+        = f.input :type, :label => "License", as: :select, collection: License.types.keys, include_blank: false

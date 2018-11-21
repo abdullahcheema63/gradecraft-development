@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_24_184812) do
+ActiveRecord::Schema.define(version: 2018_11_19_182331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -663,6 +663,9 @@ ActiveRecord::Schema.define(version: 2018_10_24_184812) do
     t.integer "sort_order"
     t.boolean "meets_expectations", default: false
     t.index ["criterion_id"], name: "index_levels_on_criterion_id"
+  end
+
+  create_table "licenses", force: :cascade do |t|
   end
 
   create_table "linked_courses", force: :cascade do |t|

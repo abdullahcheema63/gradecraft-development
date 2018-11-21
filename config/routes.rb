@@ -27,7 +27,8 @@ Rails.application.routes.draw do
   #18. API Calls
   #19. Exports
   #20. Learning Objectives
-  #21. Errors
+  #21. Licenses
+  #22. Errors
 
   #1. Analytics & Charts
   namespace :analytics do
@@ -630,7 +631,10 @@ Rails.application.routes.draw do
     end
   end
 
-  #21. Errors
+  #21. Licenses
+  resources :licenses, path_names: { new: 'buy' }
+
+  #22. Errors
   resource :errors, only: :show
 
   # root, bro
