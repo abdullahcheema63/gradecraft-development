@@ -99,6 +99,8 @@ gem 'sassc-rails'
 # secure crypt hashing library stronger than bcrypt or PBDBF2
 gem 'scrypt', '3.0.5'
 
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+
 gem 'select2-rails'
 gem 'simple_form'
 gem 'sorcery'
