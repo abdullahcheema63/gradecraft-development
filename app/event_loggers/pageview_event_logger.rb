@@ -39,3 +39,12 @@ class PageviewEventLogger < ApplicationEventLogger
   #   client[:course_pageviews].find({ course_id: 110 }).first.to_bson.length >= 150000
   # end
 end
+
+class DocumentSizeExceededError < StandardError
+  attr_reader :details
+
+  def initialize(details, msg="One or more associations were invalid")
+    @details = details
+    super(msg)
+  end
+end
