@@ -88,6 +88,33 @@ RSpec.describe PageviewEventLogger, type: :event_logger do
       end
     end
 
+    describe "#enqueue_in_and_check_with_fallback" do
+      let(:enqueue_time) { Faker::Time.forward 1 }
+
+      context "when the underlying document has exceeded the maximum allowable size" do
+        before(:each) { allow(subject).to receive(:document_exceeded_maximum_size?).and_return true }
+
+        it "raises an exception" do
+          expect{ subject.enqueue_in_and_check_with_fallback(enqueue_time) }.to \
+            raise_error EventLogger::Exceptions::DocumentSizeExceededError
+        end
+
+        it "does not enqueue the job" do
+          expect(subject).to_not receive(:enqueue_in_with_fallback)
+          subject.enqueue_in_and_check_with_fallback(enqueue_time) rescue nil
+        end
+      end
+
+      context "with the underlying document has not exceeded the maximum allowable size" do
+        before(:each) { allow(subject).to receive(:document_exceeded_maximum_size?).and_return false }
+
+        it "enqueues the job" do
+          expect(subject).to receive(:enqueue_in_with_fallback).with(enqueue_time).once
+          subject.enqueue_in_and_check_with_fallback enqueue_time
+        end
+      end
+    end
+
     context "params does not exist" do
       let(:params) { nil }
       it "returns nil" do
