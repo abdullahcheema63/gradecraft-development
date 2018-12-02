@@ -41,6 +41,8 @@ class PageviewEventLogger < ApplicationEventLogger
 
   def document_exceeded_maximum_size?
     client = Mongoid::Clients.default
-    client[:course_pageviews].find({ course_id: event_attrs[:course_id] }).first.to_bson.length >= 150000
+    documents = client[:course_pageviews].find({ course_id: event_attrs[:course_id] })
+    return false if documents.blank?
+    documents.first.to_bson.length >= 150000
   end
 end
