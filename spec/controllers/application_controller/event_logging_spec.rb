@@ -43,13 +43,20 @@ RSpec.describe ApplicationController do
 
         before(:each) do
           allow(Lull).to receive_messages(time_until_next_lull: 2.hours)
-          allow(event_logger).to receive_messages(enqueue_in: enqueue_response)
+          allow(event_logger).to receive_messages(enqueue_in: enqueue_response, documents_exceeded_maximum_size?: false)
           allow(logger_class).to receive_messages(new: event_logger)
+          allow(controller).to receive(:increment_page_views).and_call_original
         end
 
         it "should create a new PageviewEventLogger" do
           expect(logger_class).to receive(:new).with(event_session)
             .and_return event_logger
+          subject
+        end
+
+        it "should enqueue the new pageview event in 2 hours" do
+          expect(event_logger).to receive(:enqueue_in_and_check_with_fallback)
+            .with(2.hours) { enqueue_response }
           subject
         end
       end
