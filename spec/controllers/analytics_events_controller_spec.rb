@@ -70,7 +70,7 @@ describe AnalyticsEventsController, type: :controller do
     before { allow(controller).to receive(:params) { params } }
     before(:each) do
       allow(logger_class).to receive_messages(new: event_logger)
-      allow_any_instance_of(PageviewEventLogger).to receive(:document_exceeded_maximum_size?).and_return false
+      allow_any_instance_of(PageviewEventLogger).to receive(:documents_exceeded_maximum_size?).and_return false
     end
 
     context "a user is logged in and the request is for html" do

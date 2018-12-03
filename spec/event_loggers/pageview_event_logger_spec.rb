@@ -92,7 +92,7 @@ RSpec.describe PageviewEventLogger, type: :event_logger do
       let(:enqueue_time) { Faker::Time.forward 1 }
 
       context "when the underlying document has exceeded the maximum allowable size" do
-        before(:each) { allow(subject).to receive(:document_exceeded_maximum_size?).and_return true }
+        before(:each) { allow(subject).to receive(:documents_exceeded_maximum_size?).and_return true }
 
         it "raises an exception" do
           expect{ subject.enqueue_in_and_check_with_fallback(enqueue_time) }.to \
@@ -106,7 +106,7 @@ RSpec.describe PageviewEventLogger, type: :event_logger do
       end
 
       context "with the underlying document has not exceeded the maximum allowable size" do
-        before(:each) { allow(subject).to receive(:document_exceeded_maximum_size?).and_return false }
+        before(:each) { allow(subject).to receive(:documents_exceeded_maximum_size?).and_return false }
 
         it "enqueues the job" do
           expect(subject).to receive(:enqueue_in_with_fallback).with(enqueue_time).once

@@ -43,7 +43,7 @@ RSpec.describe ApplicationController do
 
         before(:each) do
           allow(Lull).to receive_messages(time_until_next_lull: 2.hours)
-          allow(event_logger).to receive_messages(enqueue_in: enqueue_response, document_exceeded_maximum_size?: false)
+          allow(event_logger).to receive_messages(enqueue_in: enqueue_response, documents_exceeded_maximum_size?: false)
           allow(logger_class).to receive_messages(new: event_logger)
           allow(controller).to receive(:increment_page_views).and_call_original
         end
