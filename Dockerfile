@@ -1,10 +1,12 @@
 # Gradecraft web application Docker image
 #
 # VERSION       2.0
-# ENVIRONMENT	staging
+# ENVIRONMENT	testing
 
 # ~~~~ Image base ~~~~
-FROM quay.io/gradecraft/secrets:staging
+
+# FROM quay.io/gradecraft/secrets:staging
+FROM gradecraft_base_image
 MAINTAINER Nagumalli Sundeep <nagumals@umich.edu>
 ENV DOCKER_FIX random
 RUN gem install -v 1.17.1 bundler
@@ -23,10 +25,11 @@ RUN cp /intermidiate/database.yml /gradecraft/config/database.yml
 RUN cp /intermidiate/mongoid.yml /gradecraft/config/mongoid.yml
 RUN cp /intermidiate/puma.rb /gradecraft/config/puma.rb
 RUN cp /intermidiate/Procfile /gradecraft/Procfile
-RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=staging bundle exec rake resque:scheduler &\n/mounts3.sh\nservice nginx start\npuma\nelse \n RAILS_ENV=staging bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
+RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=testing bundle exec rake resque:scheduler &\n/mounts3.sh\nservice nginx start\npuma\nelse \n RAILS_ENV=testing bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
 RUN crontab /etc/cron.d/trim-cron
 CMD cron && tail -f /var/log/cron.log
 RUN RAILS_ENV=staging bundle exec rake assets:precompile
+# change this, once there is a staging config for the database
 RUN RAILS_ENV=staging bundle exec rake db:migrate
 ENTRYPOINT /gradecraft/start.sh
