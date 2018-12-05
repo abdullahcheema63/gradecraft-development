@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_24_184812) do
+ActiveRecord::Schema.define(version: 2018_12_05_210400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -294,6 +294,7 @@ ActiveRecord::Schema.define(version: 2018_10_24_184812) do
     t.boolean "email_grade_notifications", default: true
     t.boolean "email_challenge_grade_notifications", default: true
     t.boolean "active", default: true, null: false
+    t.boolean "email_learning_objective_achieved", default: true
     t.index ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id"
     t.index ["earned_grade_scheme_element_id"], name: "index_course_memberships_on_earned_grade_scheme_element_id"
     t.index ["user_id", "course_id"], name: "index_courses_users_on_user_id_and_course_id"

@@ -192,6 +192,10 @@ class User < ApplicationRecord
     return true if course_memberships.where(course: course).first.email_challenge_grade_notifications?
   end
 
+  def email_learning_objective_achieved?(course)
+    return true if course_memberships.where(course: course).first.email_learning_objective_achieved?
+  end
+
   def submitter_directory_name
     "#{last_name.camelize}, #{first_name.camelize}"
   end
