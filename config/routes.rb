@@ -269,6 +269,7 @@ Rails.application.routes.draw do
     get :reset_password
     get :health_check
     get :style_guide, constraints: AdminConstraint.new
+    get :overview
   end
 
   # 11. Grade Schemes

@@ -33,6 +33,9 @@ class HomeController < ApplicationController
     end
   end
 
+  def overview
+  end
+  
   private
 
   def redirect_if_logged_in!
