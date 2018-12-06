@@ -7,7 +7,7 @@ class HomeController < ApplicationController
   before_action :ensure_admin?, only: :health_check
   before_action :redirect_if_logged_in!, only: [:index, :login]
 
-  layout "blank", only: :style_guide
+  layout "blank", only: [:style_guide, :overview]
 
   # root
   # GET /
@@ -35,7 +35,7 @@ class HomeController < ApplicationController
 
   def overview
   end
-  
+
   private
 
   def redirect_if_logged_in!
