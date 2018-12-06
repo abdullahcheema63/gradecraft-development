@@ -7,6 +7,9 @@ module UnlockConditionHelper
       trigger_unlock_check_for unlock_condition, :grades
     when "Earned" || condition_state == "Minimum Points Earned"
       trigger_unlock_check_for_earned_condition unlock_condition
+    when "Achieved"
+      # trigger check_unlockables for all grades on the linked assignments for a LO
+      unlock_condition.condition.assignments.each { |a| a.grades.each(&:check_unlockables) }
     else
       raise ArgumentError, "Unknown condition state found (#{unlock_condition.condition_state})"
     end
@@ -34,7 +37,6 @@ module UnlockConditionHelper
   # when (unlock_condition.condition_type == 'Course')
   #   course.course_memberships.check_unlockables
   def trigger_unlock_check_for(unlock_condition, grade_type)
-    course = unlock_condition.course
     unlock_condition.condition.send(grade_type).each(&:check_unlockables)
   end
 end
