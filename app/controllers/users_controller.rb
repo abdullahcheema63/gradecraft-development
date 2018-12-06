@@ -246,7 +246,6 @@ class UsersController < ApplicationController
     @user = current_user
 
     up = user_params
-    puts(up.to_h)
     if up[:password].blank? && up[:password_confirmation].blank?
       up.delete(:password)
       up.delete(:password_confirmation)

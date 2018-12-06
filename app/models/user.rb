@@ -177,23 +177,23 @@ class User < ApplicationRecord
   end
 
   def email_badge_awards?(course)
-    return true if course_memberships.where(course: course).first.email_badge_awards?
+    return true if course_memberships.find_by(course: course).email_badge_awards?
   end
 
   def email_grade_notifications?(course)
-    return true if course_memberships.where(course: course).first.email_grade_notifications?
+    return true if course_memberships.find_by(course: course).email_grade_notifications?
   end
 
   def email_announcements?(course)
-    return true if course_memberships.where(course: course).first.email_announcements?
+    return true if course_memberships.find_by(course: course).email_announcements?
   end
 
   def email_challenge_grade_notifications?(course)
-    return true if course_memberships.where(course: course).first.email_challenge_grade_notifications?
+    return true if course_memberships.find_by(course: course).email_challenge_grade_notifications?
   end
 
   def email_learning_objective_achieved?(course)
-    return true if course_memberships.where(course: course).first.email_learning_objective_achieved?
+    return true if course_memberships.find_by(course: course).email_learning_objective_achieved?
   end
 
   def submitter_directory_name

@@ -1,0 +1,14 @@
+%h2{:align => "center"}
+  %strong Congratulations #{ @student.first_name }!
+%h3{:align => "center"}
+  You've acheived the
+  %strong= @learning_objective.name
+  #{ @course.learning_objective_term }.
+%p
+%hr/
+%p{:align => "center"}
+  Check out what other #{ @course.learning_objective_term.pluralize.downcase } you can
+  earn in #{ @course.name }
+  = succeed "." do
+    %a{:href => learning_objective_url} here
+%hr/
