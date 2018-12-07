@@ -161,9 +161,10 @@ class Grade < ApplicationRecord
   def check_learning_objective_achieved
     if course.uses_learning_objectives? && student_visible?
       assignment.learning_objectives.each do |learning_objective|
-        if learning_objective.completed?
+        if learning_objective.completed?(student)
           send_learning_objective_email(learning_objective)
         end
+        binding.pry
       end
     end
   end
@@ -233,7 +234,8 @@ class Grade < ApplicationRecord
   end
 
   def send_learning_objective_email(learning_objective)
-    if User.email_learning_objective_achieved?
+    binding.pry
+    if student.email_learning_objective_achieved?(course)
       NotificationMailer.learning_objective_achieved(learning_objective, student).deliver_now
     end
   end
