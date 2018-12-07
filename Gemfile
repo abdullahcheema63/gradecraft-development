@@ -100,6 +100,7 @@ gem 'sassc-rails'
 gem 'scrypt', '3.0.5'
 
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+gem 'country_select'
 
 gem 'select2-rails'
 gem 'simple_form'
