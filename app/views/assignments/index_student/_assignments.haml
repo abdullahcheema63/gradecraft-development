@@ -26,3 +26,5 @@
           // Display the assignments for each assignment type
           .student-assignment-list
             = render partial: "assignments/index_student/assignment_table", locals: { presenter: presenter, assignment_type: assignment_type }
+
+  = render partial: "assignments/index_student/challenges"
