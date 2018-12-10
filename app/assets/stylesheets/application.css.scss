@@ -58,6 +58,7 @@
   *= require ./components/_alerts
   *= require ./components/_tooltips
   *= require ./components/_unlock_conditions
+  *= require ./components/_modal
   *= require ./pages/_analytics
   *= require ./pages/_assignments
   *= require ./pages/_attendance
@@ -78,4 +79,5 @@
   *= require ./pages/_signup
   *= require ./pages/_dashboard
   *= require ./pages/_learning_objectives
+  *= require ./pages/_overview
  */

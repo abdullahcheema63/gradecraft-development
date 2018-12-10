@@ -43,7 +43,19 @@ body
       @include mobile-xl
         padding: 1em 3%
 
-/* Background Colors, typically for divs __=^o.o^= */
+  &.dashboard
+    min-height: 100vh
+    background-color: white
+
+
+/* Div styles - Background Colors, typically for divs __=^o.o^= */
+.content_block
+  background-color: white
+  padding: 1em 5%
+  box-sizing: border-box
+  @include mobile-xl
+    padding: 1em 3%
+
 .bg-green_mint
   background-color: $bg-green_mint
   padding: 1em 5%
@@ -77,13 +89,6 @@ body
 
 
 /* Styling Add-on for divs __=^o.o^= */
-div.content_block
-  background-color: white
-  padding: 1em 5%
-  box-sizing: border-box
-  @include mobile-xl
-    padding: 1em 3%
-
 .highlight
   position: relative
   padding-top: 2em
@@ -94,6 +99,102 @@ div.content_block
     top: -0.1em
     -webkit-transform: translateY(-200%)
     transform: translateY(-200%)
+
+.flex-4
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+
+  & > div
+    padding: 1em
+    box-sizing: border-box
+    width: 23.5%
+    margin-bottom: 1.5em
+
+    @media (max-width: $media-950)
+      width: 48.5%
+
+    @media (max-width: $media-490)
+      width: 100%
+
+  &.alt-2
+    @media (max-width: $media-1000)
+      justify-content: center
+
+    @media (max-width: $media-700)
+      justify-content: space-between
+
+    & > div
+      @media (max-width: $media-1000)
+        width: 32%
+        margin-right: 2%
+        margin-bottom: 1em
+
+        &:nth-child(3), &:nth-child(6), &:nth-child(9), &:nth-last-child(1)
+          margin-right: 0
+
+      @media (max-width: $media-700)
+        width: 48.5%
+        margin-right: 0
+
+      @media (max-width: $media-490)
+        width: 100%
+
+  &.team
+    & > div
+      padding: 0 1em 0 0
+      margin-right: 1.5%
+
+      img
+        display: block
+        width: 100%
+        max-width: 300px
+        height: auto
+        margin: 0 0 0.5em 0
+
+        @media (max-width: $media-650)
+          max-width: 250px
+
+    &:after
+      content: ''
+      flex: auto
+
+.flex-2
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+
+  & > div
+    padding: 1em
+    box-sizing: border-box
+    width: 49%
+
+    @media (max-width: $media-700)
+      width: 100%
+      margin-bottom: 1.5em
+
+  &.alt-img
+    padding: 1em 0 0 0
+
+    img
+      display: block
+      width: 35%
+      height: auto
+      max-width: 300px
+      margin-right: 1em
+      align-self: start
+
+    div
+      flex: 1
+      padding: 0
+      margin-bottom: 0
+
+    @media (max-width: $media-650)
+      display: block
+
+      img
+        width: 100%
+        max-width: 250px
 
 
 
@@ -135,6 +236,14 @@ div.content_block
       &:hover
         background: $pink_2
         border-bottom-color: $pink_2
+
+      &.secondary
+        color: $pink_1
+        background-color: white
+
+        &:hover
+          background-color: $pink_2
+          color: white
 
     &:disabled, &.disabled
       background: $grey_1
