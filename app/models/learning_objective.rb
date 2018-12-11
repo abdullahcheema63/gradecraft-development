@@ -31,6 +31,17 @@ class LearningObjective < ApplicationRecord
     progress(student) == COMPLETED_STATUS
   end
 
+  def first_time_achieved?(student)
+    lo_cumulative_outcome = LearningObjectiveCumulativeOutcome.for_user(student.id).for_objective(self.id).first
+    if self.completed?(student) && !lo_cumulative_outcome.achieved
+      lo_cumulative_outcome.achieved = true
+      lo_cumulative_outcome.save
+      return true
+    else
+      return false
+    end
+  end
+
   def linked_assignments_count
     learning_objective_links.count
   end
