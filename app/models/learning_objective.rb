@@ -111,7 +111,9 @@ class LearningObjective < ApplicationRecord
       self.unlock_keys.map(&:unlockable).each do |unlockable|
         unlockable.unlock!(student) do |unlock_state|
           check_for_auto_awarded_badge(unlock_state, student)
-          send_email_on_unlock(unlockable, student)
+          if student.email_badge_awards?(course)
+            send_email_on_unlock(unlockable, student)
+          end
         end
       end
     end

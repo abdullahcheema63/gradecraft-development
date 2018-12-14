@@ -100,7 +100,9 @@ class CourseMembership < ApplicationRecord
       self.course.unlock_keys.map(&:unlockable).each do |unlockable|
         unlockable.unlock!(user) do |unlock_state|
           check_for_auto_awarded_badge(unlock_state)
-          send_email_on_unlock(unlockable)
+          if user.email_badge_awards?(course)
+            send_email_on_unlock(unlockable)
+          end
         end
       end
     end

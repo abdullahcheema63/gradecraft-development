@@ -139,7 +139,9 @@ class Grade < ApplicationRecord
       self.assignment.unlock_keys.map(&:unlockable).each do |unlockable|
         unlockable.unlock!(student) do |unlock_state|
           check_for_auto_awarded_badge(unlock_state)
-          send_email_on_unlock(unlockable)
+          if student.email_badge_awards?(course)
+            send_email_on_unlock(unlockable)
+          end
         end
       end
     end
@@ -147,7 +149,9 @@ class Grade < ApplicationRecord
       self.assignment_type.unlock_keys.map(&:unlockable).each do |unlockable|
         unlockable.unlock!(student) do |unlock_state|
           check_for_auto_awarded_badge(unlock_state)
-          send_email_on_unlock(unlockable)
+          if student.email_badge_awards?(course)
+            send_email_on_unlock(unlockable)
+          end
         end
       end
     end

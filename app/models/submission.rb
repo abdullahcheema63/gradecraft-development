@@ -164,13 +164,17 @@ class Submission < ApplicationRecord
           self.group.students.each do |student|
             unlockable.unlock!(student) do |unlock_state|
               check_for_auto_awarded_badge(unlock_state)
-              send_email_on_unlock(unlockable)
+              if student.email_badge_awards?(course)
+                send_email_on_unlock(unlockable)
+              end
             end
           end
         else
           unlockable.unlock!(student) do |unlock_state|
             check_for_auto_awarded_badge(unlock_state)
-            send_email_on_unlock(unlockable)
+            if student.email_badge_awards?(course)
+              send_email_on_unlock(unlockable)
+            end
           end
         end
       end
