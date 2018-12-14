@@ -93,4 +93,4 @@
     .learning-objective-checkboxes
       %label(ng-repeat="lo in learningObjectives()")
         %input(type="checkbox" name="linked_objective_ids[]" ng-checked="assignment.linked_objective_ids.indexOf(lo.objective_id) > -1" ng-value="lo.objective_id" ng-click="toggleObjectiveSelection(lo.objective_id)")
-          {{ lo.name }}
+          {{ lo.name }} <br />
