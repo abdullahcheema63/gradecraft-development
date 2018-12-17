@@ -67,4 +67,11 @@ $(document).on("ready", function() {
       aContent.slideUp(300);
     }
   });
+
+  $(".accordion.guide").each(function(){
+    if ( $(this).hasClass("active") == true ){
+      $(this).children("div").slideDown(10);
+    } else { }
+  });
+
 } );
