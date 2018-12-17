@@ -21,16 +21,10 @@ module ResqueJob
 
     # perform block that is ultimately called by Resque
     def self.perform(attrs={})
-      begin
-        logger.info self.start_message(attrs) # start us off with some info about what's happening
-        performer = @performer_class.new(attrs, logger) # self.class is the job class
-        performer.do_the_work # this is where the magic happens
-        log_outcomes(performer.outcomes) # tells us what actually went down
-      rescue Exception => e
-        logger.info "Error in #{@performer_class.to_s}: #{e.message}"
-        logger.info e.backtrace
-        raise ResqueJob::Errors::ForcedRetryError # force the retry in ResqueRetry if the #perform attempt fizzes out
-      end
+      logger.info self.start_message(attrs) # start us off with some info about what's happening
+      performer = @performer_class.new(attrs, logger) # self.class is the job class
+      performer.do_the_work # this is where the magic happens
+      log_outcomes(performer.outcomes) # tells us what actually went down
     end
     attr_reader :attrs
 
