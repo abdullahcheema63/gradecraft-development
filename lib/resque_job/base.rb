@@ -21,10 +21,16 @@ module ResqueJob
 
     # perform block that is ultimately called by Resque
     def self.perform(attrs={})
-      logger.info self.start_message(attrs) # start us off with some info about what's happening
-      performer = @performer_class.new(attrs, logger) # self.class is the job class
-      performer.do_the_work # this is where the magic happens
-      log_outcomes(performer.outcomes) # tells us what actually went down
+      begin
+        logger.info self.start_message(attrs) # start us off with some info about what's happening
+        performer = @performer_class.new(attrs, logger) # self.class is the job class
+        performer.do_the_work # this is where the magic happens
+        log_outcomes(performer.outcomes) # tells us what actually went down
+      rescue StandardError => e
+        logger.error "EXCEPTION: An exception occurred while running #{self.job_type}"
+        logger.error e.backtrace
+        raise
+      end
     end
     attr_reader :attrs
 
