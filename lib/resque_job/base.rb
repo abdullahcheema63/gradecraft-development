@@ -64,7 +64,7 @@ module ResqueJob
     def self.log_outcomes(outcomes)
       outcomes.each do |outcome|
         logger.info "SUCCESS: #{outcome.message}" if outcome.success?
-        logger.info "FAILURE: #{outcome.message}" if outcome.failure?
+        logger.error "FAILURE: #{outcome.message}" if outcome.failure?
         logger.info "RESULT: #{outcome.result_excerpt}"
       end
     end
@@ -89,7 +89,7 @@ module ResqueJob
     end
 
     def self.logger
-      Rails.logger
+      @resque_job_logger ||= Logger.new("#{Rails.root}/log/resque_jobs.log")
     end
   end
 end
