@@ -82,7 +82,7 @@ describe ResqueJob::Base, type: :vendor_library do
     it "logs the message and a result excerpt for all outcomes" do
       expect(logger).to receive(:info).with("SUCCESS: #{successful_outcome.message}").once
       expect(logger).to receive(:info).with("RESULT: #{successful_outcome.result_excerpt}").once
-      expect(logger).to receive(:info).with("FAILURE: #{failed_outcome.message}").once
+      expect(logger).to receive(:error).with("FAILURE: #{failed_outcome.message}").once
       expect(logger).to receive(:info).with("RESULT: #{failed_outcome.result_excerpt}").once
       subject
     end

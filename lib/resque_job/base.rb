@@ -26,12 +26,14 @@ module ResqueJob
         performer = @performer_class.new(attrs, logger) # self.class is the job class
         performer.do_the_work # this is where the magic happens
         log_outcomes(performer.outcomes) # tells us what actually went down
-      rescue Exception => e
-        logger.info "Error in #{@performer_class.to_s}: #{e.message}"
-        logger.info e.backtrace
-        raise ResqueJob::Errors::ForcedRetryError # force the retry in ResqueRetry if the #perform attempt fizzes out
+      rescue StandardError => e
+        logger.error "EXCEPTION: An exception occurred while running #{self.job_type}"
+        logger.error e.backtrace
+        Rollbar.warning("#{@performer_class.to_s} job failed", error: e.message, stacktrace: e.backtrace)
+        raise
       end
     end
+
     attr_reader :attrs
 
     # override the backoff strategy from Resque::ExponentialBackoff
@@ -70,7 +72,7 @@ module ResqueJob
     def self.log_outcomes(outcomes)
       outcomes.each do |outcome|
         logger.info "SUCCESS: #{outcome.message}" if outcome.success?
-        logger.info "FAILURE: #{outcome.message}" if outcome.failure?
+        logger.error "FAILURE: #{outcome.message}" if outcome.failure?
         logger.info "RESULT: #{outcome.result_excerpt}"
       end
     end
@@ -95,7 +97,7 @@ module ResqueJob
     end
 
     def self.logger
-      Rails.logger
+      @resque_job_logger ||= Logger.new("#{Rails.root}/log/resque_jobs.log")
     end
   end
 end

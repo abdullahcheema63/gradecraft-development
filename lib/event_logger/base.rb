@@ -71,7 +71,7 @@ module EventLogger
       end
 
       def logger
-        Rails.logger
+        @resque_job_logger ||= Logger.new("#{Rails.root}/log/resque_jobs.log")
       end
     end
   end

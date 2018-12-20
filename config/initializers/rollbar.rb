@@ -1,5 +1,7 @@
 require "rollbar/rails"
+
 Rollbar.configure do |config|
+  config.use_resque
   config.access_token = ENV["ROLLBAR_ACCESS_TOKEN"]
 
   # Without configuration, Rollbar is enabled by in all environments.
