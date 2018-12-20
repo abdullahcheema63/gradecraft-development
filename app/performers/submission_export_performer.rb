@@ -9,7 +9,7 @@ class SubmissionExportPerformer < ResqueJob::Performer
   def do_the_work
     if @course.present? && @user.present?
       require_success(fetch_csv_messages, max_result_size: 250) do
-       fetch_csv_data(@course)
+        fetch_csv_data(@course)
       end
 
       require_success(notification_messages, max_result_size: 200) do

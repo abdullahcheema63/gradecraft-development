@@ -29,9 +29,11 @@ module ResqueJob
       rescue StandardError => e
         logger.error "EXCEPTION: An exception occurred while running #{self.job_type}"
         logger.error e.backtrace
+        Rollbar.warning("#{@performer_class.to_s} job failed", error: e.message, stacktrace: e.backtrace)
         raise
       end
     end
+
     attr_reader :attrs
 
     # override the backoff strategy from Resque::ExponentialBackoff
