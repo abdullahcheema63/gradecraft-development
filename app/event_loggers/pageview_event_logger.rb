@@ -27,10 +27,10 @@ class PageviewEventLogger < ApplicationEventLogger
   end
 
   def enqueue_in_and_check_with_fallback(time_until_start)
-    raise EventLogger::Exceptions::DocumentSizeExceededError.new(
-      "Failed to enqueue pageview event logger job due to exceeded document size; attributes",
-      event_attrs
-    ) if documents_exceeded_maximum_size?
+    # raise EventLogger::Exceptions::DocumentSizeExceededError.new(
+    #   "Failed to enqueue pageview event logger job due to exceeded document size; attributes",
+    #   event_attrs
+    # ) if documents_exceeded_maximum_size?
 
     enqueue_in_with_fallback(time_until_start)
   end
