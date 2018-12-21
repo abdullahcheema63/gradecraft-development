@@ -1,0 +1,16 @@
+.pageContent
+  %p
+    Your license type is: 
+    %span= @license.license_type.name
+  %p
+    Expires at:
+    %span= @license.expires
+  %p
+    Maximum courses:
+    %span= @license.max_courses || "Unlimited"
+  %p
+    Maximum students:
+    %span= @license.max_students || "Unlimited"
+  %p
+    You paid:
+    %span= @license.payments.last.amount_usd

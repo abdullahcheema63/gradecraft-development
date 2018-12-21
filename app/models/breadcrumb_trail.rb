@@ -488,6 +488,10 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb("Buy a License")
   end
 
+  def licenses_show
+    breadcrumb("Your GradeCraft License")
+  end
+
   def rubrics_index_for_copy
     dashboard
   end

@@ -83,6 +83,7 @@ class Course < ApplicationRecord
     c.has_many :learning_objectives
     c.has_many :unlock_conditions
     c.has_one  :copy_log
+    c.belongs_to :license
   end
 
   has_many :users, through: :course_memberships

@@ -1,5 +1,6 @@
 require "./db/samples/courses.rb"
 require "./db/samples/badges.rb"
+require "./db/samples/license_types.rb"
 require "./db/samples/assignment_types.rb"
 require "./db/samples/assignments.rb"
 require "./db/samples/challenges.rb"
@@ -334,6 +335,17 @@ puts "I go to school, but I never learn what I want to know. ― Calvin & Hobbes
 # :staff_ids => [25,27]
 @courses.each do |name,config|
   config[:staff_ids] = config[:course].staff.map { |staff| staff.id }
+end
+
+# ---------------------------- Create License Types! -------------------------#
+
+@license_types.each do |data|
+  license_type = LicenseType.create! do |l|
+    data.keys.each do |k|
+      l[k] = data[k]
+    end
+  end
+  print "Created License Type: " + license_type.name
 end
 
 # ---------------------------- Create Badges! --------------------------------#

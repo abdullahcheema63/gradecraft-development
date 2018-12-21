@@ -365,6 +365,7 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
     t.boolean "objectives_award_points", default: false, null: false
     t.boolean "always_show_objectives", default: false, null: false
     t.boolean "allows_learning_objectives", default: false, null: false
+    t.integer "license_id"
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 
@@ -665,7 +666,23 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
     t.index ["criterion_id"], name: "index_levels_on_criterion_id"
   end
 
+  create_table "license_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "default_max_courses"
+    t.integer "default_max_students"
+    t.integer "default_duration_months"
+    t.decimal "price_usd"
+    t.boolean "hide", default: false, null: false
+  end
+
   create_table "licenses", force: :cascade do |t|
+    t.integer "license_type_id", null: false
+    t.integer "max_courses"
+    t.integer "max_students"
+    t.integer "user_id", null: false
+    t.datetime "expires", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "linked_courses", force: :cascade do |t|
@@ -686,6 +703,25 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
     t.string "launch_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.bigint "license_id"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "organization", null: false
+    t.string "phone", null: false
+    t.string "addr1", null: false
+    t.string "addr2"
+    t.string "state"
+    t.string "zip"
+    t.string "country", null: false
+    t.string "source", null: false
+    t.string "confirmation"
+    t.decimal "amount_usd", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["license_id"], name: "index_payments_on_license_id"
   end
 
   create_table "predicted_earned_badges", force: :cascade do |t|
@@ -970,6 +1006,7 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
   add_foreign_key "announcements", "users", column: "author_id"
   add_foreign_key "announcements", "users", column: "recipient_id"
   add_foreign_key "courses", "institutions"
+  add_foreign_key "courses", "licenses"
   add_foreign_key "earned_badges", "users", column: "awarded_by_id"
   add_foreign_key "flagged_users", "courses"
   add_foreign_key "flagged_users", "users", column: "flagged_id"
@@ -984,7 +1021,10 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
   add_foreign_key "learning_objective_observed_outcomes", "learning_objective_cumulative_outcomes", column: "learning_objective_cumulative_outcomes_id"
   add_foreign_key "learning_objectives", "courses"
   add_foreign_key "learning_objectives", "learning_objective_categories", column: "category_id"
+  add_foreign_key "licenses", "license_types"
+  add_foreign_key "licenses", "users"
   add_foreign_key "linked_courses", "courses"
+  add_foreign_key "payments", "licenses"
   add_foreign_key "secure_tokens", "courses"
   add_foreign_key "secure_tokens", "users"
   add_foreign_key "user_authorizations", "users"

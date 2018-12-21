@@ -1,18 +1,37 @@
 .pageContent
-  %h1 Buy The GradeCraft
-
-  %p For a lowly 50 Galleons you can license your copy of GradeCraft, enabling helpful extra features such as "LTI integration" and "students."
+  %h1 License GradeCraft
 
   = render partial: "layouts/alerts", locals: { model: @license }
 
-  = simple_form_for @license, :method => :post do |f|
+  %p We’re thrilled that you want to purchase a license of GradeCraft! We care about you helping your students to succeed; that’s why with any option you choose, we have online help and pedagogical support to help you along the way. So let’s find the option that’s best for your needs!
 
-    %section.form-section
-      .form-item
-        = f.input :first_name, :label => "First Name"
-      .form-item
-        = f.input :last_name, :label => "Last Name"
-      .form-item
-        = f.input :organization, :label => "Organization"
-      .form-item
-        = f.input :type, :label => "License", as: :select, collection: License.types.keys, include_blank: false
+  = simple_form_for @license, html: { method: :post, id: "payment-form" } do |l|
+    = l.simple_fields_for :payments do |p|
+      %section.form-section
+        .form-item
+          = l.association :license_type, collection: LicenseType.where.not("hide"), include_blank: false, as: :radio_buttons
+        .form-item
+          = p.input :first_name, :label => "First Name"
+        .form-item
+          = p.input :last_name, :label => "Last Name"
+        .form-item
+          = p.input :organization, :label => "Organization"
+        .form-item
+          = p.input :phone, :label => "Phone"
+        .form-item
+          = p.input :addr1, :label => "Address 1"
+        .form-item
+          = p.input :addr2, :label => "Address 2"
+        .form-item
+          = p.input :country, :label => "Country"
+        .form-item
+          = p.input :state, :label => "State"
+        .form-item
+          = p.input :zip, :label => "Zip Code"
+        .form-item
+          %label(for="card-element")
+            Credit or debit card
+          %div#card-element
+          %div#card-errors
+        .form-item
+          = l.submit "Submit Payment"

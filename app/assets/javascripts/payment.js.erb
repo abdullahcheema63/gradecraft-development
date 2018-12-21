@@ -1,0 +1,55 @@
+!function() {
+  e = document.querySelector("#card-element");
+  if (!e) return;
+
+  var stripe = Stripe('<%= Rails.configuration.stripe[:publishable_key] %>');
+
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      lineHeight: '18px',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  var card = elements.create('card', {style: style});
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  const form = document.getElementById("payment-form");
+
+  const stripeTokenHandler = (token, form) => {
+    const hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'license[payments_attributes][0][stripe_token]');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    form.submit();
+  }
+
+  form.addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    stripe.createToken(card).then((result) => {
+      if (result.error) {
+        const errorElement = document.getElementById("card-errors");
+        errorElement.textContent = result.error.message;
+      } else {
+        stripeTokenHandler(result.token, form);
+      }
+    });
+  });
+}();
