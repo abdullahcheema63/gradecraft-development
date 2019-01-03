@@ -38,9 +38,7 @@ class EarnedBadge < ApplicationRecord
       self.badge.unlock_keys.map(&:unlockable).each do |unlockable|
         unlockable.unlock!(student) do |unlock_state|
           check_for_auto_awarded_badge(unlock_state)
-          if student.email_badge_awards?(course)
-            send_email_on_unlock(unlockable)
-          end
+          send_email_on_unlock(unlockable)
         end
       end
     end
@@ -73,6 +71,8 @@ class EarnedBadge < ApplicationRecord
   end
 
   def send_email_on_unlock(unlockable)
-    NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
+    if student.email_badge_awards?(course)
+      NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
+    end
   end
 end
