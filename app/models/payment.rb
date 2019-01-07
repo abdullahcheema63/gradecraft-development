@@ -10,10 +10,11 @@ class Payment < ApplicationRecord
     charge = Stripe::Charge.create(
       customer: customer.id,
       amount: amount_cents,
-      # description: license.license_type.name + " Exp.: " + license.expires.to_s,
+      description: license.license_type.name + " Exp.: " + license.expires.to_s,
       currency: "usd",
     )
     confirmation = charge.id
+    return charge
   end
 
   def amount_cents

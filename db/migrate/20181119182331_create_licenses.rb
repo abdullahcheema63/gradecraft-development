@@ -1,10 +1,11 @@
 class CreateLicenses < ActiveRecord::Migration[5.2]
   def change
     create_table :licenses do |t|
+      t.belongs_to :user, index: true, foreign_key: true
+
       t.integer :license_type_id, null: false
       t.integer :max_courses
       t.integer :max_students
-      t.integer :user_id, null: false
       t.datetime :expires, null: false
 
       t.timestamps
@@ -40,8 +41,7 @@ class CreateLicenses < ActiveRecord::Migration[5.2]
 
     add_column :courses, :license_id, :integer
     add_foreign_key :courses, :licenses
-    
-    add_foreign_key :licenses, :users
+
     add_foreign_key :licenses, :license_types
   end
 end

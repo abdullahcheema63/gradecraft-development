@@ -10,28 +10,6 @@
       %section.form-section
         .form-item
           = l.association :license_type, collection: LicenseType.where.not("hide"), include_blank: false, as: :radio_buttons
-        .form-item
-          = p.input :first_name, :label => "First Name"
-        .form-item
-          = p.input :last_name, :label => "Last Name"
-        .form-item
-          = p.input :organization, :label => "Organization"
-        .form-item
-          = p.input :phone, :label => "Phone"
-        .form-item
-          = p.input :addr1, :label => "Address 1"
-        .form-item
-          = p.input :addr2, :label => "Address 2"
-        .form-item
-          = p.input :country, :label => "Country"
-        .form-item
-          = p.input :state, :label => "State"
-        .form-item
-          = p.input :zip, :label => "Zip Code"
-        .form-item
-          %label(for="card-element")
-            Credit or debit card
-          %div#card-element
-          %div#card-errors
+          = render partial: "payment_fields", locals: { payment_form: p }
         .form-item
           = l.submit "Submit Payment"

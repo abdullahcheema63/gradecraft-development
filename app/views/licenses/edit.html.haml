@@ -1,0 +1,15 @@
+.pageContent
+  %h1 Renew your GradeCraft License
+
+  = render partial: "layouts/alerts", locals: { model: @license }
+
+  %p Your license is currently slated to expire at {{@license.expires}}. Thank you for your continued use of GradeCraft!
+
+  = simple_form_for @license, url: { action: "update" }, html: { method: :patch, id: "payment-form" } do |l|
+    = l.simple_fields_for :payments do |p|
+      %section.form-section
+        .form-item
+          = l.association :license_type, diabled: true, collection: LicenseType.where.not("hide"), include_blank: false, as: :radio_buttons
+          = render partial: "payment_fields", locals: { payment_form: p }
+        .form-item
+          = l.submit "Submit Payment"

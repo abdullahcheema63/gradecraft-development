@@ -626,7 +626,7 @@ Rails.application.routes.draw do
   end
 
   #21. Licenses
-  resources :licenses, path_names: { new: 'buy' }
+  resources :licenses, path_names: { new: 'buy', edit: 'renew' }, only: [:new, :create, :edit, :update, :index]
 
   #22. Errors
   resource :errors, only: :show

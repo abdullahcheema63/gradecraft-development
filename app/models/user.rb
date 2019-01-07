@@ -108,6 +108,8 @@ class User < ApplicationRecord
     end
   end
 
+  has_one :license, dependent: :nullify
+
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   validates :username, presence: true,

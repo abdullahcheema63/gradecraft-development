@@ -676,13 +676,14 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
   end
 
   create_table "licenses", force: :cascade do |t|
+    t.bigint "user_id"
     t.integer "license_type_id", null: false
     t.integer "max_courses"
     t.integer "max_students"
-    t.integer "user_id", null: false
     t.datetime "expires", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_licenses_on_user_id"
   end
 
   create_table "linked_courses", force: :cascade do |t|
