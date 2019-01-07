@@ -235,6 +235,10 @@ class Course < ApplicationRecord
     return nonpredictors
   end
 
+  def admin_disabled_grade_email?
+    return self.disable_grade_emails
+  end
+
   private
 
   # If not using multipliers, reset the related columns
