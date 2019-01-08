@@ -97,7 +97,7 @@ gem 'sanitize'
 gem 'sassc-rails'
 
 # secure crypt hashing library stronger than bcrypt or PBDBF2
-gem 'scrypt', '3.0.5'
+gem 'scrypt', '3.0.6'
 
 gem 'select2-rails'
 gem 'simple_form'
