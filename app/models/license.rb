@@ -13,11 +13,27 @@ class License < ApplicationRecord
     expires < DateTime.now
   end
 
+  def start!(payment, stripe_token)
+    add_payment! payment, stripe_token
+  end
+
   def renew!(payment, stripe_token, duration=nil)
     duration ||= license_type.default_duration_months.months
-    new_expiry = is_expired? ? (DateTime.now + duration) : (expires + duration)
-    self.expires = new_expiry
-    payments.push(payment)
-    payment.charge_stripe(stripe_token)
+    self.expires = is_expired? ? (DateTime.now + duration) : (expires + duration)
+    add_payment! payment, stripe_token
+  end
+
+  private
+
+  def add_payment!(payment, stripe_token)
+    payments.push payment
+    charge = payment.charge_stripe stripe_token
+    # Force save immediately to ensure that a failed save invalidates the charge.
+    begin
+      save!
+    rescue => e
+      charge.refund
+      raise
+    end
   end
 end

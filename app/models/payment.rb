@@ -13,7 +13,7 @@ class Payment < ApplicationRecord
       description: license.license_type.name + " Exp.: " + license.expires.to_s,
       currency: "usd",
     )
-    confirmation = charge.id
+    self.confirmation = charge.id
     return charge
   end
 

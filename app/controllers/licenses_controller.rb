@@ -57,15 +57,13 @@ class LicensesController < ApplicationController
     p[:amount_usd] = @license.license_type.price_usd
     payment = Payment.create(p)
     begin
-      charge = @license.renew! payment, p[:stripe_token]
-      if @license.save
-        render "index", success: true, status: 200
-      else
-        charge.refund
-        errors "edit"
-      end
+      @license.renew! payment, p[:stripe_token]
     rescue Stripe::CardError => e
       return alert "edit", e.message
+    rescue => e
+      errors "edit"
+    else
+      render "index", success: true, status: 200
     end
   end
 
