@@ -123,8 +123,8 @@ describe UnlockCondition do
 
       it "returns true if the badge has been earned enough times and on time" do
         student = create(:user)
-        create(:earned_badge, badge: badge, student: student)
-        create(:earned_badge, badge: badge, student: student)
+        create(:earned_badge, badge: badge, student: student, created_at: Date.today)
+        create(:earned_badge, badge: badge, student: student, created_at: Date.today)
         unlock_condition = UnlockCondition.new(
           condition_id: badge.id, condition_type: "Badge",
           condition_state: "Earned", condition_value: 2,
@@ -206,7 +206,7 @@ describe UnlockCondition do
         before do
           create(:submission, assignment: assignment,
                               student: student,
-                              submitted_at: DateTime.now
+                              submitted_at: Date.today
                 )
         end
 
@@ -289,7 +289,7 @@ describe UnlockCondition do
       it "returns true if the grade earned meets the condition date" do
         student = create(:user)
         create(:student_visible_grade, assignment: assignment, student: student, raw_points: 100, instructor_modified:
-                  true, graded_at: DateTime.now
+                  true, graded_at: Date.today
         )
         unlock_condition = UnlockCondition.new(
           condition_id: assignment.id, condition_type: "Assignment",
@@ -313,7 +313,7 @@ describe UnlockCondition do
       it "returns true if the grade earned meets condition value and date" do
         student = create(:user)
         create(:student_visible_grade, assignment: assignment, student: student, raw_points: 100, instructor_modified: true,
-                  graded_at: DateTime.now
+                  graded_at: Date.today
         )
         unlock_condition = UnlockCondition.new(
           condition_id: assignment.id, condition_type: "Assignment",

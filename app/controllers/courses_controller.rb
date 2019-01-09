@@ -24,7 +24,7 @@ class CoursesController < ApplicationController
 
   def index
     @courses = current_user.courses.includes(:earned_badges)
-    @can_create_courses = current_user_is_admin? || (!Rails.env.beta? && current_user_is_staff?)
+    @can_create_courses = current_user_is_admin?
   end
 
   def overview
@@ -250,7 +250,7 @@ class CoursesController < ApplicationController
   end
 
   def ensure_can_create_courses?
-    can_create_courses = current_user_is_admin? || (!Rails.env.beta? && current_user_is_staff?)
+    can_create_courses = current_user_is_admin?
     redirect_to action: :index and return unless can_create_courses
   end
 end

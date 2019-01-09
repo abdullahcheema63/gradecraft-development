@@ -68,7 +68,10 @@ describe AnalyticsEventsController, type: :controller do
     let(:params) {{ url: "http://some.url", tab: "#great_tab" }}
 
     before { allow(controller).to receive(:params) { params } }
-    before(:each) { allow(logger_class).to receive_messages(new: event_logger) }
+    before(:each) do
+      allow(logger_class).to receive_messages(new: event_logger)
+      allow_any_instance_of(PageviewEventLogger).to receive(:documents_exceeded_maximum_size?).and_return false
+    end
 
     context "a user is logged in and the request is for html" do
       it "should create a new PredictorEventLogger" do

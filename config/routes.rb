@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   #20. Learning Objectives
   #21. Licenses
   #22. Errors
+  #23. Admin
 
   #1. Analytics & Charts
   namespace :analytics do
@@ -49,10 +50,10 @@ Rails.application.routes.draw do
   post "analytics_events/predictor_event"
   post "analytics_events/tab_select_event"
 
-  #2. Announcements
+  # 2. Announcements
   resources :announcements, except: [:edit, :update]
 
-  #3. Assignments, Submissions, Grades
+  # 3. Assignments, Submissions, Grades
   namespace :assignments do
     resources :importers, param: :provider_id, only: [:index, :show] do
       get :assignments
@@ -149,14 +150,14 @@ Rails.application.routes.draw do
 
   resources :levels, only: [:create, :destroy, :update]
 
-  #4. Assignment Types
+  # 4. Assignment Types
   resources :assignment_types, except: [:show] do
     get :all_grades, on: :member
     get :export_scores, on: :member
     get :export_all_scores, on: :collection
   end
 
-  #5. Badges
+  # 5. Badges
   resources :badges, except: [:update, :create] do
     get "export_structure", on: :collection
     resources :earned_badges do
@@ -171,7 +172,7 @@ Rails.application.routes.draw do
     end
   end
 
-  #6. Challenges
+  # 6. Challenges
   resources :challenges do
     resources :challenge_grades, only: [:new, :create], module: :challenges do
       collection do
@@ -184,7 +185,7 @@ Rails.application.routes.draw do
 
   resources :challenge_grades, except: [:index, :new, :create]
 
-  #7. Integrations
+  # 7. Integrations
   resources :integrations, only: [:create, :index] do
     collection do
       resource :google, controller: :google, only: [], module: :integrations do
@@ -212,7 +213,7 @@ Rails.application.routes.draw do
     end
   end
 
-  #8. Courses
+  # 8. Courses
   resources :courses, except: [:show] do
     post :copy, on: :collection
     post :recalculate_student_scores, on: :member
@@ -242,10 +243,10 @@ Rails.application.routes.draw do
     end
   end
 
-  #9. Groups
+  # 9. Groups
   resources :groups
 
-  #10. Informational Pages
+  # 10. Informational Pages
   controller :info do
     get :dashboard
     get :predictor
@@ -271,7 +272,7 @@ Rails.application.routes.draw do
     get :style_guide, constraints: AdminConstraint.new
   end
 
-  #11. Grade Schemes
+  # 11. Grade Schemes
   resources :grade_scheme_elements, only: [:index, :edit, :update] do
     collection do
       get :mass_edit
@@ -279,10 +280,10 @@ Rails.application.routes.draw do
     end
   end
 
-  #12. Teams
+  # 12. Teams
   resources :teams
 
-  #13. Users
+  # 13. Users
   %w{students gsis professors admins}.each do |role|
     get "users/#{role}/new", to: "users#new", as: "new_#{role.singularize}",
       role: role.singularize
@@ -330,7 +331,7 @@ Rails.application.routes.draw do
 
   resources :observers, only: :index
 
-  #14. User Auth
+  # 14. User Auth
   post "auth/lti/callback", to: "user_sessions#lti_create"
   get "auth/google_oauth2/callback", to: "integrations/google#auth_callback"
   get "/auth/:provider/callback", to: "authorizations#create", as: :create_authorization
@@ -358,16 +359,16 @@ Rails.application.routes.draw do
 
   get "lti/:provider/launch", to: "lti#launch", as: :launch_lti_provider
 
-  #Google Auth ###
+  # Google Auth
   post "google/launch_from_activation_token/users/:id", to: "google#launch_from_activation_token", as: :launch_from_activation_token_google
   post "google/launch_from_login/", to: "google#launch_from_login", as: :launch_from_login_google
 
-  #15. Uploads
+  # 15. Uploads
   resource :uploads, only: [] do
     get :remove
   end
 
-  #16. Events
+  # 16. Events
   resources :events do
     post :copy, on: :collection
   end
@@ -376,7 +377,7 @@ Rails.application.routes.draw do
 
   resources :institutions, only: [:index, :new, :edit, :create, :update]
 
-  #17. Attendance
+  # 17. Attendance
   resources :attendance, only: [:index, :new, :create] do
     collection do
       get :setup
@@ -384,7 +385,7 @@ Rails.application.routes.draw do
     end
   end
 
-  #18. API Calls
+  # 18. API Calls
   namespace :api, defaults: { format: :json } do
     resource :assignments, only: [], module: :assignments do
       resources :grades, only: [] do
@@ -575,7 +576,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :unlock_conditions, only: [:create, :update, :destroy]
+    resources :unlock_conditions, only: [:create, :update, :destroy] do
+      put :check_unlocked
+    end
+    get "courses/:id/unlock_conditions", to: "unlock_conditions#for_course"
 
     resources :users, only: [] do
       collection do
@@ -596,7 +600,7 @@ Rails.application.routes.draw do
     resources :attendance, only: [:index, :create, :update, :destroy]
   end
 
-  #19. Exports
+  # 19. Exports
   resources :downloads, only: :index
 
   resources :submissions_exports, only: [:create, :destroy] do
@@ -615,7 +619,7 @@ Rails.application.routes.draw do
     end
   end
 
-  #20. Learning Objectives
+  # 20. Learning Objectives
   namespace :learning_objectives do
     resources :links, only: :index
     resources :categories, only: [:new, :edit]
@@ -630,6 +634,15 @@ Rails.application.routes.draw do
 
   #22. Errors
   resource :errors, only: :show
+
+  # 22. Admin
+  namespace :admin, constraints: AdminConstraint.new do
+    resources :tools, only: :index do
+      collection do
+        get :unlocks
+      end
+    end
+  end
 
   # root, bro
   root to: "home#index"

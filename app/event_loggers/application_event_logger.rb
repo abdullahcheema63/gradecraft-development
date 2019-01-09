@@ -11,6 +11,8 @@
 class ApplicationEventLogger < EventLogger::Base
   @queue = :application_event_logger
 
+  @fatal_exceptions = [Mongo::Error::OperationFailure]
+
   attr_accessor :event_session
 
   # Used by enqueuing methods in EventLogger::Enqueue
