@@ -163,14 +163,14 @@ class Submission < ApplicationRecord
         if self.assignment.has_groups?
           self.group.students.each do |student|
             unlockable.unlock!(student) do |unlock_state|
-              check_for_auto_awarded_badge(unlock_state)
-              send_email_on_unlock(unlockable)
+              check_for_auto_awarded_badge(unlock_state, student)
+              send_email_on_unlock(unlockable, student)
             end
           end
         else
           unlockable.unlock!(student) do |unlock_state|
-            check_for_auto_awarded_badge(unlock_state)
-            send_email_on_unlock(unlockable)
+            check_for_auto_awarded_badge(unlock_state, student)
+            send_email_on_unlock(unlockable, student)
           end
         end
       end
@@ -222,14 +222,14 @@ class Submission < ApplicationRecord
     errors.add(:base, "must have either a student_id or group_id, but not both") unless student.nil? ^ group.nil?
   end
 
-  def check_for_auto_awarded_badge(unlock_state)
+  def check_for_auto_awarded_badge(unlock_state, student)
     award_badge(unlock_state, {
       student_id: student.id,
       course_id: course.id
     })
   end
 
-  def send_email_on_unlock(unlockable)
+  def send_email_on_unlock(unlockable, student)
     NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
   end
 end
