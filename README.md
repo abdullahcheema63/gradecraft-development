@@ -27,7 +27,7 @@
 * Multipliers (students decide assignment weight)
 
 ## Pre-reqs:
-* Ruby 2.5.1
+* Ruby 2.5.3
 * PostgreSQL
 * MongoDB
 * Redis
@@ -71,8 +71,8 @@ edit ~/.bash_profile and add eval "$(rbenv init -)"
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
 
 # install and set the current version
-rbenv install 2.5.1 (or whatever version Gradecraft is on)
-rbenv local 2.5.1 (or rbenv global 2.5.1 if preferred)
+rbenv install 2.5.3 (or whatever version Gradecraft is on)
+rbenv local 2.5.3 (or rbenv global 2.5.3 if preferred)
 
 # Restart terminal for changes to fully take into effect and ensure that the command rbenv works
 ```
