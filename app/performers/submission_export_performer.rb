@@ -9,7 +9,7 @@ class SubmissionExportPerformer < ResqueJob::Performer
   def do_the_work
     if @course.present? && @user.present?
       require_success(fetch_csv_messages, max_result_size: 250) do
-       fetch_csv_data(@course)
+        fetch_csv_data(@course)
       end
 
       require_success(notification_messages, max_result_size: 200) do
@@ -24,9 +24,8 @@ class SubmissionExportPerformer < ResqueJob::Performer
     User.find @attrs[:user_id]
   end
 
-  # TODO: speed this up by condensing the CSV generator into a single query
-  def fetch_course # TODO: add specs for includes
-    Course.includes(:assignments, :assignment_types, submissions: :grade).find @attrs[:course_id]
+  def fetch_course
+    Course.includes(submissions: [:grade, :student, :group, assignment: [:assignment_type]]).find @attrs[:course_id]
   end
 
   def fetch_csv_data(course)

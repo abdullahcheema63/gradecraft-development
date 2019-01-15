@@ -5,3 +5,5 @@
   .add-unlock-button(ng-if="vmUnlocks.canAddNewCondition()" ng-click="vmUnlocks.addCondition()")
     %i.fa.fa-fw.fa-plus
     Add a Condition
+%div(ng-if="vmUnlocks.conditions.length > 0")
+  %i * Unlocks do not retroactively award if criteria changes. Be aware that any changes you make to unlock criteria will not be applied to assignments that have already been graded or badges that have already been awarded

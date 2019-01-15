@@ -24,7 +24,7 @@ class CoursesController < ApplicationController
 
   def index
     @courses = current_user.courses.includes(:earned_badges)
-    @can_create_courses = current_user_is_admin? || (!Rails.env.beta? && current_user_is_staff?)
+    @can_create_courses = current_user_is_admin?
   end
 
   def overview
@@ -224,7 +224,7 @@ class CoursesController < ApplicationController
       instructors_of_record_ids: [], course_memberships_attributes: [:id, :course_id, :user_id, :instructor_of_record]
     ]
     if current_user_is_admin?
-      params.require(:course).permit(*course_attrs << [:status, :has_paid, :allows_canvas, :allows_learning_objectives, :institution_id])
+      params.require(:course).permit(*course_attrs << [:status, :has_paid, :allows_canvas, :allows_learning_objectives, :institution_id, :disable_grade_emails])
     else
       params.require(:course).permit(*course_attrs)
     end
@@ -250,7 +250,7 @@ class CoursesController < ApplicationController
   end
 
   def ensure_can_create_courses?
-    can_create_courses = current_user_is_admin? || (!Rails.env.beta? && current_user_is_staff?)
+    can_create_courses = current_user_is_admin?
     redirect_to action: :index and return unless can_create_courses
   end
 end

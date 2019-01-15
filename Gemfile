@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.5.1'
+ruby '2.5.3'
 
 gem 'rails', '~> 5.2.0'
 gem 'resque'
@@ -97,7 +97,7 @@ gem 'sanitize'
 gem 'sassc-rails'
 
 # secure crypt hashing library stronger than bcrypt or PBDBF2
-gem 'scrypt', '3.0.5'
+gem 'scrypt', '3.0.6'
 
 gem 'select2-rails'
 gem 'simple_form'
