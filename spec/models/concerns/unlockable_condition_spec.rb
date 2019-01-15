@@ -188,8 +188,8 @@ describe UnlockableCondition do
       unlock_condition = create(:unlock_condition, unlockable_id: locked_badge.id, unlockable_type: "Badge", condition_id: assignment.id, condition_type: "Assignment", condition_state: "Submitted")
       unlock_condition_2 = create(:unlock_condition, unlockable_id: locked_badge.id, unlockable_type: "Badge", condition_id: badge.id, condition_type: "Badge", condition_state: "Earned", condition_value: 2)
       submission = create(:submission, student: student, assignment: assignment)
-      earned_badge = create(:earned_badge, badge: badge, student: student)
-      earned_badge_2 = create(:earned_badge, badge: badge, student: student)
+      earned_badge = create(:earned_badge, badge: badge, student: student, course: course)
+      earned_badge_2 = create(:earned_badge, badge: badge, student: student, course: course)
       expect(locked_badge.is_unlocked_for_student?(student)).to eq(true)
     end
 

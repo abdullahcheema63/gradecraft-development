@@ -1,6 +1,7 @@
 class LearningObjective < ApplicationRecord
   include UnlockableCondition
-  
+  include AutoAwardOnUnlock
+
   NOT_STARTED_STATUS = "Not Started".freeze
   IN_PROGRESS_STATUS = "In Progress".freeze
   COMPLETED_STATUS = "Completed".freeze
@@ -28,6 +29,17 @@ class LearningObjective < ApplicationRecord
 
   def completed?(student)
     progress(student) == COMPLETED_STATUS
+  end
+
+  def first_time_achieved?(student)
+    lo_cumulative_outcome = LearningObjectiveCumulativeOutcome.for_user(student.id).for_objective(self.id).first
+    if self.completed?(student) && !lo_cumulative_outcome.achieved
+      lo_cumulative_outcome.achieved = true
+      lo_cumulative_outcome.save
+      return true
+    else
+      return false
+    end
   end
 
   def linked_assignments_count
@@ -97,7 +109,12 @@ class LearningObjective < ApplicationRecord
   def check_unlockables(student)
     if self.is_a_condition?
       self.unlock_keys.map(&:unlockable).each do |unlockable|
-        unlockable.unlock!(student)
+        unlockable.unlock!(student) do |unlock_state|
+          check_for_auto_awarded_badge(unlock_state, student)
+          if student.email_badge_awards?(course)
+            send_email_on_unlock(unlockable, student)
+          end
+        end
       end
     end
   end
@@ -121,5 +138,16 @@ class LearningObjective < ApplicationRecord
   def in_progress_str(earned, total, include_details)
     return IN_PROGRESS_STATUS unless include_details
     "#{IN_PROGRESS_STATUS} (Earned #{earned} of #{total} tries)"
+  end
+
+  def check_for_auto_awarded_badge(unlock_state, student)
+    award_badge(unlock_state, {
+      student_id: student.id,
+      course_id: course.id
+      })
+  end
+
+  def send_email_on_unlock(unlockable, student)
+    NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
   end
 end

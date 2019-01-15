@@ -48,6 +48,13 @@ class NotificationMailer < ApplicationMailer
     send_student_email "#{@course.course_number} - You've earned a new #{@course.badge_term}!"
   end
 
+  def learning_objective_achieved(learning_objective, student)
+    @learning_objective = learning_objective
+    @student = student
+    @course = @learning_objective.course
+    send_student_email "#{@course.course_number} - You've completed the #{@course.learning_objective_term}!"
+  end
+
   def group_status_updated(group_id)
     @group = Group.find group_id
     @course = @group.course
