@@ -1,11 +1,18 @@
 class Payment < ApplicationRecord
+  before_create :set_defaults
+
   belongs_to :license
   attr_accessor :stripe_token
 
-  def charge_stripe(stripe_token)
+  def set_defaults
+    self.source ||= self.stripe_token ? "Stripe" : nil
+  end
+
+  def charge
+    return nil unless self.stripe_token
     customer = Stripe::Customer.create(
       email: license.user.email,
-      source: stripe_token,
+      source: self.stripe_token,
     )
     charge = Stripe::Charge.create(
       customer: customer.id,
@@ -14,7 +21,12 @@ class Payment < ApplicationRecord
       currency: "usd",
     )
     self.confirmation = charge.id
-    return charge
+  end
+
+  def refund
+    return nil unless self.source == "Stripe" && self.confirmation
+    charge = Stripe::Charge.retrieve(self.confirmation)
+    charge.refund
   end
 
   def amount_cents

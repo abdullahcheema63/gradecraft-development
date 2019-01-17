@@ -5,7 +5,7 @@ class License < ApplicationRecord
   belongs_to :user
   belongs_to :license_type
 
-  validates :license_type, presence: true
+  validates_presence_of :license_type, :expires
 
   accepts_nested_attributes_for :payments
 
@@ -13,26 +13,26 @@ class License < ApplicationRecord
     expires < DateTime.now
   end
 
-  def start!(payment, stripe_token)
-    add_payment! payment, stripe_token
+  def start!(payment)
+    add_payment! payment
   end
 
-  def renew!(payment, stripe_token, duration=nil)
+  def renew!(payment, duration=nil)
     duration ||= license_type.default_duration_months.months
     self.expires = is_expired? ? (DateTime.now + duration) : (expires + duration)
-    add_payment! payment, stripe_token
+    add_payment! payment
   end
 
   private
 
-  def add_payment!(payment, stripe_token)
+  def add_payment!(payment)
     payments.push payment
-    charge = payment.charge_stripe stripe_token
+    charge = payment.charge
     # Force save immediately to ensure that a failed save invalidates the charge.
     begin
       save!
     rescue => e
-      charge.refund
+      payment.refund
       raise
     end
   end

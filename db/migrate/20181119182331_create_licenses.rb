@@ -29,6 +29,7 @@ class CreateLicenses < ActiveRecord::Migration[5.2]
       t.string :phone, null: false
       t.string :addr1, null: false
       t.string :addr2
+      t.string :city, null: false
       t.string :state
       t.string :zip
       t.string :country, null: false
