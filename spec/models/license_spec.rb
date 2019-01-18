@@ -32,21 +32,21 @@ describe License do
 
   describe "start!" do
     it "adds payment", :focus => true do
-      allow(payment_stripe).to receive(:charge)
+      allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.start!(payment_stripe)
       expect(license_standard.payments.length).to eq(1)
     end
 
     it "charges Stripe", :focus => true do
-      allow(payment_stripe).to receive(:charge)
+      allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.start!(payment_stripe)
-      expect(payment_stripe).to have_received(:charge).once
+      expect(payment_stripe).to have_received(:charge!).once
     end
 
     it "forces save", :focus => true do
-      allow(payment_stripe).to receive(:charge)
+      allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.start!(payment_stripe)
       expect(license_standard).to have_received(:save!).once
@@ -55,21 +55,21 @@ describe License do
 
   describe "renew!" do
     it "adds payment", :focus => true do
-      allow(payment_stripe).to receive(:charge)
+      allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.renew!(payment_stripe)
       expect(license_standard.payments.length).to eq(1)
     end
 
     it "charges Stripe", :focus => true do
-      allow(payment_stripe).to receive(:charge)
+      allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.renew!(payment_stripe)
-      expect(payment_stripe).to have_received(:charge).once
+      expect(payment_stripe).to have_received(:charge!).once
     end
 
     it "forces save", :focus => true do
-      allow(payment_stripe).to receive(:charge)
+      allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.renew!(payment_stripe)
       expect(license_standard).to have_received(:save!).once
@@ -77,7 +77,7 @@ describe License do
 
     it "extends expiry by default", :focus => true do
       original_expiry = license_standard.expires
-      allow(payment_stripe).to receive(:charge)
+      allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.renew!(payment_stripe)
       expect(license_standard.expires).to be > original_expiry
@@ -87,7 +87,7 @@ describe License do
     it "extends expiry by override", :focus => true do
       original_expiry = license_standard.expires
       override_duration = 5.months
-      allow(payment_stripe).to receive(:charge)
+      allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.renew!(payment_stripe, override_duration)
       expect(license_standard.expires).to be > original_expiry

@@ -18,21 +18,25 @@ class License < ApplicationRecord
   end
 
   def renew!(payment, duration=nil)
-    duration ||= license_type.default_duration_months.months
+    duration ||= self.license_type.default_duration_months.months
     self.expires = is_expired? ? (DateTime.now + duration) : (expires + duration)
     add_payment! payment
   end
 
   private
 
+  def payment_note
+    self.license_type.name + " Exp.: " + self.expires.to_s
+  end
+
   def add_payment!(payment)
     payments.push payment
-    charge = payment.charge
+    charge = payment.charge! self.user.email, payment_note
     # Force save immediately to ensure that a failed save invalidates the charge.
     begin
       save!
     rescue => e
-      payment.refund
+      payment.refund!
       raise
     end
   end
