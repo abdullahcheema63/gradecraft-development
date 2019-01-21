@@ -1,10 +1,16 @@
 @import "../utilities/variables"
+@import "../utilities/mixins"
 
+// For Client-side Error Pages
 body.error_page
   margin: 0
   padding: 0
   background: #F2C4B2 url('../../assets/ErrorPage_Yeti_Volcano.svg') no-repeat center bottom
   background-size: 100% auto
+
+  @include tablet
+    background: #F2C4B2 url('../../assets/ErrorPage_Yeti_Volcano.svg') no-repeat center bottom
+    background-size: 150% auto
 
   svg
     position: absolute
@@ -25,7 +31,7 @@ body.error_page
     max-width: 600px
     animation: fadeIn 0.8s linear
 
-@keyframes fadeIn 
+@keyframes fadeIn
   0%
     opacity: 0
   50%
