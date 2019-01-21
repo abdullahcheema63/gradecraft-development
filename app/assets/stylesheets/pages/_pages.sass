@@ -17,6 +17,9 @@ body.error_page
     bottom: 0
     width: 100%
 
+  h1
+    margin-top: 0
+    
   .error_msg
     z-index: 100
     position: absolute
@@ -30,6 +33,10 @@ body.error_page
     width: 90%
     max-width: 600px
     animation: fadeIn 0.8s linear
+
+    p
+      &:last-child
+        margin-bottom: 0
 
 @keyframes fadeIn
   0%

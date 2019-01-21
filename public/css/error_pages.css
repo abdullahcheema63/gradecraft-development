@@ -53,6 +53,9 @@ a:hover{
 .error_msg p{
   animation: fadeIn 1s linear;
 }
+.error_msg p:last-child{
+  margin-bottom: 0;
+}
 .error_msg svg{
   position: absolute;
   bottom: -73px;
