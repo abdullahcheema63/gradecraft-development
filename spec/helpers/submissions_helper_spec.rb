@@ -80,7 +80,7 @@ describe SubmissionsHelper do
           expect(helper.submission_link_to(assignment, student)).to be_nil
         end
 
-        it "returns a link to create a submission", :focus => true  do 
+        it "returns a link to create a submission" do 
           expect(helper.submission_link_to(assignment, student)).to include "Start Submission"
           expect(helper.submission_link_to(assignment, student)).to include \
             submit_assignment_submission_path(assignment, student)
