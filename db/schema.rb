@@ -881,7 +881,6 @@ ActiveRecord::Schema.define(version: 2019_01_04_204001) do
     t.boolean "instructor_unlocked"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "notified"
     t.index ["student_id"], name: "index_unlock_states_on_student_id"
     t.index ["unlockable_id", "unlockable_type"], name: "index_unlock_states_on_unlockable_id_and_unlockable_type"
   end
