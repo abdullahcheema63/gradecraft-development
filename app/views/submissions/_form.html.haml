@@ -22,9 +22,10 @@
         %h5.bold Uploaded files
         %ul.uploaded-files
           - presenter.submission.submission_files.each do |sf|
-            %li
-              = link_to sf.filename, sf.url, :target => "_blank"
-              = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", assignment_id: presenter.assignment.id, :upload_id => sf.id } )
+            - if sf.id != nil
+              %li
+                = link_to sf.filename, sf.url, :target => "_blank"
+                = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", assignment_id: presenter.assignment.id, :upload_id => sf.id } )
 
     - if presenter.assignment.accepts_links
       = f.input :link
