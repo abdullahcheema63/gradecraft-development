@@ -31,6 +31,7 @@ json.attributes do
   json.updated_at                   assignment.updated_at
   json.visible_when_locked          assignment.visible_when_locked
   json.has_submitted_submissions    assignment.has_submitted_submissions?
+  json.hide_analytics               assignment.hide_analytics
 
   json.linked_objective_ids assignment.learning_objective_links.map(&:objective_id)
 
