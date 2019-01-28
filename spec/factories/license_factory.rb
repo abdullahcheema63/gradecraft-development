@@ -3,6 +3,10 @@ FactoryBot.define do
     association :user
     expires { DateTime.now + 6.months }
 
+    trait :expired do
+      expires { DateTime.now - 6.months }
+    end
+
     factory :standard_license do
       association :license_type, factory: :license_type_standard
     end

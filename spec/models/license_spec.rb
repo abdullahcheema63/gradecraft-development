@@ -38,7 +38,7 @@ describe License do
       expect(license_standard.payments.length).to eq(1)
     end
 
-    it "charges Stripe", :focus => true do
+    it "charges Payment", :focus => true do
       allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.start!(payment_stripe)
@@ -61,7 +61,7 @@ describe License do
       expect(license_standard.payments.length).to eq(1)
     end
 
-    it "charges Stripe", :focus => true do
+    it "charges Payment", :focus => true do
       allow(payment_stripe).to receive(:charge!)
       allow(license_standard).to receive(:save!)
       license_standard.renew!(payment_stripe)

@@ -4,6 +4,8 @@ class Payment < ApplicationRecord
   belongs_to :license
   attr_accessor :stripe_token
 
+  validates_presence_of :first_name, :last_name, :organization, :phone, :addr1, :city, :country, :amount_usd
+
   def set_defaults
     self.source ||= self.stripe_token ? "Stripe" : nil
   end
