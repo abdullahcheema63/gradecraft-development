@@ -38,7 +38,7 @@ json.included do
     json.attributes do
       json.merge! assignment.attributes
 
-      json.due_at_for_current_timezone assignment.due_at.in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") unless assignment.due_at.nil?
+      json.due_at_for_current_timezone assignment.due_at.in_time_zone(current_user.time_zone).strftime("%m/%d/%Y %H:%M") unless assignment.due_at.nil?
       json.assignment_type_name assignment.assignment_type.name
 
       json.is_individual assignment.is_individual?
@@ -68,7 +68,7 @@ json.included do
       json.merge! assignment.attributes
 
       json.submittable @presenter.submittable? assignment
-      json.due_at_for_current_timezone assignment.due_at.in_time_zone(current_user.time_zone).strftime("%m/%d/%Y") unless assignment.due_at.nil?
+      json.due_at_for_current_timezone assignment.due_at.in_time_zone(current_user.time_zone).strftime("%m/%d/%Y %H:%M") unless assignment.due_at.nil?
       json.starred @presenter.starred? assignment
       json.submitted @presenter.submitted? assignment
       json.assignment_type_name assignment.assignment_type.name
