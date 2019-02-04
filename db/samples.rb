@@ -73,6 +73,17 @@ Institution.create! do |i|
   i.name = "Beauxbatons"
 end
 
+# ---------------------------- Create License Types! -------------------------#
+
+@license_types.each do |data|
+  license_type = LicenseType.create! do |l|
+    data.keys.each do |k|
+      l[k] = data[k]
+    end
+  end
+  print "Created License Type: " + license_type.name
+end
+
 # ---------------------------- Users and Courses -----------------------------#
 
 user_names = ["Ron Weasley","Fred Weasley","Harry Potter","Hermione Granger",
@@ -105,6 +116,22 @@ User.create! do |u|
   u.password = "fawkes"
   u.admin = true
   u.save!
+  p = Payment.new({
+    first_name: "Albus",
+    last_name: "Dumbledore",
+    organization: "Hogwarts University",
+    phone: "555-555-5555",
+    addr1: "1234 Hoggy Ln",
+    city: "Mumblescrud",
+    country: "UK",
+    amount_usd: 0.0,
+    source: "Freebie"
+  })
+  license = License.new({
+    license_type: LicenseType.first,
+    user: u,
+  })
+  license.start! p
 end.activate!
 puts "Children must be taught how to think, not what to think. ― Margaret Mead"
 
@@ -335,17 +362,6 @@ puts "I go to school, but I never learn what I want to know. ― Calvin & Hobbes
 # :staff_ids => [25,27]
 @courses.each do |name,config|
   config[:staff_ids] = config[:course].staff.map { |staff| staff.id }
-end
-
-# ---------------------------- Create License Types! -------------------------#
-
-@license_types.each do |data|
-  license_type = LicenseType.create! do |l|
-    data.keys.each do |k|
-      l[k] = data[k]
-    end
-  end
-  print "Created License Type: " + license_type.name
 end
 
 # ---------------------------- Create Badges! --------------------------------#

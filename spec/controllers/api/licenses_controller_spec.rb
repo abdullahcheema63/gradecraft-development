@@ -4,6 +4,7 @@ describe API::LicensesController do
   let(:license_custom) { create :custom_license }
   let(:user_no_license) { create :user }
   let(:payment_stripe) { create :payment_stripe }
+  let(:payment_stripe_real) { create :payment_stripe_real }
 
   describe "GET index" do
     # Should this exist at all? Maybe just GET User with 'include license'
@@ -43,16 +44,18 @@ describe API::LicensesController do
           addr1: payment.addr1,
           city: payment.city,
           country: payment.country,
+          stripe_token: payment.stripe_token,
         },
         license_type_id: license_expired.license_type_id
       }
       post :create, params: params, format: :json
+      puts response.body
       expect(response.status).to eq 409
     end
 
     it "returns 201", :focus => true do
       login_user(user_no_license)
-      payment = payment_stripe
+      payment = payment_stripe_real
       params = {
         payment: {
           first_name: payment.first_name,
@@ -62,16 +65,18 @@ describe API::LicensesController do
           addr1: payment.addr1,
           city: payment.city,
           country: payment.country,
+          stripe_token: payment.stripe_token,
         },
         license_type_id: license_expired.license_type_id
       }
       post :create, params: params, format: :json
+      puts response.body
       expect(response.status).to eq 201
     end
 
     it "returns license in body", :focus => true do
       login_user(user_no_license)
-      payment = payment_stripe
+      payment = payment_stripe_real
       params = {
         payment: {
           first_name: payment.first_name,
@@ -81,10 +86,12 @@ describe API::LicensesController do
           addr1: payment.addr1,
           city: payment.city,
           country: payment.country,
+          stripe_token: payment.stripe_token,
         },
         license_type_id: license_expired.license_type_id
       }
       post :create, params: params, format: :json
+      puts response.body
       expect(response.body.length).to be > 0
     end
 
@@ -109,6 +116,7 @@ describe API::LicensesController do
           addr1: payment.addr1,
           city: payment.city,
           country: payment.country,
+          stripe_token: payment.stripe_token,
         },
       }
       patch :update, params: params, format: :json
@@ -118,7 +126,7 @@ describe API::LicensesController do
 
     it "returns 200", :focus => true do
       login_user(license_standard.user)
-      payment = payment_stripe
+      payment = payment_stripe_real
       params = {
         payment: {
           first_name: payment.first_name,
@@ -128,6 +136,7 @@ describe API::LicensesController do
           addr1: payment.addr1,
           city: payment.city,
           country: payment.country,
+          stripe_token: payment.stripe_token,
         },
       }
       patch :update, params: params, format: :json
@@ -137,7 +146,7 @@ describe API::LicensesController do
 
     it "returns license in body", :focus => true do
       login_user(license_standard.user)
-      payment = payment_stripe
+      payment = payment_stripe_real
       params = {
         payment: {
           first_name: payment.first_name,
@@ -147,6 +156,7 @@ describe API::LicensesController do
           addr1: payment.addr1,
           city: payment.city,
           country: payment.country,
+          stripe_token: payment.stripe_token,
         },
       }
       patch :update, params: params, format: :json

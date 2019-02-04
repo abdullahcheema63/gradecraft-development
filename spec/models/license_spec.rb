@@ -10,12 +10,6 @@ describe License do
       expect(license_standard).to_not be_valid
       expect(license_standard.errors[:license_type]).to include "can't be blank"
     end
-
-    it "requires expires", :focus => true do
-      license_standard.expires = nil
-      expect(license_standard).to_not be_valid
-      expect(license_standard.errors[:expires]).to include "can't be blank"
-    end
   end
 
   describe "is_expired?" do
