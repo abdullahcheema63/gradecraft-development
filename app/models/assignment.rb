@@ -140,7 +140,11 @@ class Assignment < ApplicationRecord
 
   def find_or_create_rubric
     return rubric if rubric
-    Rubric.create assignment_id: self.id, course_id: self.course_id
+    if !assignment.student_logged
+      Rubric.create assignment_id: self.id, course_id: self.course_id
+    else
+      nil
+    end
   end
 
   # Checking to see if an assignment is individually graded

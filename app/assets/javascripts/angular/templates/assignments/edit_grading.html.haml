@@ -1,5 +1,5 @@
 %section.form-section
-  .form-subsection(ng-if="rubricId")
+  .form-subsection(ng-if="rubricId" ng-if="!assignment.student_logged" )
     %h3.form-subtitle Rubrics
     %rubric-design.rubric-design(data-rubric-id="rubricId")
 
