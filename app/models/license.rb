@@ -5,7 +5,7 @@ class License < ApplicationRecord
   belongs_to :user
   belongs_to :license_type
 
-  validates_presence_of :license_type, :expires
+  validates_presence_of :license_type
 
   accepts_nested_attributes_for :payments
 
@@ -13,7 +13,9 @@ class License < ApplicationRecord
     expires < DateTime.now
   end
 
-  def start!(payment)
+  def start!(payment, duration=nil)
+    duration ||= self.license_type.default_duration_months.months
+    self.expires = DateTime.now + duration
     add_payment! payment
   end
 
