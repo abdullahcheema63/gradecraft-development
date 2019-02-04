@@ -545,7 +545,9 @@ Rails.application.routes.draw do
     resources :levels, only: [:create, :update, :destroy]
     resources :level_badges, only: [:create, :destroy]
 
-    resources :licenses, only: [:index, :create, :update]
+    resources :licenses, only: [:index, :create] do
+      patch :update, on: :collection
+    end
 
     resources :predicted_earned_badges, only: [:create, :update]
     resources :predicted_earned_challenges, only: [:create, :update]
