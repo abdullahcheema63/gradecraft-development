@@ -97,3 +97,6 @@
 //= require rollbar.js.js
 //= require ng-rollbar
 //= require rollbar_config
+
+//= require vuex
+//= require_tree ./vue
