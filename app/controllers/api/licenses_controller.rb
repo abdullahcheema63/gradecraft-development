@@ -14,11 +14,7 @@ class API::LicensesController < ApplicationController
     if current_user.license
       return render json: { data: current_user.license, errors: [ "License already exists!" ] }, status: 409
     end
-    puts "params: "
-    puts params
     l = buy_params
-    puts "l:"
-    puts l
     license_type = LicenseType.find(l[:license_type_id])
     @license = License.new({
       license_type: license_type,
@@ -49,11 +45,7 @@ class API::LicensesController < ApplicationController
     if !@license
       return render json: { data: nil, errors: [ "License not found" ] }, status: 404
     end
-    puts "params: "
-    puts params
     p = renew_params
-    puts "p: "
-    puts p
     p[:payment][:amount_usd] = @license.license_type.price_usd
     payment = Payment.new(p[:payment])
     return render_error payment.errors.messages, payment.errors.messages unless payment.valid?

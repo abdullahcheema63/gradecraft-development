@@ -14,18 +14,15 @@ describe API::LicensesController do
       expect(response.status).to eq 200
     end
 
-    it "returns license in body", :focus => true do
+    it "renders index", :focus => true do
       login_user(license_expired.user)
       get :index, format: :json
-      puts response.body
       expect(response).to render_template(:index)
-      expect(response.body.length).to be > 0
     end
 
     it "returns 404 if user has no license", :focus => true do
       login_user(user_no_license)
       get :index, format: :json
-      puts response.body
       expect(response.status).to eq 404
     end
   end
@@ -49,7 +46,6 @@ describe API::LicensesController do
         license_type_id: license_expired.license_type_id
       }
       post :create, params: params, format: :json
-      puts response.body
       expect(response.status).to eq 409
     end
 
@@ -70,11 +66,10 @@ describe API::LicensesController do
         license_type_id: license_expired.license_type_id
       }
       post :create, params: params, format: :json
-      puts response.body
       expect(response.status).to eq 201
     end
 
-    it "returns license in body", :focus => true do
+    it "renders index", :focus => true do
       login_user(user_no_license)
       payment = payment_stripe_real
       params = {
@@ -91,15 +86,30 @@ describe API::LicensesController do
         license_type_id: license_expired.license_type_id
       }
       post :create, params: params, format: :json
-      puts response.body
-      expect(response.body.length).to be > 0
+      expect(response).to render_template(:index)
     end
 
-    # it "creates a license with one payment", :focus => true do
-    #   login_user(user_no_license)
-    #   # expect()
-    #   raise "Not implemented"
-    # end
+    it "creates a license with one payment", :focus => true do
+      login_user(user_no_license)
+      payment = payment_stripe_real
+      params = {
+        payment: {
+          first_name: payment.first_name,
+          last_name: payment.last_name,
+          organization: payment.organization,
+          phone: payment.phone,
+          addr1: payment.addr1,
+          city: payment.city,
+          country: payment.country,
+          stripe_token: payment.stripe_token,
+        },
+        license_type_id: license_expired.license_type_id
+      }
+      expect { post :create, params: params , format: :json }.to change { Payment.count }.by 1
+      user_no_license.reload
+      expect(user_no_license.license).to_not be_nil
+      expect(user_no_license.license.payments.length).to eq 1
+    end
   end
 
   describe "PATCH update" do
@@ -120,7 +130,6 @@ describe API::LicensesController do
         },
       }
       patch :update, params: params, format: :json
-      puts response.body
       expect(response.status).to eq 404
     end
 
@@ -140,11 +149,10 @@ describe API::LicensesController do
         },
       }
       patch :update, params: params, format: :json
-      puts response.body
       expect(response.status).to eq 200
     end
 
-    it "returns license in body", :focus => true do
+    it "renders index", :focus => true do
       login_user(license_standard.user)
       payment = payment_stripe_real
       params = {
@@ -160,16 +168,43 @@ describe API::LicensesController do
         },
       }
       patch :update, params: params, format: :json
-      puts response.body
-      expect(response.body.length).to be > 0
+      expect(response).to render_template(:index)
     end
 
-    # it "updates a license to have +1 payment", :focus => true do
-    #   raise "Not impelemented"
-    # end
+    it "updates a license to have +1 payment", :focus => true do
+      login_user(license_standard.user)
+      payment = payment_stripe_real
+      params = {
+        payment: {
+          first_name: payment.first_name,
+          last_name: payment.last_name,
+          organization: payment.organization,
+          phone: payment.phone,
+          addr1: payment.addr1,
+          city: payment.city,
+          country: payment.country,
+          stripe_token: payment.stripe_token,
+        },
+      }
+      expect { patch :update, params: params, format: :json }.to change { license_standard.payments.length }.by 1
+    end
 
-    # it "updates a license's expiry", :focus => true do
-    #   raise "Not impelemented"
-    # end
+    it "updates a license's expiry", :focus => true do
+      login_user(license_standard.user)
+      payment = payment_stripe_real
+      params = {
+        payment: {
+          first_name: payment.first_name,
+          last_name: payment.last_name,
+          organization: payment.organization,
+          phone: payment.phone,
+          addr1: payment.addr1,
+          city: payment.city,
+          country: payment.country,
+          stripe_token: payment.stripe_token,
+        },
+      }
+      expect { patch :update, params: params, format: :json }.to change { license_standard.expires }
+    end
   end
 end
