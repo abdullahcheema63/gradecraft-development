@@ -262,7 +262,7 @@ describe Assignment do
     end
   end
 
-  describe "#find_or_create_rubric" do
+  describe "#find_or_create_rubric", :focus => true do
     it "returns a rubric if one exists" do
       rubric = create(:rubric, assignment: subject)
       expect(subject.find_or_create_rubric).to eq(rubric)
@@ -272,6 +272,12 @@ describe Assignment do
       assignment = create(:assignment)
       new_rubric = assignment.find_or_create_rubric
       expect(new_rubric).to eq assignment.reload.rubric
+    end
+    it "does not create a rubric if the assignment is student logged" do
+      assignment = create(:assignment)
+      assignment.student_logged = true
+      new_rubric = assignment.find_or_create_rubric
+      expect(new_rubric).to eq nil
     end
   end
 
