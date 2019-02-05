@@ -262,7 +262,7 @@ describe Assignment do
     end
   end
 
-  describe "#find_or_create_rubric", :focus => true do
+  describe "#find_or_create_rubric" do
     it "returns a rubric if one exists" do
       rubric = create(:rubric, assignment: subject)
       expect(subject.find_or_create_rubric).to eq(rubric)
