@@ -142,8 +142,6 @@ class Assignment < ApplicationRecord
     return rubric if rubric
     if !self.student_logged
       Rubric.create assignment_id: self.id, course_id: self.course_id
-    else
-      nil
     end
   end
 
