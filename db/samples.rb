@@ -116,22 +116,6 @@ User.create! do |u|
   u.password = "fawkes"
   u.admin = true
   u.save!
-  p = Payment.new({
-    first_name: "Albus",
-    last_name: "Dumbledore",
-    organization: "Hogwarts University",
-    phone: "555-555-5555",
-    addr1: "1234 Hoggy Ln",
-    city: "Mumblescrud",
-    country: "UK",
-    amount_usd: 0.0,
-    source: "Freebie"
-  })
-  license = License.new({
-    license_type: LicenseType.first,
-    user: u,
-  })
-  license.start! p
 end.activate!
 puts "Children must be taught how to think, not what to think. ― Margaret Mead"
 
@@ -185,6 +169,27 @@ puts "Children must be taught how to think, not what to think. ― Margaret Mead
     puts_success :course, course_name, :teams_created
   end
 end
+
+p = Payment.new({
+  first_name: "Albus",
+  last_name: "Dumbledore",
+  organization: "Hogwarts University",
+  phone: "555-555-5555",
+  addr1: "1234 Hoggy Ln",
+  city: "Mumblescrud",
+  country: "UK",
+  amount_usd: 0.0,
+  source: "Freebie"
+})
+
+license = License.new({
+  license_type: LicenseType.first,
+  user: User.find_by(username: "albus"),
+  courses: [
+    @courses[:power_ups_locks_weighting_config][:course],
+  ]
+})
+license.start! p
 
 # create a hash on each course config to store assignment types and assignments
 @courses.each do |name,config|
