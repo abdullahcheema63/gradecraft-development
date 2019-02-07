@@ -13,6 +13,12 @@ json.attributes do
 end
 
 json.relationships do
+  json.courses do
+    json.data license.courses do |course|
+      json.type "course"
+      json.id course.id.to_s
+    end
+  end
   json.payments do
     json.data license.payments do |payment|
       json.type "payment"
