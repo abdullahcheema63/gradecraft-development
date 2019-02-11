@@ -108,6 +108,7 @@ gem 'whenever'
 gem 'newrelic_rpm'
 gem 'wysiwyg-rails'
 gem 'ruby-saml'
+gem 'rails-vue-loader'
 
 group :development do
   gem 'haml-rails'
@@ -158,6 +159,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-ngDraggable', '0.1.11'
   gem 'rails-assets-rollbar.js', '~> 2.5.0'
   gem 'rails-assets-ng-rollbar', '~> 2.4.2'
-  
+
   gem 'rails-assets-vuex', '~> 3.0.1'
 end
