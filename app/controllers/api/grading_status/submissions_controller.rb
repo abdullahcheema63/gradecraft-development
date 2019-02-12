@@ -1,7 +1,7 @@
 class API::GradingStatus::SubmissionsController < ApplicationController
   include SubmissionsHelper
 
-  before_action :ensure_staff?
+  before_action :ensure_staff?, except: :ungraded
   before_action :find_submissions
 
   def ungraded
