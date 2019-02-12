@@ -16,6 +16,14 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
     student.grades.where(course: course).instructor_modified.order_by_updated_at_date
   end
 
+  def student_grades_for_course
+    student.grades.where(course: course).instructor_modified.student_visible.order_by_updated_at_date
+  end
+
+  def student_ungraded_submissions
+    student.submissions.where(course: course).ungraded.order_by_submitted
+  end
+
   def assignments
     properties[:assignments]
   end
