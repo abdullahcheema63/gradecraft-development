@@ -236,6 +236,10 @@ class Course < ApplicationRecord
     return nonpredictors
   end
 
+  def is_licensed?
+    self.has_paid || (self.license && !self.license.is_expired?)
+  end
+
   private
 
   # If not using multipliers, reset the related columns
@@ -257,7 +261,7 @@ class Course < ApplicationRecord
   def mark_umich_as_paid
     self.has_paid = true if Rails.env.production?
   end
-
+  
   def copy_with_associations(attributes, associations)
     ModelCopier.new(self).copy(attributes: attributes,
                                associations: [
