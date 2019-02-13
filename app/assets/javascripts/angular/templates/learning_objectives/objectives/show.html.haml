@@ -98,7 +98,8 @@
                              "data-sortable-fn"=>"loShowCtrl.sortByAssessment"}
 
       %tbody
-        %tr{"ng-repeat"=>"assignment in loShowCtrl.linkedAssignments | orderBy : loShowCtrl.sortable.predicate : loShowCtrl.sortable.reverse"}
+        %tr{"ng-if"=>"assignment.is_locked != true",
+            "ng-repeat"=>"assignment in loShowCtrl.linkedAssignments | orderBy : loShowCtrl.sortable.predicate : loShowCtrl.sortable.reverse"}
           %td
             %a{"ng-href"=>"/assignments/{{assignment.id}}"} {{assignment.name}}
             %assignment-descriptor-icons{"data-assignment"=>"assignment"}
@@ -115,7 +116,7 @@
           %td
             %lo-proficiency-indicator{"ng-if"=>"loShowCtrl.earnedOutcome(assignment.id) != null",
                                       "data-observed-outcome"=>"loShowCtrl.earnedOutcome(assignment.id)"}
-  
+
   %section{"ng-if"=>"loShowCtrl.linkedAssignments.length == 0"}
     %span
       There is no linked {{loShowCtrl.termFor('assignment')}} for this {{loShowCtrl.termFor('learning_objective')}}.

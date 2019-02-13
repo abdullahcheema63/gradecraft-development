@@ -31,6 +31,7 @@ class Grade < ApplicationRecord
 
   after_save :check_unlockables
   after_save :update_earned_badges
+  after_save :check_learning_objective_achieved
 
   clean_html :feedback
   has_paper_trail
@@ -138,7 +139,9 @@ class Grade < ApplicationRecord
       self.assignment.unlock_keys.map(&:unlockable).each do |unlockable|
         unlockable.unlock!(student) do |unlock_state|
           check_for_auto_awarded_badge(unlock_state)
-          send_email_on_unlock(unlockable)
+          if student.email_badge_awards?(course)
+            send_email_on_unlock(unlockable)
+          end
         end
       end
     end
@@ -146,7 +149,9 @@ class Grade < ApplicationRecord
       self.assignment_type.unlock_keys.map(&:unlockable).each do |unlockable|
         unlockable.unlock!(student) do |unlock_state|
           check_for_auto_awarded_badge(unlock_state)
-          send_email_on_unlock(unlockable)
+          if student.email_badge_awards?(course)
+            send_email_on_unlock(unlockable)
+          end
         end
       end
     end
@@ -154,6 +159,16 @@ class Grade < ApplicationRecord
       assignment
         .learning_objectives
         .each { |lo| lo.check_unlockables(student) }
+    end
+  end
+
+  def check_learning_objective_achieved
+    if course.uses_learning_objectives? && student_visible?
+      assignment.learning_objectives.each do |learning_objective|
+        if learning_objective.first_time_achieved?(student)
+          send_learning_objective_email(learning_objective)
+        end
+      end
     end
   end
 
@@ -219,5 +234,11 @@ class Grade < ApplicationRecord
 
   def send_email_on_unlock(unlockable)
     NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
+  end
+
+  def send_learning_objective_email(learning_objective)
+    if student.email_learning_objective_achieved?(course)
+      NotificationMailer.learning_objective_achieved(learning_objective, student).deliver_now
+    end
   end
 end

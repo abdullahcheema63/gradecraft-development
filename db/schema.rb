@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_19_182331) do
+ActiveRecord::Schema.define(version: 2019_01_04_204001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -294,6 +294,7 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
     t.boolean "email_grade_notifications", default: true
     t.boolean "email_challenge_grade_notifications", default: true
     t.boolean "active", default: true, null: false
+    t.boolean "email_learning_objective_achieved", default: true
     t.index ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id"
     t.index ["earned_grade_scheme_element_id"], name: "index_course_memberships_on_earned_grade_scheme_element_id"
     t.index ["user_id", "course_id"], name: "index_courses_users_on_user_id_and_course_id"
@@ -366,6 +367,7 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
     t.boolean "always_show_objectives", default: false, null: false
     t.boolean "allows_learning_objectives", default: false, null: false
     t.integer "license_id"
+    t.boolean "disable_grade_emails", default: false
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 
@@ -587,6 +589,7 @@ ActiveRecord::Schema.define(version: 2018_11_19_182331) do
     t.datetime "updated_at", null: false
     t.integer "learning_objective_id"
     t.integer "user_id"
+    t.boolean "achieved", default: false
     t.index ["learning_objective_id"], name: "index_lo_cumulative_outcomes_on_objective_id"
     t.index ["user_id"], name: "index_learning_objective_cumulative_outcomes_on_user_id"
   end

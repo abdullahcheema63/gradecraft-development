@@ -71,6 +71,8 @@ class EarnedBadge < ApplicationRecord
   end
 
   def send_email_on_unlock(unlockable)
-    NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
+    if student.email_badge_awards?(course)
+      NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
+    end
   end
 end

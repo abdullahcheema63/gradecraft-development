@@ -57,7 +57,7 @@
             .form-hint What will you contribute to your #{term_for :team}?
 
         %h3.form-subtitle Email Settings
-        .form-hint You will always see your notifications in announcement center above. If there's a type of email you'd rather not get from GradeCraft, just uncheck the box below.
+        .form-hint You will always see your notifications in the announcement center above. If there's a type of email you'd rather not get from GradeCraft, just uncheck the box below.
         .form-item
           = p.input :email_announcements
           - if current_course.has_badges?
@@ -65,6 +65,8 @@
           = p.input :email_grade_notifications
           - if current_course.has_team_challenges?
             = p.input :email_challenge_grade_notifications
+          - if current_course.uses_learning_objectives?
+            = p.input :email_learning_objective_achieved
 
       - if impersonating?
         You cannot update this information in preview mode

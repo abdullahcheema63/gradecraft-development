@@ -240,6 +240,10 @@ class Course < ApplicationRecord
     self.has_paid || (self.license && !self.license.is_expired?)
   end
 
+  def admin_disabled_grade_email?
+    return self.disable_grade_emails
+  end
+
   private
 
   # If not using multipliers, reset the related columns
