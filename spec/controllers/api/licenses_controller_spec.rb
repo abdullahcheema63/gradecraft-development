@@ -1,4 +1,4 @@
-describe API::LicensesController do
+describe API::LicensesController, :focus => true do
   let(:license_standard) { create :standard_license }
   let(:license_expired) { create :standard_license, :expired }
   let(:license_custom) { create :custom_license }
@@ -8,19 +8,19 @@ describe API::LicensesController do
 
   describe "GET index" do
     # Should this exist at all? Maybe just GET User with 'include license'
-    it "returns 200", :focus => true do
+    it "returns 200" do
       login_user(license_expired.user)
       get :index, format: :json
       expect(response.status).to eq 200
     end
 
-    it "renders index", :focus => true do
+    it "renders index" do
       login_user(license_expired.user)
       get :index, format: :json
       expect(response).to render_template(:index)
     end
 
-    it "returns 404 if user has no license", :focus => true do
+    it "returns 404 if user has no license" do
       login_user(user_no_license)
       get :index, format: :json
       expect(response.status).to eq 404
@@ -29,7 +29,7 @@ describe API::LicensesController do
 
   describe "POST create" do
     # New license
-    it "returns 409 if license already exists", :focus => true do
+    it "returns 409 if license already exists" do
       login_user(license_expired.user)
       payment = payment_stripe
       params = {
@@ -49,7 +49,7 @@ describe API::LicensesController do
       expect(response.status).to eq 409
     end
 
-    it "returns 201", :focus => true do
+    it "returns 201" do
       login_user(user_no_license)
       payment = payment_stripe_real
       params = {
@@ -69,7 +69,7 @@ describe API::LicensesController do
       expect(response.status).to eq 201
     end
 
-    it "renders index", :focus => true do
+    it "renders index" do
       login_user(user_no_license)
       payment = payment_stripe_real
       params = {
@@ -89,7 +89,7 @@ describe API::LicensesController do
       expect(response).to render_template(:index)
     end
 
-    it "creates a license with one payment", :focus => true do
+    it "creates a license with one payment" do
       login_user(user_no_license)
       payment = payment_stripe_real
       params = {
@@ -114,7 +114,7 @@ describe API::LicensesController do
 
   describe "PATCH update" do
     # Renew license
-    it "returns 404 if no license", :focus => true do
+    it "returns 404 if no license" do
       login_user(user_no_license)
       payment = payment_stripe
       params = {
@@ -133,7 +133,7 @@ describe API::LicensesController do
       expect(response.status).to eq 404
     end
 
-    it "returns 200", :focus => true do
+    it "returns 200" do
       login_user(license_standard.user)
       payment = payment_stripe_real
       params = {
@@ -152,7 +152,7 @@ describe API::LicensesController do
       expect(response.status).to eq 200
     end
 
-    it "renders index", :focus => true do
+    it "renders index" do
       login_user(license_standard.user)
       payment = payment_stripe_real
       params = {
@@ -171,7 +171,7 @@ describe API::LicensesController do
       expect(response).to render_template(:index)
     end
 
-    it "updates a license to have +1 payment", :focus => true do
+    it "updates a license to have +1 payment" do
       login_user(license_standard.user)
       payment = payment_stripe_real
       params = {
@@ -189,7 +189,7 @@ describe API::LicensesController do
       expect { patch :update, params: params, format: :json }.to change { license_standard.payments.length }.by 1
     end
 
-    it "updates a license's expiry", :focus => true do
+    it "updates a license's expiry" do
       login_user(license_standard.user)
       payment = payment_stripe_real
       params = {
