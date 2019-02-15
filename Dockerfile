@@ -7,7 +7,7 @@
 FROM quay.io/gradecraft/secrets:beta.gradecraft.com
 MAINTAINER Nagumalli Sundeep <nagumals@umich.edu>
 ENV DOCKER_FIX random
-RUN gem install -v 1.17.1 bundler
+RUN gem install -v 1.17.3 bundler
 RUN mkdir /gradecraft
 WORKDIR /gradecraft/
 ADD Gemfile /gradecraft/Gemfile
