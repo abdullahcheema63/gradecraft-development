@@ -36,7 +36,7 @@ module SubmissionsHelper
 
     if submission.nil?
       return unless allows_new_submissions? assignment, student
-      link = link_to glyph(:upload) + "Start Submission", submit_assignment_submission_path(assignment, student), class: "button"
+      link = link_to "Start Submission", submit_assignment_submission_path(assignment, student), class: "button"
     else
       sp = SubmissionProctor.new(submission)
       return unless sp.viewable? current_user
