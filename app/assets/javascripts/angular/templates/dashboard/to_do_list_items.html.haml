@@ -18,9 +18,9 @@
     .small.uppercase{"ng-if"=>"assignment.due_at"} {{assignment.assignment_type_name}}
     .due-date Due: {{assignment.due_at_for_current_timezone}}
 
-    .right{"ng-if"=>"assignment.submittable && assignment.is_individual"}
+    %div{"ng-if"=>"assignment.submittable && assignment.is_individual"}
       %div{"ng-bind-html"=>"toDoListItemsCtrl.sanitize(assignment.submission_link)"}
-    .right{"ng-if"=>"assignment.submittable && !assignment.is_individual"}
+    %div{"ng-if"=>"assignment.submittable && !assignment.is_individual"}
       %group-submissions{"data-assignment"=>"assignment"}
 
   %li.empty-todo-list{"ng-if"=>"toDoListItemsCtrl.hasAssignments() === false"}
