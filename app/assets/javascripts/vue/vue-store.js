@@ -3,5 +3,5 @@
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  state: {hello: "hello"},
+  state: {hi: "hi"},
 })
