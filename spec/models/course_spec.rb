@@ -484,7 +484,7 @@ describe Course do
     end
   end
 
-  describe "#is_licensed?", :focus => true do
+  describe "#is_licensed?" do
     it "returns true if has_paid is true" do
       subject.has_paid = true
       expect(subject.is_licensed?).to eq(true)

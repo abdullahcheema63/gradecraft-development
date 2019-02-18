@@ -1,4 +1,4 @@
-describe Payment, :focus => true do
+describe Payment do
   let(:payment_stripe) { create :payment_stripe }
   let(:payment_legacy) { create :payment_legacy }
   

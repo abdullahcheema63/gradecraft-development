@@ -1,4 +1,4 @@
-describe License, :focus => true do
+describe License do
   let(:license_standard) { create :standard_license }
   let(:license_custom) { create :custom_license }
   let(:payment_stripe) { create :payment_stripe }
