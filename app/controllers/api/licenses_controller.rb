@@ -39,6 +39,27 @@ class API::LicensesController < ApplicationController
     end
   end
 
+  # PUT api/licenses
+  def edit
+    @license = current_user.license
+    if !@license
+      return render json: { data: nil, errors: [ "License not found" ] }, status: 404
+    end
+    p = edit_params
+    @license.courses = p[:courses].map {|c| Course.find c }
+    professor_course_ids = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
+    @license.courses.each do |c|
+      if !professor_course_ids.include? c
+        return render_error "User is not a professor in course: " + c.id.to_s, c, 401
+      end
+    end
+    if @license.save
+      return render "api/licenses/index", success: true, status: 200
+    else
+      return render_error license.errors, license.errors, 400
+    end
+  end
+
   # PATCH api/licenses
   def update
     @license = current_user.license
@@ -84,5 +105,9 @@ class API::LicensesController < ApplicationController
 
   def renew_params
     params.permit(payment: payment_permitted_params)
+  end
+
+  def edit_params
+    params.permit(courses: [])
   end
 end

@@ -547,6 +547,7 @@ Rails.application.routes.draw do
 
     resources :licenses, only: [:index, :create] do
       patch :update, on: :collection
+      put :edit, on: :collection
     end
 
     resources :predicted_earned_badges, only: [:create, :update]
