@@ -4,6 +4,7 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
 //
+//= require vue-global
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
@@ -94,7 +95,14 @@
 //= require_tree ./behaviors
 //= require utilities
 //= require payment
+//= require site_magick
 
 //= require rollbar.js.js
 //= require ng-rollbar
 //= require rollbar_config
+
+//= require vuex
+//= require_tree ./vue
+
+//= require index
+//= require mount
