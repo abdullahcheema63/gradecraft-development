@@ -38,12 +38,14 @@ class Submission < ApplicationRecord
   scope :ungraded, -> do
     includes(:assignment, :group, :student)
     .where.not(id: with_grade.where(grades: { instructor_modified: true }))
+    .where.not(assignment_id: Assignment.where(student_logged: true))
   end
 
   scope :resubmitted, -> {
     includes(:grade, :assignment)
     .where("grades.student_visible = true")
     .where("grades.graded_at < submitted_at")
+    .where.not(assignment_id: Assignment.where(student_logged: true))
     .references(:grade, :assignment)
   }
 

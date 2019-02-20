@@ -23,8 +23,8 @@
               You can set a minimum score that must be earned to accrue any points. Earning less than the threshold will automatically result in 0 points
           %input(ng-model="assignment.threshold_points" gc-number-input ng-change="updateAssignment()")
     .form-item
-      %label(ng-class="{ 'disabled': isGroupGraded() }")
-        %input(type="checkbox" ng-model="assignment.student_logged" ng-disabled="isGroupGraded()" ng-click="updateAssignment()")
+      %label(ng-class="{ 'disabled': isGroupGraded() || assignment.resubmissions_allowed }")
+        %input(type="checkbox" ng-model="assignment.student_logged" ng-disabled="isGroupGraded() || assignment.resubmissions_allowed" ng-click="updateAssignment()")
           Student Logged
           %span.has-tooltip
             %i.fa.fa-info-circle
@@ -54,8 +54,8 @@
             %input(type="checkbox" ng-model="assignment.accepts_text" ng-click="updateAssignment()")  Accepts Text
 
     .form-item(ng-if="assignment.accepts_submissions")
-      %label
-        %input(type="checkbox" ng-model="assignment.resubmissions_allowed" ng-click="updateAssignment()")
+      %label(ng-class="{ 'disabled': assignment.student_logged }")
+        %input(type="checkbox" ng-model="assignment.resubmissions_allowed" ng-disabled="assignment.student_logged" ng-click="updateAssignment()")
           Resubmissions Allowed
           %span.has-tooltip
             %i.fa.fa-info-circle
