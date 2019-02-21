@@ -1,8 +1,3 @@
-Vue.component('hello', VComponents['index']);
+//Register components
 
-var vm = new Vue({
-  el: 'footer',
-  render: function(createElement) {
-    return createElement('hello')
-  }
-})
+Vue.component('hello-sophia', VComponents['vue/components/index']);

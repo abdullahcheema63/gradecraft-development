@@ -103,3 +103,4 @@
 //= require_tree ./vue
 
 //= require mount
+//= require_tree ./mount_vue
