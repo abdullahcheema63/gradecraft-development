@@ -2,13 +2,38 @@
   %a.collapse-toggler
     %h3
       %i.fa.fa-chevron-circle-right.fa-fw
+      Ungraded Submissions
+  %section
+    %table.dynatable{"role"=>"tab"}
+      %thead
+        %tr
+          %th Assignment
+          %th{"data-dynatable-sorts" => "dueDate"} Due Date
+          %th Submission Updated At
+          %th Possible Points
+      %tbody
+        - presenter.student_ungraded_submissions.each do |submission|
+          %tr
+            %td= link_to submission.assignment.name, submission.assignment
+            %td= submission.assignment.due_at
+            %td= submission.updated_at
+            %td
+              - if submission.assignment.pass_fail?
+                = "Pass / Fail"
+              - else
+                = "#{points submission.assignment.full_points}"
+
+%section{"role"=>"tablist"}
+  %a.collapse-toggler
+    %h3
+      %i.fa.fa-chevron-circle-right.fa-fw
       Graded Assignments
   %section
     %table.dynatable{"role"=>"tab"}
       %thead
         %tr
           %th Assignment
-          %th Feedback
+          %th Feedback Summary
           %th Final Score
           - if current_course.has_multipliers?
             %th Score With Weights
@@ -29,28 +54,3 @@
             %td
               - if grade.graded_at?
                 = l grade.graded_at.in_time_zone(current_user.time_zone)
-
-%section{"role"=>"tablist"}
-  %a.collapse-toggler
-    %h3
-      %i.fa.fa-chevron-circle-right.fa-fw
-      Ungraded Submissions
-  %section
-    %table.dynatable{"role"=>"tab"}
-      %thead
-        %tr
-          %th Assignment
-          %th Due Date
-          %th Submission Updated At
-          %th Possible Points
-      %tbody
-        - presenter.student_ungraded_submissions.each do |submission|
-          %tr
-            %td= link_to submission.assignment.name, submission.assignment
-            %td= submission.assignment.due_at
-            %td= submission.updated_at
-            %td
-              - if submission.assignment.pass_fail?
-                = "Pass / Fail"
-              - else
-                = submission.assignment.full_points

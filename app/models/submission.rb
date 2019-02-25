@@ -48,6 +48,7 @@ class Submission < ApplicationRecord
   }
 
   scope :order_by_submitted, -> { order("submitted_at ASC") }
+  scope :order_by_updated_at_date, -> { order("updated_at ASC") }
   scope :for_course, ->(course) { where(course_id: course.id) }
   scope :for_student, ->(student_ids) { where(student_id: student_ids) }
   scope :for_assignment, -> (assignment_ids) { where(assignment_id: assignment_ids) }
