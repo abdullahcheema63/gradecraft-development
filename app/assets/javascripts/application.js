@@ -93,13 +93,9 @@
 //= require d3
 //= require_tree ./behaviors
 //= require utilities
-//= require site_magick
 
 //= require rollbar.js.js
 //= require ng-rollbar
 //= require rollbar_config
-
-//= require vuex
-//= require_tree ./vue
 
 //= require mount
