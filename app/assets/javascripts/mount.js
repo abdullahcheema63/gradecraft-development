@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-//Register components
-
-Vue.component('hello-sophia', VComponents['vue/components/index']);
-=======
 //= require vue
 //= require vuex
 //= require_tree ./vue
@@ -23,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     sanitaryComponents[sanitizedKey] = v;
   }
 
-  [...rootElems].map((e) => 
+  [...rootElems].map((e) =>
     new Vue({
       el: e,
       components: sanitaryComponents,
@@ -36,4 +31,3 @@ document.addEventListener('DOMContentLoaded', function() {
       },
     }));
 });
->>>>>>> b7add3d9451d4cec0aecfe5c33fdab9481b774ae
