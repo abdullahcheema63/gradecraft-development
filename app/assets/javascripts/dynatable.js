@@ -31,7 +31,8 @@ $('table.dynatable').bind('dynatable:init', function(e, dynatable) {
         openDateSort: 'numeric',
         closeDateSort: 'numeric',
         calendarDate: 'numeric',
-        lastUpdated: 'numeric'
+        lastUpdated: 'numeric',
+        createdAt: 'numeric'
       }
     }
 });
