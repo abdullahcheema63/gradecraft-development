@@ -20,8 +20,8 @@
         %th Student
         %th Score
         %th Feedback
-        %th Created At
-        %th Last Updated
+        %th{"data-dynatable-sorts" => "createdAt"} Created At
+        %th{"data-dynatable-sorts" => "lastUpdated"} Last Updated
         %th.options Options
     %tbody
       - @grades.each do |grade|
