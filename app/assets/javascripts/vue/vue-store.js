@@ -11,7 +11,8 @@ const store = new Vuex.Store({
       admin: true,
       courseMembership: [{
         name: "GradeCraft101",
-        role: "Instructor",
+        number: "GC101",
+        role: "GSI",
         url: "",
         gradingStatus: {
           url: "",
@@ -36,7 +37,8 @@ const store = new Vuex.Store({
           graded: 0,
           url: ""}],
         term: {
-          name: "Fall 2018",
+          name: "Fall",
+          year: "2018",
           start: "2019-01-01T00:00:00",
           end: "2019-09-01T00:00:00"
         },
@@ -45,7 +47,8 @@ const store = new Vuex.Store({
       }],
       courseMembership: [{
         name: "Basket Weaving",
-        role: "GSI",
+        number: "BW101",
+        role: "Instructor",
         url: "",
         gradingStatus: {
           url: "",
@@ -70,7 +73,8 @@ const store = new Vuex.Store({
           graded: 0,
           url: ""}],
         term: {
-          name: "Winter 2018",
+          name: "Winter",
+          year: "2019",
           start: "2019-01-01T00:00:00",
           end: "2019-09-01T00:00:00"
         },
