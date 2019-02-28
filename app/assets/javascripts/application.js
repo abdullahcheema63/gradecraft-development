@@ -99,4 +99,3 @@
 //= require rollbar_config
 
 //= require mount
-//= require_tree ./mount_vue

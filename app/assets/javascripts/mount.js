@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
   [...rootElems].map((e) =>
     new Vue({
       el: e,
+      store,
       components: sanitaryComponents,
       render: function (createElement) {
         return createElement(e.dataset.component, {
