@@ -1,21 +1,22 @@
 <template>
   <div>
-    <p> Hello World </p>
-    <p> Hello {{name}} </p>
-    <p> {{currentCourses}} </p>
+    <div v-for="course in currentCourses" >
+      <courseCard class='course_box' :course="course"></courseCard>
+    </div>
   </div>
 </template>
 
 <!-- have to set lang=coffee so rails-vue-loader can work -->
 <!-- adding back ticks ` escapes coffeescript to js -->
+
 <script lang='coffee'>`
+
 module.exports = {
-  name: 'hello-sophia',
-  data() {return {name: "Sophia"}},
+  name: 'course-card-container',
+  components: {
+    courseCard: VComponents['vue/components/courseCard']
+  },
   computed: {
-    greeting(){
-      return this.$store.state.user.firstName
-    },
     currentCourses(){
       return this.$store.getters.currentCourseMembership;
     }

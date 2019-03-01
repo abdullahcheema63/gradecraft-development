@@ -8,7 +8,7 @@
         <p>
           hellooo it's stormy out there
         </p>
-        <slot></slot>
+        <slot name="message"></slot>
       </div>
     </div>
   </div>

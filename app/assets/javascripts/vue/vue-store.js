@@ -43,9 +43,8 @@ const store = new Vuex.Store({
           end: "2019-09-01T00:00:00"
         },
         licensed: true,
-        published: true
-      }],
-      courseMembership: [{
+        published: true },
+      {
         name: "Basket Weaving",
         number: "BW101",
         role: "Instructor",
@@ -77,6 +76,41 @@ const store = new Vuex.Store({
           year: "2019",
           start: "2019-01-01T00:00:00",
           end: "2019-09-01T00:00:00"
+        },
+        licensed: true,
+        published: true },
+      {
+        name: "Tai-Chi",
+        number: "TC100",
+        role: "Student",
+        url: "",
+        gradingStatus: {
+          url: "",
+          ungraded: 0,
+          ready: 0,
+          resubmissions: 0
+        },
+        eventCount: 2,
+        announcementCount: 8,
+        assignments: [{
+          name: "Rooting",
+          dueDate: "",
+          planned: 1,
+          submitted: 0,
+          graded: 0,
+          url: ""},
+          {
+          name: "Balance",
+          dueDate: "",
+          planned: 1,
+          submitted: 1,
+          graded: 1,
+          url: ""}],
+        term: {
+          name: "Winter",
+          year: "2019",
+          start: "2019-01-01T00:00:00",
+          end: "2019-09-02T00:00:00"
         },
         licensed: true,
         published: true
