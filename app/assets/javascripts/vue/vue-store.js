@@ -13,6 +13,7 @@ const store = new Vuex.Store({
         name: "GradeCraft101",
         number: "GC101",
         role: "GSI",
+        instructor: "Cait Holeman",
         url: "",
         gradingStatus: {
           url: "",
@@ -48,6 +49,7 @@ const store = new Vuex.Store({
         name: "Basket Weaving",
         number: "BW101",
         role: "Instructor",
+        instructor: "Steve Irwin",
         url: "",
         gradingStatus: {
           url: "",
@@ -59,23 +61,23 @@ const store = new Vuex.Store({
         announcementCount: 8,
         assignments: [{
           name: "Weaving Theory 1",
-          dueDate: "2019-07-12T00:00:00",
+          dueDate: "2018-07-12T00:00:00",
           planned: 25,
           submitted: 10,
           graded: 0,
           url: ""},
           {
           name: "Weaving Theory 2",
-          dueDate: "2019-07-17T00:00:00",
+          dueDate: "2018-07-17T00:00:00",
           planned: 15,
           submitted: 0,
           graded: 0,
           url: ""}],
         term: {
           name: "Winter",
-          year: "2019",
-          start: "2019-01-01T00:00:00",
-          end: "2019-09-01T00:00:00"
+          year: "2018",
+          start: "2018-01-01T00:00:00",
+          end: "2018-09-01T00:00:00"
         },
         licensed: true,
         published: true },
@@ -83,6 +85,7 @@ const store = new Vuex.Store({
         name: "Tai-Chi",
         number: "TC100",
         role: "Student",
+        instructor: "Sensei Karla",
         url: "",
         gradingStatus: {
           url: "",
@@ -129,6 +132,17 @@ const store = new Vuex.Store({
               {return false;}
 
             return membership.published
+        })
+      },
+      pastCourseMembership: state => {
+        return state.user.courseMembership.filter( membership => {
+          var today = new Date();
+          var end = new Date(membership.term.end);
+
+          if(today < end)
+            {return false;}
+
+          return membership.published
         })
       }
     }

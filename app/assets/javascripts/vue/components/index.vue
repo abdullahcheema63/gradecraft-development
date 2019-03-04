@@ -10,12 +10,9 @@
 <!-- adding back ticks ` escapes coffeescript to js -->
 <script lang='coffee'>`
 module.exports = {
-  name: 'hello-sophia',
+  name: 'index',
   data() {return {name: "Sophia"}},
   computed: {
-    greeting(){
-      return this.$store.state.user.firstName
-    },
     currentCourses(){
       return this.$store.getters.currentCourseMembership;
     }
