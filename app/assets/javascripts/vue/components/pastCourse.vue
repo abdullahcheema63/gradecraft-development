@@ -22,7 +22,7 @@
 
 <script lang='coffee'>`
 module.exports = {
-  name: 'pastCourse',
+  name: 'past-course',
   props: ['course'],
   computed: {
     user_card_class() {

@@ -5,9 +5,6 @@
     </h3>
     <div :class="guideClass">
       <div>
-        <p>
-          hellooo it's stormy out there
-        </p>
         <slot name="message"></slot>
       </div>
     </div>

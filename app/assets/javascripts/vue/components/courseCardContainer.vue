@@ -4,7 +4,7 @@
     <div v-for="course in currentCourses" >
       <courseCard class='course_box' :course="course"></courseCard>
     </div>
-    <h2>Unpublished Courses</h2>
+    <h2>Past Courses</h2>
     <div v-for="course in pastCourses" >
       <pastCourse class='course_box' :course="course"></pastCourse>
     </div>
