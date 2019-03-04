@@ -17,8 +17,8 @@
 module.exports = {
   name: 'course-card-container',
   components: {
-    courseCard: VComponents['vue/components/courseCard'],
-    pastCourse: VComponents['vue/components/pastCourse'],
+    courseCard: () => VComponents.get('vue/components/courseCard'),
+    pastCourse: () => VComponents.get('vue/components/pastCourse'),
   },
   computed: {
     currentCourses(){

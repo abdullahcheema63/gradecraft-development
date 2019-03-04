@@ -1,18 +1,21 @@
 <div class='wrapper dashboard'>
   <div class='content_block intro'>
     <h1>My Dashboard</h1>
-    <div data-component="index">
+    <index data-component>
       <p>Hi dummy</p>
-    </div>
+    </index>
 
-    <div data-component="guide">
-      <message>
+    <guide data-component>
+      <template v-slot:message>
         Hi Erik!
-      </message>
-    </div>
+      </template>
+    </guide>
 
 
-    <div data-component="courseCardContainer"></div>
+    <course-card-container data-component></course-card-container>
+
+
+
     <div class='course_box'>
       <div class='course_card instructor unpublished'>
         <h4>

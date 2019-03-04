@@ -23,12 +23,5 @@ document.addEventListener('DOMContentLoaded', function() {
       el: e,
       store,
       components: sanitaryComponents,
-      render: function (createElement) {
-        return createElement(e.dataset.component, {
-          props: e.dataset.props
-            ? JSON.parse(e.dataset.props)
-            : undefined,
-        });
-      },
     }));
 });
