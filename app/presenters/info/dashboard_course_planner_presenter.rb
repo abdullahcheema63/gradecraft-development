@@ -21,8 +21,7 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   end
 
   def student_ungraded_submissions
-    student.submissions.where(course: course).ungraded
-    .or(student.submissions.where(course: course).resubmitted).order_by_updated_at_date
+    student.submissions.where(course: course).ungraded.order_by_submitted
   end
 
   def assignments
