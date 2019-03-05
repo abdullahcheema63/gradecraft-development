@@ -2,6 +2,7 @@
 $('table.dynatable').bind('dynatable:init', function(e, dynatable) {
       dynatable.sorts.functions["numeric"] = numeric;
       dynatable.sorts.functions["alphanum"] = alphanum;
+      dynatable.sorts.functions["dateSort"] = dateSort;
     }).dynatable({
   features: {
       paginate: false,
@@ -30,7 +31,8 @@ $('table.dynatable').bind('dynatable:init', function(e, dynatable) {
         calendarDate: 'numeric',
         openDateSort: 'numeric',
         closeDateSort: 'numeric',
-        calendarDate: 'numeric'
+        lastUpdated: 'dateSort',
+        createdAt: 'dateSort'
       }
     }
 });
@@ -38,6 +40,12 @@ $('table.dynatable').bind('dynatable:init', function(e, dynatable) {
 function numeric(a, b, attr, direction) {
   var aa = a[attr].replace(/[^0-9]/g, "");
   var bb = b[attr].replace(/[^0-9]/g, "");
+  return aa === bb ? 0 : (direction > 0 ? aa - bb : bb - aa);
+}
+
+function dateSort(a, b, attr, direction) {
+  var aa = Date.parse(a[attr]);
+  var bb = Date.parse(b[attr]);
   return aa === bb ? 0 : (direction > 0 ? aa - bb : bb - aa);
 }
 
