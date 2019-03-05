@@ -5,7 +5,7 @@
     </h3>
     <div :class="guideClass">
       <div>
-        <slot name="message"></slot>
+        <slot></slot>
       </div>
     </div>
   </div>
@@ -13,7 +13,7 @@
 
 <script lang='coffee'>`
 module.exports = {
-  name: 'guide',
+  name: 'guide-message',
   data() {
     return {
       active: false

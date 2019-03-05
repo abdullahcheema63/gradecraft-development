@@ -117,6 +117,25 @@ const store = new Vuex.Store({
         },
         licensed: true,
         published: true
+      },
+      {
+        name: "Broom Ball",
+        number: "BB100",
+        role: "Instructor",
+        instructor: "Erik Barroso",
+        url: "",
+        gradingStatus: {},
+        eventCount: 0,
+        announcementCount: 0,
+        assignments: [{}],
+        term: {
+          name: "Winter",
+          year: "2019",
+          start: "2019-01-01T00:00:00",
+          end: "2019-09-02T00:00:00"
+        },
+        licensed: true,
+        published: false
       }]
     }},
     getters: {
@@ -143,6 +162,13 @@ const store = new Vuex.Store({
             {return false;}
 
           return membership.published
+        })
+      },
+      unpublishedCourseMembership: state => {
+        return state.user.courseMembership.filter( membership => {
+          if(membership.published)
+            {return false;}
+          return membership
         })
       }
     }
