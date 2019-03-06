@@ -12,7 +12,7 @@
           %th Submission Updated At
           %th Possible Points
       %tbody
-        - presenter.student_ungraded_submissions.each do |submission|
+        - presenter.student_ungraded_or_resubmitted_submissions.each do |submission|
           %tr
             %td= link_to submission.assignment.name, submission.assignment
             %td= submission.assignment.due_at
@@ -39,7 +39,7 @@
             %th Score With Weights
           %th Graded At
       %tbody
-        - presenter.student_grades_for_course.each do |grade|
+        - presenter.student_grades_for_course_without_resubmissions.each do |grade|
           %tr
             %td= link_to grade.assignment.name, grade.assignment
             %td= raw grade.feedback
