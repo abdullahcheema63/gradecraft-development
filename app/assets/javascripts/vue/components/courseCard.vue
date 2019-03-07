@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <div v-else-if="status=='unpublished'" class="course_card" :class="user_card_class">
+  <div v-else-if="status=='unpublished'" class="course_card unpublished" :class="user_card_class">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
     </h4>
