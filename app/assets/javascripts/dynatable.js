@@ -34,7 +34,9 @@ $('table.dynatable').bind('dynatable:init', function(e, dynatable) {
         calendarDate: 'numeric',
         submissionUpdatedAt: 'dateSort',
         gradedAt: 'dateSort',
-        dueDate: 'dateSort'
+        dueDate: 'dateSort',
+        lastUpdated: 'dateSort',
+        createdAt: 'dateSort'
       }
     }
 });
