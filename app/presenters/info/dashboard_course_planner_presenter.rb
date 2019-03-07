@@ -24,9 +24,9 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   end
 
   def remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
-    for grade in graded_assignments do
-      for submission in resubmitted_assignments do
-        if (grade.assignment_id == submission.assignment_id)
+    graded_assignments.each do |grade|
+      resubmitted_assignments.each do |submission|
+        if grade.assignment_id == submission.assignment_id
           graded_assignments.delete(grade)
         end
       end
