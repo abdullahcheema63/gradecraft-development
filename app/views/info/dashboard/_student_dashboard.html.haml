@@ -33,4 +33,7 @@
             %weekly-stats-analytics(student-id="#{current_student.id}")
 
 .pageContent
-  = render partial: "students/student_grade_index", locals: { presenter: presenter }
+  .dashboard-module
+    %h2 Assignment Overview
+    %br
+    = render partial: "students/student_grade_index", locals: { presenter: presenter }

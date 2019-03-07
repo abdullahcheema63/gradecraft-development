@@ -31,7 +31,8 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
         end
       end
     end
-    #Will cause error if updated_at is nil ?? (try ?)
+    # Will cause error if updated_at is nil ?? (try ?)
+    # grade updated_at can be nil in schema, but no grades in app or umich are nil
     ordered_grades = (graded_assignments.sort_by &:updated_at).reverse
   end
 
