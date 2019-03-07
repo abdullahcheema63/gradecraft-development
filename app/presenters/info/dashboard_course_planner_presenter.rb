@@ -37,7 +37,7 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   end
 
   def student_ungraded_or_resubmitted_submissions
-    student_submissions = student.submissions.where(course: course).where.not(submitted_at: nil).ungraded + student.submissions.where(course: course).resubmitted + student.grades.where(course: course, student_visible: false)
+    student_submissions = student.submissions.where(course: course).where.not(submitted_at: nil).ungraded + student.submissions.where(course: course).resubmitted + student.grades.where(course: course, complete: true, student_visible: false)
     ordered_submissions = (student_submissions.sort_by &:updated_at).reverse
   end
 
