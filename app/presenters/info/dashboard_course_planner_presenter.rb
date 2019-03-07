@@ -17,28 +17,27 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   end
 
   def student_grades_for_course_without_resubmissions
-    grades_for_dashboard = []
-    resubmitted_assignments = []
-    grades_for_dashboard << student.grades.where(course: course).instructor_modified.student_visible.order_by_updated_at_date
-    resubmitted_assignments << student.submissions.where(course: course).resubmitted
+    graded_assignments = student.grades.where(course: course).instructor_modified.student_visible.order_by_updated_at_date
+    resubmitted_assignments = student.submissions.where(course: course).resubmitted
 
-    grades_for_dashboard = grades_for_dashboard.first
-    resubmitted_assignments = resubmitted_assignments.first
+    remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
+  end
 
-    for grade in grades_for_dashboard do
-      for resubmission in resubmitted_assignments do
-        if (grade.assignment_id == resubmission.assignment_id)
-          grades_for_dashboard.delete(grade)
+  def remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
+    for grade in graded_assignments do
+      for submission in resubmitted_assignments do
+        if (grade.assignment_id == submission.assignment_id)
+          graded_assignments.delete(grade)
         end
       end
     end
-    return grades_for_dashboard
+    #Will cause error if updated_at is nil ?? (try ?)
+    ordered_grades = (graded_assignments.sort_by &:updated_at).reverse
   end
 
   def student_ungraded_or_resubmitted_submissions
-    submissions_for_dashboard = []
-    submissions_for_dashboard << student.submissions.where(course: course).ungraded + student.submissions.where(course: course).resubmitted + student.grades.where(course: course, student_visible: false)
-    submissions_for_dashboard.first
+    student_submissions = student.submissions.where(course: course).ungraded + student.submissions.where(course: course).resubmitted + student.grades.where(course: course, student_visible: false)
+    ordered_submissions = (student_submissions.sort_by &:updated_at).reverse
   end
 
   def assignments
