@@ -33,7 +33,9 @@ $('table.dynatable').bind('dynatable:init', function(e, dynatable) {
         closeDateSort: 'numeric',
         submissionUpdatedAt: 'dateSort',
         gradedAt: 'dateSort',
-        dueDate: 'dateSort'
+        dueDate: 'dateSort',
+        lastUpdated: 'dateSort',
+        createdAt: 'dateSort'
       }
     }
 });
