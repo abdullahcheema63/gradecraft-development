@@ -69,6 +69,9 @@
           <p :class="item.graded">
             {{item.graded}}
           </p>
+          <p :class="item.planned">
+            {{item.planned}}
+          </p>
         </div>
       </div>
     </div>
@@ -123,7 +126,11 @@
 module.exports = {
   name: 'course-card',
   props: ['course', 'status'],
-  data() {return {hello: "hello"}},
+  data() {
+    return {
+      hello: "hello"
+    }
+  },
   computed: {
     is_staff() {
       return this.course.role === 'Instructor' || this.course.role === 'GSI';
@@ -135,6 +142,6 @@ module.exports = {
     is_licensed() {
       return this.course.licensed
     }
-  }
+  },
 }
 `</script>
