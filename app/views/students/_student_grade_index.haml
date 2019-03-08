@@ -2,9 +2,37 @@
   %a.collapse-toggler
     %h3
       %i.fa.fa-chevron-circle-right.fa-fw
+      Draft Submissions
+  %section
+    - if presenter.check_student_draft_submissions
+      %table.dynatable{"role"=>"tab"}
+        %thead
+          %tr
+            %th Assignment
+            %th{"data-dynatable-sorts" => "dueDate"} Due Date
+            %th{"data-dynatable-sorts" => "submissionUpdatedAt"} Draft Updated At
+            %th Possible Points
+        %tbody
+          - presenter.student_draft_submissions.each do |submission|
+            %tr
+              %td= link_to submission.assignment.name, submission.assignment
+              %td= submission.assignment.due_at
+              %td= submission.updated_at
+              %td
+                - if submission.assignment.pass_fail?
+                  = "Pass / Fail"
+                - else
+                  = "#{points submission.assignment.full_points}"
+    - else
+      %p You have no draft submissions at this time
+
+%section{"role"=>"tablist"}
+  %a.collapse-toggler
+    %h3
+      %i.fa.fa-chevron-circle-right.fa-fw
       Ungraded Submissions
   %section
-    - if presenter.student_ungraded_or_resubmitted_submissions != nil
+    - if presenter.check_ungraded_or_resubmitted_submissions
       %table.dynatable{"role"=>"tab"}
         %thead
           %tr
@@ -32,7 +60,7 @@
       %i.fa.fa-chevron-circle-right.fa-fw
       Graded Assignments
   %section
-    - if presenter.student_grades_for_course_without_resubmissions != nil
+    - if presenter.check_student_grades_for_course_without_resubmissions
       %table.dynatable{"role"=>"tab"}
         %thead
           %tr
