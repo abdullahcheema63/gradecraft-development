@@ -3,17 +3,22 @@
 
 /* MODAL styling */
 .overlay
-  background: rgba(255,255,255,0.9)
   position: fixed
   top: 0
   bottom: 0
   left: 0
   right: 0
-  z-index: 110
-  display: none
+  background: rgba(255,255,255,0.9)
+
+  &.is-closed
+    opacity: 0
+    z-index: -100
+    transition: all linear 0.4s
 
   &.is-open
-    display: block
+    z-index: 110
+    opacity: 1
+    transition: all linear 0.2s
 
 .modal
   position: fixed
@@ -24,11 +29,16 @@
   background-color: white
   max-width: 1100px
   width: 92%
-  z-index: 120
-  display: none
+
+  &.is-closed
+    opacity: 0
+    z-index: -100
+    transition: all linear 0.2s
 
   &.is-open
-    display: block
+    z-index: 120
+    opacity: 1
+    transition: all linear 0.2s
 
   &.getting_started
     #alert
