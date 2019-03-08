@@ -136,7 +136,27 @@ const store = new Vuex.Store({
         },
         licensed: true,
         published: false
-      }]
+      },
+      {
+        name: "Advanced Basket Weaving",
+        number: "BW200",
+        role: "Instructor",
+        instructor: "Steve Irwin",
+        url: "",
+        gradingStatus: {
+        },
+        eventCount: 2,
+        announcementCount: 8,
+        assignments: [{}],
+        term: {
+          name: "Spring",
+          year: "2016",
+          start: "2016-01-01T00:00:00",
+          end: "2016-09-01T00:00:00"
+        },
+        licensed: true,
+        published: true },
+    ]
     }},
     getters: {
       currentCourseMembership: state => {
