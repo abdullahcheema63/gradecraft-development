@@ -8,8 +8,8 @@
     <div class="course_status">
       <p>{{ course.role }}</p>
       <div v-if="course.role === 'Instructor'">
-        <p :class="course.licensed" @click="toggleModalState">
-          {{ course.licensed }}
+        <p :class="'licensed'" v-if="is_licensed" @click="toggleModalState">
+          Licensed
         </p>
       </div>
     </div>
@@ -54,23 +54,20 @@
         <p>Planned</p>
         <p>Submitted</p>
       </legend>
-      <div class="assignment" v-for="item in course.assignments">
+      <div class="assignment" v-for="assignment in course.assignments">
         <div>
           <p>
-            <a>{{item.name}}</a>
-            <span v-if="item.dueDate">Due {{item.dueDate}}</span>
+            <a>{{assignment.name}}</a>
+            <span v-if="assignment.dueDate">Due {{assignment.dueDate}}</span>
           </p>
         </div>
         <div v-if="is_staff">
-          <p>{{item.planned}}</p>
-          <p>{{item.submitted}}</p>
+          <p>{{assignment.planned}}</p>
+          <p>{{assignment.submitted}}</p>
         </div>
         <div v-else>
-          <p :class="item.graded">
-            {{item.graded}}
-          </p>
-          <p :class="item.planned">
-            {{item.planned}}
+          <p :class="assignment_status(assignment)">
+            {{assignment_status(assignment)}}
           </p>
         </div>
       </div>
@@ -79,6 +76,13 @@
     <div>
       <a class="button next">View course</a>
     </div>
+
+    <modalComponent :modalState="modalState" @close="toggleModalState">
+      <template slot="heading">Set Course Status</template>
+      <template slot="content">
+        <h2>Set the status of __ __ ___ </h2>
+      </template>
+    </modalComponent>
   </div>
 
   <div v-else-if="status=='unpublished'" class="course_card unpublished" :class="user_card_class">
@@ -99,6 +103,14 @@
     <div>
       <a class="button next">Edit course</a>
     </div>
+
+    <modalComponent :modalState="modalState" @close="toggleModalState">
+      <template slot="heading">Set Course Status</template>
+      <template slot="content">
+        <h2>Set the status of __ __ ___ </h2>
+        <p><b>HI ERIK!!!!!! TwT</b></p>
+      </template>
+    </modalComponent>
   </div>
 
   <div v-else-if="status=='past'" class="course_card past" :class="user_card_class">
@@ -126,9 +138,12 @@
 module.exports = {
   name: 'course-card',
   props: ['course', 'status'],
+  components: {
+    modalComponent: () => VComponents.get('vue/components/modalComponent')
+  },
   data() {
     return {
-      hello: "hello"
+      modalState: false,
     }
   },
   computed: {
@@ -143,5 +158,15 @@ module.exports = {
       return this.course.licensed
     }
   },
+  methods: {
+    toggleModalState(){
+      this.modalState = !this.modalState
+    },
+    assignment_status(assignment){
+      if (assignment.graded){ return "graded" }
+      if (assignment.submitted){ return "submitted" }
+      if (assignment.planned){ return "planned" }
+    }
+  }
 }
 `</script>

@@ -12,8 +12,8 @@ const store = new Vuex.Store({
       courseMembership: [{
         name: "GradeCraft101",
         number: "GC101",
-        role: "GSI",
-        instructor: "Cait Holeman",
+        role: "Instructor",
+        instructor: "Cait Holman",
         url: "",
         gradingStatus: {
           url: "",
@@ -105,8 +105,8 @@ const store = new Vuex.Store({
           {
           name: "Balance",
           dueDate: "",
-          planned: 1,
-          submitted: 1,
+          planned: 0,
+          submitted: 0,
           graded: 1,
           url: ""}],
         term: {
