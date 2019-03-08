@@ -80,7 +80,20 @@
     <modalComponent :modalState="modalState" @close="toggleModalState">
       <template slot="heading">Set Course Status</template>
       <template slot="content">
-        <h2>Set the status of __ __ ___ </h2>
+        <h2>Set the status of {{ course.number }} {{ course.name }} {{ course.term.name }} {{ course.term.year }}</h2>
+        <form>
+          <div class="form_options">
+            <input id="trialCourse_2" name="courseStatus_2" type="radio">
+            <label for="trialCourse_2">Trial course</label>
+          </div>
+          <div class="form_options">
+            <input checked="checked" id="licensedCourse_2" name="courseStatus_2" type="radio">
+            <label for="licensedCourse_2">Licensed course</label>
+          </div>
+          <br>
+            <button class="action" type="button">Update status</button>
+            <button class="secondary close" type="button" @click="toggleModalState">Cancel</button>
+          </form>
       </template>
     </modalComponent>
   </div>
