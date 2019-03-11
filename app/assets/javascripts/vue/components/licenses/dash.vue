@@ -25,6 +25,10 @@ const apiResponseToData = (responseJson) =>
   getAPIHelper().dataItem(responseJson.data, responseJson);
 
 module.exports = {
+  components: {
+    "licenses-buy-form": () => VComponents.get("vue/components/licenses/buy-form"),
+    "licenses-details": () => VComponents.get("vue/components/licenses/details"),
+  },
   data: function() { return data; },
   props: {
     licenseTypes: Array,

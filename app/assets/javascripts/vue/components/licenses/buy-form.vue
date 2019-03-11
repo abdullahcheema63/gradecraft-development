@@ -21,6 +21,10 @@ const data = {
 const api = "/api/licenses";
 
 module.exports = {
+  components: {
+    "licenses-type-radio-button": () => VComponents.get("vue/components/licenses/type-radio-button"),
+    "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/payment-inputs"),
+  },
   data: function() { return data; },
   props: {
     licenseTypes: Array,
