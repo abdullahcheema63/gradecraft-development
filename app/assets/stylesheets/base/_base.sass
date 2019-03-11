@@ -43,6 +43,36 @@ body
     min-height: 100vh
     background-color: white
 
+#guide_control
+  position: absolute
+  right: 0
+  top: 80px
+  border: 2px solid $pink_2
+  border-right: 0px solid transparent
+  color: $pink_1
+  font-size: 14px
+  text-transform: uppercase
+  padding: 5px 0 5px 35px
+  width: 95px
+  box-sizing: border-box
+  cursor: pointer
+  border-radius: 3px 0 0 3px
+  letter-spacing: 0.5px
+
+  &.guide-showing
+    background: white url(asset_path("icon-guide.svg")) no-repeat center left 10px
+    background-size: auto 30px
+
+  &.guide-hiding
+    background: white url(asset_path("icon-guide_hidden.svg")) no-repeat center left 10px
+    background-size: auto 30px
+
+  h4
+    display: none
+
+    &.active
+      display: block
+      line-height: 1.25em
 
 /* Div styles - Background Colors, typically for divs __=^o.o^= */
 .content_block
