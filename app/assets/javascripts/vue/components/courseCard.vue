@@ -179,6 +179,9 @@ module.exports = {
       if (assignment.graded){ return "graded" }
       if (assignment.submitted){ return "submitted" }
       if (assignment.planned){ return "planned" }
+    },
+    changeCourseLicense(){
+
     }
   }
 }
