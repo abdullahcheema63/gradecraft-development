@@ -73,7 +73,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="button_box">
       <a class="button next">View course</a>
     </div>
 
