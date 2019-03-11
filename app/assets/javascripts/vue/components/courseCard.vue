@@ -77,7 +77,7 @@
       <a class="button next">View course</a>
     </div>
 
-    <modalComponent :modalState="modalState" @close="toggleModalState">
+    <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
       <template slot="heading">Set Course Status</template>
       <template slot="content">
         <h2>Set the status of {{ course.number }} {{ course.name }} {{ course.term.name }} {{ course.term.year }}</h2>
@@ -117,7 +117,7 @@
       <a class="button next">Edit course</a>
     </div>
 
-    <modalComponent :modalState="modalState" @close="toggleModalState">
+    <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
       <template slot="heading">Set Course Status</template>
       <template slot="content">
         <h2>Set the status of __ __ ___ </h2>
