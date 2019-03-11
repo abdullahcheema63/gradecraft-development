@@ -9,19 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  const sanitaryComponents = {};
   for (k in VComponents) {
     const sanitizedKey = k
       .replace("vue/components/", "")
       .replace("/", "-");
     const v = VComponents[k];
-    sanitaryComponents[sanitizedKey] = v;
+    Vue.component(sanitizedKey, v);
   }
-
+  
   [...rootElems].map((e) => 
     new Vue({
       el: e,
-      components: sanitaryComponents,
       render: function (createElement) {
         return createElement(e.dataset.component, {
           props: e.dataset.props

@@ -125,6 +125,7 @@ angular.module('helpers').factory('GradeCraftAPI', ()->
     logResponse: logResponse
     loadMany: loadMany
     loadItem: loadItem
+    dataItem: dataItem
     addItem: addItem
     addItems: addItems
     deleteItem: deleteItem
