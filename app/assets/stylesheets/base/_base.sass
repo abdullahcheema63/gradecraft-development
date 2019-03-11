@@ -218,6 +218,24 @@ body
       text-decoration: none
       color: white
 
+    &.next
+      background: $blue-medium_1 url(asset_path("icon-arrow_next.svg")) no-repeat top 0.7em right 0.6em
+      background-size: 1.1em auto
+      padding: 0.6em 2.25em 0.6em 1em
+      text-align: left
+
+      &:hover
+        background: $blue-medium_2 url(asset_path("icon-arrow_next.svg")) no-repeat top 0.7em right 0.6em
+        background-size: 1.1em auto
+
+      &.action
+        background: $pink_1 url(asset_path("icon-arrow_next_action.svg")) no-repeat top 0.7em right 0.6em
+        background-size: 1.1em auto
+
+        &:hover
+          background: $pink_2 url(asset_path("icon-arrow_next_action.svg")) no-repeat top 0.6em right 0.6em
+          background-size: 1.1em auto
+
     &.secondary
       background: white
       color: $blue-medium_1

@@ -99,4 +99,5 @@
 //= require ng-rollbar
 //= require rollbar_config
 
+//= require lazy-vcomponent
 //= require mount

@@ -9,23 +9,19 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
+  const sanitaryComponents = {};
   for (k in VComponents) {
     const sanitizedKey = k
       .replace("vue/components/", "")
       .replace("/", "-");
     const v = VComponents[k];
-    Vue.component(sanitizedKey, v);
+    sanitaryComponents[sanitizedKey] = v;
   }
-  
-  [...rootElems].map((e) => 
+
+  [...rootElems].map((e) =>
     new Vue({
       el: e,
-      render: function (createElement) {
-        return createElement(e.dataset.component, {
-          props: e.dataset.props
-            ? JSON.parse(e.dataset.props)
-            : undefined,
-        });
-      },
+      store,
+      components: sanitaryComponents,
     }));
 });
