@@ -22,17 +22,6 @@ module.exports = {
       type: Boolean
     }
   },
-  data() {
-    return {
-      items: [
-        {title: 'Assignment Title 1'},
-        {title: 'Assignment Title 2'},
-        {title: 'Assignment Title 3'},
-        {title: 'Assignment Title 4'},
-        {title: 'Assignment Title 5'}
-      ]
-    }
-  },
   methods: {
     close() {
       this.$emit("close");
