@@ -9,6 +9,7 @@ body
 .wrapper
   max-width: 1600px
   margin: 0 auto
+  position: relative
 
   @include desktop-xl
     border-right: 5px solid $grey_1
@@ -44,28 +45,30 @@ body
     background-color: white
 
 #guide_control
-  position: absolute
+  position: sticky
   right: 0
   top: 80px
+  float: right
   border: 2px solid $pink_2
   border-right: 0px solid transparent
   color: $pink_1
-  font-size: 14px
+  font-size: 13px
   text-transform: uppercase
-  padding: 5px 0 5px 35px
-  width: 95px
+  padding: 4px 0 4px 34px
+  width: 92px
   box-sizing: border-box
   cursor: pointer
   border-radius: 3px 0 0 3px
   letter-spacing: 0.5px
+  z-index: 500
 
   &.guide-showing
-    background: white url(asset_path("icon-guide.svg")) no-repeat center left 10px
-    background-size: auto 30px
+    background: white url(asset_path("icon-guide.svg")) no-repeat center left 8px
+    background-size: auto 28px
 
   &.guide-hiding
-    background: white url(asset_path("icon-guide_hidden.svg")) no-repeat center left 10px
-    background-size: auto 30px
+    background: white url(asset_path("icon-guide_hidden.svg")) no-repeat center left 8px
+    background-size: auto 28px
 
   h4
     display: none
@@ -79,8 +82,12 @@ body
   background-color: white
   padding: 1em 5%
   box-sizing: border-box
+
   @include mobile-xl
     padding: 1em 3%
+
+  &.intro
+    padding-top: 5em
 
 .bg-green_mint
   background-color: $bg-green_mint
