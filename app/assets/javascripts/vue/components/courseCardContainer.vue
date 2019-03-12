@@ -31,18 +31,18 @@
       </guideMessage>
       <div class="filter_box">
         <div v-for="year in courseTermYear">
-          <input/>
-          <label>{{year}}</label>
+          <input :id="year"type="checkbox" v-model="termYear" :value="year"/>
+          <label :for="year">{{year}}</label>
         </div>
       </div>
       <div class="filter_box">
         <div v-for="term in courseTermName">
-          <input/>
-          <label>{{term}}</label>
+          <input :id="term" type="checkbox" v-model="termName" :value="term"/>
+          <label :for="term">{{term}}</label>
         </div>
       </div>
       <div class="course_box">
-        <courseCard v-for="course in pastCourses" :course="course" status="past"></courseCard>
+        <courseCard v-for="course in filteredPastCourses" :course="course" status="past"></courseCard>
       </div>
     </div>
   </div>
@@ -58,12 +58,26 @@ module.exports = {
     pastCourse: () => VComponents.get('vue/components/pastCourse'),
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
   },
+  data() {
+    return {
+      termYear: [],
+      termName: []
+    }
+  },
   computed: {
     currentCourses(){
       return this.$store.getters.currentCourseMembership;
     },
     pastCourses(){
       return this.$store.getters.pastCourseMembership;
+    },
+    filteredPastCourses(){
+      var allPastCourses = this.pastCourses;
+      return allPastCourses.filter( course => {
+          if (!(this.termYear.includes(course.term.year)) && this.termYear.length) {return false}
+          if (!(this.termName.includes(course.term.name)) && this.termName.length) {return false}
+          return true
+      })
     },
     unpublishedCourses(){
       return this.$store.getters.unpublishedCourseMembership;
