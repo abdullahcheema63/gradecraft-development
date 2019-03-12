@@ -1,5 +1,6 @@
 class API::LicensesController < ApplicationController
   skip_before_action :require_course_membership
+  skip_before_action :verify_authenticity_token
 
   # GET api/licenses
   def index
