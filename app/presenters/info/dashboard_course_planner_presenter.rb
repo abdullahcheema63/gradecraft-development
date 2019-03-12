@@ -17,21 +17,25 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   end
 
   def student_grades_for_course_without_resubmissions
-    graded_assignments = student.grades.where(course: course).instructor_modified.student_visible
     resubmitted_assignments = student.submissions.where(course: course).resubmitted
-
-    remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
+    graded_assignments = student.grades.where(course: course).instructor_modified.student_visible
+    if resubmitted_assignments
+      remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
+    else
+      return graded_assignments
+    end
   end
 
   def remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
+    filtered_assignments = graded_assignments.dup
     graded_assignments.each do |grade|
       resubmitted_assignments.each do |submission|
         if grade.assignment_id == submission.assignment_id
-          graded_assignments.delete(grade)
+          filtered_assignments.delete(grade)
         end
       end
     end
-    ordered_grades = (graded_assignments.sort_by &:updated_at).reverse
+    ordered_grades = (filtered_assignments.sort_by &:updated_at).reverse
   end
 
   def check_student_grades_for_course_without_resubmissions
