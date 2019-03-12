@@ -10,6 +10,7 @@ const store = new Vuex.Store({
       email: "ebarr@gmail.com",
       admin: true,
       courseMembership: [{
+        id: 1,
         name: "GradeCraft101",
         number: "GC101",
         role: "Instructor",
@@ -46,6 +47,7 @@ const store = new Vuex.Store({
         licensed: true,
         published: true },
       {
+        id: 2,
         name: "Basket Weaving",
         number: "BW101",
         role: "Instructor",
@@ -82,6 +84,7 @@ const store = new Vuex.Store({
         licensed: true,
         published: true },
       {
+        id: 3,
         name: "Tai-Chi",
         number: "TC100",
         role: "Student",
@@ -119,6 +122,7 @@ const store = new Vuex.Store({
         published: true
       },
       {
+        id: 4,
         name: "Broom Ball",
         number: "BB100",
         role: "Instructor",
@@ -138,6 +142,7 @@ const store = new Vuex.Store({
         published: false
       },
       {
+        id: 5,
         name: "Advanced Basket Weaving",
         number: "BW200",
         role: "Instructor",
@@ -158,6 +163,24 @@ const store = new Vuex.Store({
         published: true },
     ]
     }},
+    actions: {
+      licenseCourse({ commit }, course_id){
+        commit('updateLicense', {course_id: course_id, status: true})
+      },
+      unLicenseCourse({ commit }, course_id){
+        commit('updateLicense', {course_id: course_id, status: false})
+      }
+    },
+    mutations: {
+      updateLicense (state, {course_id, status}){
+        var course_ids = state.user.courseMembership.map( course => course.id)
+        var membershipIndex = course_ids.indexOf(course_id)
+        if (membershipIndex >= 0){
+          var course = state.user.courseMembership[membershipIndex]
+          course.licensed = status
+        }
+      }
+    },
     getters: {
       currentCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {

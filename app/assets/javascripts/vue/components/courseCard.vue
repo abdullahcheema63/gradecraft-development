@@ -83,15 +83,15 @@
         <h2>Set the status of {{ course.number }} {{ course.name }} {{ course.term.name }} {{ course.term.year }}</h2>
         <form>
           <div class="form_options">
-            <input id="trialCourse_2" name="courseStatus_2" type="radio">
+            <input id="trialCourse_2" v-model="licenseStatus" value="trial" name="courseStatus_2" type="radio">
             <label for="trialCourse_2">Trial course</label>
           </div>
           <div class="form_options">
-            <input checked="checked" id="licensedCourse_2" name="courseStatus_2" type="radio">
+            <input checked="checked" id="licensedCourse_2" v-model="licenseStatus" value="license" name="courseStatus_2" type="radio">
             <label for="licensedCourse_2">Licensed course</label>
           </div>
           <br>
-            <button class="action" type="button">Update status</button>
+            <button class="action" type="button" @click="toggleCourseLicense(); toggleModalState()">Update status</button>
             <button class="secondary close" type="button" @click="toggleModalState">Cancel</button>
           </form>
       </template>
@@ -157,6 +157,7 @@ module.exports = {
   data() {
     return {
       modalState: false,
+      licenseStatus: this.course.licensed ? "license" : "trial"
     }
   },
   computed: {
@@ -180,8 +181,9 @@ module.exports = {
       if (assignment.submitted){ return "submitted" }
       if (assignment.planned){ return "planned" }
     },
-    changeCourseLicense(){
-
+    toggleCourseLicense(){
+      if (this.licenseStatus === "license"){this.$store.dispatch('licenseCourse', this.course.id)}
+      if (this.licenseStatus === "trial"){this.$store.dispatch('unLicenseCourse', this.course.id)}
     }
   }
 }
