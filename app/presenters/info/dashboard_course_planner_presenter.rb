@@ -19,11 +19,9 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   def student_grades_for_course_without_resubmissions
     resubmitted_assignments = student.submissions.where(course: course).resubmitted
     graded_assignments = student.grades.where(course: course).instructor_modified.student_visible.order_by_graded_at
-    if resubmitted_assignments
-      remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
-    else
-      return graded_assignments
-    end
+    return graded_assignments unless resubmitted_assignments.first
+
+    remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
   end
 
   def remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
