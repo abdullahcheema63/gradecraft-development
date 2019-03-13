@@ -12,7 +12,7 @@
           = render partial: "grades/components/score", locals: { student: student, grade: grade, assignment_type: grade.assignment_type, assignment: grade.assignment }
         = render partial: "grades/components/edit_button", locals: { student: student, grade: grade }
 
-    - if presenter.grade_with_rubric?
+    - if presenter.grade_with_rubric? && !presenter.check_student_logged?
       = render partial: "assignments/rubric_grade_review", locals: { presenter: presenter, student: student, grade: grade }
 
     - if grade.graded_by.present? && grade.feedback.present?
