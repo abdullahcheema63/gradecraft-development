@@ -400,7 +400,6 @@ class User < ApplicationRecord
   end
 
   # Used to allow students to self-log a grade
-  #currently does not allow for students to regraded an assignment 
   def self_reported_done?(assignment)
     grade = grade_for_assignment(assignment)
     GradeProctor.new(grade).viewable?
