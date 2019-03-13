@@ -65,7 +65,6 @@
         %thead
           %tr
             %th Assignment
-            %th Feedback Summary
             %th Final Score
             - if current_course.has_multipliers?
               %th Score With Weights
@@ -74,13 +73,12 @@
           - presenter.student_grades_for_course_without_resubmissions.each do |grade|
             %tr
               %td= link_to grade.assignment.name, grade.assignment
-              %td= raw grade.feedback
               %td
                 - if grade.assignment.pass_fail?
                   .assignment-info.assignment-pass-fail
                     = render partial: "grades/components/pass_fail", locals: { presenter: presenter, assignment: grade.assignment }
                 - else
-                  = "#{points grade.final_points} / #{ points grade.assignment.full_points} points earned"
+                  = "#{points grade.final_points} / #{ points grade.assignment.full_points} points"
               - if current_course.has_multipliers?
                 %td= grade.try(:score)
               %td

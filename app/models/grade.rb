@@ -52,7 +52,7 @@ class Grade < ApplicationRecord
   scope :order_by_highest_score, -> { order("score DESC") }
   scope :order_by_student, -> { joins(:student).order("users.last_name, users.first_name ASC") }
 
-  scope :order_by_updated_at_date, -> { order("updated_at DESC")}
+  scope :order_by_graded_at, -> { order("graded_at DESC")}
   scope :excluded_from_course_score, -> { where excluded_from_course_score: true }
   scope :included_in_course_score, -> { where excluded_from_course_score: false }
   scope :instructor_modified, -> { where instructor_modified: true }

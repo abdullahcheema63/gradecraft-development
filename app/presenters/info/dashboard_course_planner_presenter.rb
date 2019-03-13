@@ -13,12 +13,12 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   end
 
   def grades_for_course
-    student.grades.where(course: course).instructor_modified.order_by_updated_at_date
+    student.grades.where(course: course).instructor_modified.order_by_graded_at
   end
 
   def student_grades_for_course_without_resubmissions
     resubmitted_assignments = student.submissions.where(course: course).resubmitted
-    graded_assignments = student.grades.where(course: course).instructor_modified.student_visible
+    graded_assignments = student.grades.where(course: course).instructor_modified.student_visible.order_by_graded_at
     if resubmitted_assignments
       remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
     else
@@ -35,7 +35,7 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
         end
       end
     end
-    ordered_grades = (filtered_assignments.sort_by &:updated_at).reverse
+    ordered_grades = (filtered_assignments.sort_by &:graded_at).reverse
   end
 
   def check_student_grades_for_course_without_resubmissions
