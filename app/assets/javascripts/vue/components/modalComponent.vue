@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="overlay" :class="modalClass" @click="close"></div>
+    <div class="overlay" :class="modalClass" @click="toggleModalState"></div>
     <div class="modal" :class="modalClass">
       <h2 class="modal_heading">
         <slot name="heading"></slot>
@@ -25,6 +25,9 @@ module.exports = {
   methods: {
     close() {
       this.$emit("close");
+    },
+    toggleModalState(){
+      this.modalState = !this.modalState
     }
   },
   computed: {

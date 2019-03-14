@@ -4,9 +4,13 @@
       <slot name="button-text"></slot>
     </button>
 
-    <!-- <div class="overlay" :class="modalClass" @click="close"></div> -->
-
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
+      <template slot="heading">
+        <slot name="heading"></slot>
+      </template>
+      <template slot="content">
+        <slot name="content"></slot>
+      </template>
     </modalComponent>
   </div>
 </template>
