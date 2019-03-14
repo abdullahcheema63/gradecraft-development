@@ -31,3 +31,8 @@
 
           .panel.dashboard-module.stacked-module
             %weekly-stats-analytics(student-id="#{current_student.id}")
+
+.pageContent
+  .dashboard-module
+    %h2 Assignment Overview
+    = render partial: "students/student_grade_index", locals: { presenter: presenter }
