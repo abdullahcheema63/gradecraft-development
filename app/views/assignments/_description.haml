@@ -71,7 +71,10 @@
       %p.italic You have not unlocked this #{term_for :assignment}. To achieve this you must:
       %ul
         - presenter.assignment.unlock_conditions.each do |uc|
-          %li= link_to uc.requirements_description_sentence(current_user.time_zone), uc.condition
+          - if !uc.condition_type == "Learning Objective"
+            %li= link_to uc.requirements_description_sentence(current_user.time_zone), uc.condition
+          - else
+            %li= link_to uc.requirements_description_sentence(current_user.time_zone), learning_objectives_objective_path(uc.condition_id)
 - elsif presenter.assignment.is_unlockable?
   %h3.uppercase #{glyph(:lock)} This #{term_for :assignment} is Locked
   %p.italic To unlock it, #{ term_for :students } must:
