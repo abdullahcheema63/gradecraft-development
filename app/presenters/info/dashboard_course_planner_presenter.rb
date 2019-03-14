@@ -13,7 +13,48 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   end
 
   def grades_for_course
-    student.grades.where(course: course).instructor_modified.order_by_updated_at_date
+    student.grades.where(course: course).instructor_modified.order_by_graded_at
+  end
+
+  def student_grades_for_course_without_resubmissions
+    resubmitted_assignments = student.submissions.where(course: course).resubmitted
+    graded_assignments = student.grades.where(course: course).instructor_modified.student_visible.order_by_graded_at
+    return graded_assignments unless resubmitted_assignments.first
+
+    remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
+  end
+
+  def remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
+    filtered_assignments = graded_assignments.dup
+    graded_assignments.each do |grade|
+      resubmitted_assignments.each do |submission|
+        if grade.assignment_id == submission.assignment_id
+          filtered_assignments.delete(grade)
+        end
+      end
+    end
+    ordered_grades = (filtered_assignments.sort_by &:graded_at).reverse
+  end
+
+  def check_student_grades_for_course_without_resubmissions
+    student.grades.where(course: course).instructor_modified.student_visible.exists
+  end
+
+  def check_ungraded_or_resubmitted_submissions
+    student.submissions.where(course: course).where.not(submitted_at: nil).ungraded.exists? || student.submissions.where(course: course).resubmitted.exists? || student.grades.where(course: course, complete: true, student_visible: false).exists?
+  end
+
+  def student_ungraded_or_resubmitted_submissions
+    student_submissions = student.submissions.where(course: course).where.not(submitted_at: nil).ungraded + student.submissions.where(course: course).resubmitted + student.grades.where(course: course, complete: true, student_visible: false)
+    ordered_submissions = (student_submissions.sort_by &:updated_at).reverse
+  end
+
+  def check_student_draft_submissions
+    student.submissions.exists?(course: course, submitted_at: nil)
+  end
+
+  def student_draft_submissions
+    student.submissions.where(course: course, submitted_at: nil)
   end
 
   def assignments

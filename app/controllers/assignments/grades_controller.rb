@@ -111,7 +111,8 @@ class Assignments::GradesController < ApplicationController
         instructor_modified: true,
         student_visible: true,
         complete: true,
-        graded_at: DateTime.now
+        graded_at: DateTime.now,
+        graded_by_id: current_student.id
       )
 
       if @grade.save

@@ -33,7 +33,7 @@
   %h3.uppercase Downloads
   %p= link_to glyph(:download) + "Download Grades", export_assignment_grades_path(presenter.assignment, format: :csv)
 
-  - if presenter.grade_with_rubric? && presenter.grades.present?
+  - if presenter.grade_with_rubric? && presenter.grades.present? && ! presenter.check_student_logged?
     .clear= link_to glyph(:download) + "Download Rubric Grades", export_earned_levels_assignment_grades_path(presenter.assignment, format: :csv)
 
 - if current_student.present?
