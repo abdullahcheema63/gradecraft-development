@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="action" @click="toggleModalState">
+    <button @click="toggleModalState">
       <slot name="button-text"></slot>
     </button>
 
