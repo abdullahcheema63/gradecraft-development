@@ -25,15 +25,15 @@ class Info::DashboardCoursePlannerPresenter < Showtime::Presenter
   end
 
   def remove_resubmitted_assigments(graded_assignments, resubmitted_assignments)
-    filtered_assignments = graded_assignments.dup
+    filtered_assignments = graded_assignments.to_a
     graded_assignments.each do |grade|
       resubmitted_assignments.each do |submission|
         if grade.assignment_id == submission.assignment_id
-          filtered_assignments.delete(grade)
+          filtered_assignments = filtered_assignments - [grade]
         end
       end
     end
-    ordered_grades = (filtered_assignments.sort_by &:graded_at).reverse
+    return filtered_assignments
   end
 
   def check_student_grades_for_course_without_resubmissions
