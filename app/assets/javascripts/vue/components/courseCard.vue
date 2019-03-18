@@ -91,9 +91,8 @@
             <label for="licensedCourse_2">Licensed course</label>
           </div>
           <br>
-            <button class="action" type="button" @click="toggleCourseLicense(); toggleModalState()">Update status</button>
-            <button class="secondary close" type="button" @click="toggleModalState">Cancel</button>
-          </form>
+          <button class="action" type="button" @click="toggleCourseLicense(); toggleModalState()">Update status</button>
+        </form>
       </template>
     </modalComponent>
   </div>

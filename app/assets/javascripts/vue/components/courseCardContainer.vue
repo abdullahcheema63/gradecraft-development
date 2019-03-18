@@ -162,8 +162,6 @@
             <template slot="heading" class="locked">Convert a trial course</template>
             We need to be able to add the class "locked" on the heading for this scenario
           </accordionComponent>
-
-          <button class="secondary" @close="toggleModalState">Cancel</button>
         </template>
       </buttonModal>
       <h3>Copy an existing course</h3>
@@ -195,7 +193,6 @@
               </div>
               <p>You will receive an email confirmation of your request after submitting, and a GradeCraft support staff member will reach out to you within 24 hours, Monday&ndash;Friday, 9am&ndash;5pm EST.</p>
               <button class='action'>Submit request</button>
-              <button class='secondary close'>Cancel</button>
             </form>
           </div>
         </template>
@@ -219,7 +216,8 @@ module.exports = {
   data() {
     return {
       termYear: [],
-      termName: []
+      termName: [],
+      modalState: false,
     }
   },
   computed: {
@@ -245,6 +243,14 @@ module.exports = {
     },
     courseTermName(){
       return this.pastCourses.map(courseMembership => courseMembership.term.name)
+    },
+  },
+  methods: {
+    toggleModalState(){
+      this.modalState = !this.modalState
+    },
+    close() {
+      this.$emit("close");
     },
   }
 }

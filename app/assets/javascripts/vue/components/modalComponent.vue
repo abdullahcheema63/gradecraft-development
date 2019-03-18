@@ -8,6 +8,8 @@
       </h2>
       <div class="modal_content">
         <slot name="content"></slot>
+
+        <button class="secondary" type="button" @click="close">Cancel</button>
       </div>
     </div>
   </div>
