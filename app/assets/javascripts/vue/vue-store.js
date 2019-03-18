@@ -9,6 +9,7 @@ const store = new Vuex.Store({
       lastName: "Barroso",
       email: "ebarr@gmail.com",
       admin: true,
+      showGuide: true,
       courseMembership: [{
         id: 1,
         name: "GradeCraft101",
@@ -169,6 +170,9 @@ const store = new Vuex.Store({
       },
       unLicenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: false})
+      },
+      toggleGuideControl({ commit }){
+        commit('toggleGuide')
       }
     },
     mutations: {
@@ -179,6 +183,9 @@ const store = new Vuex.Store({
           var course = state.user.courseMembership[membershipIndex]
           course.licensed = status
         }
+      },
+      toggleGuide (state){
+        state.user.showGuide = !state.user.showGuide
       }
     },
     getters: {
@@ -213,7 +220,9 @@ const store = new Vuex.Store({
             {return false;}
           return membership
         })
+      },
+      userGuideStatus: state => {
+        return state.user.showGuide;
       }
     }
-
 })

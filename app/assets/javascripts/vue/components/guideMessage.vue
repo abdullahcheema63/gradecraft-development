@@ -1,5 +1,5 @@
 <template>
-  <div class="accordion guide">
+  <div :class="guideClassControl">
     <h3 :class="{open:active}" @click="toggleActive">
       <span></span>
     </h3>
@@ -30,6 +30,13 @@ module.exports = {
         return 'is-open';
       }
       return 'is-closed';
+    },
+    showGuide(){
+      return this.$store.getters.userGuideStatus;
+    },
+    guideClassControl(){
+      if ( this.showGuide ){ return "accordion guide"}
+      else { return "accordion guide hiding"}
     }
   }
 }
