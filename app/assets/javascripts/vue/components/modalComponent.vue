@@ -9,7 +9,7 @@
       <div class="modal_content">
         <slot name="content"></slot>
 
-        <button class="secondary" type="button" @click="close">Cancel</button>
+        <a @click="close">Cancel</a>
       </div>
     </div>
   </div>

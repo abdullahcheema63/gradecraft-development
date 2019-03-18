@@ -59,17 +59,6 @@
         background-size: contain
         transform: rotate(-90deg)
 
-    &.locked
-      cursor: not-allowed
-      color: $grey_3
-
-      span
-        background: url(asset_path("icon-lock_locked.svg")) no-repeat center center
-        background-size: contain
-        transform: none
-        width: 1.6em
-        height: 1.6em
-
     @include mobile-xl
       padding: 1em 3% 1em calc(3% + 2em)
 
@@ -88,6 +77,17 @@
     & > div
       padding: 1em 5%
 
+  &.locked
+    h3
+      cursor: not-allowed
+      color: $grey_3
+
+      span
+        background: url(asset_path("icon-lock_locked.svg")) no-repeat center center
+        background-size: contain
+        transform: none
+        width: 1.6em
+        height: 1.6em
 
   /* The Guide */
   &.guide

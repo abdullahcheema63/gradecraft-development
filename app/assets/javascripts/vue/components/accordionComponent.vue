@@ -16,6 +16,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'accordion-component',
+  props: ['accordion_class'],
   data() {
     return {
       active: false
