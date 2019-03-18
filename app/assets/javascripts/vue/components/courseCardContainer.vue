@@ -186,7 +186,7 @@
             <h2>Request a copy of an existing course</h2>
             <p>Which existing course would you like to copy?</p>
             <form>
-              <div class="form_options" v-for="course in pastCourses">
+              <div class="form_options" v-for="course in currentAndPastCourses">
                 <input type="radio"/>
                 <label :for="course">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
               </div>
@@ -235,6 +235,10 @@ module.exports = {
     },
     pastCourses(){
       return this.$store.getters.pastCourseMembership;
+    },
+    currentAndPastCourses(){
+      var courses = this.currentCourses.concat(this.pastCourses);
+      return courses
     },
     filteredPastCourses(){
       var allPastCourses = this.pastCourses;
