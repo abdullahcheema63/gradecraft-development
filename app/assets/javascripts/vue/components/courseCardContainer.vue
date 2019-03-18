@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content_block">
-      <h2>Current Courses</h2>
+      <h2 class="unspace-top">Current Courses</h2>
       <div class="course_box" v-if="currentCourses">
         <courseCard v-for="course in currentCourses" :course="course" status="published"></courseCard>
       </div>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="content_block">
-      <h2>Unpublished Courses</h2>
+      <h2 class="unspace-top">Unpublished Courses</h2>
       <div class="course_box" v-if="unpublishedCourses">
         <courseCard v-for= "course in unpublishedCourses" :course="course" status="unpublished"></courseCard>
       </div>
@@ -25,7 +25,7 @@
     </div>
 
     <div class="content_block" v-if="pastCourses">
-      <h2>Past Courses</h2>
+      <h2 class="unspace-top">Past Courses</h2>
       <guideMessage>
         <p>
           These are all your
@@ -33,16 +33,20 @@
           inactive courses. You can request to copy them if you like how you’ve set them up in the past—just use the “request a copy” feature in the section below!
         </p>
       </guideMessage>
+
       <div class="filter_box">
-        <div v-for="year in courseTermYear">
-          <input :id="year"type="checkbox" v-model="termYear" :value="year"/>
-          <label :for="year">{{year}}</label>
+        <p>Select which filters you want to apply:</p>
+        <div>
+          <span v-for="year in courseTermYear">
+            <input :id="year"type="checkbox" v-model="termYear" :value="year"/>
+            <label :for="year">{{year}}</label>
+          </span>
         </div>
-      </div>
-      <div class="filter_box">
-        <div v-for="term in courseTermName">
-          <input :id="term" type="checkbox" v-model="termName" :value="term"/>
-          <label :for="term">{{term}}</label>
+        <div>
+          <span v-for="term in courseTermName">
+            <input :id="term" type="checkbox" v-model="termName" :value="term"/>
+            <label :for="term">{{term}}</label>
+          </span>
         </div>
       </div>
       <div class="course_box">
