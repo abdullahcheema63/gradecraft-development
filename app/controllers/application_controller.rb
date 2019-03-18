@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
   def record_course_login_event(event_options = {})
     return unless request.format.html? || request.format.xml?
     event_attrs = event_session.merge event_options
-    current_user.course_memberships.find_by(course: current_course).update_attribute(:last_login_at, DateTime.now)
+    current_user.course_memberships.find_by(course: current_course).update_attribute(:last_login_at, DateTime.cuurent)
     EventLoggers::LoginEvent.new.log_later(event_attrs.merge(request: nil))
   end
 
