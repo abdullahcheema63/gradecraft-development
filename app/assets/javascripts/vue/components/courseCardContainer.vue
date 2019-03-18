@@ -163,6 +163,7 @@
             We need to be able to add the class "locked" on the heading for this scenario
           </accordionComponent>
 
+          <button class="secondary" @close="toggleModalState">Cancel</button>
         </template>
       </buttonModal>
       <h3>Copy an existing course</h3>
