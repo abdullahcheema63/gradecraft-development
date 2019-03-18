@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="toggleModalState">
+    <button :class=button_class @click="toggleModalState">
       <slot name="button-text"></slot>
     </button>
 
@@ -18,13 +18,13 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'button-modal-pair',
+  props: ['button_class'],
   components: {
     modalComponent: () => VComponents.get('vue/components/modalComponent')
   },
-  props: {
-    modalState: {
-      default: false,
-      type: Boolean
+  data() {
+    return {
+      modalState: false
     }
   },
   methods: {

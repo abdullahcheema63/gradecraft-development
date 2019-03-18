@@ -61,7 +61,7 @@
       <p>
         Your license allows you <b>2 licensed courses,</b> active until May 14, 2019.
       </p>
-      <buttonModal>
+      <buttonModal button_class="action">
         <template slot="button-text">Add a course</template>
         <template slot="heading">Add a course</template>
         <template slot="content">
@@ -171,7 +171,7 @@
         duplicate it instead of starting from scratch, we can also
         help you copy an existing course:
       </p>
-      <buttonModal>
+      <buttonModal button_class="action secondary">
         <template slot="button-text">Request a copy</template>
         <template slot="heading">Copy a past course</template>
         <template slot="content">
