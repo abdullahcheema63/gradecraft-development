@@ -10,6 +10,7 @@ const store = new Vuex.Store({
       email: "ebarr@gmail.com",
       admin: true,
       showGuide: true,
+      hasPaid: false,
       courseMembership: [{
         id: 1,
         name: "GradeCraft101",
@@ -230,6 +231,9 @@ const store = new Vuex.Store({
       },
       userGuideStatus: state => {
         return state.user.showGuide;
+      },
+      userHasPaid: state => {
+        return state.user.hasPaid;
       }
     }
 })

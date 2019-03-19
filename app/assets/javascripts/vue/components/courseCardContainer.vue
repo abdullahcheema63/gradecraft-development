@@ -116,14 +116,14 @@
 
                 <h4>Will This be a Trial Course or a Licensed Course?</h4>
                 <div class="form_options">
-                  <input type="radio" id="trialCourse" name="courseType" />
-                  <label for="trialCourse">Trial Course</label>
+                  <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" value=false />
+                  <label for="newTrialCourse">Trial Course</label>
                 </div>
-                <div class="form_options">
-                  <input type="radio" id="licensedCourse" name="courseType" />
-                  <label for="licensedCourse">Licensed Course</label>
+                <div class="form_options" v-if="userHasPaid">
+                  <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" value=true />
+                  <label for="newLicensedCourse">Licensed Course</label>
                 </div>
-                <div class="form_options">
+                <div class="form_options" v-else>
                   <input type="radio" id="licensedCourse_disabled" name="courseType" disabled="disabled" />
                   <label for="licensedCourse_disabled">Licensed Course</label>
                 </div>
@@ -135,8 +135,8 @@
               <template slot="content">
                 <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
                 <div class="form_options" v-for="course in unLicensedCourses">
-                  <input type="radio" id="course" v-model="courseToLicense" :value="course.id">
-                  <label for="course">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                  <input type="radio" :id="'license-' + course.id" v-model="courseToLicense" :value="course.id">
+                  <label :for="'license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                 </div>
               </template>
             </accordionComponent>
@@ -155,7 +155,7 @@
               </h3>
             </div>
 
-            <button class="action">Add my course</button>
+            <button class="action" type="button" @click.prevent="addCourse">Add my course</button>
           </form>
         </template>
       </buttonModal>
@@ -167,14 +167,14 @@
       <buttonModal button_class="action secondary">
         <template slot="button-text">Request a copy</template>
         <template slot="heading">Copy a past course</template>
-        <template slot="content">
+        <template v-slot:content="slotProps">
           <div>
             <h2>Request a copy of an existing course</h2>
             <p>Which existing course would you like to copy?</p>
             <form>
               <div class="form_options" v-for="course in currentAndPastCourses">
-                <input type="radio" id="course" v-model="copyRequest.course" value="course"></input>
-                <label for="course">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                <input type="radio" :id="'copy-' + course.id" v-model="copyRequest.course" :value="course.id"></input>
+                <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
               </div>
               <br>
               <p>
@@ -187,7 +187,7 @@
                 <label>Additional notes</label>
               </div>
               <p>You will receive an email confirmation of your request after submitting, and a GradeCraft support staff member will reach out to you within 24 hours, Monday&ndash;Friday, 9am&ndash;5pm EST.</p>
-              <button class='action'>Submit request</button>
+              <button class='action' type="button" @click.prevent="courseCopyRequest(); slotProps.close()">Submit request</button>
             </form>
           </div>
         </template>
@@ -221,7 +221,7 @@ module.exports = {
         startDate: "",
         endDate: "",
         semester: "",
-        licensed: true
+        licensed: ""
       },
       copyRequest: {
         course: [],
@@ -260,14 +260,20 @@ module.exports = {
     courseTermName(){
       return this.pastCourses.map(courseMembership => courseMembership.term.name)
     },
+    userHasPaid(){
+      return this.$store.getters.userHasPaid;
+    }
   },
   methods: {
+    addCourse(){
+      console.log("Add a course")
+    },
+    courseCopyRequest(){
+      console.log("copy a course")
+    },
     toggleModalState(){
       this.modalState = !this.modalState
-    },
-    close() {
-      this.$emit("close");
-    },
+    }
   }
 }
 `</script>

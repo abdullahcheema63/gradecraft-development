@@ -8,7 +8,7 @@
       <template slot="heading">
         <slot name="heading"></slot>
       </template>
-      <template slot="content">
+      <template slot="content" :close="close">
         <slot name="content"></slot>
       </template>
     </modalComponent>
