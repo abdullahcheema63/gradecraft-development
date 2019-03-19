@@ -8,9 +8,32 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'guide-control',
+  data() {
+    return {
+      prevScrollPos: null
+    }
+  },
+  created: function() {
+    this.prevScrollPos = window.pageYOffset;
+    window.addEventListener('scroll', this.scrollGuide);
+  },
+  destroyed: function() {
+    window.removeEventListener('scroll', this.scrollGuide);
+  },
   methods: {
     toggleGuide(){
       this.$store.dispatch('toggleGuideControl')
+    },
+    scrollGuide(e) {
+      var currentScrollPos = window.pageYOffset;
+
+      if (this.prevScrollPos > currentScrollPos) {
+        document.getElementById("guide_control").classList.remove("mini");
+      } else {
+        document.getElementById("guide_control").classList.add("mini");
+      }
+
+      this.prevScrollPos = currentScrollPos;
     }
   },
   computed: {
@@ -21,23 +44,6 @@ module.exports = {
       if ( this.showGuide ){ return "guide-showing"}
       else { return 'guide-hiding'}
     }
-  },
-  created: function() {
-    var prevScrollPos = window.pageYOffset;
-
-    window.addEventListener('scroll', function(e) {
-      var currentScrollPos = window.pageYOffset;
-
-      console.log(prevScrollPos);
-      console.log(currentScrollPos);
-
-      if (prevScrollPos > currentScrollPos) {
-        document.getElementById("guide_control").classList.remove("mini");
-      } else {
-        document.getElementById("guide_control").classList.add("mini");
-      }
-      prevScrollPos = currentScrollPos;
-    });
   }
 }
 `</script>

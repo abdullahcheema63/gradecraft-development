@@ -15,7 +15,7 @@ module.exports = {
     }
   },
   created: function() {
-    this.prevScrollPos = window.PageYOffset;
+    this.prevScrollPos = window.pageYOffset;
     window.addEventListener('scroll', this.fancyScroll);
   },
   destroyed: function() {
@@ -30,6 +30,7 @@ module.exports = {
       } else {
         document.getElementById("header").style.top = "-70px";
       }
+
       this.prevScrollPos = currentScrollPos;
 
       if (window.pageYOffset > 20) {
