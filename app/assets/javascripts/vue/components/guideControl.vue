@@ -21,6 +21,23 @@ module.exports = {
       if ( this.showGuide ){ return "guide-showing"}
       else { return 'guide-hiding'}
     }
+  },
+  created: function() {
+    var prevScrollPos = window.pageYOffset;
+
+    window.addEventListener('scroll', function(e) {
+      var currentScrollPos = window.pageYOffset;
+
+      console.log(prevScrollPos);
+      console.log(currentScrollPos);
+
+      if (prevScrollPos > currentScrollPos) {
+        document.getElementById("guide_control").classList.remove("mini");
+      } else {
+        document.getElementById("guide_control").classList.add("mini");
+      }
+      prevScrollPos = currentScrollPos;
+    });
   }
 }
 `</script>

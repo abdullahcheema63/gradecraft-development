@@ -57,11 +57,15 @@ body
   text-transform: uppercase
   padding: 4px 0 4px 34px
   width: 92px
+  height: 44px
   box-sizing: border-box
   cursor: pointer
   border-radius: 3px 0 0 3px
   letter-spacing: 0.5px
   z-index: 100
+
+  overflow-x: hidden
+  transition: 0.3s all
 
   &.guide-showing
     background: white url(asset_path("icon-guide.svg")) no-repeat center left 8px
@@ -70,6 +74,11 @@ body
   &.guide-hiding
     background: white url(asset_path("icon-guide_hidden.svg")) no-repeat center left 8px
     background-size: auto 28px
+
+  &.mini
+    width: 36px
+    &:hover
+      width: 92px
 
   h4
     line-height: 1.25em
@@ -339,6 +348,52 @@ body
     @include mobile-xl
       position: static
       margin: 0
+
+
+
+/* New dynamic header __=^o.o^= */
+#header
+  padding: 1em 5%
+  box-sizing: border-box
+  position: fixed
+  z-index: 105
+  left: 50%
+  top: 0
+  transform: translate(-50%, 0)
+  width: 100%
+  max-width: 1600px
+  transition: 0.2s all
+  @include mobile-xl
+    padding: 0.5em 3%
+
+  img
+    display: block
+    height: 1.75em
+    width: auto
+
+    @media (max-width: $media-650)
+      height: 1.6em
+
+  .header-actions
+    position: absolute
+    right: 5%
+    top: 0.65em
+
+    @media (max-width: $media-650)
+      right: 3%
+      top: 0.25em
+
+  .button
+    min-width: 90px
+    margin: 0 0 0 1.5em
+
+    @media (max-width: $media-650)
+      margin: 0 0 0 0.75em
+      padding: 0.25em 0
+
+  &.fancy
+    background: white
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2)
 
 
 
