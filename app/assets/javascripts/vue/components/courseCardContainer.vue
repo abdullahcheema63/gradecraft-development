@@ -78,31 +78,25 @@
                 <p>Let‘s start with some essential course info:</p>
                 <div class="flex-2">
                   <div class="form_elem">
-                    <input type="text" id="course_number" required="required" placeholder="Your course number" />
+                    <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
                     <label for="course_number">Course #</label>
                   </div>
                   <div class="form_elem">
-                    <input type="text" id="course_name" required="required" placeholder="Your course name" />
+                    <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
                     <label for="course_name">Course name</label>
                   </div>
                   <div class="form_elem">
-                    <input type="text" id="course_start" placeholder="Course start date" />
+                    <input type="text" v-model="newCourse.startDate" id="course_start" placeholder="Course start date" />
                     <label for="course_start">Start date</label>
                   </div>
                   <div class="form_elem">
-                    <input type="text" id="course_end" placeholder="Course end date" />
+                    <input type="text" v-model="newCourse.endDate" id="course_end" placeholder="Course end date" />
                     <label for="course_end">End date</label>
                   </div>
 
                   <div class="form_elem">
-                    <select id="course_semester">
-                      <option value="" selected="selected">
-                        Semester
-                      </option>
-                      <option value="Fall">Fall</option>
-                      <option value="Winter">Winter</option>
-                      <option value="Spring">Spring</option>
-                      <option value="Summer">Summer</option>
+                    <select id="course_semester" v-model="newCourse.semester">
+                      <option v-for="term in semesterOptions" :value="term">{{term}}</option>
                     </select>
                     <label for="course_semester">Semester</label>
                   </div>
@@ -136,33 +130,25 @@
               </template>
             </accordionComponent>
 
-            <accordionComponent>
+            <accordionComponent v-if="unLicensedCourses.length">
+              <template slot="heading">Convert a trial course</template>
+              <template slot="content">
+                <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
+                <div class="form_options" v-for="course in unLicensedCourses">
+                  <input type="radio" id="course" v-model="courseToLicense" :value="course.id">
+                  <label for="course">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                </div>
+              </template>
+            </accordionComponent>
+
+            <accordionComponent v-else-if="!unLicensedCourses.length">
               <template slot="heading">Convert a trial course [[SCENARIO: No trial courses]]</template>
               <template slot="content">
                 <p>It looks like you don't have any trial courses available to convert. Try creating a new course!</p>
               </template>
             </accordionComponent>
 
-            <accordionComponent>
-              <template slot="heading">Convert a trial course [[SCENARIO: Yes trial courses]]</template>
-              <template slot="content">
-                <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
-                <div class="form_options">
-                  <input id="course_1" name="convertCourse" type="radio">
-                  <label for="course_1">HSWW 123 Course Title Here</label>
-                </div>
-                <div class="form_options">
-                  <input id="course_2" name="convertCourse" type="radio">
-                  <label for="course_2">HSWW 123 Course Title Here</label>
-                </div>
-                <div class="form_options">
-                  <input id="course_3" name="convertCourse" type="radio">
-                  <label for="course_3">HSWW 123 Course Title Here</label>
-                </div>
-              </template>
-            </accordionComponent>
-
-            <div class="accordion locked">
+            <div class="accordion locked" v-else>
               <h3>
                 <span></span>
                 Convert a trial course
@@ -187,8 +173,8 @@
             <p>Which existing course would you like to copy?</p>
             <form>
               <div class="form_options" v-for="course in currentAndPastCourses">
-                <input type="radio"/>
-                <label :for="course">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                <input type="radio" id="course" v-model="copyRequest.course" value="course"></input>
+                <label for="course">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
               </div>
               <br>
               <p>
@@ -197,7 +183,7 @@
               </p>
               <p>Are there any additional notes you would like us to know?</p>
               <div class='form_elem'>
-                <textarea></textarea>
+                <textarea v-model="copyRequest.notes"></textarea>
                 <label>Additional notes</label>
               </div>
               <p>You will receive an email confirmation of your request after submitting, and a GradeCraft support staff member will reach out to you within 24 hours, Monday&ndash;Friday, 9am&ndash;5pm EST.</p>
@@ -226,7 +212,21 @@ module.exports = {
     return {
       termYear: [],
       termName: [],
+      semesterOptions: ["Fall", "Winter", "Spring", "Summer"],
+      courseToLicense: "",
       modalState: false,
+      newCourse: {
+        name: "",
+        number: "",
+        startDate: "",
+        endDate: "",
+        semester: "",
+        licensed: true
+      },
+      copyRequest: {
+        course: [],
+        notes: ""
+      }
     }
   },
   computed: {
@@ -250,6 +250,9 @@ module.exports = {
     },
     unpublishedCourses(){
       return this.$store.getters.unpublishedCourseMembership;
+    },
+    unLicensedCourses(){
+      return this.$store.getters.unLicensedCourseMembership;
     },
     courseTermYear(){
       return this.pastCourses.map(courseMembership => courseMembership.term.year)

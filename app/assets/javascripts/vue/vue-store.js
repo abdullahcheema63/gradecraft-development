@@ -139,7 +139,7 @@ const store = new Vuex.Store({
           start: "2019-01-01T00:00:00",
           end: "2019-09-02T00:00:00"
         },
-        licensed: true,
+        licensed: false,
         published: false
       },
       {
@@ -149,8 +149,7 @@ const store = new Vuex.Store({
         role: "Instructor",
         instructor: "Steve Irwin",
         url: "",
-        gradingStatus: {
-        },
+        gradingStatus: {},
         eventCount: 2,
         announcementCount: 8,
         assignments: [{}],
@@ -160,8 +159,9 @@ const store = new Vuex.Store({
           start: "2016-01-01T00:00:00",
           end: "2016-09-01T00:00:00"
         },
-        licensed: true,
-        published: true },
+        licensed: false,
+        published: true
+      },
     ]
     }},
     actions: {
@@ -217,6 +217,13 @@ const store = new Vuex.Store({
       unpublishedCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {
           if(membership.published)
+            {return false;}
+          return membership
+        })
+      },
+      unLicensedCourseMembership: state => {
+        return state.user.courseMembership.filter( membership =>{
+          if(membership.licensed)
             {return false;}
           return membership
         })
