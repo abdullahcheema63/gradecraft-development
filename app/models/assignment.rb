@@ -158,6 +158,14 @@ class Assignment < ApplicationRecord
     submissions.submitted.any?
   end
 
+  def has_submissions?
+    submissions.exists?
+  end
+
+  def has_grades?
+    grades.exists?
+  end
+
   # Custom point total if the class has weighted assignments
   def full_points_for_student(student)
     return 0 unless full_points
