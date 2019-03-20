@@ -27,7 +27,7 @@ class UsersController < ApplicationController
       @users = @team.students
       @users << @team.leaders
     else
-      @users = current_course.users.includes(:courses, :teams).order_by_name
+      @users = current_course.users.where(admin: false).includes(:courses, :teams).order_by_name
     end
   end
 
