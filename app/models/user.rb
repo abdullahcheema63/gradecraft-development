@@ -228,6 +228,14 @@ class User < ApplicationRecord
     is_professor?(course) || is_gsi?(course) || is_admin?(course)
   end
 
+  def update_login_at
+    self.update_attribute(:last_login_at, DateTime.current)
+  end
+
+  def update_course_login_at(course)
+    self.course_memberships.find_by(course: course).update_attribute(:last_login_at, DateTime.current)
+  end
+
   ### TEAMS
   # Finding a student's team for a course
   def team_for_course(course)

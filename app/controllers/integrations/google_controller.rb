@@ -38,6 +38,7 @@ class Integrations::GoogleController < ApplicationController
         new_user = true
       end
 
+      user.update_login_at
       auto_login user
     end
 
