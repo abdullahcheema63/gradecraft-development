@@ -1,4 +1,5 @@
 @import "../utilities/variables"
+@import "../utilities/mixins"
 
 .tabs-content, .ui-widget-header, .ui-widget-content
   border: none
@@ -61,3 +62,104 @@
 
 .ui-corner-all
   border-radius: 0
+
+
+/* Tab Toggle Options - New =^o.o^= */
+.tab_container
+  border-left: 2px dashed $blue_dark
+  padding: 1em 0 1em 1.5em
+  margin: 3em 0 1em 0
+  position: relative
+
+  &:before, &:after
+    content: ''
+    display: block
+    width: 8px
+    height: 8px
+    border-radius: $button-radius
+    border: 1px solid $blue_dark
+    background-color: $teal_bright
+    position: absolute
+    left: -6px
+
+  &:before
+    top: -3px
+
+  &:after
+    bottom: -3px
+
+  .tab_toggle
+    margin: -2.25em 0 2.5em 0
+
+    label
+      border: 2px solid $blue_dark
+      color: $blue-medium_1
+      font: 1em/1.2em 'ProximaNova_semibold', sans-serif
+      text-align: center
+      display: inline-block
+      position: relative
+      min-width: 150px
+      padding: 0.7em 1em
+      margin: 0 -6px 0 0
+      box-sizing: border-box
+      cursor: pointer
+      background-color: white
+      transition: background-color 0.1s
+      @include mobile
+        display: block
+
+    input[type="radio"]
+      position: absolute
+      opacity: 0
+      z-index: -10
+
+      &:disabled + label
+        background: $grey_1
+        color: $grey_4
+        border-color: $grey_2
+        border-left-color: $blue_dark
+        cursor: not-allowed
+        font-family: 'ProximaNova_regular', sans-serif
+
+      &:checked + label
+        background-color: $blue_dark
+        color: white
+        cursor: default
+        font-family: 'ProximaNova_regular', sans-serif
+        position: relative
+
+        &:after
+          content: ''
+          display: block
+          position: absolute
+          bottom: 0
+          left: 50%
+          transform: translate(-50%, 100%)
+          width: 0
+          height: 0
+          border-left: 12px solid transparent
+          border-right: 12px solid transparent
+          border-top: 10px solid $blue_dark
+          @include mobile
+            border-top: 0px solid transparent
+
+    span
+      &:first-child
+        label
+          border-radius: 8px 0 0 8px
+          @include mobile
+            border-radius: 8px 8px 0 0
+
+      &:last-child
+        label
+          border-radius: 0 8px 8px 0
+          @include mobile
+            border-radius: 0 0 8px 8px
+
+
+  .tab_contents
+    & > div
+      display: none
+
+      &.active
+        display: block
