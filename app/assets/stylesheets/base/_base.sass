@@ -439,11 +439,11 @@ body
       background-color: white
       transition: background-color 0.1s
 
-      &:nth-child(2)
-        border-radius: 8px 0 0 8px
-
-      &:last-child
-        border-radius: 0 8px 8px 0
+      // &:nth-child(2)
+      //   border-radius: 8px 0 0 8px
+      //
+      // &:last-child
+      //   border-radius: 0 8px 8px 0
 
     input[type="radio"]
       position: absolute
@@ -478,12 +478,22 @@ body
           border-right: 12px solid transparent
           border-top: 10px solid $blue_dark
 
+    span
+      &:first-child
+        label
+          border-radius: 8px 0 0 8px
+
+      &:last-child
+        label
+          border-radius: 0 8px 8px 0
+
   .tab_contents
     & > div
       display: none
 
       &.active
         display: block
+
 
 
 // REFACTOR -- may need to refactor below code at some point, TBD __=^o.o^=
