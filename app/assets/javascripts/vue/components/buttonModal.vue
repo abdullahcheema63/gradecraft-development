@@ -11,6 +11,7 @@
       <template slot="content" :close="close">
         <slot name="content"></slot>
       </template>
+      <slot name="submit-button"></slot>
     </modalComponent>
   </div>
 </template>

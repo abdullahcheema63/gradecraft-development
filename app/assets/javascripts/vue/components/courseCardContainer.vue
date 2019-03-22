@@ -159,6 +159,80 @@
           </form>
         </template>
       </buttonModal>
+
+      <buttonModal button_class="action">
+        <template slot="button-text">Add/Convert Course</template>
+        <template slot="heading">Add a new course</template>
+        <template slot="content">
+          <formContainer>
+            <template slot="question">
+              <div class="tab_toggle">
+                <span v-for="question in formQuestion">
+                  <input type="radio" :id="question" :value="question" v-model="formResponse[0]" name="toggle_group" />
+                  <label :for="question">{{question}}</label>
+                </span>
+              </div>
+            </template>
+            <template slot="form-response">
+              <div v-if="formResponse[0]==='newCourse'" class="active">
+                <h4>Course Essentials</h4>
+                <p>Let‘s start with some essential course info:</p>
+                <div class="flex-2">
+                  <div class="form_elem">
+                    <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
+                    <label for="course_number">Course #</label>
+                  </div>
+                  <div class="form_elem">
+                    <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
+                    <label for="course_name">Course name</label>
+                  </div>
+                  <div class="form_elem">
+                    <input type="text" v-model="newCourse.startDate" id="course_start" placeholder="Course start date" />
+                    <label for="course_start">Start date</label>
+                  </div>
+                  <div class="form_elem">
+                    <input type="text" v-model="newCourse.endDate" id="course_end" placeholder="Course end date" />
+                    <label for="course_end">End date</label>
+                  </div>
+
+                  <div class="form_elem">
+                    <select id="course_semester" v-model="newCourse.semester">
+                      <option v-for="term in semesterOptions" :value="term">{{term}}</option>
+                    </select>
+                    <label for="course_semester">Semester</label>
+                  </div>
+                </div>
+
+                <h4>Will This be a Trial Course or a Licensed Course?</h4>
+                <div class="form_options">
+                  <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" value=false />
+                  <label for="newTrialCourse">Trial Course</label>
+                </div>
+                <div class="form_options" v-if="userHasPaid">
+                  <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" value=true />
+                  <label for="newLicensedCourse">Licensed Course</label>
+                </div>
+                <div class="form_options" v-else>
+                  <input type="radio" id="licensedCourse_disabled" name="courseType" disabled="disabled" />
+                  <label for="licensedCourse_disabled">Licensed Course</label>
+                </div>
+              </div>
+
+              <div v-else-if="formResponse[0]==='courseToLicense'" class="active">
+                <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
+                <div class="form_options" v-for="course in unLicensedCourses">
+                  <input type="radio" :id="'license-' + course.id" v-model="courseToLicense" :value="course.id">
+                  <label :for="'license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                </div>
+              </div>
+            </template>
+          </formContainer>
+          <slot name="submit-button">
+            <button class="action" type="button" @click.prevent="addCourse">Add course</button>
+          </slot>
+        </template>
+      </buttonModal>
+
       <h3>Copy an existing course</h3>
       <p>If you like your setup from a previous course and would like to
         duplicate it instead of starting from scratch, we can also
@@ -207,6 +281,7 @@ module.exports = {
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
+    formContainer: () => VComponents.get('vue/components/formContainer')
   },
   data() {
     return {
@@ -215,6 +290,8 @@ module.exports = {
       semesterOptions: ["Fall", "Winter", "Spring", "Summer"],
       courseToLicense: "",
       modalState: false,
+      formQuestion: ["newCourse", "courseToLicense"],
+      formResponse: ["newCourse"],
       newCourse: {
         name: "",
         number: "",

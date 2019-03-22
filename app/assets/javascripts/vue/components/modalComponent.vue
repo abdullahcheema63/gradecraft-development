@@ -8,7 +8,7 @@
       </h2>
       <div class="modal_content">
         <slot name="content"></slot>
-
+        <slot name="submit-button"></slot>
         <a @click="close">Cancel</a>
       </div>
     </div>
