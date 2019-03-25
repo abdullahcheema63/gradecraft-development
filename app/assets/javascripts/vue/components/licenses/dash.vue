@@ -3,7 +3,7 @@
     <h2>Your License</h2>
     <p>Do you have a license? {{hasLicense ? "YUP" : "NOPE"}}</p>
     <licenses-details v-if="hasLicense" :license="license"/>
-    <licenses-buy-form v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
+    <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
   </div>
 </template>
 
@@ -50,6 +50,11 @@ module.exports = {
       }
       const json = await resp.json();
       return apiResponseToData(json);
+    },
+    onUpdated: function(license) {
+      console.log("onUpdated");
+      console.log(license);
+      data.license = license;
     },
   },
   created: async function() {

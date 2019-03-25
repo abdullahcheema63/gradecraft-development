@@ -20,6 +20,15 @@ const data = {
 
 const api = "/api/licenses";
 
+const getService = (serviceName) =>
+  angular.element(document.body).injector().get(serviceName);
+
+const getAPIHelper = () =>
+  getService("GradeCraftAPI");
+
+const apiResponseToData = (responseJson) =>
+  getAPIHelper().dataItem(responseJson.data, responseJson);
+
 module.exports = {
   components: {
     "licenses-type-radio-button": () => VComponents.get("vue/components/licenses/type-radio-button"),
@@ -45,14 +54,23 @@ module.exports = {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(submission),
       });
+      const body = await resp.json();
+      if (!resp.ok) {
+        this.errors = body.errors;
+        console.error(resp);
+        console.error(body);
+        return;
+      }
       console.log(resp);
-      const body = await resp.text();
       console.log(body);
       alert(body);
+      const data = apiResponseToData(body);
+      console.log(data);
+      this.$emit("updated", apiResponseToData(body));
     },
   },
 }
