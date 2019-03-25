@@ -174,6 +174,9 @@ const store = new Vuex.Store({
       },
       toggleGuideControl({ commit }){
         commit('toggleGuide')
+      },
+      addNewCourse({ commit }, course){
+        commit('addNewCourse', {course: course})
       }
     },
     mutations: {
@@ -187,6 +190,15 @@ const store = new Vuex.Store({
       },
       toggleGuide (state){
         state.user.showGuide = !state.user.showGuide
+      },
+      addNewCourse (state, {course}){
+        var newCourse = course
+        newCourse.term.year = "2019"
+        newCourse.gradingStatus = {}
+        newCourse.assignments = []
+        newCourse. eventCount = ""
+        newCourse.announcementCount = ""
+        state.user.courseMembership.push(newCourse)
       }
     },
     getters: {

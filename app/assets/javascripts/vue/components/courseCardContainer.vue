@@ -86,16 +86,16 @@
                     <label for="course_name">Course name</label>
                   </div>
                   <div class="form_elem">
-                    <input type="text" v-model="newCourse.startDate" id="course_start" placeholder="Course start date" />
+                    <input type="text" v-model="newCourse.term.start" id="course_start" placeholder="Course start date" />
                     <label for="course_start">Start date</label>
                   </div>
                   <div class="form_elem">
-                    <input type="text" v-model="newCourse.endDate" id="course_end" placeholder="Course end date" />
+                    <input type="text" v-model="newCourse.term.end" id="course_end" placeholder="Course end date" />
                     <label for="course_end">End date</label>
                   </div>
 
                   <div class="form_elem">
-                    <select id="course_semester" v-model="newCourse.semester">
+                    <select id="course_semester" v-model="newCourse.term.semester">
                       <option v-for="term in semesterOptions" :value="term">{{term}}</option>
                     </select>
                     <label for="course_semester">Semester</label>
@@ -174,7 +174,7 @@
               </div>
             </template>
             <template slot="form-response">
-              <div v-if="formResponse[0]==='newCourse'" class="active">
+              <div v-if="formResponse[0]==='Create a new course'" class="active">
                 <h4>Course Essentials</h4>
                 <p>Let‘s start with some essential course info:</p>
                 <div class="flex-2">
@@ -187,19 +187,30 @@
                     <label for="course_name">Course name</label>
                   </div>
                   <div class="form_elem">
-                    <input type="text" v-model="newCourse.startDate" id="course_start" placeholder="Course start date" />
+                    <input type="text" v-model="newCourse.term.start" id="course_start" placeholder="Course start date" />
                     <label for="course_start">Start date</label>
                   </div>
                   <div class="form_elem">
-                    <input type="text" v-model="newCourse.endDate" id="course_end" placeholder="Course end date" />
+                    <input type="text" v-model="newCourse.term.end" id="course_end" placeholder="Course end date" />
                     <label for="course_end">End date</label>
                   </div>
 
                   <div class="form_elem">
-                    <select id="course_semester" v-model="newCourse.semester">
+                    <select id="course_semester" v-model="newCourse.term.semester">
+                      <option value="">Semester</option>
                       <option v-for="term in semesterOptions" :value="term">{{term}}</option>
                     </select>
                     <label for="course_semester">Semester</label>
+                  </div>
+                  <div class="form_elem">
+                    <select id="course_year" v-model="newCourse.term.year">
+                      <option value="" selected="selected">Year</option>
+                      <option :value="2020">2020</option>
+                      <option :value="2019">2019</option>
+                      <option :value="2018">2018</option>
+                      <option :value="2017">2017</option>
+                    </select>
+                    <label for="course_year">Year</label>
                   </div>
                 </div>
 
@@ -217,8 +228,10 @@
                   <label for="licensedCourse_disabled">Licensed Course</label>
                 </div>
               </div>
-
-              <div v-else-if="formResponse[0]==='courseToLicense'" class="active">
+              <div v-else-if="formResponse[0]==='Convert a trial course' &&  unLicensedCourses.length == 0">
+                <p> It looks like you do not have any trial courses to convert at this time </p>
+              </div>
+              <div v-else-if="formResponse[0]==='Convert a trial course' &&  unLicensedCourses.length > 0" class="active">
                 <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
                 <div class="form_options" v-for="course in unLicensedCourses">
                   <input type="radio" :id="'license-' + course.id" v-model="courseToLicense" :value="course.id">
@@ -290,14 +303,19 @@ module.exports = {
       semesterOptions: ["Fall", "Winter", "Spring", "Summer"],
       courseToLicense: "",
       modalState: false,
-      formQuestion: ["newCourse", "courseToLicense"],
-      formResponse: ["newCourse"],
+      formQuestion: ["Create a new course", "Convert a trial course"],
+      formResponse: ["Create a new course"],
       newCourse: {
+        id: "",
         name: "",
         number: "",
-        startDate: "",
-        endDate: "",
-        semester: "",
+        role: "Instructor",
+        term: {
+          name: "",
+          year: "",
+          start: "",
+          end: ""
+        },
         licensed: ""
       },
       copyRequest: {
@@ -343,7 +361,13 @@ module.exports = {
   },
   methods: {
     addCourse(){
-      console.log("Add a course")
+      var response = this.formResponse[0];
+      if( response == "Create a new course"){
+        this.$store.dispatch('addNewCourse', this.newCourse)
+      }
+      else{
+        this.$store.dispatch('licenseCourse', this.courseToLicense)
+      }
     },
     courseCopyRequest(){
       console.log("copy a course")
