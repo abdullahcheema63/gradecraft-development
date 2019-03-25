@@ -174,9 +174,10 @@
               </div>
             </template>
             <template slot="form-response">
-              <div v-if="formResponse[0]==='Create a new course'" class="active">
-                <h4>Course Essentials</h4>
-                <p>Let‘s start with some essential course info:</p>
+              <div v-if="formResponse[0]==='Create a new course'">
+                <p>Use this form to create a new course from scratch:</p>
+
+                <h3>Essential Course Info</h3>
                 <div class="flex-2">
                   <div class="form_elem">
                     <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
@@ -197,8 +198,11 @@
 
                   <div class="form_elem">
                     <select id="course_semester" v-model="newCourse.term.semester">
-                      <option value="">Semester</option>
-                      <option v-for="term in semesterOptions" :value="term">{{term}}</option>
+                      <option value="" selected="selected">Semester</option>
+                      <option :value="'Fall'">Fall</option>
+                      <option :value="'Winter'">Winter</option>
+                      <option :value="'Spring'">Spring</option>
+                      <option :value="'Summer'">Summer</option>
                     </select>
                     <label for="course_semester">Semester</label>
                   </div>
@@ -214,7 +218,10 @@
                   </div>
                 </div>
 
-                <h4>Will This be a Trial Course or a Licensed Course?</h4>
+                <h3>Course Type</h3>
+                <p v-if="userHasPaid === false">
+                  You currently have a <b>free trial account</b> and can only add trial courses right now.
+                </p>
                 <div class="form_options">
                   <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" value=false />
                   <label for="newTrialCourse">Trial Course</label>
@@ -228,15 +235,16 @@
                   <label for="licensedCourse_disabled">Licensed Course</label>
                 </div>
               </div>
-              <div v-else-if="formResponse[0]==='Convert a trial course' &&  unLicensedCourses.length == 0">
-                <p> It looks like you do not have any trial courses to convert at this time </p>
-              </div>
-              <div v-else-if="formResponse[0]==='Convert a trial course' &&  unLicensedCourses.length > 0" class="active">
+              <div v-else-if="formResponse[0]==='Convert a trial course' &&  userHasPaid">
                 <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
                 <div class="form_options" v-for="course in unLicensedCourses">
                   <input type="radio" :id="'license-' + course.id" v-model="courseToLicense" :value="course.id">
                   <label :for="'license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                 </div>
+              </div>
+              <div v-else>
+                <p>You currently have a <b>free trial account</b> and cannot convert trial courses into licensed ones right now. </p>
+                <p>Try creating a new course instead! </p>
               </div>
             </template>
           </formContainer>
