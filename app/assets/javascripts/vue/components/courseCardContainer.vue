@@ -95,11 +95,11 @@
                       <label for="course_name">Course name</label>
                     </div>
                     <div class="form_elem">
-                      <input type="text" v-model="newCourse.term.start" id="course_start" placeholder="Course start date" />
+                      <input type="text" v-model="newCourse.term.start" id="course_start" placeholder="Course start date" class="datetimepicker calendar" />
                       <label for="course_start">Start date</label>
                     </div>
                     <div class="form_elem">
-                      <input type="text" v-model="newCourse.term.end" id="course_end" placeholder="Course end date" />
+                      <input type="text" v-model="newCourse.term.end" id="course_end" placeholder="Course end date" class="datetimepicker calendar" />
                       <label for="course_end">End date</label>
                     </div>
 
