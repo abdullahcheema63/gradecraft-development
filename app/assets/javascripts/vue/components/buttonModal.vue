@@ -11,7 +11,9 @@
       <template slot="content" :close="close">
         <slot name="content"></slot>
       </template>
-      <slot name="submit-button"></slot>
+      <template slot="submit-button">
+        <slot name="submit-button"></slot>
+      </template>
     </modalComponent>
   </div>
 </template>
@@ -19,7 +21,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'button-modal-pair',
-  props: ['button_class'],
+  props: ['button_class', 'modalState'],
   components: {
     modalComponent: () => VComponents.get('vue/components/modalComponent')
   },

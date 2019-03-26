@@ -104,8 +104,8 @@
                     </div>
 
                     <div class="form_elem">
-                      <select id="course_semester" v-model="newCourse.term.semester">
-                        <option value="" selected="selected">Semester</option>
+                      <select id="course_semester" v-model="newCourse.term.name">
+                        <option value="" selected="selected" disabled="disabled">Semester</option>
                         <option :value="'Fall'">Fall</option>
                         <option :value="'Winter'">Winter</option>
                         <option :value="'Spring'">Spring</option>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="form_elem">
                       <select id="course_year" v-model="newCourse.term.year">
-                        <option value="" selected="selected">Year</option>
+                        <option value="" selected="selected" disabled="disabled">Year</option>
                         <option :value="2020">2020</option>
                         <option :value="2019">2019</option>
                         <option :value="2018">2018</option>
@@ -155,10 +155,12 @@
                 </div>
               </template>
             </formContainer>
-            <slot name="submit-button">
-              <button class="action" type="button" @click.prevent="addCourse(); toggleModalState()">Add course</button>
-            </slot>
           </form>
+        </template>
+        <template slot="submit-button">
+          <slot name="submit-button">
+            <button :modalState="modalState" class="action" type="button" @click.prevent="addCourse(); toggleModalState()">Add course</button>
+          </slot>
         </template>
       </buttonModal>
 
