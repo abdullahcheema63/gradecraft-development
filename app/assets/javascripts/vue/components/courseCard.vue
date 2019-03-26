@@ -83,12 +83,12 @@
         <h2>Set the status of {{ course.number }} {{ course.name }} {{ course.term.name }} {{ course.term.year }}</h2>
         <form>
           <div class="form_options">
-            <input id="trialCourse_2" v-model="licenseStatus" value="trial" name="courseStatus_2" type="radio">
-            <label for="trialCourse_2">Trial course</label>
+            <input :id="'trial-' + course.id" v-model="licenseStatus" value="trial" :name="'license-' + course.id" type="radio">
+            <label :for="'trial-' + course.id">Trial course</label>
           </div>
           <div class="form_options">
-            <input checked="checked" id="licensedCourse_2" v-model="licenseStatus" value="license" name="courseStatus_2" type="radio">
-            <label for="licensedCourse_2">Licensed course</label>
+            <input checked="checked" :id="'license-' + course.id" v-model="licenseStatus" value="license" :name="'license-' + course.id" type="radio">
+            <label :for="'license-' + course.id">Licensed course</label>
           </div>
           <br>
           <button class="action" type="button" @click="toggleCourseLicense(); toggleModalState()">Update status</button>
@@ -113,14 +113,25 @@
     </div>
 
     <div>
-      <a class="button next">Edit course</a>
+      <a class="button next">View course</a>
     </div>
 
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
       <template slot="heading">Set Course Status</template>
       <template slot="content">
-        <h2>Set the status of __ __ ___ </h2>
-        <p><b>HI ERIK!!!!!! TwT</b></p>
+        <h2>Set the status of {{ course.number }} {{ course.name }} {{ course.term.name }} {{ course.term.year }}</h2>
+        <form>
+          <div class="form_options">
+            <input type="radio" :id="'trial-' + course.id" v-model="licenseStatus" value="trial" :name="'course-' + course.id">
+            <label :for="'trial-' + course.id">Trial course</label>
+          </div>
+          <div class="form_options">
+            <input type="radio" :id="'license-' + course.id" v-model="licenseStatus" value="license" :name="'course-' + course.id">
+            <label :for="'license-' + course.id">Licensed course</label>
+          </div>
+          <br>
+          <button class="action" type="button" @click="toggleCourseLicense(); toggleModalState()">Update status</button>
+        </form>
       </template>
     </modalComponent>
   </div>

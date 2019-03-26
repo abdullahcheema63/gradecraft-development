@@ -10,7 +10,7 @@ const store = new Vuex.Store({
       email: "ebarr@gmail.com",
       admin: true,
       showGuide: true,
-      hasPaid: false,
+      hasPaid: true,
       courseMembership: [{
         id: 1,
         name: "GradeCraft101",
@@ -192,7 +192,8 @@ const store = new Vuex.Store({
         state.user.showGuide = !state.user.showGuide
       },
       addNewCourse (state, {course}){
-        var newCourse = course
+        var newCourse = {}
+        newCourse = course
         newCourse.term.year = "2019"
         newCourse.gradingStatus = {}
         newCourse.assignments = []

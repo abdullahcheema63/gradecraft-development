@@ -130,11 +130,11 @@
                     You currently have a <b>free trial account</b> and can only add trial courses right now.
                   </p>
                   <div class="form_options">
-                    <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" value=false />
+                    <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" :value=false />
                     <label for="newTrialCourse">Trial Course</label>
                   </div>
                   <div class="form_options" v-if="userHasPaid">
-                    <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" value=true />
+                    <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" :value=true />
                     <label for="newLicensedCourse">Licensed Course</label>
                   </div>
                   <div class="form_options" v-else>
@@ -232,7 +232,7 @@ module.exports = {
           start: "",
           end: ""
         },
-        licensed: ""
+        licensed: Boolean
       },
       copyRequest: {
         course: [],
