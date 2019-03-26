@@ -142,11 +142,11 @@
                     <label for="licensedCourse_disabled">Licensed Course</label>
                   </div>
                 </div>
-                <div v-else-if="formResponse[0]==='Convert a trial course' &&  userHasPaid">
+                <div v-else-if="formResponse[0]==='Convert a trial course' && userHasPaid">
                   <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
                   <div class="form_options" v-for="course in unLicensedCourses">
-                    <input type="radio" :id="'license-' + course.id" v-model="courseToLicense" :value="course.id">
-                    <label :for="'license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                    <input type="radio" :id="'convert-license-' + course.id" v-model="courseToLicense" :value="course.id">
+                    <label :for="'convert-license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                   </div>
                 </div>
                 <div v-else>
@@ -218,10 +218,9 @@ module.exports = {
     return {
       termYear: [],
       termName: [],
-      semesterOptions: ["Fall", "Winter", "Spring", "Summer"],
-      courseToLicense: "",
       formQuestion: ["Create a new course", "Convert a trial course"],
       formResponse: ["Create a new course"],
+      courseToLicense: "",
       newCourse: {
         id: "",
         name: "",
@@ -291,9 +290,6 @@ module.exports = {
     courseCopyRequest(){
       this.$refs.buttonModal_copy.toggleModalState()
       console.log(this.$refs.buttonModal_copy)
-    },
-    checkThis(){
-      console.log(this)
     }
   }
 }
