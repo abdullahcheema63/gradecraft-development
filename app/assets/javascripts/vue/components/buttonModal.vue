@@ -21,7 +21,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'button-modal-pair',
-  props: ['button_class', 'modalState'],
+  props: ['button_class'],
   components: {
     modalComponent: () => VComponents.get('vue/components/modalComponent')
   },
@@ -32,7 +32,7 @@ module.exports = {
   },
   methods: {
     close() {
-      this.$emit("close");
+      this.toggleModalState()
     },
     toggleModalState(){
       this.modalState = !this.modalState

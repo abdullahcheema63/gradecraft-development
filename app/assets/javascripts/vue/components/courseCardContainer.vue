@@ -66,7 +66,7 @@
         Your license allows you <b>2 licensed courses,</b> active until May 14, 2019.
       </p>
 
-      <buttonModal button_class="action">
+      <buttonModal button_class="action" ref="buttonModal_add">
         <template slot="button-text">Add a course</template>
         <template slot="heading">Add a new course</template>
         <template slot="content">
@@ -159,7 +159,7 @@
         </template>
         <template slot="submit-button">
           <slot name="submit-button">
-            <button :modalState="modalState" class="action" type="button" @click.prevent="addCourse(); toggleModalState()">Add course</button>
+            <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
           </slot>
         </template>
       </buttonModal>
@@ -169,10 +169,10 @@
         duplicate it instead of starting from scratch, we can also
         help you copy an existing course:
       </p>
-      <buttonModal button_class="action secondary">
+      <buttonModal button_class="action secondary" ref="buttonModal_copy">
         <template slot="button-text">Request a copy</template>
         <template slot="heading">Copy a past course</template>
-        <template v-slot:content="slotProps">
+        <template slot="content">
           <div>
             <h2>Request a copy of an existing course</h2>
             <p>Which existing course would you like to copy?</p>
@@ -192,7 +192,7 @@
                 <label>Additional notes</label>
               </div>
               <p>You will receive an email confirmation of your request after submitting, and a GradeCraft support staff member will reach out to you within 24 hours, Monday&ndash;Friday, 9am&ndash;5pm EST.</p>
-              <button class='action' type="button" @click.prevent="courseCopyRequest(); slotProps.close()">Submit request</button>
+              <button class='action' type="button" @click.prevent="courseCopyRequest()">Submit request</button>
             </form>
           </div>
         </template>
@@ -220,7 +220,6 @@ module.exports = {
       termName: [],
       semesterOptions: ["Fall", "Winter", "Spring", "Summer"],
       courseToLicense: "",
-      modalState: false,
       formQuestion: ["Create a new course", "Convert a trial course"],
       formResponse: ["Create a new course"],
       newCourse: {
@@ -282,16 +281,19 @@ module.exports = {
       var response = this.formResponse[0];
       if( response == "Create a new course"){
         this.$store.dispatch('addNewCourse', this.newCourse)
+        this.$refs.buttonModal_add.toggleModalState()
+        console.log(this.$refs.buttonModal_add)
       }
       else{
         this.$store.dispatch('licenseCourse', this.courseToLicense)
       }
     },
     courseCopyRequest(){
-      console.log("copy a course")
+      this.$refs.buttonModal_copy.toggleModalState()
+      console.log(this.$refs.buttonModal_copy)
     },
-    toggleModalState(){
-      this.modalState = !this.modalState
+    checkThis(){
+      console.log(this)
     }
   }
 }
