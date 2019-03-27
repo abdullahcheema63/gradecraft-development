@@ -85,12 +85,11 @@
                   <p>Use this form to create a new course from scratch:</p>
 
                   <h3>Essential Course Info</h3>
-                  <p v-if="newCourseErrors.length">
-                    <b>Please address the error(s) below:</b>
-                    <ul>
-                      <li v-for="error in newCourseErrors"> {{error}} </li>
-                    </ul>
-                  </p>
+                  <div v-if="newCourseErrors.length" class="alert_msg">
+                    <p>
+                      Please fill out the <b>required fields</b> below if you want to create a new course.
+                    </p>
+                  </div>
                   <div class="flex-2">
                     <div class="form_elem">
                       <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
@@ -300,11 +299,8 @@ module.exports = {
     checkAddCourseForm(){
       this.newCourseErrors = []
 
-      if(!this.newCourse.name){
-        this.newCourseErrors.push('A course name is required')
-      }
-      if (!this.newCourse.number){
-        this.newCourseErrors.push('A course number is required')
+      if(!this.newCourse.name || !this.newCourse.number){
+        this.newCourseErrors.push("Missing input for required fields")
       }
       return this.newCourseErrors
     },
