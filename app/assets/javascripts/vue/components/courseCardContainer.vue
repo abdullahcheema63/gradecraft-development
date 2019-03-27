@@ -85,6 +85,12 @@
                   <p>Use this form to create a new course from scratch:</p>
 
                   <h3>Essential Course Info</h3>
+                  <p v-if="newCourseErrors.length">
+                    <b>Please address the error(s) below:</b>
+                    <ul>
+                      <li v-for="error in newCourseErrors"> {{error}} </li>
+                    </ul>
+                  </p>
                   <div class="flex-2">
                     <div class="form_elem">
                       <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
@@ -232,8 +238,9 @@ module.exports = {
           start: "",
           end: ""
         },
-        licensed: Boolean
+        licensed: false
       },
+      newCourseErrors: [],
       copyRequest: {
         course: [],
         notes: ""
@@ -279,13 +286,27 @@ module.exports = {
     addCourse(){
       var response = this.formResponse[0];
       if( response == "Create a new course"){
-        this.$store.dispatch('addNewCourse', this.newCourse)
-        this.$refs.buttonModal_add.toggleModalState()
-        console.log(this.$refs.buttonModal_add)
+        var errors = this.checkAddCourseForm()
+
+        if(!errors.length){
+          this.$store.dispatch('addNewCourse', this.newCourse)
+          this.$refs.buttonModal_add.toggleModalState()
+        }
       }
       else{
         this.$store.dispatch('licenseCourse', this.courseToLicense)
       }
+    },
+    checkAddCourseForm(){
+      this.newCourseErrors = []
+
+      if(!this.newCourse.name){
+        this.newCourseErrors.push('A course name is required')
+      }
+      if (!this.newCourse.number){
+        this.newCourseErrors.push('A course number is required')
+      }
+      return this.newCourseErrors
     },
     courseCopyRequest(){
       this.$refs.buttonModal_copy.toggleModalState()
