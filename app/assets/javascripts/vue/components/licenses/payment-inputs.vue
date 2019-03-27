@@ -87,6 +87,7 @@ module.exports = {
     card.addEventListener('change', ({error}) => {
       if (error) {
         self.cardError = error.message;
+        console.error(self.cardError);
       } else {
         self.cardError = '';
       }

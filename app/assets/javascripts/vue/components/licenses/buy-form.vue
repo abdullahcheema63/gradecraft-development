@@ -1,5 +1,8 @@
 <template>
   <form @submit.prevent="submit" >
+    <div v-if="hasErrors" class="alert-box">
+      {{errors}}
+    </div>
     <label>License Type</label>
     <ul v-for="lt of licenseTypes" :key="lt.id">
       <licenses-type-radio-button 
@@ -16,6 +19,7 @@
 ```
 const data = {
   licenseType: null,
+  errors: [],
 };
 
 const api = "/api/licenses";
@@ -61,6 +65,7 @@ module.exports = {
       const body = await resp.json();
       if (!resp.ok) {
         this.errors = body.errors;
+        console.log(this);
         console.error(resp);
         console.error(body);
         return;
@@ -70,7 +75,15 @@ module.exports = {
       alert(body);
       const data = apiResponseToData(body);
       console.log(data);
-      this.$emit("updated", apiResponseToData(body));
+      this.$emit("updated", data);
+    },
+  },
+  computed: {
+    hasErrors: function() {
+      console.log(this.$refs);
+      return !!this.errors.length
+        || (this.$refs.paymentInputs && this.$refs.paymentInputs.errors.length)
+        || (this.$refs.paymentInputs && this.$refs.paymentInputs.cardError);
     },
   },
 }
