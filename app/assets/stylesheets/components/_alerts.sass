@@ -46,16 +46,16 @@
 
 
 /* New inline alert messages __=^o.o^= */
-.alert_msg
+.inline_alert_msg
   background-color: $coral_1
   border-right: 3px solid $pink_2
   padding: 0.25em 1em 0.25em 5%
   box-sizing: border-box
   max-width: 800px
-  margin: 1em 0 1em -5%
+  margin: 1em 0 1em calc(-5% - 8px)
   @include mobile-xl
     padding-left: 3%
-    margin-left: -3%
+    margin-left: calc(-3% - 8px)
 
   h2
     margin-top: 0

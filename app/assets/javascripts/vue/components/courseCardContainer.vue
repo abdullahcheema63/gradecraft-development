@@ -85,7 +85,7 @@
                   <p>Use this form to create a new course from scratch:</p>
 
                   <h3>Essential Course Info</h3>
-                  <div v-if="newCourseErrors.length" class="alert_msg">
+                  <div v-if="newCourseErrors.length" class="inline_alert_msg">
                     <p>
                       Please fill out the <b>required fields</b> below if you want to create a new course.
                     </p>
