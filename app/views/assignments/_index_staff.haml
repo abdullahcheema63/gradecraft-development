@@ -30,7 +30,7 @@
               %span.has-tooltip
                 %i.fa.fa-info-circle
                 .display-on-hover.hover-style
-                  You cannot delete an #{(term_for :assignment_type).downcase} that has #{(term_for :assignment).pluralize.downcase} with submissions or grades
+                  This #{(term_for :assignment_type).downcase} currently has student submissions and/or grades and cannot be deleted
           %table.instructor-assignments.second-row-header{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
             %thead
               %tr
