@@ -23,7 +23,14 @@
         .assignment-type-container{role: "tabpanel"}
           %ul.assignment-action-buttons
             = active_course_link_to "[ Edit ]", edit_assignment_type_path(assignment_type)
-            = active_course_link_to "[ Delete ]", assignment_type_path(assignment_type), data: { confirm: "Are you sure you want to delete #{term_for :assignment_type} #{assignment_type.name}?", method: :delete }
+            - if !(assignment_type.has_assignments_with_submissions? || assignment_type.has_assignments_with_grades?)
+              = active_course_link_to "[ Delete ]", assignment_type_path(assignment_type), data: { confirm: "Are you sure you want to delete #{term_for :assignment_type} #{assignment_type.name}?", method: :delete }
+            - else
+              = "[ Delete ]"
+              %span.has-tooltip
+                %i.fa.fa-info-circle
+                .display-on-hover.hover-style
+                  This #{(term_for :assignment_type).downcase} currently has student submissions and/or grades and cannot be deleted
           %table.instructor-assignments.second-row-header{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
             %thead
               %tr

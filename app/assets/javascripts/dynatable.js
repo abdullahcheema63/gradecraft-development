@@ -31,6 +31,9 @@ $('table.dynatable').bind('dynatable:init', function(e, dynatable) {
         calendarDate: 'numeric',
         openDateSort: 'numeric',
         closeDateSort: 'numeric',
+        submissionUpdatedAt: 'dateSort',
+        gradedAt: 'dateSort',
+        dueDate: 'dateSort',
         lastUpdated: 'dateSort',
         createdAt: 'dateSort'
       }

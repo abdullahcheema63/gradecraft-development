@@ -23,13 +23,16 @@
               You can set a minimum score that must be earned to accrue any points. Earning less than the threshold will automatically result in 0 points
           %input(ng-model="assignment.threshold_points" gc-number-input ng-change="updateAssignment()")
     .form-item
-      %label(ng-class="{ 'disabled': isGroupGraded() }")
-        %input(type="checkbox" ng-model="assignment.student_logged" ng-disabled="isGroupGraded()" ng-click="updateAssignment()")
+      %label(ng-class="{ 'disabled': isGroupGraded() || assignment.resubmissions_allowed }")
+        %input(type="checkbox" ng-model="assignment.student_logged" ng-disabled="isGroupGraded() || assignment.resubmissions_allowed" ng-click="updateAssignment()")
           Student Logged
           %span.has-tooltip
             %i.fa.fa-info-circle
             .display-on-hover.hover-style
               Do {{ termFor("students")}} self-report their grade for this {{ termFor("assignment")}}?  If you add grade levels, they'll be able to select their self-assessed score from the list during the open time period. If you don't, they'll be able to select that they did the work and earn full points.
+      %p
+        %i(ng-if="assignment.resubmissions_allowed")
+          Resubmitted assignments cannot be student logged
 
   .form-subsection
     %h3.form-subtitle Submissions
@@ -54,13 +57,16 @@
             %input(type="checkbox" ng-model="assignment.accepts_text" ng-click="updateAssignment()")  Accepts Text
 
     .form-item(ng-if="assignment.accepts_submissions")
-      %label
-        %input(type="checkbox" ng-model="assignment.resubmissions_allowed" ng-click="updateAssignment()")
+      %label(ng-class="{ 'disabled': assignment.student_logged }")
+        %input(type="checkbox" ng-model="assignment.resubmissions_allowed" ng-disabled="assignment.student_logged" ng-click="updateAssignment()")
           Resubmissions Allowed
           %span.has-tooltip
             %i.fa.fa-info-circle
             .display-on-hover.hover-style
               Can {{ termFor("students")}} resubmit this {{ termFor("assignment")}}?
+      %p
+        %i(ng-if="assignment.student_logged")
+          Student-logged assignments cannot accept resubmissions
 
   .form-subsection
     %h3.form-subtitle Basic Visibility Settings
