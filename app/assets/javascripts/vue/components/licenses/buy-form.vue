@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="submit" >
+    <h2>Buy License</h2>
     <div v-if="hasErrors" class="alert-box">
       {{errors}}
     </div>
@@ -64,15 +65,15 @@ module.exports = {
       });
       const body = await resp.json();
       if (!resp.ok) {
-        this.errors = body.errors;
-        console.log(this);
+        this.errors = Object.entries(body.errors); //Need polyfill
+        console.error("resp not ok!");
+        console.error(this);
         console.error(resp);
         console.error(body);
         return;
       }
       console.log(resp);
       console.log(body);
-      alert(body);
       const data = apiResponseToData(body);
       console.log(data);
       this.$emit("updated", data);

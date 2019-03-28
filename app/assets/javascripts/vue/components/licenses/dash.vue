@@ -3,6 +3,7 @@
     <h2>Your License</h2>
     <p>Do you have a license? {{hasLicense ? "YUP" : "NOPE"}}</p>
     <licenses-details v-if="hasLicense" :license="license"/>
+    <licenses-renew-form @updated="onUpdated" v-if="hasLicense" :license="license" :stripePk="stripePk" />
     <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
   </div>
 </template>
@@ -27,6 +28,7 @@ const apiResponseToData = (responseJson) =>
 module.exports = {
   components: {
     "licenses-buy-form": () => VComponents.get("vue/components/licenses/buy-form"),
+    "licenses-renew-form": () => VComponents.get("vue/components/licenses/renew-form"),
     "licenses-details": () => VComponents.get("vue/components/licenses/details"),
   },
   data: function() { return data; },
