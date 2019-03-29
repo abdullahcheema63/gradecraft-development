@@ -158,6 +158,14 @@ class AssignmentType < ApplicationRecord
     assignments.any? { |a| a.visible_for_student? student }
   end
 
+  def has_assignments_with_submissions?
+    assignments.any? { |assignment| assignment.has_submissions? }
+  end
+
+  def has_assignments_with_grades?
+    assignments.any? { |assignment| assignment.has_grades? }
+  end
+
   private
 
   def zero_max_points_if_unused

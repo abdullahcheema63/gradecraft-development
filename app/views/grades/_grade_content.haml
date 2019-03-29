@@ -32,7 +32,7 @@
 - if grade.earned_badges.present?
   = render partial: "grades/components/badges", locals: { grade: grade }
 
-- if grade.assignment.grade_with_rubric?
+- if grade.assignment.grade_with_rubric? && !grade.assignment.student_logged?
   .rubric-container
     = render partial: "rubrics/components/rubric_table", locals: { presenter: Assignments::Presenter.new(assignment: grade.assignment, course: current_course), rubric: grade.assignment.rubric, student: grade.student, include_grade_info: true }
 

@@ -273,6 +273,12 @@ describe Assignment do
       new_rubric = assignment.find_or_create_rubric
       expect(new_rubric).to eq assignment.reload.rubric
     end
+    it "does not create a rubric if the assignment is student logged" do
+      assignment = create(:assignment)
+      assignment.student_logged = true
+      new_rubric = assignment.find_or_create_rubric
+      expect(new_rubric).to eq nil
+    end
   end
 
   describe "pass-fail assignments" do

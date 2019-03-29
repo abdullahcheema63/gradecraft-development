@@ -151,6 +151,10 @@ class Assignments::Presenter < Showtime::Presenter
     assignment.student_logged? && assignment.open? && user.is_student?(course)
   end
 
+  def check_student_logged?
+    assignment.student_logged?
+  end
+
   def submission_grade_history(student)
     grade = self.grade_for_student(student)
     submission = self.submission_for_assignment(student)

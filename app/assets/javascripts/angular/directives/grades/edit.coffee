@@ -28,7 +28,7 @@
         assignment = AssignmentService.assignment()
         return "" if !assignment
 
-        if assignment.is_rubric_graded == true
+        if assignment.is_rubric_graded == true && !assignment.student_logged
           return "RUBRIC"
         if assignment.pass_fail == true
           return "PASS_FAIL"

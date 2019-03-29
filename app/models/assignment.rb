@@ -140,8 +140,9 @@ class Assignment < ApplicationRecord
 
   def find_or_create_rubric
     return rubric if rubric
+    return nil if self.student_logged
     Rubric.create assignment_id: self.id, course_id: self.course_id
-  end
+    end
 
   # Checking to see if an assignment is individually graded
   def is_individual?
@@ -155,6 +156,14 @@ class Assignment < ApplicationRecord
 
   def has_submitted_submissions?
     submissions.submitted.any?
+  end
+
+  def has_submissions?
+    submissions.exists?
+  end
+
+  def has_grades?
+    grades.exists?
   end
 
   # Custom point total if the class has weighted assignments
