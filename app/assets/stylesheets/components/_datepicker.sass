@@ -1,17 +1,11 @@
 @import "../utilities/variables"
+@import "../utilities/mixins"
+
 
 #ui-datepicker-div.ui-datepicker
  z-index: 100 !important
 
-.ui-datepicker.ui-widget-content
-	margin-top: .15rem !important
-	background: $color-blue-4
-
 .ui-datepicker
-	.ui-datepicker-prev, .ui-datepicker-next
-		border: 1px solid $color-grey-5
-		top: 1px
-
 	.ui-datepicker-prev .ui-icon, .ui-datepicker-next .ui-icon
 		background-image: image-url('ui-icons_454545_256x240.png')
 
@@ -107,3 +101,48 @@
 
   .ui_tpicker_unit_hide, .ui_tpicker_unit_hide:before
     display: none
+
+
+
+.ui-datepicker
+  background-color: $bg-blue_2
+  padding: 0
+  margin-top: 20px
+
+  &.ui-widget-content
+    border: 2px solid $blue_dark
+
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    top: 0
+    left: 30px
+    transform: translateY(-100%)
+    width: 0
+    height: 0
+    border-left: 12px solid transparent
+    border-right: 12px solid transparent
+    border-bottom: 10px solid $blue_dark
+
+.ui-datepicker-header
+  a
+    border-bottom: 0px solid transparent
+
+
+
+/* New datepicker __=^o.o^= */
+.new_style
+  //Overrides; need to phase out this Important BS
+  #ui-datepicker-div.ui-datepicker
+    z-index: 120 !important
+
+  .ui-datepicker
+
+    .ui-widget-header
+      border: 0px solid transparent
+      background: $blue_dark
+      color: white
+      font-family: 'KlinicSlab_medium', serif
+      font-size: 1em
+      letter-spacing: 0.05em

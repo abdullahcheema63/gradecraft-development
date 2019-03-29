@@ -100,9 +100,9 @@
                       <label for="course_name">Course name</label>
                     </div>
                     <div class="form_elem">
-                      <datePicker id="course_start" placeholder="Course start date" v-model="newCourse.term.start"> </datePicker>
-                      <input type="text" v-model="newCourse.term.start" id="course_start" placeholder="Course start date" class="datetimepicker calendar" />
-                      <label for="course_start">Start date</label>
+                      <datePicker id="course_start" placeholder="Course start date" v-model="newCourse.term.start">
+                        <template name="label_text">Start Date</template>
+                      </datePicker>
                     </div>
                     <div class="form_elem">
                       <input type="text" v-model="newCourse.term.end" id="course_end" placeholder="Course end date" class="datetimepicker calendar" />
