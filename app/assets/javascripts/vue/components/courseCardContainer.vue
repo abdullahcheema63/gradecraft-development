@@ -100,6 +100,7 @@
                       <label for="course_name">Course name</label>
                     </div>
                     <div class="form_elem">
+                      <datePicker id="course_start" placeholder="Course start date" v-model="newCourse.term.start"> </datePicker>
                       <input type="text" v-model="newCourse.term.start" id="course_start" placeholder="Course start date" class="datetimepicker calendar" />
                       <label for="course_start">Start date</label>
                     </div>
@@ -217,7 +218,8 @@ module.exports = {
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
-    formContainer: () => VComponents.get('vue/components/formContainer')
+    formContainer: () => VComponents.get('vue/components/formContainer'),
+    datePicker: () => VComponents.get('vue/components/datePicker'),
   },
   data() {
     return {

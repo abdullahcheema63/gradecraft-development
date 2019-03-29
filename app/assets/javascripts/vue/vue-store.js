@@ -192,12 +192,11 @@ const store = new Vuex.Store({
         state.user.showGuide = !state.user.showGuide
       },
       addNewCourse (state, {course}){
-        var newCourse = {}
-        newCourse = course
-        newCourse.term.year = "2019"
+        var newCourse = {...course}
+        newCourse.term = {...course.term}
         newCourse.gradingStatus = {}
         newCourse.assignments = []
-        newCourse. eventCount = ""
+        newCourse.eventCount = ""
         newCourse.announcementCount = ""
         state.user.courseMembership.push(newCourse)
       }
