@@ -17,6 +17,7 @@ class UserSessionsController < ApplicationController
       if @user = login(params[:user][:email].downcase, params[:user][:password])
         record_course_login_event user: @user
         @user.update_login_at
+        @user.update_course_login_at(current_course)
         format.html { redirect_back_or_to current_user_is_observer? ? assignments_path : dashboard_path }
         format.xml { render xml: @user, status: :created, location: @user }
       else

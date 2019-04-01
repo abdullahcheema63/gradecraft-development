@@ -38,12 +38,12 @@ class Integrations::GoogleController < ApplicationController
         new_user = true
       end
 
-      user.update_login_at
       auto_login user
     end
 
     ensure_activated if session[:activate_google_user] == true
     create_user_authorization
+    user.update_login_at
     redirect_to redirect_path(new_user)
   end
 
