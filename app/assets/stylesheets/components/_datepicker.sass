@@ -5,38 +5,18 @@
 #ui-datepicker-div.ui-datepicker
  z-index: 100 !important
 
-//Override for important z-index; need to phase out this Important BS
+// Override for important z-index; need to phase out this Important BS
 .new_style
   #ui-datepicker-div.ui-datepicker
     z-index: 120 !important
 
-.ui-timepicker-div
-  // .ui-widget-header
-  //   margin-bottom: 8px
-  //
-  // dl
-  //   text-align: left
-  //
-  // dl dt
-  //   float: left
-  //   clear:left
-  //   padding: 0 0 0 5px
-  //
-  // dl dd
-  //   margin: 0 10px 10px 40%
 
-  td
-    font-size: 90%
-
-  .ui_tpicker_unit_hide
-    display: none
-
+// Old timepicker styling (may need to refactor?)
 .ui-tpicker-grid-label
   background: none
   border: none
   margin: 0
   padding: 0
-
 .ui-timepicker-rtl
   direction: rtl
 
@@ -49,36 +29,6 @@
 
   dl dd
     margin: 0 40% 10px 10px
-
-/* Shortened version style */
-.ui-timepicker-div.ui-timepicker-oneLine
-  padding-right: 2px
-
-  .ui_tpicker_time, dt
-    display: none
-
-  // .ui_tpicker_time_label
-  //   display: block
-  //   padding-top: 2px
-
-  dl
-    text-align: right
-
-  dl dd, dl dd > div
-    display: inline-block
-    margin: 0
-
-  dl dd.ui_tpicker_minute:before, dl dd.ui_tpicker_second:before
-    content: ':'
-    display: inline-block
-
-  dl dd.ui_tpicker_millisec:before, dl dd.ui_tpicker_microsec:before
-    content: '.'
-    display: inline-block
-
-  .ui_tpicker_unit_hide, .ui_tpicker_unit_hide:before
-    display: none
-
 
 
 /* New datepicker __=^o.o^= */
@@ -102,6 +52,9 @@
     border-left: 12px solid transparent
     border-right: 12px solid transparent
     border-bottom: 10px solid $blue_dark
+
+  table
+    margin: 0
 
   tr
     border-bottom: none
@@ -128,9 +81,15 @@
         color: white
 
   .ui-datepicker-buttonpane
+    margin: 0
+    display: flex
+    justify-content: space-between
+
     button
       padding: 0.6em 1em
-      cursor: pointer
+      opacity: 1
+      float: none !important
+      width: 49%
 
       &:first-child
         background: white
@@ -148,10 +107,13 @@
         &:hover
           background: $pink_2
 
-  .ui-timepicker-select
+  select.ui-timepicker-select
     background: $blue-medium_1
     color: white
     border: 2px solid $blue-medium_2
+    width: 100%
+    min-width: unset
+    display: inline-block
 
     &:hover
       background: $blue-medium_2
@@ -186,3 +148,20 @@
 
   .ui-datepicker-prev
     transform: rotate(180deg)
+
+.ui-timepicker-div
+  padding: 0.5em 0
+
+  .ui_tpicker_time, dt
+    display: none
+  .ui_tpicker_unit_hide, .ui_tpicker_unit_hide:before
+    display: none
+
+  dl
+    display: flex
+    justify-content: space-between
+    margin: 0 0.5em
+
+  .ui_tpicker_hour, .ui_tpicker_minute
+    margin: 0
+    width: 49%
