@@ -296,6 +296,7 @@ module.exports = {
       }
       else{
         this.$store.dispatch('licenseCourse', this.courseToLicense)
+        this.$refs.buttonModal_add.toggleModalState()
       }
     },
     checkAddCourseForm(){
@@ -308,7 +309,6 @@ module.exports = {
     },
     courseCopyRequest(){
       this.$refs.buttonModal_copy.toggleModalState()
-      console.log(this.$refs.buttonModal_copy)
     }
   }
 }
