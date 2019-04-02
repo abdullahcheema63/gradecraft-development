@@ -167,41 +167,54 @@
         </template>
       </buttonModal>
 
+      <div v-if="pastCourses">
+        <h3>Copy an existing course</h3>
+        <p>If you like your setup from a previous course and would like to
+          duplicate it instead of starting from scratch, we can also
+          help you copy an existing course:
+        </p>
+        <buttonModal button_class="action secondary" ref="buttonModal_copy">
+          <template slot="button-text">Request a copy</template>
+          <template slot="heading">Copy a past course</template>
+          <template slot="content">
+            <div>
+              <h2>Request a copy of an existing course</h2>
+              <p>Which existing course would you like to copy?</p>
+              <form>
+                <div class="form_options" v-for="course in currentAndPastCourses">
+                  <input type="radio" :id="'copy-' + course.id" v-model="copyRequest.course" :value="course.id"></input>
+                  <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                </div>
+                <br>
+                <p>
+                  <b>Please note that your copy will be a trial course by default.</b>
+                  You will need to add more licensed courses to your account in order to convert it to a licensed course.
+                </p>
+                <p>Are there any additional notes you would like us to know?</p>
+                <div class='form_elem'>
+                  <textarea v-model="copyRequest.notes"></textarea>
+                  <label>Additional notes</label>
+                </div>
+                <p>You will receive an email confirmation of your request after submitting, and a GradeCraft support staff member will reach out to you within 24 hours, Monday&ndash;Friday, 9am&ndash;5pm EST.</p>
+                <button class='action' type="button" @click.prevent="courseCopyRequest()">Submit request</button>
+              </form>
+            </div>
+          </template>
+        </buttonModal>
+      </div>
 
-
-      <h3>Copy an existing course</h3>
-      <p>If you like your setup from a previous course and would like to
-        duplicate it instead of starting from scratch, we can also
-        help you copy an existing course:
-      </p>
-      <buttonModal button_class="action secondary" ref="buttonModal_copy">
-        <template slot="button-text">Request a copy</template>
-        <template slot="heading">Copy a past course</template>
-        <template slot="content">
-          <div>
-            <h2>Request a copy of an existing course</h2>
-            <p>Which existing course would you like to copy?</p>
-            <form>
-              <div class="form_options" v-for="course in currentAndPastCourses">
-                <input type="radio" :id="'copy-' + course.id" v-model="copyRequest.course" :value="course.id"></input>
-                <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
-              </div>
-              <br>
-              <p>
-                <b>Please note that your copy will be a trial course by default.</b>
-                You will need to add more licensed courses to your account in order to convert it to a licensed course.
-              </p>
-              <p>Are there any additional notes you would like us to know?</p>
-              <div class='form_elem'>
-                <textarea v-model="copyRequest.notes"></textarea>
-                <label>Additional notes</label>
-              </div>
-              <p>You will receive an email confirmation of your request after submitting, and a GradeCraft support staff member will reach out to you within 24 hours, Monday&ndash;Friday, 9am&ndash;5pm EST.</p>
-              <button class='action' type="button" @click.prevent="courseCopyRequest()">Submit request</button>
-            </form>
-          </div>
-        </template>
-      </buttonModal>
+      <div v-if="userHasPaid == false">
+        <h3>Upgrade your account</h3>
+        <p>
+          If you like what you see, you can
+          <b>upgrade your account</b>
+          with a license of your choice! Purchasing a license will allow you to integrate GradeCraft with other tools, and add users to your courses.
+        </p>
+        <p>
+          <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a> to see what’s best for you. We have options for Higher Ed, K–12, and entire schools or districts; but if you need a custom arrangement, we’re more than happy to help!
+        </p>
+        <button class="action secondary next">Upgrade my account</button>
+      </div>
     </div>
   </div>
 </template>
