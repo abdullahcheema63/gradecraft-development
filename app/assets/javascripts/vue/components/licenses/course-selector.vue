@@ -1,14 +1,15 @@
 <template>
   <div>
     <h2>Courses</h2>
+    <em v-if="!courses.length">You don't have any courses.</em>
     <ul v-for="c of courses" :key="c.id">
       <li>
         <span>{{c.name}}</span>
         <span>{{isLicensed(c)}}</span>
-        <button v-if="isLicensed(c)">
+        <button v-if="isLicensed(c)" @click="removeCourse(c)">
           Remove from License
         </button>
-        <button v-if="!isLicensed(c)">
+        <button v-if="!isLicensed(c)" @click="addCourse(c)">
           Add to License
         </button>
       </li>
@@ -18,7 +19,7 @@
 
 <script lang="coffee">
 ```
-const api = "/api/licenses";
+const api = "/api/licenses/edit";
 
 const getService = (serviceName) =>
   angular.element(document.body).injector().get(serviceName);
@@ -27,7 +28,7 @@ const getAPIHelper = () =>
   getService("GradeCraftAPI");
 
 const apiResponseToData = (responseJson) =>
-  getAPIHelper().dataItem(responseJson.data, responseJson);
+  getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
 
 module.exports = {
   props: {
@@ -62,14 +63,14 @@ module.exports = {
           "Accept": "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(courseIds),
+        body: JSON.stringify({ courses: courseIds }),
       });
-      const body = await resp.json();
       if (!resp.ok) {
         console.error("resp not ok!");
         console.error(resp);
-        console.error(body);
+        console.error(await resp.text());
       }
+      const body = await resp.json();
       console.log(resp);
       console.log(body);
       const data = apiResponseToData(body);
@@ -77,19 +78,15 @@ module.exports = {
       this.$emit("updated", data);
     },
     addCourse: async function(course) {
-      console.log("addCourse");
-      console.log(course);
-      const newList = this.licensedCourses()
-        .map(c => c.id)
-        .filter(id => id !== course.id);
+      const newList = this.license.courses
+        .map(c => c.id);
+      newList.push(course.id);
       await this.updateCourses(newList);
     },
     removeCourse: async function(course) {
-      console.log("removeCourse");
-      console.log(course);
-      const newList = this.licensedCourses()
-        .map(c => c.id);
-      newList.push(course.id);
+      const newList = this.license.courses
+        .map(c => c.id)
+        .filter(id => id !== course.id);
       await this.updateCourses(newList);
     },
   },

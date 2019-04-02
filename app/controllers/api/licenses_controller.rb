@@ -8,6 +8,8 @@ class API::LicensesController < ApplicationController
     if !@license
       render json: { data: nil, errors: [ "License not found" ] }, status: 404
     end
+    @courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
+    @payments = @license.payments.all
   end
 
   # POST api/licenses
@@ -36,11 +38,12 @@ class API::LicensesController < ApplicationController
       puts e
       return render_error e.message, e
     else
+      @courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
       render "api/licenses/index", success: true, status: 201
     end
   end
 
-  # PUT api/licenses
+  # PUT api/licenses/edit
   def edit
     @license = current_user.license
     if !@license
@@ -48,13 +51,14 @@ class API::LicensesController < ApplicationController
     end
     p = edit_params
     @license.courses = p[:courses].map {|c| Course.find c }
-    professor_course_ids = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
+    professor_courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
     @license.courses.each do |c|
-      if !professor_course_ids.include? c
+      if !professor_courses.include? c
         return render_error "User is not a professor in course: " + c.id.to_s, c, 401
       end
     end
     if @license.save
+      @courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
       return render "api/licenses/index", success: true, status: 200
     else
       return render_error license.errors, license.errors, 400
@@ -82,6 +86,7 @@ class API::LicensesController < ApplicationController
       puts e
       render_error e.message, e
     else
+      @courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
       render "api/licenses/index", success: true, status: 200
     end
   end

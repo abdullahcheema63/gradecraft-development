@@ -12,6 +12,7 @@
         :license-type="lt" />
     </ul>
     <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
+    <p v-if="this.licenseType">Your credit card will be charged ${{this.licenseType.price_usd}}.</p>
     <button type="submit">Buy</button>
   </form>
 </template>
@@ -32,7 +33,7 @@ const getAPIHelper = () =>
   getService("GradeCraftAPI");
 
 const apiResponseToData = (responseJson) =>
-  getAPIHelper().dataItem(responseJson.data, responseJson);
+  getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
 
 module.exports = {
   components: {

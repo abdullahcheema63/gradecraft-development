@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h2>Your License</h2>
-    <p>Do you have a license? {{hasLicense ? "YUP" : "NOPE"}}</p>
+    <h1>Your License</h1>
     <licenses-details v-if="hasLicense" :license="license"/>
-    <licenses-course-selector v-if="hasLicense" :license="license" :courses="courses" />
-    <licenses-renew-form @updated="onUpdated" v-if="hasLicense" :license="license" :stripePk="stripePk" />
+    <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
+    <button @click="toggleRenew">Toggle Renewal Form</button>
+    <licenses-renew-form @updated="onUpdated" v-show="showRenew" v-if="hasLicense" :license="license" :license-type="licenseType" :stripePk="stripePk" />
     <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
   </div>
 </template>
@@ -13,6 +13,8 @@
 ```
 const data = {
   license: undefined,
+  courses: [],
+  showRenew: false,
 };
 
 const api = "/api/licenses";
@@ -24,7 +26,13 @@ const getAPIHelper = () =>
   getService("GradeCraftAPI");
 
 const apiResponseToData = (responseJson) =>
-  getAPIHelper().dataItem(responseJson.data, responseJson);
+  getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
+
+const coursesFromResponse = (responseJson) => {
+  const arr = [];
+  getAPIHelper().loadFromIncluded(arr, "courses", responseJson)
+  return arr;
+}
 
 module.exports = {
   components: {
@@ -37,11 +45,15 @@ module.exports = {
   props: {
     licenseTypes: Array,
     stripePk: String,
-    courses: Array,
   },
   computed: {
     hasLicense: function() {
       return !!this.license;
+    },
+    licenseType: function() {
+      return this.license
+        ? this.licenseTypes.find(lt => lt.id === this.license.license_type_id)
+        : "no license";
     },
   },
   methods: {
@@ -54,7 +66,12 @@ module.exports = {
         throw resp;
       }
       const json = await resp.json();
-      return apiResponseToData(json);
+      data.courses = coursesFromResponse(json);
+      const final = apiResponseToData(json);
+      return final;
+    },
+    toggleRenew: function() {
+      this.showRenew = !this.showRenew;
     },
     onUpdated: function(license) {
       console.log("onUpdated");

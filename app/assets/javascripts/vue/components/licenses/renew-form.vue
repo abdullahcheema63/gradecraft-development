@@ -6,6 +6,7 @@
     </div>
     <span>License Type: {{license.license_type_name}}</span>
     <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
+    <p v-if="this.licenseType">Your credit card will be charged ${{this.licenseType.price_usd}}.</p>
     <button type="submit">Renew</button>
   </form>
 </template>
@@ -13,7 +14,6 @@
 <script lang="coffee">
 ```
 const data = {
-  licenseType: null,
   errors: [],
 };
 
@@ -26,7 +26,7 @@ const getAPIHelper = () =>
   getService("GradeCraftAPI");
 
 const apiResponseToData = (responseJson) =>
-  getAPIHelper().dataItem(responseJson.data, responseJson);
+  getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
 
 module.exports = {
   components: {
@@ -35,12 +35,10 @@ module.exports = {
   data: function() { return data; },
   props: {
     license: Object,
+    licenseType: Object,
     stripePk: String,
   },
   methods: {
-    onLicenseTypeSelected: function(lt) {
-      this.licenseType = lt;
-    },
     submit: async function() {
       const payment = await this.$refs.paymentInputs.getPayment();
       const submission = {
