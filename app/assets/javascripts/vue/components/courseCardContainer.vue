@@ -99,26 +99,10 @@
                       <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
                       <label for="course_name">Course name</label>
                     </div>
-<<<<<<< Updated upstream
                     <datePicker @update-date="updateStartDate" id="course_start" placeholder="Course start date">
                       <label for="course_start">Start date</label>
                     </datePicker>
                     <datePicker @update-date="updateEndDate" id="course_end" placeholder="Course end date">
-=======
-                    <div class="form_elem">
-                      <datePicker id="course_start" placeholder="Course start date" v-model="newCourse.term.start">
-                        <template name="label_text">Start Date</template>
-                      </datePicker>
-                    </div>
-                    <div class="form_elem">
-                      <input type="text" v-model="newCourse.term.end" id="course_end" placeholder="Course end date" class="datetimepicker-input calendar" />
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                       <label for="course_end">End date</label>
                     </datePicker>
 
