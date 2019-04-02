@@ -17,7 +17,7 @@ module.exports = {
   },
   mounted(){
     var self = this;
-    $(".datetimepicker").datetimepicker({
+    $(this.$el.querySelector('input')).datetimepicker({
       onSelect: function(date) {
         self.$emit('update-date', date);
       }
