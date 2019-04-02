@@ -112,6 +112,9 @@
                     </div>
                     <div class="form_elem">
                       <input type="text" v-model="newCourse.term.end" id="course_end" placeholder="Course end date" class="datetimepicker-input calendar" />
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                       <label for="course_end">End date</label>
                     </datePicker>
