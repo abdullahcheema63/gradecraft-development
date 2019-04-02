@@ -99,14 +99,12 @@
                       <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
                       <label for="course_name">Course name</label>
                     </div>
-                    <div class="form_elem">
-                      <datePicker @update-date="updateStartDate" id="course_start" placeholder="Course start date">
-                      </datePicker>
-                    </div>
-                    <div class="form_elem">
-                      <datePicker @update-date="updateEndDate" id="course_end" placeholder="Course end date">
-                      </datePicker>
-                    </div>
+                    <datePicker @update-date="updateStartDate" id="course_start" placeholder="Course start date">
+                      <label for="course_start">Start date</label>
+                    </datePicker>
+                    <datePicker @update-date="updateEndDate" id="course_end" placeholder="Course end date">
+                      <label for="course_end">End date</label>
+                    </datePicker>
 
                     <div class="form_elem">
                       <select id="course_semester" v-model="newCourse.term.name">

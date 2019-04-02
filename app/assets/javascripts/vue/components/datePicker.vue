@@ -1,12 +1,15 @@
 <template>
-  <input type="text" :id="id" :placeholder="placeholder" class="datetimepicker calendar" />
+  <div class="form_elem">
+    <input type="text" :id="id" :placeholder="placeholder" class="datetimepicker calendar" />
+    <slot></slot>
+  </div>
 </template>
 
 
 <script lang='coffee'>`
 module.exports = {
   name: 'date-picker',
-  props: ['id', 'placeholder', 'for'],
+  props: ['id', 'placeholder'],
   data(){
     return {
       active: false
@@ -14,7 +17,7 @@ module.exports = {
   },
   mounted(){
     var self = this;
-    $(this.$el).datetimepicker({
+    $(".datetimepicker").datetimepicker({
       onSelect: function(date) {
         self.$emit('update-date', date);
       }
