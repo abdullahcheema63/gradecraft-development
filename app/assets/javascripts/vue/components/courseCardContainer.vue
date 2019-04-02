@@ -56,7 +56,7 @@
 
     <div class="content_block bg-green_mint">
       <h2>Add a New Course</h2>
-      <p>With your ____ account, you can explore all GradeCraft has to offer and
+      <p>With your licensed account, you can explore all GradeCraft has to offer and
         create licensed courses. Licensed courses have the ability to:</p>
       <ul>
         <li>Integrate with other tools (like Canvas or Moodle)</li>
@@ -100,13 +100,12 @@
                       <label for="course_name">Course name</label>
                     </div>
                     <div class="form_elem">
-                      <datePicker id="course_start" placeholder="Course start date" v-model="newCourse.term.start">
-                        <template name="label_text">Start Date</template>
+                      <datePicker @update-date="updateStartDate" id="course_start" placeholder="Course start date">
                       </datePicker>
                     </div>
                     <div class="form_elem">
-                      <input type="text" v-model="newCourse.term.end" id="course_end" placeholder="Course end date" class="datetimepicker calendar" />
-                      <label for="course_end">End date</label>
+                      <datePicker @update-date="updateEndDate" id="course_end" placeholder="Course end date">
+                      </datePicker>
                     </div>
 
                     <div class="form_elem">
@@ -169,6 +168,8 @@
           </slot>
         </template>
       </buttonModal>
+
+
 
       <h3>Copy an existing course</h3>
       <p>If you like your setup from a previous course and would like to
@@ -284,6 +285,12 @@ module.exports = {
     }
   },
   methods: {
+    updateStartDate(date){
+      this.newCourse.term.start = date;
+    },
+    updateEndDate(date){
+      this.newCourse.term.end = date;
+    },
     addCourse(){
       var response = this.formResponse[0];
       if( response == "Create a new course"){

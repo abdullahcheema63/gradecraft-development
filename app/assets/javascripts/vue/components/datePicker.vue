@@ -1,8 +1,5 @@
 <template>
-  <input type="text" :id="id" :placeholder="placeholder" class="calendar" />
-  <label :for="id">
-    <slot name="label_text"></slot>
-  </label>
+  <input type="text" :id="id" :placeholder="placeholder" class="datetimepicker calendar" />
 </template>
 
 
@@ -10,14 +7,21 @@
 module.exports = {
   name: 'date-picker',
   props: ['id', 'placeholder', 'for'],
-  data() {
+  data(){
     return {
       active: false
     }
   },
-  mounted() {
-    $(this.$el).datetimepicker();
-    console.log(this.$el)
+  mounted(){
+    var self = this;
+    $(this.$el).datetimepicker({
+      onSelect: function(date) {
+        self.$emit('update-date', date);
+      }
+    });
+  },
+  beforeDestroy(){
+    $(this.$el).datepicker('hide').datepicker('destroy');
   }
 }
 `</script>
