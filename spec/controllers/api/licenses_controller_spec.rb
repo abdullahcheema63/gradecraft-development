@@ -1,4 +1,4 @@
-describe API::LicensesController, focus: true do
+describe API::LicensesController do
   let(:license_standard) { create :standard_license, user: user_professor }
   let(:license_expired) { create :standard_license, :expired, user: user_professor }
   let(:license_custom) { create :custom_license }
