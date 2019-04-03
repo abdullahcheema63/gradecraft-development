@@ -56,14 +56,30 @@
 
     <div class="content_block bg-green_mint">
       <h2>Add a New Course</h2>
-      <p>With your licensed account, you can explore all GradeCraft has to offer and
-        create licensed courses. Licensed courses have the ability to:</p>
+
+      <p v-if="userHasPaid">
+        With your
+        <b>licensed account,</b>
+        you can explore all GradeCraft has to offer and <b>create licensed courses.</b> <br />
+        Licensed courses have the ability to:
+      </p>
+      <p v-else>
+        With your
+        <b>free trial account,</b>
+        you can explore GradeCraft as much as you’d like! <br />
+        The only things you can’t do are:
+      </p>
+
       <ul>
         <li>Integrate with other tools (like Canvas or Moodle)</li>
         <li>Import or add other users (such as assistants and students)</li>
       </ul>
-      <p>
-        Your license allows you <b>2 licensed courses,</b> active until May 14, 2019.
+
+      <p v-if="userHasPaid">
+        Your account license allows you <b>___2___ licensed courses,</b> active until ___May 14, 2019___.
+      </p>
+      <p v-else>
+        Feel free to create as many trial courses as you need to discover what our tool can do for you and your students:
       </p>
 
       <buttonModal button_class="action" ref="buttonModal_add">
@@ -167,7 +183,7 @@
         </template>
       </buttonModal>
 
-      <div v-if="pastCourses">
+      <div v-if="pastCourses || currentCourses">
         <h3>Copy an existing course</h3>
         <p>If you like your setup from a previous course and would like to
           duplicate it instead of starting from scratch, we can also
