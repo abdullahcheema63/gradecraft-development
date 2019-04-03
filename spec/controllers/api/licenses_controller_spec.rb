@@ -1,4 +1,4 @@
-describe API::LicensesController do
+describe API::LicensesController, focus: true do
   let(:license_standard) { create :standard_license, user: user_professor }
   let(:license_expired) { create :standard_license, :expired, user: user_professor }
   let(:license_custom) { create :custom_license }
@@ -134,6 +134,17 @@ describe API::LicensesController do
       }
       put :edit, params: params, format: :json
       expect(response.status).to eq 200
+    end
+
+    it "returns 400 if courses exceed maximum", focus: true do
+      login_user(license_standard.user)
+      license_standard.max_courses = 1
+      course_ids = license_standard.user.course_memberships.where(role: "professor").map{|cm| cm.course.id}
+      params = {
+        courses: course_ids,
+      }
+      put :edit, params: params, format: :json
+      expect(response.status).to eq 400
     end
 
     it "replaces course list" do

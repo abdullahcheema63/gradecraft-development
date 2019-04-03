@@ -6,9 +6,9 @@ class API::LicensesController < ApplicationController
   def index
     @license = License.find_by(user_id: current_user.id)
     if !@license
-      render json: { data: nil, errors: [ "License not found" ] }, status: 404
+      return render json: { data: nil, errors: [ "License not found" ] }, status: 404
     end
-    @courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
+    @courses = get_courses_where_professor
     @payments = @license.payments.all
   end
 
@@ -30,15 +30,11 @@ class API::LicensesController < ApplicationController
     begin
       @license.start! payment
     rescue Stripe::CardError => e
-      puts "Stripe error:"
-      puts e
       return render_error e.message, e.message, 500
     rescue => e
-      puts "Other error:"
-      puts e
       return render_error e.message, e
     else
-      @courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
+      @courses = get_courses_where_professor
       render "api/licenses/index", success: true, status: 201
     end
   end
@@ -50,15 +46,18 @@ class API::LicensesController < ApplicationController
       return render json: { data: nil, errors: [ "License not found" ] }, status: 404
     end
     p = edit_params
+    if @license.max_courses && p[:courses].length > @license.max_courses
+      return render json: { data: { max_courses: @license.max_courses }, errors: [ "Max courses exceeded" ] }, status: 400
+    end
     @license.courses = p[:courses].map {|c| Course.find c }
-    professor_courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
+    professor_courses = get_courses_where_professor
     @license.courses.each do |c|
       if !professor_courses.include? c
         return render_error "User is not a professor in course: " + c.id.to_s, c, 401
       end
     end
     if @license.save
-      @courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
+      @courses = get_courses_where_professor
       return render "api/licenses/index", success: true, status: 200
     else
       return render_error license.errors, license.errors, 400
@@ -78,15 +77,11 @@ class API::LicensesController < ApplicationController
     begin
       @license.renew! payment
     rescue Stripe::CardError => e
-      puts "Stripe error:"
-      puts e
       return render_error e.message, e.message, 500
     rescue => e
-      puts "Other error:"
-      puts e
       render_error e.message, e
     else
-      @courses = current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
+      @courses = get_courses_where_professor
       render "api/licenses/index", success: true, status: 200
     end
   end
@@ -115,5 +110,9 @@ class API::LicensesController < ApplicationController
 
   def edit_params
     params.permit(courses: [])
+  end
+
+  def get_courses_where_professor
+    current_user.course_memberships.where(role: "professor").map{|cm| cm.course}
   end
 end
