@@ -237,7 +237,7 @@ class Course < ApplicationRecord
   end
 
   def is_licensed?
-    self.has_paid || (self.license && !self.license.is_expired?)
+    !!(self.has_paid || (self.license && !self.license.is_expired?))
   end
 
   def admin_disabled_grade_email?
