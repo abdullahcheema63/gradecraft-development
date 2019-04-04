@@ -20,6 +20,10 @@
           <li>Integrate with other tools (like Canvas or Moodle)</li>
           <li>Import or add other users (such as assistants and students)</li>
         </ul>
+        <p>
+          <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a>
+          to see what’s best for you!
+        </p>
       </div>
 
       <a id="header_user" :class="{open:activeUsername}" @click="toggleUsername">{{ getUserName }}</a>
