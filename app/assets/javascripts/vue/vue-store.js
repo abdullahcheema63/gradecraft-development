@@ -11,7 +11,7 @@ const store = new Vuex.Store({
       email: "ebarr@gmail.com",
       admin: true,
       showGuide: true,
-      hasPaid: false,
+      hasPaid: true,
       courseMembership: [{
         id: 1,
         name: "GradeCraft101",

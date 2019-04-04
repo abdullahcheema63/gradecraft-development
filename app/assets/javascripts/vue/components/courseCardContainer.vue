@@ -183,7 +183,7 @@
         </template>
       </buttonModal>
 
-      <div v-if="pastCourses || currentCourses">
+      <div v-if="pastCourses || currentCourses || unpublishedCourses">
         <h3>Copy an existing course</h3>
         <p>If you like your setup from a previous course and would like to
           duplicate it instead of starting from scratch, we can also

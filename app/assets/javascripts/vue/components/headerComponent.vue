@@ -9,7 +9,7 @@
         <a class="small-hide">Free Trial Account</a>
         <a class="small-show">Free Trial</a>
       </p>
-      <div :class="freetrialMsgClass" id="trial_msg">
+      <div v-if="userHasPaid == false" :class="freetrialMsgClass" id="trial_msg">
         <p>
           With your
           <b>free trial account,</b>
