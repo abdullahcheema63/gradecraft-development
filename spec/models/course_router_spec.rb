@@ -6,6 +6,7 @@ describe CourseRouter do
 
     it "updates the default course id for the user" do
       expect(user).to receive(:current_course_id=).with(456)
+      expect(user).to receive(:update_course_login_at).with(course.id)
       expect(user).to receive(:save)
       described_class.change! user, course
     end
