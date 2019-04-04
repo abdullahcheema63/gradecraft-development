@@ -432,23 +432,49 @@ body
         @include mobile-xl
           display: block
 
+    &.open
+      a
+        color: $blue-medium_2
+
     & + div
-      overflow: hidden
       background-color: $blue-medium_2
       color: white
       position: absolute
       box-sizing: border-box
-      width: 200px
-      right: 0
-      top: 65px
+      width: 300px
+      padding: 1em
+      left: -115px
+      top: 85px
+      @include mobile-xl
+        top: 55px
 
       &.is-closed
-        max-height: 0
-        transition: all 0.4s
+        opacity: 0
+        z-index: -100
+        transition: opacity 0.3s
 
       &.is-open
-        max-height: 400px
-        transition: all ease-in 0.4s
+        opacity: 1
+        transition: opacity ease-in 0.3s
+
+        &:before
+          content: ''
+          display: block
+          position: absolute
+          left: calc(50% - 4px)
+          top: -8px
+          width: 0
+          height: 0
+          border-left: 8px solid transparent
+          border-right: 8px solid transparent
+          border-bottom: 8px solid $blue-medium_2
+
+      p
+        font-family: 'ProximaNova_regular', sans-serif
+        margin: 1em 0
+
+      ul
+        margin-left: -1.5em
 
   #header_user
     color: $blue_dark

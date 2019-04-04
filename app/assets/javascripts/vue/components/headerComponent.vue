@@ -6,11 +6,20 @@
     </a>
     <div class="header-actions">
       <p id="free_trial_user" v-if="userHasPaid == false" :class="{open:activeFreetrialMsg}" @click="toggleFreetrialMsg">
-        <a class="small-hide">Free Trial</a>
-        <a class="small-show">Free</a>
+        <a class="small-hide">Free Trial Account</a>
+        <a class="small-show">Free Trial</a>
       </p>
-      <div :class="freetrialMsgClass">
-        blahhh
+      <div :class="freetrialMsgClass" id="trial_msg">
+        <p>
+          With your
+          <b>free trial account,</b>
+          you can explore GradeCraft as much as you’d like! <br />
+          The only things you can’t do are:
+        </p>
+        <ul>
+          <li>Integrate with other tools (like Canvas or Moodle)</li>
+          <li>Import or add other users (such as assistants and students)</li>
+        </ul>
       </div>
 
       <a id="header_user" :class="{open:activeUsername}" @click="toggleUsername">{{ getUserName }}</a>
@@ -69,8 +78,12 @@ module.exports = {
 
       if (this.prevScrollPos > currentScrollPos) {
         document.getElementById("header").style.top = "0";
+        this.activeFreetrialMsg = false;
+        this.activeUsername = false;
       } else {
         document.getElementById("header").style.top = "-70px";
+        this.activeFreetrialMsg = false;
+        this.activeUsername = false;
       }
 
       this.prevScrollPos = currentScrollPos;
@@ -80,10 +93,12 @@ module.exports = {
       });
     },
     toggleUsername() {
-      this.activeUsername = !this.activeUsername
+      this.activeUsername = !this.activeUsername;
+      this.activeFreetrialMsg = false;
     },
     toggleFreetrialMsg() {
       this.activeFreetrialMsg = !this.activeFreetrialMsg
+      this.activeUsername = false;
     }
   }
 }
