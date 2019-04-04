@@ -5,12 +5,13 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     user: {
+      id: 1,
       firstName: "Erik",
       lastName: "Barroso",
       email: "ebarr@gmail.com",
       admin: true,
       showGuide: true,
-      hasPaid: true,
+      hasPaid: false,
       courseMembership: [{
         id: 1,
         name: "GradeCraft101",
@@ -202,6 +203,9 @@ const store = new Vuex.Store({
       }
     },
     getters: {
+      userName: state => {
+        return state.user.firstName + ' ' + state.user.lastName
+      },
       currentCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {
             var today = new Date();
