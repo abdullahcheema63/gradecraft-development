@@ -2,7 +2,9 @@
   <div>
     <h2>Courses</h2>
     <em v-if="!courses.length">You don't have any courses.</em>
-    <strong v-if="courses && license.max_courses !== undefined">You have licensed {{licensedCourses.length}} / {{license.max_courses}} courses.</strong>
+    <p>
+      <strong v-if="courses && license.max_courses !== null">You have licensed {{licensedCourses.length}} / {{license.max_courses}} courses.</strong>
+    </p>
     <ul v-for="c of courses" :key="c.id">
       <li>
         <span>{{c.name}}</span>
@@ -10,7 +12,7 @@
         <button v-if="isLicensed(c)" @click="removeCourse(c)">
           Remove from License
         </button>
-        <button v-if="!isLicensed(c) && (license.max_courses === undefined || licensedCourses.length < license.max_courses)" @click="addCourse(c)">
+        <button v-if="!isLicensed(c) && (license.max_courses === null || licensedCourses.length < license.max_courses)" @click="addCourse(c)">
           Add to License
         </button>
       </li>
@@ -91,6 +93,9 @@ module.exports = {
       await this.updateCourses(newList);
     },
   },
+  created: function() {
+    console.log(this.license);
+  }
 }
 ```
 </script>
