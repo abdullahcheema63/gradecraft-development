@@ -16,10 +16,11 @@ class SamlController < ApplicationController
       email = response.attributes["urn:oid:0.9.2342.19200300.100.1.3"]
       @user = User.find_by_email(email)
       if !@user.blank?
+        current_course = CourseRouter.current_course_for @user
         auto_login @user
         @user.update_login_at
-        @user.update_course_login_at(CourseRouter.current_course_for @user)
-        session[:course_id] = CourseRouter.current_course_for @user
+        @user.update_course_login_at(current_course.id)
+        session[:course_id] = current_course
         redirect_back_or_to dashboard_path
       else
         # This needs to be updated to create a new course and log the user in to it

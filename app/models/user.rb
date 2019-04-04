@@ -233,7 +233,8 @@ class User < ApplicationRecord
   end
 
   def update_course_login_at(course)
-    self.course_memberships.find_by(course: course).update_attribute(:last_login_at, DateTime.current)
+    membership = self.course_memberships.find_by(course: course)
+    membership.update_attribute(:last_login_at, DateTime.current) if membership
   end
 
   ### TEAMS

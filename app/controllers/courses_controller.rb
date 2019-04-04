@@ -54,7 +54,7 @@ class CoursesController < ApplicationController
       session[:course_id] = @course.id
       auto_login @user
       @user.update_login_at
-      @user.update_course_login_at(@course)
+      @user.update_course_login_at(@course.id)
       redirect_to dashboard_path, flash: {
         notice: "Course #{@course.name} successfully created"
       }
@@ -82,8 +82,8 @@ class CoursesController < ApplicationController
       end
       session[:course_id] = @course.id
       bust_course_list_cache current_user
-      @user.update_login_at
-      @user.update_course_login_at(@course)
+      current_user.update_login_at
+      current_user.update_course_login_at(@course.id)
       redirect_to edit_course_path(@course), flash: {
         notice: "Course #{@course.name} successfully created"
       }
