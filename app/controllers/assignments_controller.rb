@@ -60,6 +60,7 @@ class AssignmentsController < ApplicationController
     begin
       assignment = current_course.assignments.find(params[:id])
       duplicated = assignment.copy_with_prepended_name
+      # duplicated.copy_unlock_conditions(assignment) 
       copy_unlock_conditions(assignment, duplicated)
       redirect_to edit_assignment_path(duplicated), notice: "#{(term_for :assignment).titleize} #{duplicated.name} successfully created"
     rescue CopyValidationError => e
