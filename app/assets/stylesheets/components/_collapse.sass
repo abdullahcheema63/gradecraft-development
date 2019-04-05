@@ -47,7 +47,7 @@
       transform: rotate(90deg)
       transition: all 0.3s
 
-      @media (max-width: $media-650)
+      @include mobile-xl
         left: 3%
 
     &.open
@@ -59,7 +59,26 @@
         background-size: contain
         transform: rotate(-90deg)
 
-    &.locked
+    @include mobile-xl
+      padding: 1em 3% 1em calc(3% + 2em)
+
+  & > div
+    padding: 0
+    overflow: hidden
+
+    &.is-closed
+      max-height: 0
+      //transition: all 0.4s
+
+    &.is-open
+      max-height: 100%
+      //transition: all ease-in 0.4s
+
+    & > div
+      padding: 1em 5%
+
+  &.locked
+    h3
       cursor: not-allowed
       color: $grey_3
 
@@ -69,34 +88,6 @@
         transform: none
         width: 1.6em
         height: 1.6em
-
-    @media (max-width: $media-650)
-      padding: 1em 3% 1em calc(3% + 2em)
-
-  & > div
-    padding: 0
-    max-height: 300px
-    overflow: hidden
-    transition: all 0.4s
-
-    &.is-closed
-      max-height: 0
-
-    &.is-open
-      transition: all ease-in 0.4s
-
-    & > div
-      padding: 1em 5%
-
-    @media (max-width: $media-650)
-      padding: 1em 3%
-
-  // & > div
-  //   display: none
-  //   padding: 1em 5%
-  //
-  //   @media (max-width: $media-650)
-  //     padding: 1em 3%
 
   /* The Guide */
   &.guide
@@ -119,6 +110,9 @@
         border: 2px solid $pink_2
         border-radius: 50%
         z-index: 10
+
+        @include mobile
+          right: -1px
 
       &:after
         content: ''
@@ -144,12 +138,22 @@
     & > div
       background-color: $blue-medium_2
       border-radius: 0 0 $radius-large $radius-large
-      //padding: 1em
       margin: 0 0 0 2.5em
       box-sizing: border-box
       transform: translate(0, -1em)
       color: white
       font-family: 'ProximaNova_regular', sans-serif
 
+      &.is-closed
+        max-height: 0
+        transition: all 0.4s
+
+      &.is-open
+        max-height: 400px
+        transition: all ease-in 0.4s
+
       & > div
         padding: 1em
+
+    &.hiding
+      display: none

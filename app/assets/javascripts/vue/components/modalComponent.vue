@@ -8,6 +8,8 @@
       </h2>
       <div class="modal_content">
         <slot name="content"></slot>
+        <slot name="submit-button"></slot>
+        <a @click="close">Cancel</a>
       </div>
     </div>
   </div>
@@ -22,20 +24,12 @@ module.exports = {
       type: Boolean
     }
   },
-  data() {
-    return {
-      items: [
-        {title: 'Assignment Title 1'},
-        {title: 'Assignment Title 2'},
-        {title: 'Assignment Title 3'},
-        {title: 'Assignment Title 4'},
-        {title: 'Assignment Title 5'}
-      ]
-    }
-  },
   methods: {
     close() {
       this.$emit("close");
+    },
+    toggleModalState(){
+      this.modalState = !this.modalState
     }
   },
   computed: {

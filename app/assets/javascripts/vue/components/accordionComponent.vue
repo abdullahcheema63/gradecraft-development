@@ -1,19 +1,22 @@
 <template>
-  <div :class="guideClassControl">
+  <div class="accordion">
     <h3 :class="{open:active}" @click="toggleActive">
       <span></span>
+      <slot name="heading"></slot>
     </h3>
-    <div :class="guideClass">
+    <div :class="accordionClass">
       <div>
-        <slot></slot>
+        <slot name="content"></slot>
       </div>
     </div>
   </div>
 </template>
 
+
 <script lang='coffee'>`
 module.exports = {
-  name: 'guide-message',
+  name: 'accordion-component',
+  props: ['accordion_class'],
   data() {
     return {
       active: false
@@ -25,18 +28,11 @@ module.exports = {
     }
   },
   computed: {
-    guideClass() {
+    accordionClass() {
       if (this.active) {
         return 'is-open';
       }
       return 'is-closed';
-    },
-    showGuide(){
-      return this.$store.getters.userGuideStatus;
-    },
-    guideClassControl(){
-      if ( this.showGuide ){ return "accordion guide"}
-      else { return "accordion guide hiding"}
     }
   }
 }

@@ -12,7 +12,7 @@
         %a{"href" => "#tab2"}
           Description
           %span &amp; Downloads
-      - if presenter.grade_with_rubric?
+      - if presenter.grade_with_rubric? && !presenter.check_student_logged?
         %li
           %a{"href" => "#tab3"}
             %span Grading
@@ -36,7 +36,7 @@
           = render partial: "assignments/individual/individual_show", locals: { presenter: presenter }
       .ui-tabs-panel.assignment-details-container#tab2{role: "tabpanel", "aria-hidden" => false }
         = render partial: "assignments/description", locals: { presenter: presenter }
-      - if presenter.grade_with_rubric?
+      - if presenter.grade_with_rubric? && !presenter.check_student_logged?
         .ui-tabs-panel#tab3{ role: "tabpanel", "aria-hidden" => false }
           .tab-container
             = render partial: "rubrics/components/rubric_table", locals: { rubric: presenter.rubric, presenter: presenter, student: nil, include_grade_info: false }

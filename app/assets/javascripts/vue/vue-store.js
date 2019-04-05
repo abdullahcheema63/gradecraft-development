@@ -5,11 +5,15 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     user: {
+      id: 1,
       firstName: "Erik",
       lastName: "Barroso",
       email: "ebarr@gmail.com",
       admin: true,
+      showGuide: true,
+      hasPaid: true,
       courseMembership: [{
+        id: 1,
         name: "GradeCraft101",
         number: "GC101",
         role: "Instructor",
@@ -46,6 +50,7 @@ const store = new Vuex.Store({
         licensed: true,
         published: true },
       {
+        id: 2,
         name: "Basket Weaving",
         number: "BW101",
         role: "Instructor",
@@ -82,6 +87,7 @@ const store = new Vuex.Store({
         licensed: true,
         published: true },
       {
+        id: 3,
         name: "Tai-Chi",
         number: "TC100",
         role: "Student",
@@ -119,6 +125,7 @@ const store = new Vuex.Store({
         published: true
       },
       {
+        id: 4,
         name: "Broom Ball",
         number: "BB100",
         role: "Instructor",
@@ -134,17 +141,17 @@ const store = new Vuex.Store({
           start: "2019-01-01T00:00:00",
           end: "2019-09-02T00:00:00"
         },
-        licensed: true,
+        licensed: false,
         published: false
       },
       {
+        id: 5,
         name: "Advanced Basket Weaving",
         number: "BW200",
         role: "Instructor",
         instructor: "Steve Irwin",
         url: "",
-        gradingStatus: {
-        },
+        gradingStatus: {},
         eventCount: 2,
         announcementCount: 8,
         assignments: [{}],
@@ -154,11 +161,51 @@ const store = new Vuex.Store({
           start: "2016-01-01T00:00:00",
           end: "2016-09-01T00:00:00"
         },
-        licensed: true,
-        published: true },
+        licensed: false,
+        published: true
+      },
     ]
     }},
+    actions: {
+      licenseCourse({ commit }, course_id){
+        commit('updateLicense', {course_id: course_id, status: true})
+      },
+      unLicenseCourse({ commit }, course_id){
+        commit('updateLicense', {course_id: course_id, status: false})
+      },
+      toggleGuideControl({ commit }){
+        commit('toggleGuide')
+      },
+      addNewCourse({ commit }, course){
+        commit('addNewCourse', {course: course})
+      }
+    },
+    mutations: {
+      updateLicense (state, {course_id, status}){
+        var course_ids = state.user.courseMembership.map( course => course.id)
+        var membershipIndex = course_ids.indexOf(course_id)
+        if (membershipIndex >= 0){
+          var course = state.user.courseMembership[membershipIndex]
+          course.licensed = status
+        }
+      },
+      toggleGuide (state){
+        state.user.showGuide = !state.user.showGuide
+      },
+      addNewCourse (state, {course}){
+        var newCourse = {...course}
+        newCourse.term = {...course.term}
+        newCourse.gradingStatus = {}
+        newCourse.assignments = []
+        newCourse.eventCount = ""
+        newCourse.announcementCount = ""
+        state.user.courseMembership.push(newCourse)
+      }
+    },
     getters: {
+      userName: state => {
+        return state.user.firstName + ' ' + state.user.lastName
+      },
       currentCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {
             var today = new Date();
@@ -190,7 +237,19 @@ const store = new Vuex.Store({
             {return false;}
           return membership
         })
+      },
+      unLicensedCourseMembership: state => {
+        return state.user.courseMembership.filter( membership =>{
+          if(membership.licensed)
+            {return false;}
+          return membership
+        })
+      },
+      userGuideStatus: state => {
+        return state.user.showGuide;
+      },
+      userHasPaid: state => {
+        return state.user.hasPaid;
       }
     }
-
 })
