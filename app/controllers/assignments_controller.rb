@@ -60,8 +60,7 @@ class AssignmentsController < ApplicationController
     begin
       assignment = current_course.assignments.find(params[:id])
       duplicated = assignment.copy_with_prepended_name
-      # duplicated.copy_unlock_conditions(assignment) 
-      copy_unlock_conditions(assignment, duplicated)
+      duplicated.copy_conditions(assignment) 
       redirect_to edit_assignment_path(duplicated), notice: "#{(term_for :assignment).titleize} #{duplicated.name} successfully created"
     rescue CopyValidationError => e
       render json: { message: e.message, details: e.details }, status: :internal_server_error
@@ -93,13 +92,5 @@ class AssignmentsController < ApplicationController
       team_id: params[:team_id],
       view_context: view_context
       })
-  end
-end
-
-def copy_unlock_conditions(assignment, duplicated)
-  UnlockCondition.where(unlockable_id: assignment.id, course: assignment.course, unlockable_type: "Assignment").each do |condition|
-    copied_unlock_condition = condition.copy
-    copied_unlock_condition.unlockable_id = duplicated.id
-    copied_unlock_condition.save
   end
 end
