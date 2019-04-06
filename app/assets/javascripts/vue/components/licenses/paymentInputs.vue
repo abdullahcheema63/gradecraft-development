@@ -61,7 +61,7 @@ let stripe;
 let card;
 
 module.exports = {
-  name: "payment-inputs",
+  name: "licenses-payment-inputs",
   data: function() { return data; },
   props: {
     stripePk: String,

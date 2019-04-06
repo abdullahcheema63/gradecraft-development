@@ -18,7 +18,7 @@
 <script lang="coffee">
 ```
 module.exports = {
-  name: "details",
+  name: "licenses-details",
   props: {
     license: Object,
   },

@@ -13,6 +13,7 @@
 ```
 const data = {
   license: undefined,
+  licenseTypes: [],
   courses: [],
   showRenew: false,
 };
@@ -34,8 +35,14 @@ const coursesFromResponse = (responseJson) => {
   return arr;
 }
 
+const licenseTypesFromResponse = (responseJson) => {
+  const arr = [];
+  getAPIHelper().loadFromIncluded(arr, "license_types", responseJson)
+  return arr;
+}
+
 module.exports = {
-  name: "dash",
+  name: "licenses-dash",
   components: {
     "licenses-buy-form": () => VComponents.get("vue/components/licenses/buyForm"),
     "licenses-renew-form": () => VComponents.get("vue/components/licenses/renewForm"),
@@ -44,7 +51,6 @@ module.exports = {
   },
   data: function() { return data; },
   props: {
-    licenseTypes: Array,
     stripePk: String,
   },
   computed: {
@@ -52,9 +58,9 @@ module.exports = {
       return !!this.license;
     },
     licenseType: function() {
-      return this.license
+      return (this.license && this.licenseTypes)
         ? this.licenseTypes.find(lt => lt.id === this.license.license_type_id)
-        : "no license";
+        : undefined;
     },
   },
   methods: {
@@ -67,7 +73,10 @@ module.exports = {
         throw resp;
       }
       const json = await resp.json();
+      console.log(json);
       data.courses = coursesFromResponse(json);
+      data.licenseTypes = licenseTypesFromResponse(json);
+      console.log(data.licenseTypes);
       const final = apiResponseToData(json);
       return final;
     },

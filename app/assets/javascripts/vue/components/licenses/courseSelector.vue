@@ -34,7 +34,7 @@ const apiResponseToData = (responseJson) =>
   getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
 
 module.exports = {
-  name: "course-selector",
+  name: "licenses-course-selector",
   props: {
     courses: Array,
     license: Object,

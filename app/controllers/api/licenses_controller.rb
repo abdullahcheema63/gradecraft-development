@@ -8,6 +8,7 @@ class API::LicensesController < ApplicationController
     if !@license
       return render json: { data: nil, errors: [ "License not found" ] }, status: 404
     end
+    @license_types = LicenseType.all
     @courses = get_courses_where_professor
     @payments = @license.payments.all
   end
@@ -34,7 +35,9 @@ class API::LicensesController < ApplicationController
     rescue => e
       return render_error e.message, e
     else
+      @license_types = LicenseType.all
       @courses = get_courses_where_professor
+      @payments = @license.payments.all
       render "api/licenses/index", success: true, status: 201
     end
   end
@@ -57,7 +60,9 @@ class API::LicensesController < ApplicationController
       end
     end
     if @license.save
+      @license_types = LicenseType.all
       @courses = get_courses_where_professor
+      @payments = @license.payments.all
       return render "api/licenses/index", success: true, status: 200
     else
       return render_error license.errors, license.errors, 400
@@ -81,7 +86,9 @@ class API::LicensesController < ApplicationController
     rescue => e
       render_error e.message, e
     else
+      @license_types = LicenseType.all
       @courses = get_courses_where_professor
+      @payments = @license.payments.all
       render "api/licenses/index", success: true, status: 200
     end
   end
