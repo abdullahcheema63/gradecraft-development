@@ -18,6 +18,7 @@
 <script lang="coffee">
 ```
 module.exports = {
+  name: "details",
   props: {
     license: Object,
   },

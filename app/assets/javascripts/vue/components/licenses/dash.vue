@@ -35,10 +35,11 @@ const coursesFromResponse = (responseJson) => {
 }
 
 module.exports = {
+  name: "dash",
   components: {
-    "licenses-buy-form": () => VComponents.get("vue/components/licenses/buy-form"),
-    "licenses-renew-form": () => VComponents.get("vue/components/licenses/renew-form"),
-    "licenses-course-selector": () => VComponents.get("vue/components/licenses/course-selector"),
+    "licenses-buy-form": () => VComponents.get("vue/components/licenses/buyForm"),
+    "licenses-renew-form": () => VComponents.get("vue/components/licenses/renewForm"),
+    "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),
     "licenses-details": () => VComponents.get("vue/components/licenses/details"),
   },
   data: function() { return data; },

@@ -29,8 +29,9 @@ const apiResponseToData = (responseJson) =>
   getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
 
 module.exports = {
+  name: "renew-form",
   components: {
-    "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/payment-inputs"),
+    "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/paymentInputs"),
   },
   data: function() { return data; },
   props: {

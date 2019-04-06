@@ -12,6 +12,7 @@
 <script lang="coffee">
 ```
 module.exports = {
+  name: "type-radio-button",
   props: {
     licenseType: Object,
     selected: Object,

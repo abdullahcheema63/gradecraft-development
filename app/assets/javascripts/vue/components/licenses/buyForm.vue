@@ -36,9 +36,10 @@ const apiResponseToData = (responseJson) =>
   getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
 
 module.exports = {
+  name: "buy-form",
   components: {
-    "licenses-type-radio-button": () => VComponents.get("vue/components/licenses/type-radio-button"),
-    "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/payment-inputs"),
+    "licenses-type-radio-button": () => VComponents.get("vue/components/licenses/typeRadioButton"),
+    "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/paymentInputs"),
   },
   data: function() { return data; },
   props: {
