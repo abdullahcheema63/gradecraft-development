@@ -7,7 +7,7 @@
     <dt>Expires</dt>
     <dd>{{license.expires}}</dd>
     <dt>Max Courses</dt>
-    <dd>{{license.max_courses}}</dd>
+    <dd>{{license.max_courses || "Unlimited"}}</dd>
     <dt>Created</dt>
     <dd>{{license.created_at}}</dd>
     <dt>Updated</dt>
