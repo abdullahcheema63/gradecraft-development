@@ -3,7 +3,7 @@
     <h1>Your License</h1>
     <licenses-details v-if="hasLicense" :license="license"/>
     <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
-    <button @click="toggleRenew">Toggle Renewal Form</button>
+    <button v-if="hasLicense" @click="toggleRenew">Toggle Renewal Form</button>
     <licenses-renew-form @updated="onUpdated" v-show="showRenew" v-if="hasLicense" :license="license" :license-type="licenseType" :stripePk="stripePk" />
     <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
   </div>
