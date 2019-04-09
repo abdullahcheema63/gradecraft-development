@@ -1,22 +1,23 @@
 <template>
   <form @submit.prevent="submit" >
-    <h3>Upgrade my account</h3>
+    <h2>Upgrade my account</h2>
     <div v-if="hasErrors" class="alert-box">
       {{errors}}
     </div>
-    <h4>Choose Your Account License</h4>
+    <h3>Choose Your Account License</h3>
     <p>
-      Please select the license you would like. Not sure which one to get?
+      Please select the license you would like. <br />
+      Not sure which one to get?
       <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about our licensing options</a>
       to see what’s best for you!
     </p>
 
-    <ul v-for="lt of licenseTypes" :key="lt.id">
+    <div v-for="lt of licenseTypes" :key="lt.id">
       <licenses-type-radio-button
         :selected="licenseType"
         :on-selected="() => onLicenseTypeSelected(lt)"
         :license-type="lt" />
-    </ul>
+    </div>
 
     <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
     <p v-if="this.licenseType">Your credit card will be charged ${{this.licenseType.price_usd}}.</p>
