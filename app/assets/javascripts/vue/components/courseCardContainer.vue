@@ -106,7 +106,7 @@
                       Please fill out the <b>required fields</b> below if you want to create a new course.
                     </p>
                   </div>
-                  <div class="flex-2">
+                  <div class="flex-2 form_pair">
                     <div class="form_elem">
                       <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
                       <label for="course_number">Course #</label>

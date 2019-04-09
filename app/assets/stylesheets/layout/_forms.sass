@@ -22,7 +22,7 @@ textarea,
     border: 1px solid rgba(42, 43, 43, 0.8)
   &:disabled
     color: $grey_1
-  @media (max-width: $media-small-max)
+  @include mobile-xl
     width: 100%
 
 /* annoying jquery-ui overrides */
@@ -201,6 +201,18 @@ textarea,
     //   color: white
     //   cursor: default
 
+
+.flex-2
+  &.form_pair
+    max-width: 800px
+
+    & > div
+      padding: 0
+      width: 46%
+      margin-bottom: 2em
+
+      @include mobile-xl
+        width: 100%
 
 
 
