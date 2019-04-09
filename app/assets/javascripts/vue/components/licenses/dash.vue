@@ -13,7 +13,6 @@
 ```
 const data = {
   license: undefined,
-  licenseTypes: [],
   courses: [],
   showRenew: false,
 };
@@ -51,6 +50,7 @@ module.exports = {
   },
   data: function() { return data; },
   props: {
+    licenseTypes: Array,
     stripePk: String,
   },
   computed: {
@@ -75,8 +75,6 @@ module.exports = {
       const json = await resp.json();
       console.log(json);
       data.courses = coursesFromResponse(json);
-      data.licenseTypes = licenseTypesFromResponse(json);
-      console.log(data.licenseTypes);
       const final = apiResponseToData(json);
       return final;
     },

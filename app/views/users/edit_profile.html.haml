@@ -1,7 +1,7 @@
 .pageContent
   = render partial: "layouts/alerts", locals: { model: @user, term: "profile" }
 
-  %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key] }
+  %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-types": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }
 
   = simple_form_for(@user, method: :put, :url => update_profile_users_path) do |f|
     %section
