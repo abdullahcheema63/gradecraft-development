@@ -49,17 +49,6 @@ module.exports = {
       return this.license.courses
         && this.license.courses.some(c => c.id === course.id);
     },
-    getLicense: async function() {
-      const resp = await fetch(api);
-      if (resp.status === 404) {
-        return undefined;
-      }
-      else if (!resp.ok) {
-        throw resp;
-      }
-      const json = await resp.json();
-      return apiResponseToData(json);
-    },
     updateCourses: async function(courseIds) {
       const resp = await fetch(api, {
         method: "PUT",

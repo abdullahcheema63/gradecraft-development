@@ -3,7 +3,7 @@
     <h2>Account Status</h2>
     <licenses-details v-if="hasLicense" :license="license"/>
     <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
-    <button @click="toggleRenew" v-if="hasLicense">Toggle Renewal Form</button>
+    <button v-if="hasLicense" @click="toggleRenew">Toggle Renewal Form</button>
     <licenses-renew-form @updated="onUpdated" v-show="showRenew" v-if="hasLicense" :license="license" :license-type="licenseType" :stripePk="stripePk" />
     <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
   </div>
@@ -13,7 +13,6 @@
 ```
 const data = {
   license: undefined,
-  licenseTypes: [],
   courses: [],
   showRenew: false,
 };
@@ -51,6 +50,7 @@ module.exports = {
   },
   data: function() { return data; },
   props: {
+    licenseTypes: Array,
     stripePk: String,
   },
   computed: {
@@ -75,8 +75,6 @@ module.exports = {
       const json = await resp.json();
       console.log(json);
       data.courses = coursesFromResponse(json);
-      data.licenseTypes = licenseTypesFromResponse(json);
-      console.log(data.licenseTypes);
       const final = apiResponseToData(json);
       return final;
     },
