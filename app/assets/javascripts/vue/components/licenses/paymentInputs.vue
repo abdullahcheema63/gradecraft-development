@@ -1,36 +1,36 @@
 <template>
   <div>
-    <div>
+    <div class="form_elem">
+      <input id="first_name" v-model="payment.first_name" type="text" required="required" />
       <label for="first_name">First Name</label>
-      <input id="first_name" v-model="payment.first_name"/>
     </div>
-    <div>
+    <div class="form_elem">
+      <input id="last_name" v-model="payment.last_name" type="text" required="required" />
       <label for="last_name">Last Name</label>
-      <input id="last_name" v-model="payment.last_name" />
     </div>
-    <div>
+    <div class="form_elem">
+      <input id="organization" v-model="payment.organization" type="text" />
       <label for="organization">Organization</label>
-      <input id="organization" v-model="payment.organization" />
     </div>
-    <div>
+    <div class="form_elem">
+      <input id="phone" v-model="payment.phone" type="number" required="required" />
       <label for="phone">Phone</label>
-      <input id="phone" v-model="payment.phone" />
     </div>
-    <div>
+    <div class="form_elem">
+      <input id="addr1" v-model="payment.addr1" type="text" />
       <label for="addr1">Address Line 1</label>
-      <input id="addr1" v-model="payment.addr1" />
     </div>
-    <div>
+    <div class="form_elem">
+      <input id="addr2" v-model="payment.addr2" type="text" />
       <label for="addr2">Address Line 2</label>
-      <input id="addr2" v-model="payment.addr2" />
     </div>
-    <div>
+    <div class="form_elem">
+      <input id="city" v-model="payment.city" type="text" />
       <label for="city">City</label>
-      <input id="city" v-model="payment.city" />
     </div>
-    <div>
+    <div class="form_elem">
+      <input id="country" v-model="payment.country" type="text" />
       <label for="country">Country</label>
-      <input id="country" v-model="payment.country" />
     </div>
     <div>
       <label for="stripe">Credit Card</label>

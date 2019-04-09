@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Your License</h1>
+    <h1>My Account</h1>
     <licenses-details v-if="hasLicense" :license="license"/>
     <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
     <button @click="toggleRenew">Toggle Renewal Form</button>
