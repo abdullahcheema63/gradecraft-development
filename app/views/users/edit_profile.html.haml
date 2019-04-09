@@ -1,7 +1,7 @@
 .pageContent
   = render partial: "layouts/alerts", locals: { model: @user, term: "profile" }
 
-  %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key] }
+  %h1 My Account
 
   = simple_form_for(@user, method: :put, :url => update_profile_users_path) do |f|
     %section
@@ -76,3 +76,7 @@
         .main-buttons
           = submit_tag "Update Settings", class: "button action"
           = link_to glyph("times-circle") + "Cancel", root_path, class: "button secondary"
+
+  %hr.dotted
+
+  %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key] }

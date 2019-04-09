@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div>
+      <h4>Credit Card Payment</h4>
+      <div id="stripe" />
+    </div>
+
+    <h4>Billing Address</h4>
     <div class="form_elem">
       <input id="first_name" v-model="payment.first_name" type="text" required="required" />
       <label for="first_name">First Name</label>
@@ -7,14 +13,6 @@
     <div class="form_elem">
       <input id="last_name" v-model="payment.last_name" type="text" required="required" />
       <label for="last_name">Last Name</label>
-    </div>
-    <div class="form_elem">
-      <input id="organization" v-model="payment.organization" type="text" />
-      <label for="organization">Organization</label>
-    </div>
-    <div class="form_elem">
-      <input id="phone" v-model="payment.phone" type="number" required="required" />
-      <label for="phone">Phone</label>
     </div>
     <div class="form_elem">
       <input id="addr1" v-model="payment.addr1" type="text" />
@@ -32,10 +30,17 @@
       <input id="country" v-model="payment.country" type="text" />
       <label for="country">Country</label>
     </div>
-    <div>
-      <label for="stripe">Credit Card</label>
-      <div id="stripe" />
+
+    <h4>Contact Info</h4>
+    <div class="form_elem">
+      <input id="organization" v-model="payment.organization" type="text" />
+      <label for="organization">Organization</label>
     </div>
+    <div class="form_elem">
+      <input id="phone" v-model="payment.phone" type="number" required="required" />
+      <label for="phone">Phone</label>
+    </div>
+
   </div>
 </template>
 

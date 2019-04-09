@@ -1,19 +1,26 @@
 <template>
   <form @submit.prevent="submit" >
-    <h2>Buy License</h2>
+    <h3>Upgrade my account</h3>
     <div v-if="hasErrors" class="alert-box">
       {{errors}}
     </div>
-    <label>License Type</label>
+    <h4>Choose Your Account License</h4>
+    <p>
+      Please select the license you would like. Not sure which one to get?
+      <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about our licensing options</a>
+      to see what’s best for you!
+    </p>
+
     <ul v-for="lt of licenseTypes" :key="lt.id">
-      <licenses-type-radio-button 
-        :selected="licenseType" 
-        :on-selected="() => onLicenseTypeSelected(lt)" 
+      <licenses-type-radio-button
+        :selected="licenseType"
+        :on-selected="() => onLicenseTypeSelected(lt)"
         :license-type="lt" />
     </ul>
+
     <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
     <p v-if="this.licenseType">Your credit card will be charged ${{this.licenseType.price_usd}}.</p>
-    <button type="submit">Buy</button>
+    <button type="submit" class="action">Upgrade my account!</button>
   </form>
 </template>
 
@@ -68,7 +75,7 @@ module.exports = {
       const body = await resp.json();
       if (!resp.ok) {
         this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
-          ? body.errors 
+          ? body.errors
           : Object.entries(body.errors); //Need polyfill
         console.error("resp not ok!");
         console.error(this);
