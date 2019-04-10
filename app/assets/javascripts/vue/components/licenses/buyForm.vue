@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submit" >
-    <h2>Upgrade my account</h2>
+    <h2>Upgrade My Account</h2>
     <div v-if="hasErrors" class="alert-box">
       {{errors}}
     </div>

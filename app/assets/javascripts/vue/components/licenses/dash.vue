@@ -3,9 +3,21 @@
     <h2>Account Status</h2>
     <licenses-details v-if="hasLicense" :license="license"/>
     <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
-    <button v-if="hasLicense" @click="toggleRenew">Toggle Renewal Form</button>
-    <licenses-renew-form @updated="onUpdated" v-show="showRenew" v-if="hasLicense" :license="license" :license-type="licenseType" :stripePk="stripePk" />
-    <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
+
+    <buttonModal button_class="action secondary" ref="buttonModal_renew">
+      <template slot="button-text" v-if="hasLicense">Renew my license</template>
+      <template slot="button-text" v-else>Upgrade my account!</template>
+
+      <template slot="heading" v-if="hasLicense">Account license extension</template>
+      <template slot="heading" v-else>Account Upgrade</template>
+
+      <template slot="content">
+        <div>
+          <licenses-renew-form @updated="onUpdated" v-if="hasLicense" :license="license" :license-type="licenseType" :stripePk="stripePk" />
+          <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
+        </div>
+      </template>
+    </buttonModal>
   </div>
 </template>
 
@@ -47,6 +59,7 @@ module.exports = {
     "licenses-renew-form": () => VComponents.get("vue/components/licenses/renewForm"),
     "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),
     "licenses-details": () => VComponents.get("vue/components/licenses/details"),
+    buttonModal: () => VComponents.get('vue/components/buttonModal'),
   },
   data: function() { return data; },
   props: {
@@ -86,6 +99,9 @@ module.exports = {
       console.log(license);
       data.license = license;
     },
+    renewLicense(){
+      this.$refs.buttonModal_renew.toggleModalState()
+    }
   },
   created: async function() {
     data.license = await this.getLicense();

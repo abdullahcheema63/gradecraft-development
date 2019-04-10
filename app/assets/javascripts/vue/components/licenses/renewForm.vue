@@ -7,7 +7,7 @@
     <span>License Type: {{license.license_type_name}}</span>
     <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
     <p v-if="this.licenseType">Your credit card will be charged ${{this.licenseType.price_usd}}.</p>
-    <button type="submit">Renew</button>
+    <button type="submit" class="action">Renew my license</button>
   </form>
 </template>
 
@@ -57,7 +57,7 @@ module.exports = {
       const body = await resp.json();
       if (!resp.ok) {
         this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
-          ? body.errors 
+          ? body.errors
           : Object.entries(body.errors); //Need polyfill
         console.error("resp not ok!");
         console.error(this);
