@@ -1,12 +1,22 @@
 <template>
   <form @submit.prevent="submit" >
-    <h2>Renew License</h2>
+    <h2>Renew My Account License</h2>
     <div v-if="hasErrors" class="alert-box">
       {{errors}}
     </div>
-    <span>License Type: {{license.license_type_name}}</span>
+
+    <div class="license_summary">
+      <h3 class="lining_figures">{{license.license_type_name}}</h3>
+      <p>
+        <b>${{licenseType.price_usd}}</b> for
+        <b>{{licenseType.default_max_courses}} licensed course{{licenseType.default_max_courses > 1 ? "s" : ""}}</b>
+      </p>
+      <p>Up to {{licenseType.default_duration_months}} months </p>
+      <p>Up to {{licenseType.default_max_students}} students </p>
+    </div>
+
     <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
-    <p v-if="this.licenseType">Your credit card will be charged ${{this.licenseType.price_usd}}.</p>
+    <!-- <p v-if="this.licenseType">Your credit card will be charged ${{this.licenseType.price_usd}}.</p> -->
     <button type="submit" class="action">Renew my license</button>
   </form>
 </template>

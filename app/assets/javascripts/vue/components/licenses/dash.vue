@@ -13,19 +13,17 @@
         <li>Integrate with other tools (like Canvas or Moodle)</li>
         <li>Import or add other users (such as assistants and students)</li>
       </ul>
-      <p>If you like what you see, you can upgrade your account with a license of your choice! Purchasing a license will allow you to integrate GradeCraft with other tools, and add users to your courses. </p>
       <p>
-        <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a> to see what’s best for you. We have options for Higher Ed, K–12, and entire schools or districts; but if you need a custom arrangement, we’re more than happy to help!
+        If you like what you see, you can upgrade your account with a license of your choice!
+        <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a> to see what’s best for you; we have options for Higher Ed and K–12.
       </p>
     </div>
-
-    <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
 
     <buttonModal button_class="action secondary" ref="buttonModal_renew">
       <template slot="button-text" v-if="hasLicense">Renew my license</template>
       <template slot="button-text" v-else>Upgrade my account!</template>
 
-      <template slot="heading" v-if="hasLicense">Account license extension</template>
+      <template slot="heading" v-if="hasLicense">Account license renewal</template>
       <template slot="heading" v-else>Account Upgrade</template>
 
       <template slot="content">
@@ -35,6 +33,18 @@
         </div>
       </template>
     </buttonModal>
+
+    <p v-if="hasLicense">
+      To change your license type or add additional licensed courses, please email us at
+      <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!
+    </p>
+    <p v-else>
+      If you need a license for an entire school or district, or a custom arrangement, please don’t hesitate to email us at
+      <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!
+    </p>
+
+    <hr class="dotted" />
+    <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
   </div>
 </template>
 

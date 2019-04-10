@@ -87,7 +87,6 @@ textarea,
     height: 2.75em
     background: url(asset_path("icon-arrow_select.svg")) no-repeat center right
     background-size: 1em auto
-    color: $grey_3
     cursor: pointer
 
   input.calendar
@@ -255,6 +254,22 @@ textarea,
           color: white
           background-color: $blue-medium_1
 
+.license_summary
+  border: 2px solid $teal_bright
+  background-color: $bg-green_mint_2
+  margin: 2em 0
+  padding: 0 0 0.75em 0
+  box-sizing: border-box
+  max-width: 370px
+  border-radius: $button-radius
+
+  h3:first-child
+    background-color: $teal_bright
+    padding: 0.5em 1em
+    margin: 0 0 1em 0
+
+  p
+    margin: 0.25em 1em
 
 #stripe
   max-width: 800px
@@ -347,7 +362,9 @@ ul.conditional-options
   label
     // text-transform: capitalize
 
-  h2
+
+// To delete if confirmed it doesn't break things
+//  h2
     margin: 0 0 0.5em 0
     text-transform: capitalize
 

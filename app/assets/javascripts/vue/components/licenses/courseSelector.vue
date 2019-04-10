@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Courses</h2>
+    <h2>My Courses</h2>
     <em v-if="!courses.length">You don't have any courses.</em>
     <p>
       <strong v-if="courses && license.max_courses !== null">You have licensed {{licensedCourses.length}} / {{license.max_courses}} courses.</strong>

@@ -9,9 +9,14 @@
     <label :for="licenseType.id">
       <h3 class="lining_figures">{{licenseType.name}}</h3>
       <div>
-        <p>
-          Hello!
-        </p>
+        <ul>
+          <li>
+            <b>${{licenseType.price_usd}}</b> for
+            <b>{{licenseType.default_max_courses}} course{{licenseType.default_max_courses > 1 ? "s" : ""}}</b>
+          </li>
+          <li>Up to {{licenseType.default_duration_months}} months </li>
+          <li>Up to {{licenseType.default_max_students}} students </li>
+        </ul>
       </div>
     </label>
   </div>

@@ -5,7 +5,8 @@
 
   = simple_form_for(@user, method: :put, :url => update_profile_users_path) do |f|
     %section
-      %h2.form-title Account Settings
+      %h2 Account Settings
+      %h3 General Settings
       .form-item
         %label.user-avatar-label{for: "user_avatar"} Your Avatar
         = f.file_field :avatar_file_name, {class: "media-image-upload"}
@@ -36,12 +37,14 @@
               = f.label :password_confirmation, "Confirm new password"
               = f.password_field :password_confirmation, as: :password
 
-      .form-item
+      .form-item.form_elem
         = f.label :time_zone
         = f.time_zone_select :time_zone
 
-      %hr.dotted
-      %h2.form-title My Profile in #{ current_course.name }
+      -# %h2.form-title
+      -#   Course Settings for
+      -#   %span.highlight
+      -#     #{ current_course.name }
       = f.simple_fields_for :course_memberships, @course_membership do |p|
         - if current_course.has_character_profiles?
           .form-item
@@ -58,8 +61,9 @@
             = p.input :team_role, :input_html => { :maxlength => 255 }, :label => "#{term_for :team} Role"
             .form-hint What will you contribute to your #{term_for :team}?
 
-        %h3.form-subtitle Email Settings
-        .form-hint You will always see your notifications in the announcement center above. If there's a type of email you'd rather not get from GradeCraft, just uncheck the box below.
+        %h3 Course-level Settings
+        %p.form-hint You will always see your notifications in the announcement center above. If there's a type of email you'd rather not get from GradeCraft, just uncheck the box below.
+        %h4 Email Settings for #{ current_course.name }
         .form-item
           = p.input :email_announcements
           - if current_course.has_badges?
@@ -74,8 +78,8 @@
         You cannot update this information in preview mode
       - else
         .main-buttons
-          = submit_tag "Update Settings", class: "button action"
-          = link_to glyph("times-circle") + "Cancel", root_path, class: "button secondary"
+          = submit_tag "Update my account settings", class: "button action"
+          -# = link_to glyph("times-circle") + "Cancel", root_path, class: "button secondary"
 
   %hr.dotted
 
