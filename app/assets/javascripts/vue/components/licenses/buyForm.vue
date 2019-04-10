@@ -49,11 +49,13 @@
       </div>
     </div>
 
-    <div v-for="lt of licenseTypes" :key="lt.id">
-      <licenses-type-radio-button
-        :selected="licenseType"
-        :on-selected="() => onLicenseTypeSelected(lt)"
-        :license-type="lt" />
+    <div class="flex-3 selection_cards">
+      <div class="form_options" v-for="lt of licenseTypes" :key="lt.id">
+        <licenses-type-radio-button  
+          :selected="licenseType"
+          :on-selected="() => onLicenseTypeSelected(lt)"
+          :license-type="lt" />
+      </div>
     </div>
 
     <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>

@@ -1,12 +1,20 @@
 <template>
-  <li>
-    <label :for="licenseType.id">{{licenseType.name}}</label>
-    <input type="radio" 
+  <div>
+    <input type="radio"
       @click="onSelected"
-      :value="licenseType.id" 
+      :value="licenseType.id"
+      :id="licenseType.id"
       v-model="selected"
        />
-  </li>
+    <label :for="licenseType.id">
+      <h3 class="lining_figures">{{licenseType.name}}</h3>
+      <div>
+        <p>
+          Hello!
+        </p>
+      </div>
+    </label>
+  </div>
 </template>
 
 <script lang="coffee">
