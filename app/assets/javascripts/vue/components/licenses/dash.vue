@@ -2,6 +2,23 @@
   <div>
     <h2>Account Status</h2>
     <licenses-details v-if="hasLicense" :license="license"/>
+    <div v-else>
+      <p>
+        With your
+        <b>free trial account,</b>
+        you can explore GradeCraft as much as you’d like! <br />
+        The only things you can’t do are:
+      </p>
+      <ul>
+        <li>Integrate with other tools (like Canvas or Moodle)</li>
+        <li>Import or add other users (such as assistants and students)</li>
+      </ul>
+      <p>If you like what you see, you can upgrade your account with a license of your choice! Purchasing a license will allow you to integrate GradeCraft with other tools, and add users to your courses. </p>
+      <p>
+        <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a> to see what’s best for you. We have options for Higher Ed, K–12, and entire schools or districts; but if you need a custom arrangement, we’re more than happy to help!
+      </p>
+    </div>
+
     <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
 
     <buttonModal button_class="action secondary" ref="buttonModal_renew">

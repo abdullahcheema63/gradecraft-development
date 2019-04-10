@@ -4,19 +4,58 @@
     <div v-if="hasErrors" class="alert-box">
       {{errors}}
     </div>
-    <h3>Choose Your Account License</h3>
-    <p>
-      Please select the license you would like. <br />
-      Not sure which one to get?
-      <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about our licensing options</a>
-      to see what’s best for you!
-    </p>
+    <p>We’re thrilled that you like what GradeCraft has to offer, and want to upgrade your account by purchasing a license! </p>
 
-    <div v-for="lt of licenseTypes" :key="lt.id">
-      <licenses-type-radio-button
-        :selected="licenseType"
-        :on-selected="() => onLicenseTypeSelected(lt)"
-        :license-type="lt" />
+    <h3>Choose Your Account License</h3>
+    <div class="flex-3 selection_cards">
+      <div class="form_options">
+        <input id="license_1" type="radio" name="test" value="license_1" />
+        <label for="license_1">
+          <h3 class="lining_figures">Higher Ed #1</h3>
+          <div>
+            <ul>
+              <li><b>$40</b> for <b>1 course</b> </li>
+              <li>Up to 6 months </li>
+              <li>Up to 350 students </li>
+            </ul>
+          </div>
+        </label>
+      </div>
+      <div class="form_options">
+        <input id="license_2" type="radio" name="test" value="license_2" />
+        <label for="license_2">
+          <h3 class="lining_figures">Higher Ed #2</h3>
+          <div>
+            <ul>
+              <li><b>$60</b> for <b>2 courses</b> </li>
+              <li>Up to 6 months </li>
+              <li>Up to 350 students/course </li>
+            </ul>
+          </div>
+        </label>
+      </div>
+      <div class="form_options">
+        <input id="license_3" type="radio" name="test" value="license_3" />
+        <label for="license_3">
+          <h3 class="lining_figures">K–12</h3>
+          <div>
+            <ul>
+              <li><b>$120</b> for <b>10 courses</b> </li>
+              <li>Up to 6 months </li>
+              <li>Up to 100 students/course </li>
+            </ul>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="flex-3 selection_cards">
+      <div class="form_options" v-for="lt of licenseTypes" :key="lt.id">
+        <licenses-type-radio-button  
+          :selected="licenseType"
+          :on-selected="() => onLicenseTypeSelected(lt)"
+          :license-type="lt" />
+      </div>
     </div>
 
     <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>

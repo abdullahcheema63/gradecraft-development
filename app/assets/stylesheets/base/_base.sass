@@ -150,10 +150,10 @@ body
     width: 23.5%
     margin-bottom: 1.5em
 
-    @media (max-width: $media-950)
+    @include tablet-l
       width: 48.5%
 
-    @media (max-width: $media-490)
+    @include mobile
       width: 100%
 
   &.alt-2
@@ -197,6 +197,21 @@ body
     &:after
       content: ''
       flex: auto
+
+.flex-3
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+
+  &:after
+    content: ''
+    width: 32%
+
+  & > div
+    box-sizing: border-box
+    width: 32%
+    padding: 1em
+    margin-bottom: 1.5em
 
 .flex-2
   display: flex

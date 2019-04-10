@@ -2,7 +2,7 @@
   <div>
     <div>
       <h3>Payment Info</h3>
-      <div id="stripe" />
+      <div id="stripe"></div>
     </div>
 
     <h3>Billing Info</h3>
@@ -90,9 +90,14 @@ module.exports = {
     stripe = Stripe(this.stripePk);
   },
   mounted: function() {
+    var style = {
+      base: {
+        fontSize: '16px',
+      }
+    };
     const self = this;
     const elements = stripe.elements();
-    card = elements.create('card');
+    card = elements.create('card', {style: style});
     card.mount("#stripe");
     card.addEventListener('change', ({error}) => {
       if (error) {
