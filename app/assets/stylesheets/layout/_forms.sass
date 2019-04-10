@@ -214,6 +214,48 @@ textarea,
       @include mobile-xl
         width: 100%
 
+.flex-3
+  &.selection_cards
+    & > div
+      padding: 0
+
+.selection_cards
+  .form_options
+    label
+      border-color: $blue-medium_1
+      padding-bottom: 0
+      font-family: 'ProximaNova_light', sans-serif
+
+      & > h3
+        color: white
+
+      & > div
+        color: $blue_dark
+        background-color: $bg-blue
+        margin-left: -2.5em
+        padding: 1px 0.5em
+        border-radius: $bottom-radius
+
+      li
+        list-style-type: none
+        margin: 0.5em 0 0.5em -0.5em
+
+
+    input[type="radio"]
+      & + label
+        background: $blue-medium_1 url('/assets/icon-form_RadioUnchecked.svg') no-repeat top 0.65em left 0.65em
+        background-size: auto 22px
+
+      &:checked + label
+        background: $blue_dark url('/assets/icon-form_RadioChecked.svg') no-repeat top 0.65em left 0.65em
+        background-size: auto 22px
+        font-family: 'ProximaNova_regular', sans-serif
+
+        & > div
+          color: white
+          background-color: $blue-medium_1
+
+
 #stripe
   max-width: 800px
   margin: 0 0 2em 0

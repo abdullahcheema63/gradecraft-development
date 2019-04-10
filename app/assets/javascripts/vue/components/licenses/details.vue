@@ -1,8 +1,5 @@
 <template>
   <div>
-    <p v-if="license.is_expired">
-      AIIEEEEE!
-    </p>
     <p>
       With your
       <b>{{license.license_type_name}}</b>
