@@ -1,4 +1,6 @@
 class License < ApplicationRecord
+  before_create :set_defaults
+
   # has_paper_trail
   has_many :courses
   has_many :payments, class_name: "Payment"
@@ -8,6 +10,11 @@ class License < ApplicationRecord
   validates_presence_of :license_type
 
   accepts_nested_attributes_for :payments
+
+  def set_defaults
+    self.max_courses ||= self.license_type.default_max_courses
+    self.max_students ||= self.license_type.default_max_students
+  end
 
   def is_expired?
     expires < DateTime.now
