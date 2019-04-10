@@ -183,11 +183,8 @@ p = Payment.new({
 })
 
 license = License.new({
-  license_type: LicenseType.first,
+  license_type: LicenseType.last,
   user: User.find_by(username: "albus"),
-  courses: [
-    @courses[:power_ups_locks_weighting_config][:course],
-  ]
 })
 license.start! p
 
@@ -309,7 +306,36 @@ User.create! do |u|
     FlaggedUser.toggle! cm.course, u, @students.sample.id
     FlaggedUser.toggle! cm.course, u, @students.sample.id
   end
+  u.course_memberships.create! do |cm|
+    cm.course = @courses[:power_ups_locks_weighting_config][:course]
+    cm.role = "professor"
+    FlaggedUser.toggle! cm.course, u, @students.sample.id
+    FlaggedUser.toggle! cm.course, u, @students.sample.id
+    FlaggedUser.toggle! cm.course, u, @students.sample.id
+  end
 end.activate!
+
+p = Payment.new({
+  first_name: "Snippity",
+  last_name: "Snapington",
+  organization: "College of Hogwarts",
+  phone: "555-555-5555",
+  addr1: "1234 Stalker Dr.",
+  city: "Nob End",
+  country: "UK",
+  amount_usd: 50.0,
+  source: "NotStripe"
+})
+
+license = License.new({
+  license_type: LicenseType.first,
+  user: User.find_by(username: "severus"),
+  courses: [
+    @courses[:leaderboards_team_challenges][:course],
+    @courses[:power_ups_locks_weighting_config][:course],
+  ]
+})
+license.start! p
 
 # Generate sample GSI
 User.create! do |u|
