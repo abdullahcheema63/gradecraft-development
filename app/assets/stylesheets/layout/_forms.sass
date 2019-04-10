@@ -64,7 +64,7 @@ textarea,
       & + label
         color: $pink_1
 
-      @media (max-width: $media-small-max)
+      @include mobile-xl
         border-bottom: 2px solid $pink_1
 
     &:required + label
@@ -73,7 +73,7 @@ textarea,
         color: $pink_1
         text-transform: lowercase
 
-    @media (max-width: $media-small-max)
+    @include mobile-xl
       border-bottom-width: 2px
 
   textarea
@@ -213,6 +213,41 @@ textarea,
 
       @include mobile-xl
         width: 100%
+
+#stripe
+  max-width: 800px
+  margin: 0 0 2em 0
+  border-bottom: 3px solid $blue-medium_1
+  padding: 0.5em 0
+  position: relative
+
+  @include mobile-xl
+    border-bottom-width: 2px
+
+  &:before
+    content: 'credit card'
+    position: absolute
+    bottom: -0.6em
+    right: 5em
+    transform: translateY(100%)
+    font: 0.8em/1em 'ProximaNova_semibold', sans-serif
+    letter-spacing: 0.04em
+    color: $blue-medium_1
+    text-transform: uppercase
+
+  &:after
+    content: ' \2022 \0020 required'
+    position: absolute
+    bottom: -0.6em
+    right: 0
+    transform: translateY(100%)
+    font: 0.8em/1em 'ProximaNova_semibold', sans-serif
+    letter-spacing: 0.04em
+    color: $pink_1
+    text-transform: lowercase
+
+  &.StripeElement--focus
+    background-color: $bg-blue
 
 
 
