@@ -13,6 +13,7 @@ class GoogleController < ApplicationController
     current_user = User.load_from_activation_token(params[:id]) if current_user.nil?
     redirect_if_auth_not_present(current_user)
     current_user.activate!
+    current_user.update_login_at
     auto_login current_user and redirect_to dashboard_path
   end
 end
