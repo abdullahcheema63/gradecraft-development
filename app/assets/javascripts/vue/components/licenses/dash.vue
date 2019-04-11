@@ -33,7 +33,7 @@
         </div>
       </template>
     </buttonModal>
-
+    <br />
     <p v-if="hasLicense">
       To change your license type or add additional licensed courses, please email us at
       <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!

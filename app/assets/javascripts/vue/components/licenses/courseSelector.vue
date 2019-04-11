@@ -5,18 +5,32 @@
     <p>
       <strong v-if="courses && license.max_courses !== null">You have licensed {{licensedCourses.length}} / {{license.max_courses}} courses.</strong>
     </p>
-    <ul v-for="c of courses" :key="c.id">
-      <li>
-        <span>{{c.name}}</span>
-        <span>{{isLicensed(c)}}</span>
-        <button v-if="isLicensed(c)" @click="removeCourse(c)">
-          Remove from License
-        </button>
-        <button v-if="!isLicensed(c) && (license.max_courses === null || licensedCourses.length < license.max_courses)" @click="addCourse(c)">
-          Add to License
-        </button>
-      </li>
-    </ul>
+    <div class="course_box">
+      <div class="course_card" v-for="c of courses" :key="c.id">
+        <h4>
+          <span>{{c.name}}</span>
+        </h4>
+        <div class="course_status bg-blue_2">
+          <h3 class="unspace-bottom">
+            Course status:
+            <span class="pink_text" v-if="isLicensed(c)">Licensed</span>
+            <span class="pink_text" v-else>Trial</span>
+          </h3>
+        </div>
+        <p>Set course status: </p>
+        <div>
+          <button class="action" v-if="isLicensed(c)" @click="removeCourse(c)">
+            Revert to trial course
+          </button>
+          <button v-if="!isLicensed(c) && (license.max_courses === null || licensedCourses.length < license.max_courses)" @click="addCourse(c)">
+            Convert to licensed course
+          </button>
+        </div>
+        <p v-if="isLicensed(c)">
+          <em>Any LTI connection or students you’ve added <b>will be lost</b> if you revert this course back to trial status.</em>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
