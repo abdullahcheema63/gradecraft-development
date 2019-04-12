@@ -83,6 +83,7 @@ body
   h4
     line-height: 1.25em
 
+
 /* Div styles - Background Colors, typically for divs __=^o.o^= */
 .content_block
   background-color: white
@@ -97,34 +98,25 @@ body
 
 .bg-green_mint
   background-color: $bg-green_mint
-  padding: 1em 5%
-  @include mobile-xl
-    padding: 1em 3%
 
 .bg-green_lime
   background-color: $bg-green_lime
-  padding: 1em 5%
-  @include mobile-xl
-    padding: 1em 3%
 
 .bg-yellow
   background-color: $bg-yellow
-  padding: 1em 5%
-  @include mobile-xl
-    padding: 1em 3%
 
 .bg-blue
   background-color: $bg-blue
-  padding: 1em 5%
-  @include mobile-xl
-    padding: 1em 3%
 
 .bg-blue_2
   background-color: $bg-blue_2
-  padding: 1em 5%
-  @include mobile-xl
-    padding: 1em 3%
 
+
+// To accommodate current design
+.pageContent
+  .content_block
+    padding: 1em
+    margin: 2em -1em
 
 
 /* Styling Add-on for divs __=^o.o^= */
@@ -254,7 +246,6 @@ body
         max-width: 250px
 
 
-
 /* Buttons, both true button's and a.button's __=^o.o^= */
 /* temp parent class, to help with transitioning in new styles */
 .new_style
@@ -366,7 +357,6 @@ body
     @include mobile-xl
       position: static
       margin: 0
-
 
 
 /* New dynamic header __=^o.o^= */
@@ -588,6 +578,7 @@ body
   &.fancy
     background: white
     box-shadow: 0 1px 5px rgba(0,0,0,0.2)
+
 
 
 

@@ -19,8 +19,8 @@
       </p>
     </div>
 
-    <buttonModal button_class="action secondary" ref="buttonModal_renew">
-      <template slot="button-text" v-if="hasLicense">Renew my license</template>
+    <buttonModal button_class="action secondary" ref="buttonModal_license">
+      <template slot="button-text" v-if="hasLicense">Renew my account license</template>
       <template slot="button-text" v-else>Upgrade my account!</template>
 
       <template slot="heading" v-if="hasLicense">Account license renewal</template>
@@ -43,7 +43,6 @@
       <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!
     </p>
 
-    <hr class="dotted" />
     <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
   </div>
 </template>
@@ -126,8 +125,8 @@ module.exports = {
       console.log(license);
       data.license = license;
     },
-    renewLicense(){
-      this.$refs.buttonModal_renew.toggleModalState()
+    updateLicense(){
+      this.$refs.buttonModal_license.toggleModalState()
     }
   },
   created: async function() {
