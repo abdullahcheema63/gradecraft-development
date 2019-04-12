@@ -54,17 +54,17 @@
             %h4 My Character Profile
             %p What’s the background of your character in this class? What skills do you have and what are you motivated by?
             .form_elem
-              = p.input :character_profile
+              = p.input :character_profile, :placeholder => "What’s your character profile?"
           - if current_course.teams_visible? && (current_course.has_in_team_leaderboards? || current_course.has_character_names?)
             %h4 My Pseudonym
             %p What would you like your name to be on the leaderboards?
             .form_elem
-              = p.input :pseudonym
+              = p.input :pseudonym, :placeholder => "What’s your pseudonym?"
           - if current_course.has_team_roles?
             %h4 My #{term_for :team} Role
             %p What is your role in your #{term_for :team}? What will you contribute?
             .form_elem
-              = p.input :team_role, :input_html => { :maxlength => 255 }, :label => "#{term_for :team} Role"
+              = p.input :team_role, :input_html => { :maxlength => 255 }, :label => "#{term_for :team} Role", :placeholder => "What’s your role?"
 
         %h4 Course-level Email Settings
         - if @user.is_student?(current_course)
