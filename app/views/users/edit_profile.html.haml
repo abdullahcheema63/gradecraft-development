@@ -42,11 +42,6 @@
       = f.label :time_zone
       = f.time_zone_select :time_zone
 
-    -# %h2.form-title
-    -#   Course Settings for
-    -#   %span.highlight
-    -#     #{ current_course.name }
-
     .content_block
       = f.simple_fields_for :course_memberships, @course_membership do |p|
         %h3 Course Settings
@@ -91,7 +86,7 @@
     - else
       .main-buttons
         = submit_tag "Save my account settings", class: "button action secondary"
-        -# = link_to glyph("times-circle") + "Cancel", root_path, class: "button secondary"
 
-  .content_block.bg-green_mint
-    %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-types": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }
+  - if !(Rails.env.production?) && !(@user.is_student?(current_course))
+    .content_block.bg-green_mint
+      %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-types": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }

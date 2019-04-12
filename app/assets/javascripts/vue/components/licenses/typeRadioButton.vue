@@ -11,7 +11,7 @@
       <div>
         <ul>
           <li>
-            <b>${{licenseType.price_usd}}</b> for
+            <b>${{Math.trunc(licenseType.price_usd)}}</b> for
             <b>{{licenseType.default_max_courses}} course{{licenseType.default_max_courses > 1 ? "s" : ""}}</b>
           </li>
           <li>Up to {{licenseType.default_duration_months}} months </li>
