@@ -90,10 +90,14 @@ body
   box-sizing: border-box
 
   @include mobile-xl
-    padding: 1em 3%
+    padding: 0.25em 3%
 
   &.intro
     padding-top: 5em
+    clear: both
+
+    @include mobile-xl
+      padding-top: 3.5em
 
 .bg-green_mint
   background-color: $bg-green_mint
