@@ -1,9 +1,9 @@
 <template>
   <div>
     <p>
-      With your
-      <b>{{license.license_type_name}}</b>
-      licensed account, you can explore all GradeCraft has to offer and create <b>{{license.max_courses || "unlimited"}} licensed courses</b>, which have the ability to:
+      Your
+      <b>{{license.license_type_name}} licensed account </b>
+      allows you to create <b>{{license.max_courses || "unlimited"}} licensed courses</b>, which have the ability to:
     </p>
 
     <ul>
@@ -11,18 +11,7 @@
       <li>Import or add other users (such as assistants and students)</li>
     </ul>
 
-    <p>Your license: </p>
-    <ul>
-      <li>
-        <b>Expires {{license.expires}} </b>
-      </li>
-      <li>
-        Was created {{license.created_at}}
-      </li>
-      <li>
-        Was last updated {{license.updated_at}}
-      </li>
-    </ul>
+    <p>Your license <b>expires {{license.expires}} </b>.</p>
 
 <!-- We may need to make v ifs for the expires/expired info
 <p>Expired? {{license.is_expired ? "Yes" : "No"}}</p> -->

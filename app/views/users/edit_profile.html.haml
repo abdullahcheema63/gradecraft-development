@@ -4,9 +4,7 @@
   %h1 My Account
 
   = simple_form_for(@user, method: :put, :url => update_profile_users_path) do |f|
-    %h2 Account Settings
-
-    %h3 General Settings
+    %h2 General Settings
     %p These are settings that apply to your GradeCraft account.
     .form-item
       %label.user-avatar-label{for: "user_avatar"} Your Avatar
@@ -42,50 +40,49 @@
       = f.label :time_zone
       = f.time_zone_select :time_zone
 
-    .content_block
-      = f.simple_fields_for :course_memberships, @course_membership do |p|
-        %h3 Course Settings
-        %p
-          These are settings that are specific to
-          %b #{ current_course.name }.
+    = f.simple_fields_for :course_memberships, @course_membership do |p|
+      %h2 Course Settings
+      %p
+        These are settings that are specific to
+        %b #{ current_course.course_number } #{ current_course.name }.
 
-        - if @user.is_student?(current_course)
-          - if current_course.has_character_profiles?
-            %h4 My Character Profile
-            %p What’s the background of your character in this class? What skills do you have and what are you motivated by?
-            .form_elem
-              = p.input :character_profile, :placeholder => "What’s your character profile?"
-          - if current_course.teams_visible? && (current_course.has_in_team_leaderboards? || current_course.has_character_names?)
-            %h4 My Pseudonym
-            %p What would you like your name to be on the leaderboards?
-            .form_elem
-              = p.input :pseudonym, :placeholder => "What’s your pseudonym?"
-          - if current_course.has_team_roles?
-            %h4 My #{term_for :team} Role
-            %p What is your role in your #{term_for :team}? What will you contribute?
-            .form_elem
-              = p.input :team_role, :input_html => { :maxlength => 255 }, :label => "#{term_for :team} Role", :placeholder => "What’s your role?"
+      - if @user.is_student?(current_course)
+        - if current_course.has_character_profiles?
+          %h4 My Character Profile
+          %p What’s the background of your character in this class? What skills do you have and what are you motivated by?
+          .form_elem
+            = p.input :character_profile, :placeholder => "What’s your character profile?"
+        - if current_course.teams_visible? && (current_course.has_in_team_leaderboards? || current_course.has_character_names?)
+          %h4 My Pseudonym
+          %p What would you like your name to be on the leaderboards?
+          .form_elem
+            = p.input :pseudonym, :placeholder => "What’s your pseudonym?"
+        - if current_course.has_team_roles?
+          %h4 My #{term_for :team} Role
+          %p What is your role in your #{term_for :team}? What will you contribute?
+          .form_elem
+            = p.input :team_role, :input_html => { :maxlength => 255 }, :label => "#{term_for :team} Role", :placeholder => "What’s your role?"
 
-        %h4 Course-level Email Settings
+      %h4 Course-level Email Settings
+      - if @user.is_student?(current_course)
+        %p You will always see your notifications in the announcement center above. If there's a type of email you'd rather not get from GradeCraft, just uncheck the box below.
+      %p Send me emails about:
+      .form_options
+        = p.input :email_announcements, :label => "Announcements"
+        - if @user.is_student?(current_course) && current_course.has_badges?
+          = p.input :email_badge_awards, :label => "#{term_for :badge} achievements"
         - if @user.is_student?(current_course)
-          %p You will always see your notifications in the announcement center above. If there's a type of email you'd rather not get from GradeCraft, just uncheck the box below.
-        %p Send me emails about:
-        .form-item
-          = p.input :email_announcements, :label => "Announcements"
-          - if @user.is_student?(current_course) && current_course.has_badges?
-            = p.input :email_badge_awards, :label => "#{term_for :badge} achievements"
-          - if @user.is_student?(current_course)
-            = p.input :email_grade_notifications, :label => "Grade notifications"
-          - if @user.is_student?(current_course) && current_course.has_team_challenges?
-            = p.input :email_challenge_grade_notifications, :label => "Challenge grade notifications"
-          - if @user.is_student?(current_course) && current_course.uses_learning_objectives?
-            = p.input :email_learning_objective_achieved, :label => "Learning Objective achievements"
+          = p.input :email_grade_notifications, :label => "Grade notifications"
+        - if @user.is_student?(current_course) && current_course.has_team_challenges?
+          = p.input :email_challenge_grade_notifications, :label => "Challenge grade notifications"
+        - if @user.is_student?(current_course) && current_course.uses_learning_objectives?
+          = p.input :email_learning_objective_achieved, :label => "Learning Objective achievements"
 
     - if impersonating?
       You cannot update this information in preview mode
     - else
-      .main-buttons
-        = submit_tag "Save my account settings", class: "button action secondary"
+      .content_block
+        = submit_tag "Save my settings", class: "button action secondary"
 
   - if !(Rails.env.production?) && !(@user.is_student?(current_course))
     .content_block.bg-green_mint

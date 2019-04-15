@@ -1,11 +1,10 @@
 <template>
   <div>
-    <hr class="dotted" />
     <h2>My Current Courses</h2>
     <p v-if="!courses.length">You don't have any courses!</p>
     <p v-if="courses && license.max_courses !== null">
-      You have licensed
-      <strong>{{licensedCourses.length}} of {{license.max_courses}} courses.</strong>
+      You have used
+      <strong>{{licensedCourses.length}} of your {{license.max_courses}} course licenses.</strong>
     </p>
     <div class="course_box">
       <div class="course_card" v-for="c of courses" :key="c.id">
@@ -13,11 +12,16 @@
           <span>{{c.name}}</span>
           <span>{{c.semester}} {{c.year}}</span>
         </h4>
-        <div class="course_status bg-blue_2">
+        <div class="course_status" style="background-color: #42e29d;" v-if="isLicensed(c)">
           <h3 class="unspace-bottom">
-            Course status:
-            <span class="pink_text" v-if="isLicensed(c)">Licensed</span>
-            <span v-else>Trial</span>
+            Status:
+            <span>Licensed</span>
+          </h3>
+        </div>
+        <div class="course_status bg-blue_2" v-else>
+          <h3 class="unspace-bottom">
+            Status:
+            <span>Trial</span>
           </h3>
         </div>
         <p><b>Change course status:</b> </p>
