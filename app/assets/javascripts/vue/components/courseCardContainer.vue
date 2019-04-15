@@ -1,5 +1,16 @@
 <template>
   <div>
+    <div class="content_block intro">
+      <h1>My Dashboard</h1>
+
+      <guideMessage>
+        <p>Welcome back to your GradeCraft dashboard, {{ getUserName }}!</p>
+        <p>
+          As your Guide, I’m here to help orient you in the many opportunities this tool offers. Look for my messages if you want some tips on how to use our features!
+        </p>
+      </guideMessage>
+    </div>
+
     <div class="content_block">
       <h2 class="unspace-top">Current Courses</h2>
       <div class="course_box" v-if="currentCourses">
@@ -309,6 +320,9 @@ module.exports = {
     },
     userHasPaid(){
       return this.$store.getters.userHasPaid;
+    },
+    getUserName(){
+      return this.$store.getters.userNameID;
     }
   },
   methods: {

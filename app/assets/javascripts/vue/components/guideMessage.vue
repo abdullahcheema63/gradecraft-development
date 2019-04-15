@@ -16,7 +16,7 @@ module.exports = {
   name: 'guide-message',
   data() {
     return {
-      active: false
+      active: true
     }
   },
   methods: {
