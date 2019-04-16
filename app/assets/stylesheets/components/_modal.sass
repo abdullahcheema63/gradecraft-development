@@ -88,3 +88,12 @@
 
   button:last-child
     margin: 1.5em 1em 0 0
+
+/* When the modal is open, prevent scrolling on content behind it */
+.wrapper
+  &.freeze
+    position: fixed
+    overflow: hidden
+    width: 100vw
+    left: 0
+    right: 0
