@@ -3,11 +3,13 @@
     <div class="content_block intro">
       <h1>My Dashboard</h1>
 
-      <guideMessage>
-        <p>Welcome back to your GradeCraft dashboard, {{ getUserName }}!</p>
-        <p>
-          As your Guide, I’m here to help orient you in the many opportunities this tool offers. Look for my messages if you want some tips on how to use our features!
-        </p>
+      <guideMessage v-if="!getUserOnboardingStatus">
+        <p>Hello, {{ getUserFirstName }}, and welcome to your GradeCraft dashboard! </p>
+        <p>As your Guide, I’m here to help orient you in the many opportunities this tool offers. Look for my messages if you want some tips on how to use our features! </p>
+      </guideMessage>
+      <guideMessage v-else>
+        <p>Welcome back to your GradeCraft dashboard, {{ getUserFirstName }}!</p>
+        <p>As your Guide, I’m here to help orient you in the many opportunities this tool offers. Look for my messages if you want some tips on how to use our features! </p>
       </guideMessage>
     </div>
 
@@ -309,6 +311,10 @@ module.exports = {
     unpublishedCourses(){
       return this.$store.getters.unpublishedCourseMembership;
     },
+    allCourses(){
+      var courses = this.currentAndPastCourses.concat(this.unpublishedCourses);
+      return courses
+    },
     unLicensedCourses(){
       return this.$store.getters.unLicensedCourseMembership;
     },
@@ -321,8 +327,11 @@ module.exports = {
     userHasPaid(){
       return this.$store.getters.userHasPaid;
     },
-    getUserName(){
-      return this.$store.getters.userNameID;
+    getUserFirstName(){
+      return this.$store.getters.userFirstName;
+    },
+    getUserOnboardingStatus(){
+      return this.$store.getters.userOnboardingStatus;
     }
   },
   methods: {

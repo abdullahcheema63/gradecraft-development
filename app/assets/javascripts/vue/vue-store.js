@@ -12,6 +12,7 @@ const store = new Vuex.Store({
       admin: true,
       showGuide: true,
       hasPaid: true,
+      hasSeenCourseOnboarding: false,
       courseMembership: [{
         id: 1,
         name: "GradeCraft101",
@@ -205,6 +206,12 @@ const store = new Vuex.Store({
     getters: {
       userName: state => {
         return state.user.firstName + ' ' + state.user.lastName
+      },
+      userFirstName: state => {
+        return state.user.firstName
+      },
+      userOnboardingStatus: state => {
+        return state.user.hasSeenCourseOnboarding
       },
       currentCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {
