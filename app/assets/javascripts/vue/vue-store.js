@@ -213,6 +213,12 @@ const store = new Vuex.Store({
       userOnboardingStatus: state => {
         return state.user.hasSeenCourseOnboarding
       },
+      userGuideStatus: state => {
+        return state.user.showGuide;
+      },
+      userHasPaid: state => {
+        return state.user.hasPaid;
+      },
       currentCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {
             var today = new Date();
@@ -252,11 +258,11 @@ const store = new Vuex.Store({
           return membership
         })
       },
-      userGuideStatus: state => {
-        return state.user.showGuide;
-      },
-      userHasPaid: state => {
-        return state.user.hasPaid;
+      userIsInstructor: state => {
+        var courseRoles = state.user.courseMembership.map( course =>{
+          return course.role
+        });
+        return courseRoles.includes('Instructor')
       }
     }
 })

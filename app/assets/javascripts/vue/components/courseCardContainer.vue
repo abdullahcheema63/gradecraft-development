@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="content_block">
+    <div class="content_block" v-if="getUserIsInstructor">
       <h2 class="unspace-top">Unpublished Courses</h2>
       <div class="course_box" v-if="unpublishedCourses">
         <courseCard v-for= "course in unpublishedCourses" :course="course" status="unpublished"></courseCard>
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div class="content_block bg-green_mint">
+    <div class="content_block bg-green_mint" v-if="getUserIsInstructor">
       <h2>Add a New Course</h2>
 
       <p v-if="userHasPaid">
@@ -332,6 +332,9 @@ module.exports = {
     },
     getUserOnboardingStatus(){
       return this.$store.getters.userOnboardingStatus;
+    },
+    getUserIsInstructor(){
+      return this.$store.getters.userIsInstructor;
     }
   },
   methods: {
