@@ -4,9 +4,9 @@
     <licenses-details v-if="hasLicense" :license="license"/>
     <div v-else>
       <p>
-        With your
+        Your
         <b>free trial account,</b>
-        you can explore GradeCraft as much as you’d like! <br />
+        allows you to explore GradeCraft as much as you’d like! <br />
         The only things you can’t do are:
       </p>
       <ul>
