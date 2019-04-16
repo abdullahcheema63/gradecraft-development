@@ -6,8 +6,16 @@
   <% if @user_role != "admin"%>
     <course-card-container data-component></course-card-container>
   <% else %>
-    <div>
-      I am an admin
+    <div class="content_block intro">
+      <h1>My Dashboard</h1>
+
+      <guide-message data-component>
+        <p>Welcome back, Michael!</p>
+        <p>As an Awesome Admin, you probably don’t need much guidance from me. Nevertheless, I’m here to help orient you, and you can see what I say to instructors and students. </p>
+      </guide-message>
+
+      <h2>New Activity</h2>
+      <p>In the past 10 days: </p>
     </div>
-  <% end %> 
+  <% end %>
 </div>
