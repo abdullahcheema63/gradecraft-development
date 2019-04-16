@@ -187,6 +187,24 @@ body
       content: ''
       flex: auto
 
+.flex-3
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+
+  &:after
+    content: ''
+    width: 32%
+
+  & > div
+    box-sizing: border-box
+    width: 32%
+    padding: 1em
+    margin-bottom: 1.5em
+
+    @include mobile-xl
+      width: 100%
+
 .flex-2
   display: flex
   flex-wrap: wrap

@@ -16,6 +16,57 @@
 
       <h2>New Activity</h2>
       <p>In the past 10 days: </p>
+      <div class="flex-3">
+        <div class="bg-blue_2">
+          <h4>New User Accounts</h4>
+          <p class="summary_data">
+            <span>36</span>
+            free trial accounts
+          </p>
+          <p class="summary_data">
+            <span>2</span>
+            licensed accounts
+          </p>
+        </div>
+        <div class="bg-blue_2">
+          <h4>User Licenses</h4>
+          <p class="summary_data">
+            <span>4</span>
+            new licenses
+          </p>
+          <p class="summary_data">
+            <span>5</span>
+            renewed licenses
+          </p>
+        </div>
+        <div class="bg-blue_2">
+          <h4>New Courses</h4>
+          <p class="summary_data">
+            <span>16</span>
+            total
+          </p>
+          <p class="summary_data">
+            <span>10</span>
+            free trial courses
+          </p>
+          <p class="summary_data">
+            <span>5</span>
+            copied
+          </p>
+          <p class="summary_data">
+            <span>6</span>
+            licensed courses
+          </p>
+        </div>
+      </div>
     </div>
+    <accordion-component data-component>
+      <template slot="heading">New courses</template>
+      <template slot="content">Some stuff in here</template>
+    </accordion-component>
+    <accordion-component data-component>
+      <template slot="heading">License expiration</template>
+      <template slot="content">Some stuff in here</template>
+    </accordion-component>
   <% end %>
 </div>
