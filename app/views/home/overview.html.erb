@@ -1,0 +1,13 @@
+<header-component data-component></header-component>
+
+<div class='wrapper dashboard'>
+  <guide-control data-component></guide-control>
+
+  <% if @user_role != "admin"%>
+    <course-card-container data-component></course-card-container>
+  <% else %>
+    <div>
+      I am an admin
+    </div>
+  <% end %> 
+</div>
