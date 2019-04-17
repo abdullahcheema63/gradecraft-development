@@ -10,8 +10,11 @@
         .small.italic In order to unlock it you must:
         %ol
           - assignment.unlock_conditions.each do |condition|
-            %li= condition.requirements_description_sentence(current_user.time_zone)
-
+            -if condition.condition_type == "Assignment"
+              - if !condition.check_assignment_condition_visible
+                %li= "You have not unlocked this assignment."
+              - else
+                %li= condition.requirements_description_sentence(current_user.time_zone)
     - else
       = tooltip("unlocked-assignment-tip_#{assignment.id}", :unlock) do
         %p You have unlocked this #{term_for :assignment}
