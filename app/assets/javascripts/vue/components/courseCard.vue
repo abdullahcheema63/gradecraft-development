@@ -74,7 +74,7 @@
     </div>
 
     <div class="button_box">
-      <a class="button next">View course</a>
+      <a class="button next" v-bind:href="course.url">View course</a>
     </div>
 
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
@@ -113,7 +113,7 @@
     </div>
 
     <div>
-      <a class="button next">View course</a>
+      <a class="button next" v-bind:href="course.url">View course</a>
     </div>
 
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
@@ -152,7 +152,7 @@
     </div>
 
     <div>
-      <a class="button next">View course</a>
+      <a class="button next" v-bind:href="course.url">View course</a>
     </div>
   </div>
 </template>
