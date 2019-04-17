@@ -42,7 +42,15 @@ class UnlockCondition < ApplicationRecord
     elsif condition_type == "LearningObjective"
       description = "#{ condition_state_do } the #{ condition.name } #{unlockable.course.learning_objective_term.singularize}"
     else
-      description = "#{ condition_state_do } the #{ condition.name } #{ condition_type }"
+      assignment = Assignment.find(self.unlockable_id) 
+      # Currenty, this is giving us the assignment that will be unlocked
+      # -- not the assignmet that the UC correponds to
+      if !assignment.visible
+        description = "This unlock condition is hidden"
+        return description
+      else 
+        description = "#{ condition_state_do } the #{ condition.name } #{ condition_type }" 
+      end
     end
     description += condition_date_sentence(condition_date_timezone) if condition_date.present?
     description
