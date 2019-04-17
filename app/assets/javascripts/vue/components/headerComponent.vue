@@ -1,6 +1,6 @@
 <template>
   <div id="header" class="fancy">
-    <a id="header_link" href="#">
+    <a id="header_link" href="https://gradecraft.com" v-focus>
       <img class="small-hide" src="/assets/logo.svg" width="450" height="100" alt="Return to your GradeCraft dashboard" />
       <img class="small-show" src="/assets/logo-monogram.svg" width="110" height="100" alt="Return to your GradeCraft dashboard" />
     </a>
@@ -91,10 +91,6 @@ module.exports = {
       }
 
       this.prevScrollPos = currentScrollPos;
-
-      document.getElementById("header_link").focus(function() {
-        document.getElementById("header").style.top = "0";
-      });
     },
     toggleUsername(e) {
       this.activeUsername = !this.activeUsername;
@@ -117,6 +113,15 @@ module.exports = {
         this.activeUsername = false;
         this.activeFreetrialMsg = false;
         window.removeEventListener('click', this.closeDropdowns);
+      }
+    }
+  },
+  directives: {
+    focus: {
+      bind: function(el){
+        el.addEventListener('focus', function(e){
+          e.target.offsetParent.style.top = "0";
+        });
       }
     }
   }
