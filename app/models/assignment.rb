@@ -323,6 +323,14 @@ class Assignment < ApplicationRecord
     GradeExporter.new.export_grades(self, students, options)
   end
 
+  def copy_conditions(target_copy_assignment)
+    UnlockCondition.where(unlockable_id: target_copy_assignment.id, course: target_copy_assignment.course, unlockable_type: "Assignment").each do |condition|
+      copied_unlock_condition = condition.copy
+      copied_unlock_condition.unlockable_id = self.id
+      copied_unlock_condition.save
+    end
+  end
+
   private
 
   def students_with_submissions_on_team_conditions
