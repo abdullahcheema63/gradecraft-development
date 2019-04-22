@@ -277,7 +277,14 @@
                   <td><span class="checked"></span> </td>
                   <td><span class="checked"></span> </td>
                   <td><span class="checked"></span> </td>
-                  <td><a href="#">Instructor name</a> </td>
+                  <td>
+                    <ul>
+                      <li><a href="#">Instructor name</a> </li>
+                      <li><a href="#">Instructor name</a> </li>
+                      <li><a href="#">Instructor name</a> </li>
+                      <li><a href="#">Instructor name</a> </li>                       
+                    </ul>
+                  </td>
                   <td>10,000 </td>
                   <td>Fall </td>
                   <td>2018 </td>
