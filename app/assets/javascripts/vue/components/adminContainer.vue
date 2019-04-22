@@ -173,28 +173,15 @@
       </template>
     </accordionComponent>
 
-    <div class="tab_block">
-      <div class="tab_bar">
-        <div>
-          <input type="radio" id="tab_courses" name="tab_group" value="tab_courses" checked="checked" />
-          <label for="tab_courses">Courses</label>
+    <tabContainer>
+      <template slot="tabBarNav">
+        <div v-for="option in tabBarOption">
+          <input type="radio" :id="option" :value="option" v-model="tabSection[0]" name="tab_group_1" />
+          <label :for="option">{{option}}</label>
         </div>
-        <div>
-          <input type="radio" id="tab_instructor_accounts" name="tab_group" value="tab_instructor_accounts" />
-          <label for="tab_instructor_accounts">Instructor Accounts</label>
-        </div>
-        <div>
-          <input type="radio" id="tab_search_users" name="tab_group" value="tab_search_users" />
-          <label for="tab_search_users">Search All Users</label>
-        </div>
-        <div>
-          <input type="radio" id="tab_utilities" name="tab_group" value="tab_utilities" />
-          <label for="tab_utilities">Utilities</label>
-        </div>
-      </div>
-
-      <div class="tab_sections content_block">
-        <div>
+      </template>
+      <template slot="tabSections">
+        <div v-if="tabSection[0]==='Courses'">
           <h2>All Courses </h2>
           <p>Manage and view all courses&mdash;active and inactive, published and unpublished. </p>
 
@@ -267,9 +254,8 @@
               </div>
             </div>
           </div>
-
           <div class="table_container">
-            <table class="has_actions">
+            <table>
               <thead>
                 <tr>
                   <th>Course # </th>
@@ -351,13 +337,9 @@
               <span class="table-next"></span>
             </div>
           </div>
-
-          <button type="button" class="action">Export this table view</button>
         </div>
 
-        <hr class="dotted" />
-
-        <div>
+        <div v-if="tabSection[0]==='Instructor Accounts'">
           <h2>All Instructor Users</h2>
           <p>Manage instructor users and their licensed accounts.</p>
           <div class="table_functions">
@@ -426,11 +408,9 @@
           </div>
         </div>
 
-        <hr class="dotted" />
-
-        <div>
-          <p>Search for users across all courses and account types </p>
-          <h2>Search by: </h2>
+        <div v-if="tabSection[0]==='Search All Users'">
+          <h2>Search for users across all courses and account types </h2>
+          <h3>Search by: </h3>
           <form>
             <div class="form_elem">
               <input type="text" id="name_contains" placeholder="Name contains..." />
@@ -446,7 +426,7 @@
             </div>
             <button class="action">Search</button>
           </form>
-          <h2>Search Results:</h2>
+          <h3>Search Results:</h3>
           <div class="table_container">
             <table>
               <thead>
@@ -489,8 +469,18 @@
             </table>
           </div>
         </div>
-      </div>
-    </div>
+
+        <div v-if="tabSection[0]==='Utilities'">
+          <h2>Administrative Utilities</h2>
+          <p>__NOTE__ This section will include the current sections: </p>
+          <ul>
+            <li>Delete Course Memberships </li>
+            <li>Manage Institutions </li>
+            <li>__New__ Unlocks </li>
+          </ul>
+        </div>
+      </template>
+    </tabContainer>
   </div>
 </template>
 
@@ -505,15 +495,15 @@ module.exports = {
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
-    formContainer: () => VComponents.get('vue/components/formContainer'),
+    tabContainer: () => VComponents.get('vue/components/tabContainer'),
     datePicker: () => VComponents.get('vue/components/datePicker'),
   },
   data() {
     return {
       termYear: [],
       termName: [],
-      formQuestion: ["Create a new course", "Convert a trial course"],
-      formResponse: ["Create a new course"],
+      tabBarOption: ["Courses", "Instructor Accounts", "Search All Users", "Utilities"],
+      tabSection: ["Courses"],
       courseToLicense: "",
       newCourse: {
         id: "",
