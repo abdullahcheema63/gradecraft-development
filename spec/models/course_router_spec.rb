@@ -3,15 +3,15 @@ describe CourseRouter do
 
   describe ".change!" do
     let(:user) { double(:user, :current_course_id= => nil, save: true) }
-
     it "updates the default course id for the user" do
-      expect(user).to receive(:current_course_id=).with(456)
+      expect(user).to receive(:current_course_id=).with(course.id)
       expect(user).to receive(:update_course_login_at).with(course.id)
       expect(user).to receive(:save)
       described_class.change! user, course
     end
 
     it "returns the new course" do
+      expect(user).to receive(:update_course_login_at).with(course.id)
       result = described_class.change! user, course
       expect(result).to eq course
     end
