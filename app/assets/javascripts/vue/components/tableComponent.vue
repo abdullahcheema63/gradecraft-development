@@ -30,6 +30,8 @@
             <input id="2017" type="checkbox" value="2017"/>
             <label for="2017">2017</label>
           </span>
+
+
           <span>
             <input id="2016" type="checkbox" value="2016" />
             <label for="2016">2016</label>
@@ -138,6 +140,8 @@ module.exports = {
       showUnpublished: '',
       showActive: '',
       showInactive: '',
+      termYear: [],
+      termName: [],
       allCourses: [
         {
           id: 123,
