@@ -21,7 +21,7 @@
             %ul.no-style
               %li{"ng-repeat"=>"assignment in loShowCtrl.linkedAssignments"}
                 %a{"ng-href"=>"/assignments/{{assignment.id}}"} {{assignment.name}}
-                %descriptor-icon{"ng-if" => "assignment.unlock_conditions", "data-icon"=>"lock"}
+                %descriptor-icon{"data-icon"=>"lock"}
                   %ul.icon-list
                     %li{"ng-repeat"=>"condition in assignment.unlock_conditions"}
                       {{condition}}
@@ -102,10 +102,6 @@
             "ng-repeat"=>"assignment in loShowCtrl.linkedAssignments | orderBy : loShowCtrl.sortable.predicate : loShowCtrl.sortable.reverse"}
           %td
             %a{"ng-href"=>"/assignments/{{assignment.id}}"} {{assignment.name}}
-            %descriptor-icon{"ng-if" => "assignment.unlock_conditions", "data-icon"=>"lock"}
-              %ul.icon-list
-                %li{"ng-repeat"=>"condition in assignment.unlock_conditions"}
-                  {{condition}}
             %assignment-descriptor-icons{"data-assignment"=>"assignment"}
           %td.center
             %span.has-tooltip{"ng-show"=>"loShowCtrl.submittedAt(assignment.id)"}
