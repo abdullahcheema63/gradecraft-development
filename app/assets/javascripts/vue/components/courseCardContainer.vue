@@ -50,13 +50,13 @@
       <div class="filter_box">
         <p>Select which filters you want to apply:</p>
         <div>
-          <span v-for="year in courseTermYear">
-            <input :id="year"type="checkbox" v-model="termYear" :value="year"/>
+          <span v-for="year in courseTermYear" :key="year">
+            <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
             <label :for="year">{{year}}</label>
           </span>
         </div>
         <div>
-          <span v-for="term in courseTermName">
+          <span v-for="term in courseTermName" :key="term">
             <input :id="term" type="checkbox" v-model="termName" :value="term"/>
             <label :for="term">{{term}}</label>
           </span>
