@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Arvo|Montserrat:300,600" rel="stylesheet">
     = render partial: "layouts/mailers/stylesheet"
 
-  %body
+  %body{:style => "background-color: #f1f2f2;"}
     %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
       %thead
         = render partial: "layouts/mailers/logo"
@@ -19,29 +19,4 @@
           %td
             %p &nbsp;
         %tr.footer
-
-
-    <table>
-    <tbody>
-
-    <tr class="footer">
-    <td>
-    <p>Powered by the <a href="https://ai.umich.edu/" target="_blank">Office of Academic Innovation</a></p>
-    <p>&copy; 2019 The Regents of the University of Michigan </p>
-    <p><a href="mailto:help@gradecraft.com">help@gradecraft.com</a></p>
-
-    <p>
-    <a href="mailto:help@gradecraft.com" class="no_underline">
-    <img src="" alt="Email help@gradecraft.com" width="50" height="50" title="Email help@gradecraft.com" />
-    </a>
-    <a href="https://twitter.com/gradecraft" target="_blank" class="no_underline">
-    <img src="" alt="GradeCraft on Twitter" width="50" height="50" title="GradeCraft on Twitter" />
-    </a>
-    <a href="https://www.facebook.com/gradecraft" target="_blank" class="no_underline">
-    <img src="" alt="GradeCraft on Facebook" width="50" height="50" title="GradeCraft on Facebook" />
-    </a>
-    </p>
-    </td>
-    </tr>
-    </tbody>
-    </table>
+          = render partial: "layouts/mailers/footer"
