@@ -1,22 +1,11 @@
 %td
+  = render partial: "layouts/mailers/social_media"
   %p
     Powered by the
     %a{:href => "https://ai.umich.edu/", :target => "_blank"}
       Office of Academic Innovation
-  %p &copy; 2019 The Regents of the University of Michigan
   %p
-    = render partial: "layouts/mailers/social_media"
-
-
-
-%table.footer-wrap
-  %tr
-    %td
-    %td.container
-      / content
-      .content
-        %table
-          %tr{:align => "center"}
-            %td{:align => "center"}
-      / /content
-    %td
+    &copy; #{Date.today.year} The Regents of the University of Michigan
+  %p
+    %a{:href => "mailto:help@gradecraft.com"}
+      help@gradecraft.com
