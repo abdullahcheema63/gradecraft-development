@@ -84,6 +84,7 @@ class Assignment < ApplicationRecord
 
   # Filtering Assignments by various date properties
   scope :with_dates, -> { where("assignments.due_at IS NOT NULL OR assignments.open_at IS NOT NULL") }
+  scope :upcoming, -> {where(due_at: Time.current .. 10.days.from_now).chronological.limit(5)}
 
   delegate :student_weightable?, to: :assignment_type
 
@@ -164,6 +165,25 @@ class Assignment < ApplicationRecord
 
   def has_grades?
     grades.exists?
+  end
+
+  def has_student_grade?(student_id)
+    grades.exists?(student_id: student_id, student_visible: true)
+  end
+
+  def has_student_submission?(student_id)
+    submissions.exists?(student_id: student_id)
+  end
+
+  def has_student_predicted_grade?(student_id)
+    predicted_earned_grades.exists?(student_id: student_id)
+  end
+
+  def assignment_status_for_student(student_id)
+    return "graded" if has_student_grade?(student_id)
+    return "submitted" if has_student_submission?(student_id)
+    return "planned" if has_student_predicted_grade?(student_id)
+    return nil
   end
 
   # Custom point total if the class has weighted assignments
