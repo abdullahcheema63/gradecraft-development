@@ -22,45 +22,15 @@
           </span>
         </div>
         <div>
-          <span>
-            <input id="2018" type="checkbox" value="2018"/>
-            <label for="2018">2018</label>
-          </span>
-          <span>
-            <input id="2017" type="checkbox" value="2017"/>
-            <label for="2017">2017</label>
-          </span>
-
-
-          <span>
-            <input id="2016" type="checkbox" value="2016" />
-            <label for="2016">2016</label>
-          </span>
-          <span>
-            <input id="2015" type="checkbox" value="2015" />
-            <label for="2015">2015</label>
-          </span>
-          <span>
-            <input id="2014" type="checkbox" value="2014" />
-            <label for="2014">2014</label>
+          <span v-for="year in courseTermYear" :key="year">
+            <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
+            <label :for="year">{{year}}</label>
           </span>
         </div>
         <div>
-          <span>
-            <input id="Fall" type="checkbox" value="Fall">
-            <label for="Fall">Fall</label>
-          </span>
-          <span>
-            <input id="Winter" type="checkbox" value="Winter">
-            <label for="Winter">Winter</label>
-          </span>
-          <span>
-            <input id="Spring" type="checkbox" value="Spring">
-            <label for="Spring">Spring</label>
-          </span>
-          <span>
-            <input id="Summer" type="checkbox" value="Summer">
-            <label for="Summer">Summer</label>
+          <span v-for="term in courseTermName" :key="term">
+            <input :id="term" type="checkbox" v-model="termName" :value="term"/>
+            <label :for="term">{{term}}</label>
           </span>
         </div>
       </div>
@@ -140,7 +110,9 @@ module.exports = {
       showUnpublished: '',
       showActive: '',
       showInactive: '',
+      courseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
       termYear: [],
+      courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
       termName: [],
       allCourses: [
         {
@@ -163,7 +135,7 @@ module.exports = {
           instructors: ["Instructor 1"],
           studentNumber: "100",
           term: "Fall",
-          year: "2020"
+          year: "2017"
         },
         {
           id: 323,
@@ -174,7 +146,7 @@ module.exports = {
           instructors: ["Instructor Dude"],
           studentNumber: "500",
           term: "Winter",
-          year: "2020"
+          year: "2015"
         },
       ]
     }
@@ -182,6 +154,11 @@ module.exports = {
   computed: {
     filteredCourses(){
       var allCourses = this.allCourses;
+      allCourses = allCourses.filter( course => {
+        if (!(this.termYear.includes(course.year)) && this.termYear.length) {return false}
+        if (!(this.termName.includes(course.term)) && this.termName.length) {return false}
+        return true
+      })
       return allCourses
         .filter(this.filterByPublished)
         .filter(this.filterByActive)
