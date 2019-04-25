@@ -29,6 +29,7 @@ if current_user_is_admin?
     json.term_for_assignment_type term_for :assignment_type
   end
 end
+
 course_ids = @courses.pluck(:id)
 
 json.included do

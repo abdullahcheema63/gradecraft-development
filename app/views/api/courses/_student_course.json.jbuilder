@@ -29,6 +29,8 @@ json.attributes do
 
   json.course_path course_path course
   json.change_course_path change_course_path course
+  json.unread_announcements Announcement.unread_count_for(current_user, course)
+  json.events_this_week Event.where(course: course).this_week.count
 
 end
 
