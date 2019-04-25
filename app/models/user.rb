@@ -232,8 +232,8 @@ class User < ApplicationRecord
     self.update_attribute(:last_login_at, DateTime.current)
   end
 
-  def update_course_login_at(course)
-    membership = self.course_memberships.find_by(course: course)
+  def update_course_login_at(course_id)
+    membership = self.course_memberships.find_by(course: course_id)
     membership.update_attribute(:last_login_at, DateTime.current) if membership
   end
 
