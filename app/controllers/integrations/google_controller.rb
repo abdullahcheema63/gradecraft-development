@@ -37,7 +37,7 @@ class Integrations::GoogleController < ApplicationController
         user = Services::CreatesNewUser.call(user_attributes)[:user]
         new_user = true
       end
-
+      user.update_login_at
       auto_login user
     end
 
