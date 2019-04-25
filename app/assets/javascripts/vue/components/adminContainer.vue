@@ -185,7 +185,102 @@
           <h2>All Courses </h2>
           <p>Manage and view all courses&mdash;active and inactive, published and unpublished. </p>
 
-          <tableComponent></tableComponent>
+          <div class="table_functions">
+            <div class="filter_box">
+              <p>Select which filters you want to apply to the table below: </p>
+              <div>
+                <span>
+                  <input id="published" type="checkbox" value="true" v-model="showPublished" />
+                  <label for="published">Published</label>
+                </span>
+                <span>
+                  <input id="unpublished" type="checkbox" value="true" v-model="showUnpublished" />
+                  <label for="unpublished">Unpublished</label>
+                </span>
+                <span>
+                  <input id="active" type="checkbox" value="active" v-model="showActive" />
+                  <label for="active">Active</label>
+                </span>
+                <span>
+                  <input id="inactive" type="checkbox" value="inactive" v-model="showInactive" />
+                  <label for="inactive">Inactive</label>
+                </span>
+              </div>
+              <div>
+                <span v-for="year in courseTermYear" :key="year">
+                  <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
+                  <label :for="year">{{year}}</label>
+                </span>
+              </div>
+              <div>
+                <span v-for="term in courseTermName" :key="term">
+                  <input :id="term" type="checkbox" v-model="termName" :value="term"/>
+                  <label :for="term">{{term}}</label>
+                </span>
+              </div>
+            </div>
+            <div class="search_box">
+              <div class="form_elem">
+                <input type="search" id="search_courses" placeholder="Search all courses" />
+                <label for="search_courses">Search courses</label>
+              </div>
+            </div>
+          </div>
+          <div class="table_container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Course # </th>
+                  <th>Course Name </th>
+                  <th>Licensed </th>
+                  <th>Active </th>
+                  <th>Published </th>
+                  <th>Instructor(s) </th>
+                  <th># Students </th>
+                  <th>Semester </th>
+                  <th>Year </th>
+                  <th>Actions </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in filteredCourses" :key="course.id">
+                  <td><a href="#">{{course.id}}</a> </td>
+                  <td><a href="#">{{course.name}}</a> </td>
+                  <td><span :class="{checked: course.licensed}"></span> </td>
+                  <td><span :class="{checked: course.active}"></span> </td>
+                  <td><span :class="{checked: course.published}"></span> </td>
+                  <td>
+                    <ul>
+                      <li v-for="instructor in course.instructors" :key="instructor">
+                        <a href="#">{{instructor}}</a>
+                      </li>
+                    </ul>
+                  </td>
+                  <td>{{course.studentNumber}}</td>
+                  <td>{{course.term}}</td>
+                  <td>{{course.year}}</td>
+                  <td>
+                    <div class="button-container">
+                      <button type="button" class="secondary">Download</button>
+                      <button type="button" class="secondary">Options</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table_pagination">
+            <p>
+              Results: 20 of 20
+            </p>
+            <div>
+              <span class="table-prev"></span>
+              <p class="active"><a>1</a></p>
+              <p><a>2</a></p>
+              <p><a>3</a></p>
+              <span class="table-next"></span>
+            </div>
+          </div>
         </div>
 
         <div v-if="tabSection[0]==='Instructor Accounts'">
@@ -344,13 +439,19 @@ module.exports = {
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
-    tableComponent: () => VComponents.get('vue/components/tableComponent'),
     tabContainer: () => VComponents.get('vue/components/tabContainer'),
     datePicker: () => VComponents.get('vue/components/datePicker'),
   },
   data() {
     return {
+      active: false,
+      showPublished: '',
+      showUnpublished: '',
+      showActive: '',
+      showInactive: '',
+      courseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
       termYear: [],
+      courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
       termName: [],
       tabBarOption: ["Courses", "Instructor Accounts", "Search All Users", "Utilities"],
       tabSection: ["Courses"],
@@ -372,64 +473,64 @@ module.exports = {
       copyRequest: {
         course: [],
         notes: ""
-      }
+      },
+      allCourses: [
+        {
+          id: 123,
+          name: "Test Course",
+          created: "Wednesday, Apr 10, 2019, 4:31pm EDT",
+          licensed: true,
+          active: true,
+          published: true,
+          instructors: ["Instructor 1", "Instructor 2"],
+          studentNumber: "1,000",
+          term: "Fall",
+          year: "2019"
+        },
+        {
+          id: 223,
+          name: "Blahhhh",
+          created: "Wednesday, Apr 10, 2019, 4:31pm EDT",
+          licensed: false,
+          active: false,
+          published: false,
+          instructors: ["Instructor 1"],
+          studentNumber: "100",
+          term: "Fall",
+          year: "2017"
+        },
+        {
+          id: 323,
+          name: "Bloop",
+          created: "Wednesday, Apr 10, 2019, 4:31pm EDT",
+          licensed: true,
+          active: false,
+          published: false,
+          instructors: ["Instructor Dude"],
+          studentNumber: "500",
+          term: "Winter",
+          year: "2015"
+        },
+      ]
     }
   },
   computed: {
-    currentCourses(){
-      return this.$store.getters.currentCourseMembership;
-    },
-    pastCourses(){
-      return this.$store.getters.pastCourseMembership;
-    },
-    currentAndPastCourses(){
-      var courses = this.currentCourses.concat(this.pastCourses);
-      return courses
-    },
-    filteredPastCourses(){
-      var allPastCourses = this.pastCourses;
-      return allPastCourses.filter( course => {
-          if (!(this.termYear.includes(course.term.year)) && this.termYear.length) {return false}
-          if (!(this.termName.includes(course.term.name)) && this.termName.length) {return false}
-          return true
-      })
-    },
-    unpublishedCourses(){
-      return this.$store.getters.unpublishedCourseMembership;
-    },
-    allCourses(){
-      var courses = this.currentAndPastCourses.concat(this.unpublishedCourses);
-      return courses
-    },
-    unLicensedCourses(){
-      return this.$store.getters.unLicensedCourseMembership;
-    },
-    courseTermYear(){
-      return this.pastCourses.map(courseMembership => courseMembership.term.year)
-    },
-    courseTermName(){
-      return this.pastCourses.map(courseMembership => courseMembership.term.name)
-    },
-    userHasPaid(){
-      return this.$store.getters.userHasPaid;
-    },
     getUserFirstName(){
       return this.$store.getters.userFirstName;
     },
-    getUserOnboardingStatus(){
-      return this.$store.getters.userOnboardingStatus;
-    },
-    getUserIsInstructor(){
-      return this.$store.getters.userIsInstructor;
+    filteredCourses(){
+      var allCourses = this.allCourses;
+      allCourses = allCourses.filter( course => {
+        if (!(this.termYear.includes(course.year)) && this.termYear.length) {return false}
+        if (!(this.termName.includes(course.term)) && this.termName.length) {return false}
+        return true
+      })
+      return allCourses
+        .filter(this.filterByPublished)
+        .filter(this.filterByActive)
     }
   },
   methods: {
-    updateStartDate(date){
-      this.newCourse.term.start = date;
-    },
-    updateEndDate(date){
-      this.newCourse.term.end = date;
-    },
     addCourse(){
       var response = this.formResponse[0];
       if( response == "Create a new course"){
@@ -455,6 +556,26 @@ module.exports = {
     },
     courseCopyRequest(){
       this.$refs.buttonModal_copy.toggleModalState()
+    },
+    filterByPublished(course) {
+      if (this.showPublished && this.showUnpublished) {
+        return course
+      } else if (this.showPublished && !course.published) {
+        return false
+      } else if (this.showUnpublished && course.published) {
+        return false
+      }
+      return course
+    },
+    filterByActive(course) {
+      if (this.showActive && this.showInactive) {
+        return course
+      } else if (this.showActive && !course.active) {
+        return false
+      } else if (this.showInactive && course.active) {
+        return false
+      }
+      return course
     }
   }
 }
