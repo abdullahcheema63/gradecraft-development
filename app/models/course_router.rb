@@ -2,6 +2,7 @@ class CourseRouter
   class << self
     def change!(user, course)
       user.current_course_id = course.id
+      user.update_course_login_at(course.id)
       user.save
       course
     end

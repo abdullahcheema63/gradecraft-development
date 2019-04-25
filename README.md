@@ -97,7 +97,7 @@ sudo chown -R {user} /data/db (replace user; can ls -l to determine value)
 7. Install Bundler
 ```sh
 # install Bundler version specified in Gemfile.lock to avoid conflicts
-gem install bundler -v 1.17.1
+gem install bundler -v 1.17.3
 ```
 
 8. Install project dependencies
