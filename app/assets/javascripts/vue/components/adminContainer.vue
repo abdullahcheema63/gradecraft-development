@@ -227,7 +227,7 @@
             </div>
           </div>
           <div class="table_container">
-            <table>
+            <table class="has_actions">
               <thead>
                 <tr>
                   <th>Course # </th>
@@ -239,6 +239,7 @@
                   <th># Students </th>
                   <th>Semester </th>
                   <th>Year </th>
+                  <th>Created </th>
                   <th>Actions </th>
                 </tr>
               </thead>
@@ -258,12 +259,38 @@
                   </td>
                   <td>{{course.studentNumber}}</td>
                   <td>{{course.term}}</td>
+                  <td>{{course.created}}</td>
                   <td>{{course.year}}</td>
                   <td>
-                    <div class="button-container">
-                      <button type="button" class="secondary">Download</button>
-                      <button type="button" class="secondary">Options</button>
-                    </div>
+                    <buttonDropdown>
+                      <template slot="button_text">Download</template>
+                      <template slot="content">
+                        <ul>
+                          <li><a>Awarded Badges</a> </li>
+                          <li><a>Research Grades</a> </li>
+                          <li><a>Final Grades</a> </li>
+                          <li><a>Assignment Structure</a> </li>
+                          <li><a>Assignment Submissions</a> </li>
+                          <li><a>Assignment Type Summaries</a> </li>
+                          <li><a>Full Gradebook</a> </li>
+                          <li><a>Badges</a> </li>
+                          <li><a>Grading Scheme</a> </li>
+                        </ul>
+                      </template>
+                    </buttonDropdown>
+
+                    <buttonDropdown>
+                      <template slot="button_text">Options</template>
+                      <template slot="content">
+                        <ul>
+                          <li><a>Edit</a> </li>
+                          <li><a>Copy</a> </li>
+                          <li><a>Copy + Students</a> </li>
+                          <li><a>Delete</a> </li>
+                        </ul>
+                      </template>
+                    </buttonDropdown>
+
                   </td>
                 </tr>
               </tbody>
@@ -271,16 +298,19 @@
           </div>
           <div class="table_pagination">
             <p>
-              Results: 20 of 20
+              Results: <span class="displayed">3</span> of <span class="total">20</span>
             </p>
             <div>
-              <span class="table-prev"></span>
-              <p class="active"><a>1</a></p>
+              <span class="table_prev disabled"></span>
+              <p class="active">1</p>
               <p><a>2</a></p>
               <p><a>3</a></p>
-              <span class="table-next"></span>
+              <p><a>4</a></p>
+              <span class="table_next"></span>
             </div>
           </div>
+
+          <button type="button" class="action">Export this table view</button>
         </div>
 
         <div v-if="tabSection[0]==='Instructor Accounts'">
@@ -440,6 +470,7 @@ module.exports = {
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
     tabContainer: () => VComponents.get('vue/components/tabContainer'),
+    buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
     datePicker: () => VComponents.get('vue/components/datePicker'),
   },
   data() {
