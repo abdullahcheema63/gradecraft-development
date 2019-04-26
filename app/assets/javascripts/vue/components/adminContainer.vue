@@ -57,8 +57,6 @@
     <accordionComponent>
       <template slot="heading">New courses</template>
       <template slot="content">
-        <button class="action next">Add a new course</button>
-
         <p>Courses created in the past 10 days</p>
         <div class="table_container">
           <table>
@@ -73,47 +71,61 @@
                 <th>Instructor(s) </th>
                 <th>Semester </th>
                 <th>Year </th>
+                <th>Created </th>
                 <th>Actions </th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><a href="#">0123</a> </td>
-                <td><a href="#">Course name</a> </td>
-                <td><span class="checked"></span> </td>
-                <td><span class="checked"></span> </td>
-                <td><span class="checked"></span> </td>
-                <td><span class="checked"></span> </td>
-                <td><a href="#">Instructor name</a> </td>
-                <td>Fall </td>
-                <td>2018 </td>
+              <tr v-for="course in newCourses" :key="course.id">
+                <td><a href="#">{{course.id}}</a> </td>
+                <td><a href="#">{{course.name}}</a> </td>
+                <td><span :class="{checked: course.licensed}"></span> </td>
+                <td><span :class="{checked: course.active}"></span> </td>
+                <td><span :class="{checked: course.published}"></span> </td>
+                <td><span :class="{checked: course.copied}"></span> </td>
                 <td>
-                  <div class="button-container">
-                    <button type="button" class="secondary">Options</button>
-                  </div>
+                  <ul>
+                    <li v-for="instructor in course.instructors" :key="instructor">
+                      <a href="#">{{instructor}}</a>
+                    </li>
+                  </ul>
                 </td>
-              </tr>
-              <tr>
-                <td><a href="#">0123</a> </td>
-                <td><a href="#">Course name</a> </td>
-                <td> </td>
-                <td> </td>
-                <td><span class="checked"></span> </td>
-                <td> </td>
-                <td><a href="#">Instructor name</a> </td>
-                <td>Fall </td>
-                <td>2018 </td>
+                <td>{{course.term}}</td>
+                <td>{{course.year}}</td>
+                <td>{{course.created}}</td>
                 <td>
-                  <div class="button-container">
-                    <button type="button" class="secondary">Options</button>
-                  </div>
+                  <buttonDropdown>
+                    <template slot="button_text">Options</template>
+                    <template slot="content">
+                      <ul>
+                        <li><a>Edit</a> </li>
+                        <li><a>Copy</a> </li>
+                        <li><a>Copy + Students</a> </li>
+                        <li><a>Delete</a> </li>
+                      </ul>
+                    </template>
+                  </buttonDropdown>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+        <div class="table_pagination">
+          <p>
+            Results: <span class="displayed">3</span> of <span class="total">100</span>
+          </p>
+          <div>
+            <span class="table_prev disabled"></span>
+            <p class="active">1</p>
+            <p><a>2</a></p>
+            <span class="table_next"></span>
+          </div>
+        </div>
+
+        <button class="action next">Add a new course</button>
       </template>
     </accordionComponent>
+
     <accordionComponent>
       <template slot="heading">License expiration</template>
       <template slot="content">
@@ -131,44 +143,31 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><a href="#">User first name</a> </td>
-                <td><a href="#">User last name</a> </td>
-                <td>Nov 22, 2020 </td>
-                <td>Legacy </td>
-                <td>1 </td>
+              <tr v-for="user in userLicenses" :key="user.userId">
+                <td><a href="#">{{user.firstName}}</a> </td>
+                <td><a href="#">{{user.lastName}}</a> </td>
+                <td>{{user.expirationDate}} </td>
+                <td>{{user.paymentMethod}} </td>
+                <td>{{user.activeCoursesNumber}} </td>
                 <td>
                   <div class="button-container">
-                    <button type="button" class="secondary">Send email</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><a href="#">User first name</a> </td>
-                <td><a href="#">User last name</a> </td>
-                <td>Nov 22, 2020 </td>
-                <td>OTT </td>
-                <td>1 </td>
-                <td>
-                  <div class="button-container">
-                    <button type="button" class="secondary">Send email</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><a href="#">User first name</a> </td>
-                <td><a href="#">User last name</a> </td>
-                <td>Nov 22, 2020 </td>
-                <td>Stripe </td>
-                <td>30 </td>
-                <td>
-                  <div class="button-container">
-                    <button type="button" class="secondary">Send email</button>
+                    <a class="button secondary" :href="'mailto:' + user.email" >Send email</a>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="table_pagination">
+          <p>
+            Results: <span class="displayed">3</span> of <span class="total">100</span>
+          </p>
+          <div>
+            <span class="table_prev disabled"></span>
+            <p class="active">1</p>
+            <p><a>2</a></p>
+            <span class="table_next"></span>
+          </div>
         </div>
       </template>
     </accordionComponent>
@@ -259,8 +258,8 @@
                   </td>
                   <td>{{course.studentNumber}}</td>
                   <td>{{course.term}}</td>
-                  <td>{{course.created}}</td>
                   <td>{{course.year}}</td>
+                  <td>{{course.created}}</td>
                   <td>
                     <buttonDropdown>
                       <template slot="button_text">Download</template>
@@ -290,7 +289,6 @@
                         </ul>
                       </template>
                     </buttonDropdown>
-
                   </td>
                 </tr>
               </tbody>
@@ -298,7 +296,7 @@
           </div>
           <div class="table_pagination">
             <p>
-              Results: <span class="displayed">3</span> of <span class="total">20</span>
+              Results: <span class="displayed">3</span> of <span class="total">200</span>
             </p>
             <div>
               <span class="table_prev disabled"></span>
@@ -347,34 +345,42 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><a href="#">User first name</a> </td>
-                  <td><a href="#">User last name</a> </td>
-                  <td>Nov 22, 2020 </td>
-                  <td>Legacy </td>
-                  <td>Higher Ed #1 </td>
-                  <td><a href="#">Course name here</a> </td>
-                  <td><span class="checked"></span> </td>
-                  <td>200 </td>
+                <tr v-for="user in userLicenses" :key="user.userId">
+                  <td><a href="#">{{user.firstName}}</a> </td>
+                  <td><a href="#">{{user.lastName}}</a> </td>
+                  <td>{{user.expirationDate}} </td>
+                  <td>{{user.paymentMethod}} </td>
+                  <td>{{user.accountType}} </td>
                   <td>
-                    <div class="button-container">
-                      <button type="button" class="secondary">Options</button>
-                    </div>
+                    <ul>
+                      <li v-for="course in user.activeCoursesList" :key="course.courseName">
+                        <a href="#">{{course.courseName}}</a>
+                      </li>
+                    </ul>
                   </td>
-                </tr>
-                <tr>
-                  <td><a href="#">User first name</a> </td>
-                  <td><a href="#">User last name</a> </td>
-                  <td>Nov 22, 2020 </td>
-                  <td>Legacy </td>
-                  <td>Higher Ed #1 </td>
-                  <td><a href="#">Course name here</a> </td>
-                  <td><span class="checked"></span> </td>
-                  <td>200 </td>
                   <td>
-                    <div class="button-container">
-                      <button type="button" class="secondary">Options</button>
-                    </div>
+                    <ul class="checked_list">
+                      <li v-for="course in user.activeCoursesList" :key="course.courseName">
+                        <span :class="{checked: course.courseLicensed}">&nbsp;</span>
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    <ul>
+                      <li v-for="course in user.activeCoursesList" :key="course.courseName">
+                        {{course.courseStudents}}
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    <buttonDropdown>
+                      <template slot="button_text">Options</template>
+                      <template slot="content">
+                        <ul>
+                          <li>What options go in here? </li>
+                        </ul>
+                      </template>
+                    </buttonDropdown>
                   </td>
                 </tr>
               </tbody>
@@ -505,6 +511,88 @@ module.exports = {
         course: [],
         notes: ""
       },
+      userLicenses: [
+        {
+          userId: 50,
+          email: "blah@test.com",
+          firstName: "User",
+          lastName: "McUserpants",
+          expirationDate: "Sunday, Nov 22, 2020, 5:22pm EDT",
+          paymentMethod: "Stripe",
+          accountType: "Higher Ed #1",
+          activeCoursesNumber: "2",
+          activeCoursesList: [
+            {
+              courseName: "Active Course 1",
+              courseLicensed: true,
+              courseStudents: "200",
+            },
+            {
+              courseName: "Active Course 2",
+              courseLicensed: true,
+              courseStudents: "200",
+            },
+          ],
+        },
+        {
+          userId: 51,
+          email: "mcUserpants@test.com",
+          firstName: "User",
+          lastName: "McUserpants",
+          expirationDate: "Sunday, Nov 22, 2020, 5:22pm EDT",
+          paymentMethod: "Legacy",
+          accountType: "K—12",
+          activeCoursesNumber: "7"
+        },
+        {
+          userId: 52,
+          email: "bloop@test.com",
+          firstName: "User",
+          lastName: "McUserpants",
+          expirationDate: "Sunday, Nov 22, 2020, 5:22pm EDT",
+          paymentMethod: "OTT",
+          accountType: "Higher Ed #2",
+          activeCoursesNumber: "3"
+        },
+      ],
+      newCourses: [
+        {
+          id: 91,
+          name: "This is a New Course",
+          created: "Wednesday, Apr 20, 2019, 4:31pm EDT",
+          licensed: true,
+          active: true,
+          published: true,
+          copied: true,
+          instructors: ["Instructor 1"],
+          term: "Fall",
+          year: "2019"
+        },
+        {
+          id: 92,
+          name: "This is a New Course too",
+          created: "Wednesday, Apr 20, 2019, 4:31pm EDT",
+          licensed: false,
+          active: true,
+          published: true,
+          copied: false,
+          instructors: ["Instructor 1"],
+          term: "Fall",
+          year: "2019"
+        },
+        {
+          id: 93,
+          name: "This One as Well!",
+          created: "Wednesday, Apr 20, 2019, 4:31pm EDT",
+          licensed: false,
+          active: false,
+          published: true,
+          copied: false,
+          instructors: ["Instructor 1"],
+          term: "Fall",
+          year: "2019"
+        }
+      ],
       allCourses: [
         {
           id: 123,
