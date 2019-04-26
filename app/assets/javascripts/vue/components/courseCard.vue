@@ -172,7 +172,7 @@ module.exports = {
   },
   computed: {
     is_staff() {
-      return this.course.role === 'Instructor' || this.course.role === 'GSI';
+      return this.course.role === 'Instructor' || this.course.role === 'gsi';
     },
     user_card_class() {
       if( this.is_staff ){ return 'instructor' }

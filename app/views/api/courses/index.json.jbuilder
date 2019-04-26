@@ -2,10 +2,9 @@ json.data @courses.includes(:earned_badges, :assignments, course_memberships: :u
   if current_user_is_admin?
     json.partial! "api/courses/course", course: course
   else
-    json.type "courses"
-    json.id course.id.to_s
-
-    json.attributes do
+    if current_user.is_staff?(course)
+      json.partial! "api/courses/staff_course", course: course
+    else
       json.partial! "api/courses/student_course", course: course
     end
   end
@@ -34,16 +33,31 @@ course_ids = @courses.pluck(:id)
 
 json.included do
   @courses.where(id: course_ids).each do |course|
-    json.array! course.assignments.upcoming.each do |assignment|
-      json.id assignment.id
-      json.type "assignment"
+    if current_user.is_staff?(course)
+      json.array! course.assignments.upcoming.each do |assignment|
+        json.id assignment.id
+        json.type "assignment"
 
-      json.attributes do
-        json.course_id course.id
-        json.name assignment.name
-        json.due_at assignment.due_at
-        json.student_id current_user.id
-        json.assignment_status assignment.assignment_status_for_student(current_user.id)
+        json.attributes do
+          json.name assignment.name
+          json.due_at assignment.due_at
+          json.planned assignment.planned_assignments_count
+          json.submitted assignment.submission_count
+          json.graded nil # Not yet desired to show for instructors
+        end
+      end
+    else
+      json.array! course.assignments.upcoming.each do |assignment|
+        json.id assignment.id
+        json.type "assignment"
+
+        json.attributes do
+          json.name assignment.name
+          json.due_at assignment.due_at
+          json.planned assignment.has_student_predicted_grade?(current_user.id)
+          json.submitted assignment.has_student_or_group_submission?(current_user)
+          json.graded assignment.has_student_grade?(current_user.id)
+        end
       end
     end
   end

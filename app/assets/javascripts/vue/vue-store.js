@@ -44,7 +44,7 @@ const loadMany = function(modelArray, response, options, filter) {
   };
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments"] });
 
 const store = new Vuex.Store({
   state: {
@@ -246,17 +246,25 @@ const store = new Vuex.Store({
             id: course.id,
             name: course.name,
             number: course.course_number,
-            role: "Instructor",
+            role: course.role,
             instructor: "Cait Holman",
             url: course.change_course_path,
             gradingStatus: {
               url: "",
-              ungraded: 25,
-              ready: 2,
-              resubmissions: 10
+              ungraded: course.ungraded,
+              ready: course.ready_for_release,
+              resubmissions: course.resubmissions
             },
-            eventCount: 7,
-            announcementCount: 5,
+            eventCount: course.events_this_week,
+            announcementCount: course.unread_announcements,
+            assignments: course.assignments.map(assignment => ({
+              name: assignment.name,
+              dueDate: assignment.due_at,
+              planned: assignment.planned,
+              submitted: assignment.submitted,
+              graded: assignment.graded,
+            })),
+            /*
             assignments: [{
               name: "Assignment 1",
               dueDate: "2019-07-12T00:00:00",
@@ -271,6 +279,7 @@ const store = new Vuex.Store({
               submitted: 0,
               graded: 0,
               url: ""}],
+              */
             term: {
               name: course.semester,
               year: course.year,

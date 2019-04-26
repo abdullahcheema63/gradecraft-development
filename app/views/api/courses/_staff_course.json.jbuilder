@@ -4,7 +4,7 @@ json.id course.id.to_s
 json.attributes do
   json.partial! "api/courses/course_search_attributes", course: course
 
-  json.role "Student"
+  json.role current_user.role(course)
   json.active course.active?
   json.published course.published?
 
@@ -20,8 +20,11 @@ json.attributes do
 
   json.course_path course_path course
   json.change_course_path change_course_path course
-  json.unread_announcements Announcement.unread_count_for(current_user, course)
-  json.events_this_week Event.where(course: course).this_week.count
+
+  # !! Change these to grading status attributes !!
+  json.ungraded Submission.ungraded.where(course: course).count
+  json.ready_for_release Grade.where(course: course, student_visible: false).count
+  json.resubmissions Submission.resubmitted.where(course: course).count
 
 end
 

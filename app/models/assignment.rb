@@ -171,19 +171,29 @@ class Assignment < ApplicationRecord
     grades.exists?(student_id: student_id, student_visible: true)
   end
 
-  def has_student_submission?(student_id)
-    submissions.exists?(student_id: student_id)
+  def has_student_or_group_submission?(student)
+    if has_groups?
+      group_id = student.group_memberships.for_course(self.course).first.group_id
+      #Need to add another check to make sure that this is the group for the assignment
+      #Possible that a student could have multiple groups for each course their in
+      # Will need to check that this is the group for the specific assignment
+
+      submissions.exists?(group_id: group_id)
+    else
+      submissions.exists?(student_id: student.id)
+    end
   end
 
   def has_student_predicted_grade?(student_id)
     predicted_earned_grades.exists?(student_id: student_id)
   end
 
-  def assignment_status_for_student(student_id)
-    return "graded" if has_student_grade?(student_id)
-    return "submitted" if has_student_submission?(student_id)
-    return "planned" if has_student_predicted_grade?(student_id)
-    return nil
+  def planned_assignments_count
+    predicted_earned_grades.count
+  end
+
+  def submission_count
+    submissions.count
   end
 
   # Custom point total if the class has weighted assignments

@@ -289,6 +289,9 @@ module.exports = {
       }
     }
   },
+  created: function() {
+    this.$store.dispatch("getCourseMemberships")
+  },
   computed: {
     currentCourses(){
       return this.$store.getters.currentCourseMembership;
