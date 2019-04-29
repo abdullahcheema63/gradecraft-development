@@ -214,6 +214,15 @@ i.missing_grade
 
   table
     min-width: 800px
+    border-bottom: 0px solid transparent
+
+  td
+    a.table_truncate
+      width: 280px
+      text-overflow: ellipsis
+      white-space: nowrap
+      overflow-x: hidden
+      display: block
 
 .table_functions
   display: flex
@@ -372,9 +381,11 @@ i.missing_grade
       &:last-child
         margin-bottom: 0
 
+      &.checked_list
+        li
+          margin-bottom: 0.4em
+
+      &.student_list
+        line-height: 1.25em
     li
       margin-bottom: 0.25em
-
-    ul.checked_list
-      li
-        margin-bottom: 0.4em

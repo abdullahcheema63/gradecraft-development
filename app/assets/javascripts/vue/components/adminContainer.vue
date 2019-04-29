@@ -319,11 +319,11 @@
               <p>Select which filters you want to apply to the table below: </p>
               <div>
                 <span>
-                  <input id="licensed_acccounts" type="checkbox" value="licensed_acccounts" />
+                  <input id="licensed_acccounts" type="checkbox" value="licensed" v-model="showLicensedAccounts" />
                   <label for="licensed_acccounts">Licensed Accounts</label>
                 </span>
                 <span>
-                  <input id="free_trial_accounts" type="checkbox" value="free_trial_accounts" />
+                  <input id="free_trial_accounts" type="checkbox" value="free" v-model="showFreeAccounts" />
                   <label for="free_trial_accounts">Free trial accounts</label>
                 </span>
               </div>
@@ -350,11 +350,11 @@
                   <td><a href="#">{{user.lastName}}</a> </td>
                   <td>{{user.expirationDate}} </td>
                   <td>{{user.paymentMethod}} </td>
-                  <td>{{user.accountType}} </td>
+                  <td style="width: 100px;">{{user.accountType}} </td>
                   <td>
                     <ul>
                       <li v-for="course in user.activeCoursesList" :key="course.courseName">
-                        <a href="#">{{course.courseName}}</a>
+                        <a href="#" class="table_truncate">{{course.courseName}}</a>
                       </li>
                     </ul>
                   </td>
@@ -366,7 +366,7 @@
                     </ul>
                   </td>
                   <td>
-                    <ul>
+                    <ul class="student_list">
                       <li v-for="course in user.activeCoursesList" :key="course.courseName">
                         {{course.courseStudents}}
                       </li>
@@ -385,6 +385,19 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="table_pagination">
+            <p>
+              Results: <span class="displayed">3</span> of <span class="total">200</span>
+            </p>
+            <div>
+              <span class="table_prev disabled"></span>
+              <p class="active">1</p>
+              <p><a>2</a></p>
+              <p><a>3</a></p>
+              <p><a>4</a></p>
+              <span class="table_next"></span>
+            </div>
           </div>
         </div>
 
@@ -486,6 +499,8 @@ module.exports = {
       showUnpublished: '',
       showActive: '',
       showInactive: '',
+      showLicensedAccounts: '',
+      showFreeAccounts: '',
       courseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
       termYear: [],
       courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
@@ -516,14 +531,33 @@ module.exports = {
           userId: 50,
           email: "blah@test.com",
           firstName: "User",
+          licensedAccount: false,
+          lastName: "Free Trial",
+          expirationDate: "",
+          paymentMethod: "",
+          accountType: "Free Trial",
+          activeCoursesNumber: "1",
+          activeCoursesList: [
+            {
+              courseName: "Active Course 1",
+              courseLicensed: false,
+              courseStudents: "10",
+            },
+          ],
+        },
+        {
+          userId: 50,
+          email: "blah@test.com",
+          firstName: "User",
           lastName: "McUserpants",
-          expirationDate: "Sunday, Nov 22, 2020, 5:22pm EDT",
+          licensedAccount: true,
+          expirationDate: "Sun, Nov 22, 2020, 5:22pm EDT",
           paymentMethod: "Stripe",
           accountType: "Higher Ed #1",
           activeCoursesNumber: "2",
           activeCoursesList: [
             {
-              courseName: "Active Course 1",
+              courseName: "Active Course 1 with a super long name",
               courseLicensed: true,
               courseStudents: "200",
             },
@@ -539,27 +573,88 @@ module.exports = {
           email: "mcUserpants@test.com",
           firstName: "User",
           lastName: "McUserpants",
-          expirationDate: "Sunday, Nov 22, 2020, 5:22pm EDT",
+          licensedAccount: true,
+          expirationDate: "Sun, Nov 22, 2020, 5:22pm EDT",
           paymentMethod: "Legacy",
           accountType: "K—12",
-          activeCoursesNumber: "7"
+          activeCoursesNumber: "7",
+          activeCoursesList: [
+            {
+              courseName: "Active course 1 with long name goes in here",
+              courseLicensed: false,
+              courseStudents: "0",
+            },
+            {
+              courseName: "Active course 2 with long name goes in here",
+              courseLicensed: true,
+              courseStudents: "2,000",
+            },
+            {
+              courseName: "Active course 3 with long name goes in here",
+              courseLicensed: true,
+              courseStudents: "58,000",
+            },
+            {
+              courseName: "Active course 4 with long name goes in here",
+              courseLicensed: false,
+              courseStudents: "0",
+            },
+            {
+              courseName: "Active course 5",
+              courseLicensed: true,
+              courseStudents: "60",
+            },
+            {
+              courseName: "Active course 6",
+              courseLicensed: false,
+              courseStudents: "60",
+            },
+            {
+              courseName: "Active course 7",
+              courseLicensed: true,
+              courseStudents: "600,000",
+            },
+          ],
         },
         {
           userId: 52,
           email: "bloop@test.com",
           firstName: "User",
           lastName: "McUserpants",
-          expirationDate: "Sunday, Nov 22, 2020, 5:22pm EDT",
+          licensedAccount: true,
+          expirationDate: "Sun, Nov 22, 2020, 5:22pm EDT",
           paymentMethod: "OTT",
           accountType: "Higher Ed #2",
-          activeCoursesNumber: "3"
+          activeCoursesNumber: "3",
+          activeCoursesList: [
+            {
+              courseName: "Active course 1 with long name goes in here",
+              courseLicensed: false,
+              courseStudents: "0",
+            },
+            {
+              courseName: "Active course 2 with long name goes in here",
+              courseLicensed: true,
+              courseStudents: "2,000",
+            },
+            {
+              courseName: "Active course 3 with long name goes in here",
+              courseLicensed: true,
+              courseStudents: "58,000",
+            },
+            {
+              courseName: "Active course 4 with long name goes in here",
+              courseLicensed: false,
+              courseStudents: "0",
+            },
+          ],
         },
       ],
       newCourses: [
         {
           id: 91,
           name: "This is a New Course",
-          created: "Wednesday, Apr 20, 2019, 4:31pm EDT",
+          created: "Wed, Apr 20, 2019, 4:31pm EDT",
           licensed: true,
           active: true,
           published: true,
@@ -571,7 +666,7 @@ module.exports = {
         {
           id: 92,
           name: "This is a New Course too",
-          created: "Wednesday, Apr 20, 2019, 4:31pm EDT",
+          created: "Wed, Apr 20, 2019, 4:31pm EDT",
           licensed: false,
           active: true,
           published: true,
@@ -583,7 +678,7 @@ module.exports = {
         {
           id: 93,
           name: "This One as Well!",
-          created: "Wednesday, Apr 20, 2019, 4:31pm EDT",
+          created: "Wed, Apr 20, 2019, 4:31pm EDT",
           licensed: false,
           active: false,
           published: true,
@@ -597,7 +692,7 @@ module.exports = {
         {
           id: 123,
           name: "Test Course",
-          created: "Wednesday, Apr 10, 2019, 4:31pm EDT",
+          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           licensed: true,
           active: true,
           published: true,
@@ -609,7 +704,7 @@ module.exports = {
         {
           id: 223,
           name: "Blahhhh",
-          created: "Wednesday, Apr 10, 2019, 4:31pm EDT",
+          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           licensed: false,
           active: false,
           published: false,
@@ -621,7 +716,7 @@ module.exports = {
         {
           id: 323,
           name: "Bloop",
-          created: "Wednesday, Apr 10, 2019, 4:31pm EDT",
+          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           licensed: true,
           active: false,
           published: false,
@@ -647,7 +742,11 @@ module.exports = {
       return allCourses
         .filter(this.filterByPublished)
         .filter(this.filterByActive)
-    }
+    },
+    filteredInstructors(){
+        var allInstructors = this.allInstructors;
+        return allInstructors.filter(this.filterByLicensedAccount)
+    },
   },
   methods: {
     addCourse(){
@@ -695,7 +794,17 @@ module.exports = {
         return false
       }
       return course
-    }
+    },
+    filterByLicensedAccount(user) {
+      if (this.showLicensedAccounts && this.showFreeAccounts) {
+        return user
+      } else if (this.showLicensedAccounts && !course.licensedAccount) {
+        return false
+      } else if (this.showFreeAccounts && course.licensedAccount) {
+        return false
+      }
+      return user
+    },
   }
 }
 `</script>
