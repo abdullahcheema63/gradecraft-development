@@ -171,6 +171,9 @@ class Assignment < ApplicationRecord
     grades.exists?(student_id: student_id, student_visible: true)
   end
 
+  #Like the idea of having this to call the default (not group assignment)
+  #Comments below explain why it doesn't work for group assignments
+  #Only use the current_user.submission_for_assignment(assignment) if has_group? ~ thought?
   def has_student_or_group_submission?(student)
     if has_groups?
       group_id = student.group_memberships.for_course(self.course).first.group_id

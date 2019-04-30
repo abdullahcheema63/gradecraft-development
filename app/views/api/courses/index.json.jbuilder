@@ -55,7 +55,8 @@ json.included do
           json.name assignment.name
           json.due_at assignment.due_at
           json.planned assignment.has_student_predicted_grade?(current_user.id)
-          json.submitted assignment.has_student_or_group_submission?(current_user)
+          json.submitted current_user.submission_for_assignment(assignment)
+          #Long & complex query could be optomized ? - returns whole submission vs just .exists?
           json.graded assignment.has_student_grade?(current_user.id)
         end
       end
