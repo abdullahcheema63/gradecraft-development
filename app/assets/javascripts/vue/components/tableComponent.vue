@@ -99,7 +99,6 @@
   </div>
 </template>
 
-
 <script lang='coffee'>`
 module.exports = {
   name: 'table-component',
@@ -114,41 +113,7 @@ module.exports = {
       termYear: [],
       courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
       termName: [],
-      allCourses: [
-        {
-          id: 123,
-          name: "Test Course",
-          licensed: true,
-          active: true,
-          published: true,
-          instructors: ["Instructor 1", "Instructor 2"],
-          studentNumber: "1,000",
-          term: "Fall",
-          year: "2019"
-        },
-        {
-          id: 223,
-          name: "Blahhhh",
-          licensed: false,
-          active: false,
-          published: false,
-          instructors: ["Instructor 1"],
-          studentNumber: "100",
-          term: "Fall",
-          year: "2017"
-        },
-        {
-          id: 323,
-          name: "Bloop",
-          licensed: true,
-          active: false,
-          published: false,
-          instructors: ["Instructor Dude"],
-          studentNumber: "500",
-          term: "Winter",
-          year: "2015"
-        },
-      ]
+
     }
   },
   computed: {

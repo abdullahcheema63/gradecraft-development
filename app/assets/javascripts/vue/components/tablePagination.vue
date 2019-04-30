@@ -32,10 +32,18 @@ module.exports = {
       return Array.apply(null, {length: this.maxPageNumber}).map(Number.call, Number);
     },
     currentPageItemMin(){
-      return this.currentPage * this.paginateBy + 1
+      if (this.items.length === 0){
+        return 0
+      } else {
+        return this.currentPage * this.paginateBy + 1
+      }
     },
     currentPageItemMax(){
-      return this.currentPage * this.paginateBy + this.paginateBy
+      if (this.items.length === 0){
+        return 0
+      } else {
+        return this.currentPage * this.paginateBy + this.paginateBy
+      }
     },
     itemDisplayRange(){
       if (this.currentPageItemMin === this.totalPaginatedItems){

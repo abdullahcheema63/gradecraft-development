@@ -244,7 +244,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="course in filteredCourses" :key="course.id">
+                <tr v-for="course in currentPageCourses" :key="course.id">
                   <td><a href="#">{{course.id}}</a> </td>
                   <td><a href="#">{{course.name}}</a> </td>
                   <td><span :class="{checked: course.licensed}"></span> </td>
@@ -296,20 +296,8 @@
             </table>
           </div>
 
-          <tablePagination :items="allCourses" @paginate="paginateItems"></tablePagination>
+          <tablePagination :items="filteredCourses" @paginate="paginateItems"></tablePagination>
 
-          <div class="table_pagination">
-            <p>
-              Results: <span class="displayed">3</span> of <span class="total">200</span>
-            </p>
-            <div>
-              <span class="table_prev disabled"></span>
-              <p class="active">1</p>
-              <p><a>2</a></p>
-              <p><a>3</a></p>
-              <p><a>4</a></p>
-              <span class="table_next"></span>
-            </div>
           </div>
 
           <button type="button" class="action">Export this table view</button>
@@ -499,6 +487,8 @@ module.exports = {
   },
   data() {
     return {
+      currentPageItemMin: 0,
+      currentPageItemMax: 2,
       active: false,
       showPublished: '',
       showUnpublished: '',
@@ -748,6 +738,9 @@ module.exports = {
         .filter(this.filterByPublished)
         .filter(this.filterByActive)
     },
+    currentPageCourses(){
+      return this.filteredCourses.slice(this.currentPageItemMin, this.currentPageItemMax);
+    },
     filteredInstructors(){
         var allInstructors = this.allInstructors;
         return allInstructors.filter(this.filterByLicensedAccount)
@@ -827,7 +820,8 @@ module.exports = {
       return instructor
     },
     paginateItems(itemRange){
-      console.log(itemRange.min, itemRange.max)
+      this.currentPageItemMin = itemRange.min - 1;
+      this.currentPageItemMax = itemRange.max;
     }
   }
 }
