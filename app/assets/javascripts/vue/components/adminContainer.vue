@@ -158,6 +158,7 @@
             </tbody>
           </table>
         </div>
+        <tablePagination></tablePagination>
         <div class="table_pagination">
           <p>
             Results: <span class="displayed">3</span> of <span class="total">100</span>
@@ -294,6 +295,9 @@
               </tbody>
             </table>
           </div>
+
+          <tablePagination :items="allCourses" @paginate="paginateItems"></tablePagination>
+
           <div class="table_pagination">
             <p>
               Results: <span class="displayed">3</span> of <span class="total">200</span>
@@ -491,6 +495,7 @@ module.exports = {
     tabContainer: () => VComponents.get('vue/components/tabContainer'),
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
     datePicker: () => VComponents.get('vue/components/datePicker'),
+    tablePagination: () => VComponents.get('vue/components/tablePagination'),
   },
   data() {
     return {
@@ -820,6 +825,9 @@ module.exports = {
         return false
       }
       return instructor
+    },
+    paginateItems(itemRange){
+      console.log(itemRange.min, itemRange.max)
     }
   }
 }
