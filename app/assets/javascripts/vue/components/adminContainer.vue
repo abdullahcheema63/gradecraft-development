@@ -143,7 +143,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in userLicenses" :key="user.userId">
+              <tr v-for="user in expiringInstructors" :key="user.userId">
                 <td><a href="#">{{user.firstName}}</a> </td>
                 <td><a href="#">{{user.lastName}}</a> </td>
                 <td>{{user.expirationDate}} </td>
@@ -163,10 +163,10 @@
             Results: <span class="displayed">3</span> of <span class="total">100</span>
           </p>
           <div>
-            <span class="table_prev disabled"></span>
-            <p class="active">1</p>
-            <p><a>2</a></p>
-            <span class="table_next"></span>
+            <button class="table_prev disabled"></button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button class="table_next"></button>
           </div>
         </div>
       </template>
@@ -345,7 +345,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in userLicenses" :key="user.userId">
+                <tr v-for="user in filteredInstructors" :key="user.userId">
                   <td><a href="#">{{user.firstName}}</a> </td>
                   <td><a href="#">{{user.lastName}}</a> </td>
                   <td>{{user.expirationDate}} </td>
@@ -526,7 +526,7 @@ module.exports = {
         course: [],
         notes: ""
       },
-      userLicenses: [
+      allInstructors: [
         {
           userId: 50,
           email: "blah@test.com",
@@ -546,12 +546,12 @@ module.exports = {
           ],
         },
         {
-          userId: 50,
+          userId: 60,
           email: "blah@test.com",
           firstName: "User",
           lastName: "McUserpants",
           licensedAccount: true,
-          expirationDate: "Sun, Nov 22, 2020, 5:22pm EDT",
+          expirationDate: "Mon Jul 1 2019 15:22:00 GMT-0400 (Eastern Daylight Time)",
           paymentMethod: "Stripe",
           accountType: "Higher Ed #1",
           activeCoursesNumber: "2",
@@ -574,7 +574,7 @@ module.exports = {
           firstName: "User",
           lastName: "McUserpants",
           licensedAccount: true,
-          expirationDate: "Sun, Nov 22, 2020, 5:22pm EDT",
+          expirationDate: "Wed May 22 2019 15:22:00 GMT-0400 (Eastern Daylight Time)",
           paymentMethod: "Legacy",
           accountType: "K—12",
           activeCoursesNumber: "7",
@@ -622,7 +622,7 @@ module.exports = {
           firstName: "User",
           lastName: "McUserpants",
           licensedAccount: true,
-          expirationDate: "Sun, Nov 22, 2020, 5:22pm EDT",
+          expirationDate: "Wed May 22 2019 15:22:00 GMT-0400 (Eastern Daylight Time)",
           paymentMethod: "OTT",
           accountType: "Higher Ed #2",
           activeCoursesNumber: "3",
@@ -747,6 +747,10 @@ module.exports = {
         var allInstructors = this.allInstructors;
         return allInstructors.filter(this.filterByLicensedAccount)
     },
+    expiringInstructors(){
+      var allInstructors = this.allInstructors;
+      return allInstructors.filter(this.filterExpiringInstructors)
+    }
   },
   methods: {
     addCourse(){
@@ -798,13 +802,25 @@ module.exports = {
     filterByLicensedAccount(user) {
       if (this.showLicensedAccounts && this.showFreeAccounts) {
         return user
-      } else if (this.showLicensedAccounts && !course.licensedAccount) {
+      } else if (this.showLicensedAccounts && !user.licensedAccount) {
         return false
-      } else if (this.showFreeAccounts && course.licensedAccount) {
+      } else if (this.showFreeAccounts && user.licensedAccount) {
         return false
       }
       return user
     },
+    filterExpiringInstructors(instructor){
+      var now = new Date();
+      var expirationMax = now.setDate(now.getDate() + 30);
+      var formattedDate = new Date(expirationMax);
+      var formattedInstructorExpiration = new Date(instructor.expirationDate);
+      if (!instructor.licensedAccount) {
+        return false
+      } else if (new Date(instructor.expirationDate) >= formattedDate) {
+        return false
+      }
+      return instructor
+    }
   }
 }
 `</script>
