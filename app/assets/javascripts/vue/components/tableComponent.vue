@@ -42,23 +42,15 @@
       </div>
     </div>
     <div class="table_container">
-      <table>
+      <table class="has_actions">
         <thead>
           <tr>
-            <th>Course # </th>
-            <th>Course Name </th>
-            <th>Licensed </th>
-            <th>Active </th>
-            <th>Published </th>
-            <th>Instructor(s) </th>
-            <th># Students </th>
-            <th>Semester </th>
-            <th>Year </th>
-            <th>Actions </th>
+            <th v-for="header in rawTableHeaders">{{formattedTableHeaders(header)}}</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="course in filteredCourses" :key="course.id">
+          <tr v-for="course in currentPageContent" :key="course.id">
             <td><a href="#">{{course.id}}</a> </td>
             <td><a href="#">{{course.name}}</a> </td>
             <td><span :class="{checked: course.licensed}"></span> </td>
@@ -74,62 +66,104 @@
             <td>{{course.studentNumber}}</td>
             <td>{{course.term}}</td>
             <td>{{course.year}}</td>
+            <td>{{course.created}}</td>
+
             <td>
-              <div class="button-container">
-                <button type="button" class="secondary">Download</button>
-                <button type="button" class="secondary">Options</button>
-              </div>
+              <buttonDropdown>
+                <template slot="button_text">Download</template>
+                <template slot="content">
+                  <ul>
+                    <li><a>Awarded Badges</a> </li>
+                    <li><a>Research Grades</a> </li>
+                    <li><a>Final Grades</a> </li>
+                    <li><a>Assignment Structure</a> </li>
+                    <li><a>Assignment Submissions</a> </li>
+                    <li><a>Assignment Type Summaries</a> </li>
+                    <li><a>Full Gradebook</a> </li>
+                    <li><a>Badges</a> </li>
+                    <li><a>Grading Scheme</a> </li>
+                  </ul>
+                </template>
+              </buttonDropdown>
+
+              <buttonDropdown>
+                <template slot="button_text">Options</template>
+                <template slot="content">
+                  <ul>
+                    <li><a>Edit</a> </li>
+                    <li><a>Copy</a> </li>
+                    <li><a>Copy + Students</a> </li>
+                    <li><a>Delete</a> </li>
+                  </ul>
+                </template>
+              </buttonDropdown>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="table_pagination">
-      <p>
-        Results: 20 of 20
-      </p>
-      <div>
-        <span class="table-prev"></span>
-        <p class="active"><a>1</a></p>
-        <p><a>2</a></p>
-        <p><a>3</a></p>
-        <span class="table-next"></span>
-      </div>
-    </div>
+
+    <tablePagination :items="filteredContent" @paginate="paginateItems"></tablePagination>
   </div>
 </template>
 
 <script lang='coffee'>`
 module.exports = {
   name: 'table-component',
+  components: {
+    tablePagination: () => VComponents.get('vue/components/tablePagination'),
+    buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
+  },
+  props: ['content'],
   data() {
     return {
+      currentPageItemMin: 0,
+      currentPageItemMax: 2,
       active: false,
       showPublished: '',
       showUnpublished: '',
       showActive: '',
       showInactive: '',
+      showLicensedAccounts: '',
+      showFreeAccounts: '',
       courseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
       termYear: [],
       courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
       termName: [],
-
     }
   },
   computed: {
-    filteredCourses(){
-      var allCourses = this.allCourses;
-      allCourses = allCourses.filter( course => {
+    rawTableHeaders(){
+      return Object.keys(this.content[0])
+    },
+    filteredContent(){
+      var allContent = this.content;
+      allContent = allContent.filter( course => {
         if (!(this.termYear.includes(course.year)) && this.termYear.length) {return false}
         if (!(this.termName.includes(course.term)) && this.termName.length) {return false}
         return true
       })
-      return allCourses
+      return allContent
         .filter(this.filterByPublished)
         .filter(this.filterByActive)
-    }
+    },
+    currentPageContent(){
+      return this.filteredContent.slice(this.currentPageItemMin, this.currentPageItemMax);
+    },
   },
   methods: {
+    formattedTableHeaders(label){
+      if (label === 'id'){return 'Course #'}
+      if (label === 'name'){return 'Course Name'}
+      if (label === 'created'){return 'Created'}
+      if (label === 'licensed'){return 'Licensed'}
+      if (label === 'active'){return 'Active'}
+      if (label === 'published'){return 'Published'}
+      if (label === 'instructors'){return 'Instructor(s)'}
+      if (label === 'studentNumber'){return '# Students'}
+      if (label === 'term'){return 'Semester'}
+      if (label === 'year'){return 'Year'}
+    },
     filterByPublished(course) {
       if (this.showPublished && this.showUnpublished) {
         return course
@@ -149,6 +183,10 @@ module.exports = {
         return false
       }
       return course
+    },
+    paginateItems(itemRange){
+      this.currentPageItemMin = itemRange.min - 1;
+      this.currentPageItemMax = itemRange.max;
     }
   }
 }
