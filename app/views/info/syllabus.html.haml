@@ -3,10 +3,16 @@
     %h3.bold Course Details
     = glyph(:bank) + current_course.meeting_times + ' ' + current_course.location
     %p
+
   - if current_course.gameful_philosophy.present?
     %h3.bold Grading Philosophy
     = render partial: "courses/grading_philosophy", locals: {course: current_course}
     %p
+
+  - if current_course.course_rules.present?
+    %h3.bold Course Rules
+    %p= raw current_course.course_rules
+
   - if current_course.syllabus.present?
     %h3.bold Course Syllabus
     = external_link_to "Download the Current Syllabus", current_course.syllabus_url
@@ -20,7 +26,3 @@
       = render partial: "grade_scheme_elements/index_observer", locals: { "@grade_scheme_elements": current_course.grade_scheme_elements.order_by_points_desc }
     - elsif current_user_is_staff?
       = render partial: "grade_scheme_elements/index_staff", locals: {  "@grade_scheme_elements": current_course.grade_scheme_elements.order_by_points_desc }
-
-  - if current_course.course_rules.present?
-    %h3.bold Course Rules
-    %p= raw current_course.course_rules
