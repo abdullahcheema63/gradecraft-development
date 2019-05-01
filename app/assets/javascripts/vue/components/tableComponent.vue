@@ -50,23 +50,61 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="course in currentPageContent" :key="course.id">
-            <td><a href="#">{{course.id}}</a> </td>
-            <td><a href="#">{{course.name}}</a> </td>
-            <td><span :class="{checked: course.licensed}"></span> </td>
-            <td><span :class="{checked: course.active}"></span> </td>
-            <td><span :class="{checked: course.published}"></span> </td>
+          <tr v-for="row in currentPageContent" :key="row.id">
+            <td>
+              <a :href="row.url">{{row.id}}</a>
+            </td>
+            <td><a href="#">{{row.name}}</a> </td>
+            <td><span :class="{checked: row.licensed}"></span> </td>
+            <td><span :class="{checked: row.active}"></span> </td>
+            <td><span :class="{checked: row.published}"></span> </td>
             <td>
               <ul>
-                <li v-for="instructor in course.instructors" :key="instructor">
+                <li v-for="instructor in row.instructors" :key="instructor">
                   <a href="#">{{instructor}}</a>
                 </li>
               </ul>
             </td>
-            <td>{{course.studentNumber}}</td>
-            <td>{{course.term}}</td>
-            <td>{{course.year}}</td>
-            <td>{{course.created}}</td>
+            <td>{{row.studentNumber}}</td>
+            <td>{{row.term}}</td>
+            <td>{{row.year}}</td>
+            <td>{{row.created}}</td>
+            <td>
+              <buttonDropdown>
+                <template slot="button_text">Download</template>
+                <template slot="content">
+                  <ul>
+                    <li><a>Awarded Badges</a> </li>
+                    <li><a>Research Grades</a> </li>
+                    <li><a>Final Grades</a> </li>
+                    <li><a>Assignment Structure</a> </li>
+                    <li><a>Assignment Submissions</a> </li>
+                    <li><a>Assignment Type Summaries</a> </li>
+                    <li><a>Full Gradebook</a> </li>
+                    <li><a>Badges</a> </li>
+                    <li><a>Grading Scheme</a> </li>
+                  </ul>
+                </template>
+              </buttonDropdown>
+
+              <buttonDropdown>
+                <template slot="button_text">Options</template>
+                <template slot="content">
+                  <ul>
+                    <li><a>Edit</a> </li>
+                    <li><a>Copy</a> </li>
+                    <li><a>Copy + Students</a> </li>
+                    <li><a>Delete</a> </li>
+                  </ul>
+                </template>
+              </buttonDropdown>
+            </td>
+          </tr>
+
+          <tr v-for="row in currentPageContent" :key="row.id">
+            <td v-for="value in row">
+              {{value}}
+            </td>
 
             <td>
               <buttonDropdown>
@@ -163,6 +201,15 @@ module.exports = {
       if (label === 'studentNumber'){return '# Students'}
       if (label === 'term'){return 'Semester'}
       if (label === 'year'){return 'Year'}
+    },
+    isArray(value){
+      return typeof value === "object"
+    },
+    isBoolean(value){
+      return typeof value === "boolean"
+    },
+    isString(value){
+      return typeof value === "string"
     },
     filterByPublished(course) {
       if (this.showPublished && this.showUnpublished) {

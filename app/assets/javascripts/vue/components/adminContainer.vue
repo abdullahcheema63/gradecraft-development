@@ -567,7 +567,8 @@ module.exports = {
           instructors: ["Instructor 1", "Instructor 2"],
           studentNumber: "1,000",
           term: "Fall",
-          year: "2019"
+          year: "2019",
+          url: "https://gradecraft.com",
         },
         {
           id: 223,
@@ -579,7 +580,8 @@ module.exports = {
           instructors: ["Instructor 1"],
           studentNumber: "100",
           term: "Fall",
-          year: "2017"
+          year: "2017",
+          url: "https://gradecraft.com",
         },
         {
           id: 323,
@@ -591,7 +593,8 @@ module.exports = {
           instructors: ["Instructor Dude"],
           studentNumber: "500",
           term: "Winter",
-          year: "2015"
+          year: "2015",
+          url: "https://gradecraft.com",
         },
       ]
     }

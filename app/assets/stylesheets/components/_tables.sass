@@ -257,26 +257,29 @@ i.missing_grade
     display: inline-block
     margin: 0
 
-    &.active
-      color: $blue_dark
-
-  a
-    border-bottom: 0px solid transparent
-
-  button
-    margin: 0
-    border: 0px solid transparent
   & > div
     display: inline-block
     position: relative
     margin-left: 2em
-    background-color: lavender
 
-    p
+    button
       min-width: 1.25em
-      text-align: center
+      margin: 0
+      padding: 0
+      border: 0px solid transparent
+      background: none
+      color: $blue-medium_1
 
-  .table_prev, .table_next
+      &:hover
+        background: none
+        color: $pink_2
+
+      &.active
+        color: $blue_dark
+        font-family: 'ProximaNova_regular', sans-serif
+        cursor: default
+
+  button.table_prev, button.table_next
     background: url(asset_path("icon-arrow_next.svg")) no-repeat center center
     background-size: contain
     width: 1.25em
@@ -284,14 +287,19 @@ i.missing_grade
     display: inline-block
     position: absolute
     cursor: pointer
+    border: 0px solid transparent
 
-    &.disabled
+    &:hover
+      background: url(asset_path("icon-arrow_next.svg")) no-repeat center center
+      background-size: contain
+
+    &:disabled
       background: url(asset_path("icon-arrow_next-disabled.svg")) no-repeat center center
       background-size: contain
-      cursor: default
+      cursor: not-allowed
 
   .table_next
-    top: 1px
+    top: 0.5px
     right: -1.25em
 
   .table_prev
