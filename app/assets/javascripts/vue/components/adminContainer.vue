@@ -560,7 +560,6 @@ module.exports = {
         {
           id: 123,
           name: "Test Course",
-          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           licensed: true,
           active: true,
           published: true,
@@ -568,12 +567,12 @@ module.exports = {
           studentNumber: "1,000",
           term: "Fall",
           year: "2019",
+          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           url: "https://gradecraft.com",
         },
         {
           id: 223,
           name: "Blahhhh",
-          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           licensed: false,
           active: false,
           published: false,
@@ -581,12 +580,12 @@ module.exports = {
           studentNumber: "100",
           term: "Fall",
           year: "2017",
+          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           url: "https://gradecraft.com",
         },
         {
           id: 323,
           name: "Bloop",
-          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           licensed: true,
           active: false,
           published: false,
@@ -594,6 +593,7 @@ module.exports = {
           studentNumber: "500",
           term: "Winter",
           year: "2015",
+          created: "Wed, Apr 10, 2019, 4:31pm EDT",
           url: "https://gradecraft.com",
         },
       ]
