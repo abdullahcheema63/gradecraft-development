@@ -71,6 +71,10 @@
           </p>
         </div>
       </div>
+      <div class="empty" v-if="!course.assignments.length">
+        <p v-if="is_staff"><em>There aren’t any assignments coming up for this course</em></p>
+        <p v-else><em>You don’t have any assignments coming up for this course</em></p>
+      </div>
     </div>
 
     <div class="button_box">

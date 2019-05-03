@@ -11,284 +11,285 @@
     content: ''
     width: 32%
 
-  .course_card
-    box-sizing: border-box
-    width: 32%
-    padding: 0
-    margin-bottom: 1.5em
-    border: 1px solid $blue_dark
-    background-color: white
-    position: relative
+.course_card
+  box-sizing: border-box
+  width: 32%
+  padding: 0
+  margin-bottom: 1.5em
+  border: 1px solid $blue_dark
+  background-color: white
+  position: relative
 
-    @media (max-width: $media-1000)
-      width: 48.5%
+  @media (max-width: $media-1000)
+    width: 48.5%
 
-    @include tablet-portrait
-      width: 100%
+  @include tablet-portrait
+    width: 100%
 
-    & > *
-      padding: 0.5em
+  & > *
+    padding: 0.5em
 
-    & > h4
-      background-color: $blue_dark
-      color: white
-      font-family: 'ProximaNova_regular', sans-serif
-      font-weight: normal
-      display: flex
-      justify-content: space-between
+  & > h4
+    background-color: $blue_dark
+    color: white
+    font-family: 'ProximaNova_regular', sans-serif
+    font-weight: normal
+    display: flex
+    justify-content: space-between
 
-      span
-        &:nth-child(1)
-          flex: 1
-          overflow-x: hidden
-          white-space: nowrap
-          text-overflow: ellipsis
+    span
+      &:nth-child(1)
+        flex: 1
+        overflow-x: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
 
-        &:nth-child(2)
-          font-family: 'ProximaNova_light', sans-serif
-          font-size: 0.85em
-          text-transform: uppercase
-          text-align: right
-          width: 6em
-
-    p
-      margin: 0
-
-    .button
-      margin: 0.25em 0
-
-    .course_status
-      font-family: 'ProximaNova_regular', sans-serif
-      padding: 0.1em 0.5em
-      display: flex
-      justify-content: space-between
-
-      div
+      &:nth-child(2)
+        font-family: 'ProximaNova_light', sans-serif
         font-size: 0.85em
         text-transform: uppercase
-        font-family: 'ProximaNova_semibold', sans-serif
-        line-height: 1.2em
-        margin: 0 -8px 0 0
+        text-align: right
+        width: 6em
 
-        p
-          padding: 0 0.5em
-          background-color: $pink_2
-          color: white
-          margin: 0.25em 0
-          width: fit-content
-          position: relative
+  p
+    margin: 0
 
-          &:before
-            content: ''
-            width: 0
-            height: 0
-            border-top: 1.2em solid $pink_2
-            border-left: 0.8em solid transparent
-            position: absolute
-            top: 0
-            left: -0.78em
+  .button
+    margin: 0.25em 0
 
-          &.licensed
-            background: $teal_bright url(asset_path("icon-form_Edit.svg")) no-repeat center right 0.5em
-            background-size: auto 85%
-            color: $blue_dark
-            padding-right: 1.5em
-            cursor: pointer
-            float: right
+  .course_status
+    font-family: 'ProximaNova_regular', sans-serif
+    padding: 0.1em 0.5em
+    display: flex
+    justify-content: space-between
 
-            &:before
-              border-top-color: $teal_bright
-
-            &:after
-              clear: both
-
-    .overview
-      & > div
-        display: flex
-        justify-content: space-between
-        margin: 0.5em 0 0 0
+    div
+      font-size: 0.85em
+      text-transform: uppercase
+      font-family: 'ProximaNova_semibold', sans-serif
+      line-height: 1.2em
+      margin: 0 -8px 0 0
 
       p
-        font-family: 'KlinicSlab_medium', serif
-        font-size: 1.25em
+        padding: 0 0.5em
+        background-color: $pink_2
+        color: white
+        margin: 0.25em 0
+        width: fit-content
+        position: relative
 
-        span
-          display: block
-          font-family: 'ProximaNova_regular', sans-serif
-          font-size: 0.65em
-          line-height: 1em
-          text-transform: uppercase
-          margin-top: 0.25em
+        &:before
+          content: ''
+          width: 0
+          height: 0
+          border-top: 1.2em solid $pink_2
+          border-left: 0.8em solid transparent
+          position: absolute
+          top: 0
+          left: -0.78em
 
-    .course_assignments
-      position: relative
-      margin-bottom: 3.5em
+        &.licensed
+          background: $teal_bright url(asset_path("icon-form_Edit.svg")) no-repeat center right 0.5em
+          background-size: auto 85%
+          color: $blue_dark
+          padding-right: 1.5em
+          cursor: pointer
+          float: right
 
-      h4
-        margin: 0.75em 0
-
-      legend
-        position: absolute
-        top: 0.75em
-        right: 0.5em
-        font-size: 0.8em
-        font-family: 'ProximaNova_regular', sans-serif
-        text-transform: uppercase
-        text-align: right
-
-        p
-          margin: 0
-          line-height: 1.25em
-          position: relative
-          padding-right: 1.2em
+          &:before
+            border-top-color: $teal_bright
 
           &:after
-            content: ''
-            width: 0.5em
-            height: 0.5em
-            background-color: $blue
-            border: 1px solid $blue
-            display: block
-            position: absolute
-            right: 0
-            top: 0.2em
+            clear: both
 
-          &:last-child
-            &:after
-              background-color: white
-              border: 1px solid $blue_dark
+  .overview
+    & > div
+      display: flex
+      justify-content: space-between
+      margin: 0.5em 0 0 0
 
-      .assignment
-        display: flex
-        justify-content: space-between
-        margin: 0.75em 0 0 0
+    p
+      font-family: 'KlinicSlab_medium', serif
+      font-size: 1.25em
 
-        span
+      span
+        display: block
+        font-family: 'ProximaNova_regular', sans-serif
+        font-size: 0.65em
+        line-height: 1em
+        text-transform: uppercase
+        margin-top: 0.25em
+
+  .course_assignments
+    position: relative
+    margin-bottom: 4em
+
+    h4
+      margin: 0.75em 0
+
+    legend
+      position: absolute
+      top: 0.75em
+      right: 0.5em
+      font-size: 0.8em
+      font-family: 'ProximaNova_regular', sans-serif
+      text-transform: uppercase
+      text-align: right
+
+      p
+        margin: 0
+        line-height: 1.25em
+        position: relative
+        padding-right: 1.2em
+
+        &:after
+          content: ''
+          width: 0.5em
+          height: 0.5em
+          background-color: $blue
+          border: 1px solid $blue
           display: block
-          font-size: 0.8em
+          position: absolute
+          right: 0
+          top: 0.2em
 
+        &:last-child
+          &:after
+            background-color: white
+            border: 1px solid $blue_dark
+
+    .assignment
+      display: flex
+      justify-content: space-between
+      margin: 0.75em 0 0 0
+
+      span
+        display: block
+        font-size: 0.8em
+
+      & > div
+        &:first-child
+          margin-right: 1em
+
+        &:last-child
+          display: flex
+          justify-content: space-between
+
+      p, span
+        overflow-x: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+
+  .button_box
+    position: absolute
+    bottom: 0
+
+  &.instructor
+    .overview
+      p
+        width: 32%
+
+    .course_assignments
+      .assignment
         & > div
           &:first-child
-            margin-right: 1em
+            width: calc(100% - 6em)
 
           &:last-child
-            display: flex
-            justify-content: space-between
+            width: 4.5em
+            margin-top: 0.35em
 
-        p, span
-          overflow-x: hidden
-          white-space: nowrap
-          text-overflow: ellipsis
+            p
+              background-color: $blue
+              width: 30px
+              height: 30px
+              line-height: 30px
+              text-align: center
+              font-family: 'ProximaNova_regular', sans-serif
+              border: 2px solid $blue
 
-    .button_box
-      position: absolute
-      bottom: 0
+              &:last-child
+                background-color: white
+                border: 2px solid $blue_dark
 
-    &.instructor
-      .overview
-        p
-          width: 32%
+  &.student
+    .overview
+      p
+        width: 49%
 
-      .course_assignments
-        .assignment
-          & > div
-            &:first-child
-              width: calc(100% - 6em)
+    .course_assignments
+      .assignment
+        & > div
+          &:first-child
+            width: calc(100% - 7em)
+          &:last-child
+            width: 6em
+            font-family: 'ProximaNova_semibold', sans-serif
 
-            &:last-child
-              width: 4.5em
-              margin-top: 0.35em
+            p
+              font-size: 0.8em
+              text-transform: uppercase
+              width: 100%
+              text-align: right
+              padding-right: 1.5em
+              position: relative
 
-              p
-                background-color: $blue
-                width: 30px
-                height: 30px
-                line-height: 30px
-                text-align: center
-                font-family: 'ProximaNova_regular', sans-serif
-                border: 2px solid $blue
+              &:after
+                content: ''
+                width: 12px
+                height: 12px
+                display: block
+                position: absolute
+                top: 0.35em
+                right: 0
+                border-radius: 50%
 
-                &:last-child
-                  background-color: white
-                  border: 2px solid $blue_dark
-
-    &.student
-      .overview
-        p
-          width: 49%
-
-      .course_assignments
-        .assignment
-          & > div
-            &:first-child
-              width: calc(100% - 7em)
-            &:last-child
-              width: 6em
-              font-family: 'ProximaNova_semibold', sans-serif
-
-              p
-                font-size: 0.8em
-                text-transform: uppercase
-                width: 100%
-                text-align: right
-                padding-right: 1.5em
-                position: relative
-
+              &.planned
                 &:after
-                  content: ''
-                  width: 12px
-                  height: 12px
-                  display: block
-                  position: absolute
-                  top: 0.35em
-                  right: 0
-                  border-radius: 50%
+                  background-color: $blue
+              &.submitted
+                &:after
+                  width: 10px
+                  height: 10px
+                  background-color: white
+                  border: 1px solid $blue_dark
+              &.graded
+                &:after
+                  background-color: $teal_bright
 
-                &.planned
-                  &:after
-                    background-color: $blue
-                &.submitted
-                  &:after
-                    width: 10px
-                    height: 10px
-                    background-color: white
-                    border: 1px solid $blue_dark
-                &.graded
-                  &:after
-                    background-color: $teal_bright
+  &.unpublished
+    .course_status
+      background-color: $grey-faint
 
-    &.unpublished
-      .course_status
-        background-color: $grey-faint
+  &.past
+    background-color: $grey_1
+    border-color: $grey_2
 
-    &.past
-      background-color: $grey_1
-      border-color: $grey_2
+    & > h4
+      background-color: transparent
+      color: $blue_dark
 
-      & > h4
-        background-color: transparent
-        color: $blue_dark
+    .course_status
+      div
+        p
+          &.licensed
+            background: $grey_3
+            color: white
+            padding-right: 0.5em
+            cursor: default
 
-      .course_status
-        div
-          p
-            &.licensed
-              background: $grey_3
-              color: white
-              padding-right: 0.5em
-              cursor: default
+            &:before
+              border-top-color: $grey_3
 
-              &:before
-                border-top-color: $grey_3
+  &.empty
+    min-height: 120px
+    margin: 0
 
-    &.empty
-      border: 2px dashed $grey_2
-      text-align: center
-      padding-top: 2em
-      min-height: 120px
-
-      @include tablet-portrait
-        padding: 2em 0
+.empty
+  border: 2px dashed $grey_2
+  text-align: center
+  padding: 2em 0.5em
+  margin: 1em 0
 
 .filter_box
   margin: 1em 0 2em 0
