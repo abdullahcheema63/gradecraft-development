@@ -3,13 +3,13 @@
 %section.form-section
   %h2.form-title Grading Philosophy
   .form-item
+    %p.form-hint What would you like to tell students about how they should expect to be graded? If you add content here, it will appear on the "Syllabus" page for students.
     .textarea
-      .form-hint What would you like to tell students about how they should expect to be graded? If you add content here, it will appear on the "Syllabus" page for students.
       = f.text_area :gameful_philosophy, class: "froala"
 
 %section.form-section
   %h2.form-title Course Rules
   .form-item
+    %p.form-hint Are there specific rules for this course that students should know? We recommend including details like minimum thresholds that must be met, your policy regarding late work, and available accommodations for student disabilities. If you add content here, it will appear on the "Syllabus" page for students.
     .textarea
-      .form-hint Are there specific rules for this course that students should know? We recommend including details like minimum thresholds that must be met, your policy regarding late work, and available accommodations for student disabilities. If you add content here, it will appear on the "Syllabus" page for students.
       = f.text_area :course_rules, class: "froala"
