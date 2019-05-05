@@ -1,15 +1,15 @@
 Rails.application.configure do
-  config.action_controller.default_url_options = { :host => "staging.gradecraft.com" }
+  config.action_controller.default_url_options = { :host => ENV["APP_DOMAIN"] || "staging.gradecraft.com" }
   config.action_controller.perform_caching = true
   config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
-  config.asset_host = ENV["GC_ASSET_HOST"] || "https://staging.gradecraft.com"
-  config.action_mailer.default_url_options = { :host => "staging.gradecraft.com" }
+  config.asset_host = ENV["GC_ASSET_HOST"] || ENV["APP_DOMAIN"] || "https://staging.gradecraft.com"
+  config.action_mailer.default_url_options = { :host => ENV["APP_DOMAIN"] || "staging.gradecraft.com" }
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:              "smtp.gmail.com",
     port:                 587,
-    domain:               "staging.gradecraft.com",
+    domain:               ENV["APP_DOMAIN"] || "staging.gradecraft.com",
     user_name:            ENV["GMAIL_SMTP_USERNAME"],
     password:             ENV["GMAIL_SMTP_PASSWORD"],
     authentication:       "plain",
