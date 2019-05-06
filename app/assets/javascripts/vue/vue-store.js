@@ -2,6 +2,50 @@
 
 Vue.use(Vuex)
 
+const dataItem = function(item, response, options){
+    // attach JSON API type to attributes ("badges", "assignments", etc.)
+    if (response == null) { response = {}; }
+    if (options == null) { options = {"include":[]}; }
+    item.attributes.type = item.type;
+
+    // attach associated models from included list within
+    _.each(options.include, function(included){
+      let predicate, relationships;
+      if (!response.included || !item.relationships || !item.relationships[included]) { return; }
+
+      if (Array.isArray(item.relationships[included].data)) {
+        const related = {
+          ids: _.pluck(item.relationships[included].data, "id"),
+          types: _.pluck(item.relationships[included].data, "type")
+        };
+        predicate = item => Array.from(related.ids).includes(item.id) && Array.from(related.types).includes(item.type);
+        relationships = _.filter(response.included, predicate);
+        if (relationships != null) { return item.attributes[included] = _.pluck(relationships, "attributes"); }
+      } else {
+        predicate = {
+          id: item.relationships[included].data.id,
+          type: item.relationships[included].data.type
+        };
+        const relationship = _.find(response.included, predicate);
+        if (relationship != null) { return item.attributes[included] = relationship.attributes; }
+      }
+    });
+    return item.attributes;
+  };
+
+const loadMany = function(modelArray, response, options, filter) {
+    if (options == null) { options = {"include":[]}; }
+    if (filter == null) { filter = ()=> true; }
+    return _(response.data)
+      .map(item => dataItem(item, response, options))
+      .filter(filter)
+      .each(item => modelArray.push(item))
+      .value();
+  };
+
+const apiResponseToData = (responseJson) =>
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments"] });
+
 const store = new Vuex.Store({
   state: {
     user: {
@@ -168,6 +212,20 @@ const store = new Vuex.Store({
     ]
     }},
     actions: {
+      getCourseMemberships: async function({ commit }){
+        const resp = await fetch("api/courses");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log(json);
+        const final = apiResponseToData(json);
+        console.log(final);
+        commit('addCourses', final);
+      },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
       },
@@ -182,6 +240,56 @@ const store = new Vuex.Store({
       }
     },
     mutations: {
+      addCourses (state, courses){
+        state.user.courseMembership = courses.map(course => {
+          return {
+            id: course.id,
+            name: course.name,
+            number: course.course_number,
+            role: course.role,
+            instructor: "Cait Holman",
+            url: course.change_course_path,
+            gradingStatus: {
+              url: "",
+              ungraded: course.ungraded,
+              ready: course.ready_for_release,
+              resubmissions: course.resubmissions
+            },
+            eventCount: course.events_this_week,
+            announcementCount: course.unread_announcements,
+            assignments: course.assignments.map(assignment => ({
+              name: assignment.name,
+              dueDate: assignment.due_at,
+              planned: assignment.planned,
+              submitted: assignment.submitted,
+              graded: assignment.graded,
+            })),
+            /*
+            assignments: [{
+              name: "Assignment 1",
+              dueDate: "2019-07-12T00:00:00",
+              planned: 12,
+              submitted: 14,
+              graded: 0,
+              url: ""},
+              {
+              name: "Assignment 2",
+              dueDate: "2019-07-17T00:00:00",
+              planned: 5,
+              submitted: 0,
+              graded: 0,
+              url: ""}],
+              */
+            term: {
+              name: course.semester,
+              year: course.year,
+              start: "2019-01-01T00:00:00",
+              end: "2019-09-01T00:00:00"
+            },
+            licensed: true,
+            published: course.published };
+        });
+      },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)
         var membershipIndex = course_ids.indexOf(course_id)

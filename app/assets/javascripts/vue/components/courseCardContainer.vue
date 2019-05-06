@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div class="content_block" v-if="pastCourses">
+    <div class="content_block" v-if="pastCourses.length">
       <h2 class="unspace-top">Past Courses</h2>
       <guideMessage>
         <p>
@@ -288,6 +288,9 @@ module.exports = {
         notes: ""
       }
     }
+  },
+  created: function() {
+    this.$store.dispatch("getCourseMemberships")
   },
   computed: {
     currentCourses(){
