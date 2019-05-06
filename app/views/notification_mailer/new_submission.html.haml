@@ -1,13 +1,18 @@
 %td.hero_img
   = image_tag "email-hero_Neutral.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%h2{:align => "center"}
-  %strong Hi #{ @professor.first_name },
+%td
+  %h1
+    Hi #{ @professor.first_name },
 
-%p{:align => "center"}
-  #{ @student.first_name } #{ @student.last_name } has submitted their #{ @course.assignment_term.downcase } "#{ @assignment.name }" for course #{ @course.name }.
+  %p
+    #{ @student.first_name } #{ @student.last_name } has submitted their #{ @course.assignment_term.downcase }
+    %strong
+      #{ @assignment.name }
+    for course
+    %strong
+      #{ @course.name }.
 
-%p{:align => "center"}
-  Please visit
-  = link_to "GradeCraft", dashboard_url
-  to view the submission.
+  %p
+    = link_to "Please visit GradeCraft", dashboard_url
+    to view the submission.
