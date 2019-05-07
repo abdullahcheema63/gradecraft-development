@@ -50,60 +50,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in currentPageContent" :key="row.id">
-            <td>
-              <a :href="row.url">{{row.id}}</a>
-            </td>
-            <td><a href="#">{{row.name}}</a> </td>
-            <td><span :class="{checked: row.licensed}"></span> </td>
-            <td><span :class="{checked: row.active}"></span> </td>
-            <td><span :class="{checked: row.published}"></span> </td>
-            <td>
-              <ul>
-                <li v-for="instructor in row.instructors" :key="instructor">
-                  <a href="#">{{instructor}}</a>
-                </li>
-              </ul>
-            </td>
-            <td>{{row.studentNumber}}</td>
-            <td>{{row.term}}</td>
-            <td>{{row.year}}</td>
-            <td>{{row.created}}</td>
-            <td>
-              <buttonDropdown>
-                <template slot="button_text">Download</template>
-                <template slot="content">
-                  <ul>
-                    <li><a>Awarded Badges</a> </li>
-                    <li><a>Research Grades</a> </li>
-                    <li><a>Final Grades</a> </li>
-                    <li><a>Assignment Structure</a> </li>
-                    <li><a>Assignment Submissions</a> </li>
-                    <li><a>Assignment Type Summaries</a> </li>
-                    <li><a>Full Gradebook</a> </li>
-                    <li><a>Badges</a> </li>
-                    <li><a>Grading Scheme</a> </li>
-                  </ul>
-                </template>
-              </buttonDropdown>
-
-              <buttonDropdown>
-                <template slot="button_text">Options</template>
-                <template slot="content">
-                  <ul>
-                    <li><a>Edit</a> </li>
-                    <li><a>Copy</a> </li>
-                    <li><a>Copy + Students</a> </li>
-                    <li><a>Delete</a> </li>
-                  </ul>
-                </template>
-              </buttonDropdown>
-            </td>
-          </tr>
-
-          <tr v-for="row in currentPageContent" :key="row.id">
+          <tr v-for="row in formattedRowsCourseLink" :key="row.id.text">
             <td v-for="value in row">
-              {{value}}
+              <span v-if="isObjectOrArray(value) && value.type === 'hyperlink'">
+                <a :href="value.url">{{value.text}}</a>
+              </span>
+              <ul v-if="isObjectOrArray(value) && value.type === 'array'">
+                <li v-for="name in value.names">{{name}}</li>
+              </ul>
+              <span v-if="isBoolean(value)" :class="{checked: value}"></span>
+              <span v-if="isString(value)">
+                {{value}}
+              </span>
             </td>
 
             <td>
@@ -172,7 +130,7 @@ module.exports = {
   },
   computed: {
     rawTableHeaders(){
-      return Object.keys(this.content[0])
+      return Object.keys(this.formattedRowsCourseLink[0])
     },
     filteredContent(){
       var allContent = this.content;
@@ -188,6 +146,33 @@ module.exports = {
     currentPageContent(){
       return this.filteredContent.slice(this.currentPageItemMin, this.currentPageItemMax);
     },
+    formattedRowsCourseLink(){
+      return this.currentPageContent.map(course => {
+        return {
+          id: {
+            text: course.id,
+            url: course.url,
+            type: "hyperlink",
+          },
+          name: {
+            text: course.name,
+            url: course.url,
+            type: "hyperlink",
+          },
+          licensed: course.licensed,
+          active: course.active,
+          published: course.published,
+          instructors: {
+            names: course.instructors,
+            type: "array",
+          },
+          studentNumber: course.studentNumber,
+          term: course.term,
+          year: course.year,
+          created: course.created,
+        }
+      })
+    }
   },
   methods: {
     formattedTableHeaders(label){
@@ -202,7 +187,7 @@ module.exports = {
       if (label === 'term'){return 'Semester'}
       if (label === 'year'){return 'Year'}
     },
-    isArray(value){
+    isObjectOrArray(value){
       return typeof value === "object"
     },
     isBoolean(value){
