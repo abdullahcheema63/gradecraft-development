@@ -4,6 +4,6 @@ class API::UsersController < ApplicationController
 
   # GET api/users
   def index
-    @users = User.all
+    @users = User.where(admin: false)
   end
 end

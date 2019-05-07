@@ -361,8 +361,6 @@
 module.exports = {
   name: 'admin-container',
   components: {
-    courseCard: () => VComponents.get('vue/components/courseCard'),
-    pastCourse: () => VComponents.get('vue/components/pastCourse'),
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
