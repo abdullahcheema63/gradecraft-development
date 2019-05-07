@@ -264,22 +264,6 @@ const store = new Vuex.Store({
               submitted: assignment.submitted,
               graded: assignment.graded,
             })),
-            /*
-            assignments: [{
-              name: "Assignment 1",
-              dueDate: "2019-07-12T00:00:00",
-              planned: 12,
-              submitted: 14,
-              graded: 0,
-              url: ""},
-              {
-              name: "Assignment 2",
-              dueDate: "2019-07-17T00:00:00",
-              planned: 5,
-              submitted: 0,
-              graded: 0,
-              url: ""}],
-              */
             term: {
               name: course.semester,
               year: course.year,
