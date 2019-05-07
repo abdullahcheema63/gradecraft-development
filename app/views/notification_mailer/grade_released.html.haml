@@ -1,19 +1,21 @@
-%h2{:align => "center"}
-  %strong You've got a new grade!
-%h3{:align => "center"}
-  You can now view your grade for
-  #{ @course.assignment_term.downcase } "#{ @assignment.name }"
-  in #{ @course.name }.
-%p
-%h4{:align => "center"}
-  Click
-  =link_to "here", assignment_url(@assignment)
-  to view your results.
+%td.hero_img
+  = image_tag "email-hero_Neutral.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-- if @course.show_grade_predictor?
-  %hr/
-  %p{:align => "center"}
-    Don't forget to update your plan for the semester by checking your
-    = succeed "." do
-      = link_to @course.grade_predictor_term, predictor_url
-  %hr/
+%td
+  %h1
+    You’ve got a new grade!
+  %p
+    You can now view your grade for
+    #{ @course.assignment_term.downcase }
+    %strong
+      #{ @assignment.name }
+    in #{ @course.name }.
+
+  =link_to assignment_url(@assignment)
+    %button View your results!
+
+  - if @course.show_grade_predictor?
+    %p
+      Don’t forget to update your plan for the semester by checking your
+      = succeed "." do
+        = link_to "#{ @course.grade_predictor_term }", predictor_url
