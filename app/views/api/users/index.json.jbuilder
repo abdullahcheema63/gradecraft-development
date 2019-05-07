@@ -5,6 +5,7 @@ json.data @users do |user|
     json.email user.email
     json.first_name user.first_name
     json.last_name user.last_name
+    json.created_at user.created_at
   end
   json.included do
     json.array! user.course_memberships.each do |course_membership|
