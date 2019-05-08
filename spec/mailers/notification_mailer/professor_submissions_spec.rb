@@ -24,7 +24,6 @@ RSpec.shared_examples "a submission email to a professor" do
   end
 
   it "doesn't include a template" do
-    should_not include "Regents of The University of Michigan"
     should_not include "DOCTYPE"
   end
 end

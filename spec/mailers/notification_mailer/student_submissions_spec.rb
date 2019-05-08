@@ -45,20 +45,12 @@ describe NotificationMailer do
       subject { text_part.body }
 
       it_behaves_like "a complete submission email body"
-
-      it "doesn't include a template" do
-        should_not include "Regents of The University of Michigan"
-      end
     end
 
     describe "html part body" do
       subject { html_part.body }
 
       it_behaves_like "a complete submission email body"
-
-      it "should use include a template" do
-        should include "Regents of The University of Michigan"
-      end
 
       it "declares a doctype" do
         should include "DOCTYPE"
@@ -87,20 +79,12 @@ describe NotificationMailer do
       subject { text_part.body }
 
       it_behaves_like "a complete submission email body"
-
-      it "doesn't include a template" do
-        should_not include "Regents of The University of Michigan"
-      end
     end
 
     describe "html part body" do
       subject { html_part.body }
 
       it_behaves_like "a complete submission email body"
-
-      it "should use include a template" do
-        should include "Regents of The University of Michigan"
-      end
 
       it "declares a doctype" do
         should include "DOCTYPE"
