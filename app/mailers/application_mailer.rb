@@ -6,8 +6,6 @@ class ApplicationMailer < ActionMailer::Base
 
   default from: SENDER
 
-  default_url_options[:protocol] = "https"
-
   private
 
   def default_layout(mailer)
