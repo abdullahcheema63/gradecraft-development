@@ -1,4 +1,4 @@
-json.data @users do |user|
+json.data @users.includes(:course_memberships) do |user|
   json.type "users"
   json.id user.id
   json.attributes do
@@ -7,10 +7,22 @@ json.data @users do |user|
     json.last_name user.last_name
     json.created_at user.created_at
   end
-  json.included do
+
+  json.relationships do
+    json.course_memberships do
+      json.data user.course_memberships.each do |course_membership|
+        json.type "course_membership"
+        json.id course_membership.course_id
+      end
+    end
+  end
+end
+
+json.included do
+  @users.each do |user|
     json.array! user.course_memberships.each do |course_membership|
+      json.type "course_membership"
       json.id course_membership.course_id
-      json.type "course"
 
       course = Course.find(course_membership.course_id)
       json.attributres do

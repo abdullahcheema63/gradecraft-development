@@ -44,7 +44,7 @@ const loadMany = function(modelArray, response, options, filter) {
   };
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships"] });
 
 const store = new Vuex.Store({
   state: {
@@ -225,6 +225,20 @@ const store = new Vuex.Store({
         const final = apiResponseToData(json);
         console.log(final);
         commit('addCourses', final);
+      },
+      getAllUsers: async function({ commit }){
+        const resp = await fetch("api/users");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log(json);
+        const final = apiResponseToData(json);
+        console.log(final);
+        //commit('addUsers', final)
       },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
