@@ -12,7 +12,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address:              "smtp.gmail.com",
     port:                 587,
-    domain:               ENV["APP_DOMAIN"] || "staging.gradecraft.com",
+    domain:               "staging.gradecraft.com",
     user_name:            ENV["GMAIL_SMTP_USERNAME"],
     password:             ENV["GMAIL_SMTP_PASSWORD"],
     authentication:       "plain",
@@ -20,7 +20,7 @@ Rails.application.configure do
   }
 
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.active_support.deprecation = :notify
   config.assets.compile = ["1", "yes", "true", "on"].include?(ENV["GC_ASSETS_COMPILE"] || "0" )
