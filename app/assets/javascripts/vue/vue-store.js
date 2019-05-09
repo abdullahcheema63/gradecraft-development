@@ -4,6 +4,7 @@ Vue.use(Vuex)
 
 const dataItem = function(item, response, options){
     // attach JSON API type to attributes ("badges", "assignments", etc.)
+    debugger;
     if (response == null) { response = {}; }
     if (options == null) { options = {"include":[]}; }
     item.attributes.type = item.type;
@@ -236,7 +237,7 @@ const store = new Vuex.Store({
         }
         const json = await resp.json();
         console.log(json);
-        const final = apiResponseToData(json);
+        const final = loadMany(json.data, json, { include: ["course_memberships"]});
         console.log(final);
         //commit('addUsers', final)
       },
