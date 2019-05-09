@@ -24,16 +24,9 @@ module Toolkits
 
       module SharedExamples
         RSpec.shared_examples "an email text part" do
-          it "doesn't include a template" do
-            should_not include "Regents of The University of Michigan"
-          end
         end
 
         RSpec.shared_examples "an email html part" do
-          it "should use include a template" do
-            should include "Regents of The University of Michigan"
-          end
-
           it "declares a doctype" do
             should include "DOCTYPE"
           end

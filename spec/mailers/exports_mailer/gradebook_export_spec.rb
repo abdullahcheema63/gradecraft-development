@@ -59,10 +59,6 @@ describe ExportsMailer do
       it "includes the course name" do
         should include_in_mail_body course.name
       end
-
-      it "doesn't include a template" do
-        should_not include "Regents of The University of Michigan"
-      end
     end
 
     describe "html part body" do
@@ -73,10 +69,6 @@ describe ExportsMailer do
 
       it "includes the course name" do
         should include_in_mail_body course.name
-      end
-
-      it "does include a template" do
-        should include "Regents of The University of Michigan"
       end
     end
   end
