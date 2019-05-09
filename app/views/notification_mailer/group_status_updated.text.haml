@@ -1,8 +1,12 @@
-#{ @student.first_name },
+- if @group.approved
+  Good news, #{ @student.first_name }!
+- if !@group.approved
+  Uh oh, #{ @student.first_name }
 
-Your group, "#{ @group.name }" has been #{ @group.approved } in course #{ @course.name }.
+Your group, “#{ @group.name }” has been #{ @group.approved } in course #{ @course.name }.
 
 Log in to GradeCraft to read your feedback.
 
-Play on!
-GradeCraft
+- if @group.approved
+  Play on!
+  GradeCraft

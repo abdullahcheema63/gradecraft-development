@@ -1,2 +1,10 @@
 Congratulations #{ @student.first_name }!
-You've earned the #{ @learning_objective.name } #{ @course.learning_objective_term }.
+
+You’ve earned the #{ @learning_objective.name } #{ @course.learning_objective_term }.
+
+Check out what other #{ @course.learning_objective_term.downcase } you can earn in #{ @course.name } here:
+
+= learning_objectives_objectives_url
+
+Play on!
+GradeCraft

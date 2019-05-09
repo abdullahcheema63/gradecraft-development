@@ -3,10 +3,12 @@
 
 %td
   %h1
-    Hi #{ @professor.first_name },
+    Hi, #{ @professor.first_name }
 
   %p
-    #{ @student.first_name } #{ @student.last_name } has submitted their #{ @course.assignment_term.downcase }
+    %strong
+      #{ @student.first_name } #{ @student.last_name }
+    has submitted their #{ @course.assignment_term.downcase }
     %strong
       #{ @assignment.name }
     for course
@@ -14,5 +16,12 @@
       #{ @course.name }.
 
   %p
-    = link_to "Please visit GradeCraft", dashboard_url
-    to view the submission.
+    Visit GradeCraft to view their submission.
+
+  =link_to dashboard_url
+    %button View new submission
+
+  %p
+    Go gameful!
+    %br
+    GradeCraft

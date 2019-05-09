@@ -7,7 +7,6 @@ body {
 table {
   max-width: 800px;
   margin: 0 auto 100px auto;
-  font-family: 'Montserrat', Verdana, sans-serif;
   font-size: 18px;
   line-height: 1.45em;
   color: #0e0e51;
@@ -21,6 +20,8 @@ tr.content {
 tr.content td {
   display: block;
   width: 100%;
+  font-family: 'Montserrat', Verdana, sans-serif;
+  font-weight: 300;
 }
 tr.footer {
   text-align: center;
@@ -45,11 +46,14 @@ h1, h2 {
   font-family: 'Arvo', Georgia, serif;
   font-weight: normal;
   line-height: 1.2em;
+  text-align: center;
 }
 h1 {
   font-size: 2em;
-  text-align: center;
   margin: 1.5em 0.5em 1em 0.5em;
+}
+h2 {
+  font-size: 1.25em;
 }
 p {
   margin: 1em auto;
@@ -97,6 +101,18 @@ button:hover {
   display: block;
   width: 100%;
   height: auto;
+}
+td img.badge {
+  display: block;
+  margin: 0 auto 1em auto;
+  width: 150px;
+  height: auto;
+}
+td div {
+  background-color: #d9f4ff;
+  padding: 0.5em;
+  margin: 0 auto;
+  max-width: 650px;
 }
 
 @media screen and (max-width: 1000px) {
