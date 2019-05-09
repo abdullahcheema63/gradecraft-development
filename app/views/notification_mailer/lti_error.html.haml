@@ -1,27 +1,42 @@
-%h2{:align => "center"}
-  %strong Hey-o GradeCraft Admin!
+%td.hero_img
+  = image_tag "email-hero_Sad.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%h3{:align => "center"}
-  I had a problem authenticating this user/course via LTI:
+%td
+  %h1
+    Help me, GradeCraft Admin!
 
-%p{:align => "center"}
-  User: #{ @user_data[:name] }
-%p{:align => "center"}
-  Email: #{ @user_data[:email] }
+  %p
+    I had a problem authenticating this user/course via LTI:
 
-%p{:align => "center"}
-  LTI UID: #{ @user_data[:lti_uid] }
+  %div
+    %p
+      User:
+      %strong
+        #{ @user_data[:name] }
+    %p
+      Email:
+      %strong
+        #{ @user_data[:email] }
 
-%p{:align => "center"}
-  Course: #{ @course_data[:name] }
+    %p
+      LTI UID:
+      %strong
+        #{ @user_data[:lti_uid] }
 
-%p{:align => "center"}
-  LTI UID: #{ @course_data[:lti_uid] }
+    %p
+      Course:
+      %strong
+        #{ @course_data[:name] }
 
-%br
+    %p
+      LTI UID:
+      %strong
+        #{ @course_data[:lti_uid] }
 
-%p{:align => "center"}
-  It is the end of days. Woe is me,
+  %p
+    Please halp. It is the end of days.
 
-%p{:align => "center"}
-  The GradeCraft Server
+  %p
+    Woe is me,
+    %br
+    The GradeCraft Server

@@ -1,12 +1,11 @@
-Dear #{ @student.first_name },
+You’ve got a new #{ @course.challenge_term } Grade!
 
-You can now view the grade for your #{ @course.challenge_term.downcase } "#{ @challenge.name }" in course #{ @course.name }.
+Hi #{ @student.first_name }, you can now view the grade for your #{ @course.challenge_term.downcase } “{ @challenge.name }” in course #{ @course.name }.
 
 - if @course.show_grade_predictor?
-  Don't forget to update your plan for the semester by checking your #{ @course.grade_predictor_term } here:
+  Don’t forget to update your plan for the semester by checking your #{ @course.grade_predictor_term } here:
 
   = predictor_url
 
 Play on!
-
 GradeCraft

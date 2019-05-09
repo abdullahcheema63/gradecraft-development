@@ -1,5 +1,5 @@
 %td.hero_img
-  = image_tag "email-hero_Neutral.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
 %td
   %h1
@@ -15,3 +15,8 @@
       Don’t forget to update your plan for the semester by checking your
       = succeed "." do
         = link_to "#{ @course.grade_predictor_term }", predictor_url
+
+  %p
+    Play on!
+    %br
+    GradeCraft

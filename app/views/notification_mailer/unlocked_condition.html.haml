@@ -1,10 +1,16 @@
-%h2{:align => "center"}
-  %strong Hi #{ @student.first_name },
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%h3{:align => "center"}You have successfully unlocked the #{@unlocked_item.class.name.downcase} #{@unlocked_item.name} in your class #{@course.name}!
+%td
+  %h1
+    Great work, #{ @student.first_name }!
 
-%p{:align => "center"}
-  Play On!
+  %p
+    You successfully unlocked the #{@unlocked_item.class.name.downcase}
+    %strong
+      #{@unlocked_item.name} in your class #{@course.name}!
 
-%p{:align => "center"}
-  GradeCraft
+  %p
+    Play on!
+    %br
+    GradeCraft

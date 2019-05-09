@@ -5,7 +5,7 @@
   %h1
     You’ve got a new grade!
   %p
-    You can now view your grade for
+    Hi #{ @student.first_name }, you can now view your grade for
     #{ @course.assignment_term.downcase }
     %strong
       #{ @assignment.name }
@@ -19,3 +19,8 @@
       Don’t forget to update your plan for the semester by checking your
       = succeed "." do
         = link_to "#{ @course.grade_predictor_term }", predictor_url
+
+  %p
+    Play on!
+    %br
+    GradeCraft
