@@ -238,7 +238,7 @@ const store = new Vuex.Store({
         console.log(json);
         const final = apiResponseToData(json);
         console.log(final);
-        //commit('addUsers', final)
+        commit('addUsers', final)
       },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
@@ -287,6 +287,25 @@ const store = new Vuex.Store({
             licensed: true,
             published: course.published };
         });
+      },
+      addUsers (state, users){
+        state.allUsers = users.map(user => {
+          return {
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            createdAt: user.created_at,
+            courses: user.course_memberships.map(course => ({
+              name: course.name,
+              role: course.role,
+              score: course.score,
+              semester: course.semester,
+              score: course.score,
+              year: course.year,
+              url: course.url,
+            }))
+          }
+        })
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)
