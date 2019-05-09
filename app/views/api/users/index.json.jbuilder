@@ -12,7 +12,7 @@ json.data @users.includes(:course_memberships) do |user|
     json.course_memberships do
       json.data user.course_memberships.each do |course_membership|
         json.type "course_membership"
-        json.id course_membership.course_id.to_s
+        json.id course_membership.id
       end
     end
   end
@@ -22,7 +22,7 @@ json.included do
   @users.each do |user|
     json.array! user.course_memberships.each do |course_membership|
       json.type "course_membership"
-      json.id course_membership.course_id.to_s
+      json.id course_membership.id
 
       course = Course.find(course_membership.course_id)
       json.attributes do
