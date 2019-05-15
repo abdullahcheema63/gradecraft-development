@@ -62,6 +62,11 @@
               <span v-if="isString(value)">
                 {{value}}
               </span>
+              <ul v-if="isHyperlinkArray(value)">
+                <li v-for="link in value" :key="link.text">
+                  <a :href="link.url">{{link.text}}</a>
+                </li>
+              </ul>
             </td>
 
             <td>
@@ -162,10 +167,7 @@ module.exports = {
           licensed: course.licensed,
           active: course.active,
           published: course.published,
-          instructors: {
-            names: course.instructors,
-            type: "array",
-          },
+          instructors: course.instructors,
           studentNumber: course.studentNumber,
           term: course.term,
           year: course.year,
@@ -195,6 +197,9 @@ module.exports = {
     },
     isString(value){
       return typeof value === "string"
+    },
+    isHyperlinkArray(value){
+      return typeof value[0] === "object"
     },
     filterByPublished(course) {
       if (this.showPublished && this.showUnpublished) {

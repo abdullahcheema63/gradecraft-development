@@ -561,7 +561,16 @@ module.exports = {
           licensed: true,
           active: true,
           published: true,
-          instructors: ["Instructor 1", "Instructor 2"],
+          instructors: [
+            {
+              text: "Instructor 1",
+              url: "https://gradecraft.com",
+            },
+            {
+              text: "Instructor 2",
+              url: "https://gradecraft.com",
+            }
+          ],
           studentNumber: "1,000",
           term: "Fall",
           year: "2019",
@@ -574,7 +583,12 @@ module.exports = {
           licensed: false,
           active: false,
           published: false,
-          instructors: ["Instructor 1"],
+          instructors: [
+            {
+              text: "Instructor 3",
+              url: "https://gradecraft.com",
+            }
+          ],
           studentNumber: "100",
           term: "Fall",
           year: "2017",
@@ -587,7 +601,16 @@ module.exports = {
           licensed: true,
           active: false,
           published: false,
-          instructors: ["Instructor Dude"],
+          instructors: [
+            {
+              text: "Instructor 4",
+              url: "https://gradecraft.com",
+            },
+            {
+              text: "Instructor 5",
+              url: "https://gradecraft.com",
+            }
+          ],
           studentNumber: "500",
           term: "Winter",
           year: "2015",
