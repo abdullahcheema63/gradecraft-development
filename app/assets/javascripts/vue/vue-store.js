@@ -49,14 +49,14 @@ const apiResponseToData = (responseJson) =>
 const store = new Vuex.Store({
   state: {
     user: {
-      id: 1,
-      firstName: "Erik",
-      lastName: "Barroso",
-      email: "ebarr@gmail.com",
-      admin: true,
-      showGuide: true,
-      hasPaid: true,
-      hasSeenCourseOnboarding: false,
+      id: null,
+      firstName: "",
+      lastName: "",
+      email: "",
+      admin: null,
+      showGuide: null,
+      hasPaid: null,
+      hasSeenCourseOnboarding: null,
       courseMembership: [{
         id: 1,
         name: "GradeCraft101",
@@ -208,8 +208,7 @@ const store = new Vuex.Store({
         },
         licensed: false,
         published: true
-      },
-    ]
+      }]
     }},
     actions: {
       getCourseMemberships: async function({ commit }){
@@ -251,6 +250,9 @@ const store = new Vuex.Store({
       },
       addNewCourse({ commit }, course){
         commit('addNewCourse', {course: course})
+      },
+      setCurrentUser({ commit }, user){
+        commit('setCurrentUser', user)
       }
     },
     mutations: {
@@ -326,6 +328,16 @@ const store = new Vuex.Store({
         newCourse.eventCount = ""
         newCourse.announcementCount = ""
         state.user.courseMembership.push(newCourse)
+      },
+      setCurrentUser (state, user){
+        state.user.id = user.id
+        state.user.firstName = user.firstName
+        state.user.lastName = user.lastName
+        state.user.email = user.email
+        state.user.admin = user.admin
+        state.user.showGuide = user.showGuide
+        state.user.hasPaid = user.hasPaid
+        state.user.hasSeenCourseOnboarding = user.hasSeenCourseOnboarding
       }
     },
     getters: {

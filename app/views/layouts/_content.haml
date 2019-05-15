@@ -1,1 +1,8 @@
 = yield
+- content_for :scripts do
+  %script{:id=>"current-user", :type=>"application/json"}
+    {"firstName": "not Erik", "lastName": "Smith"}
+  %script{:type=>"text/javascript"}
+    let currentUser = JSON.parse(document.getElementById('current-user').textContent);
+    console.log(currentUser);
+    store.dispatch("setCurrentUser", currentUser)
