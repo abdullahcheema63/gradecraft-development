@@ -163,7 +163,7 @@ class Assignment < ApplicationRecord
   end
 
   def has_grades?
-    grades.exists?
+    grades.where(student_visible: true).exists?
   end
 
   # Custom point total if the class has weighted assignments
