@@ -314,27 +314,25 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>32</td>
-                  <td><a href="#">User first name</a> </td>
-                  <td><a href="#">User last name</a> </td>
-                  <td>Email address </td>
-                  <td><a href="#">Course name</a> </td>
-                  <td>Student </td>
-                  <td>Winter </td>
-                  <td>2018 </td>
-                  <td>200,000 </td>
-                </tr>
-                <tr>
-                  <td>50</td>
-                  <td><a href="#">User first name</a> </td>
-                  <td><a href="#">User last name</a> </td>
-                  <td>Email address </td>
-                  <td><a href="#">Course name</a> </td>
-                  <td>Student </td>
-                  <td>Winter </td>
-                  <td>2018 </td>
-                  <td>200,000 </td>
+                <tr v-for="user in getAllUsers">
+                  <td>{{user.id}}</td>
+                  <td><a href="#">{{user.firstName}}</a> </td>
+                  <td><a href="#">{{user.lastName}}</a> </td>
+                  <td>{{user.email}}</td>
+                  <template v-if="user.courses.length">
+                    <tr v-for="course in user.courses">
+                      <td><a :href="course.change_course_path">{{course.name}}</a> </td>
+                      <td>{{course.role}} </td>
+                      <td>{{course.semester}}</td>
+                      <td>{{course.year}}</td>
+                      <td>{{course.score}}</td>
+                    </tr>
+                  </template>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
@@ -620,6 +618,9 @@ module.exports = {
       ]
     }
   },
+  created: function() {
+    this.$store.dispatch("getAllUsers")
+  },
   computed: {
     getUserFirstName(){
       return this.$store.getters.userFirstName;
@@ -631,7 +632,10 @@ module.exports = {
     expiringInstructors(){
       var allInstructors = this.allInstructors;
       return allInstructors.filter(this.filterExpiringInstructors)
-    }
+    },
+    getAllUsers(){
+      return this.$store.state.allUsers;
+    },
   },
   methods: {
     addCourse(){

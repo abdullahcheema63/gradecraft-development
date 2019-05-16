@@ -293,6 +293,7 @@ const store = new Vuex.Store({
       addUsers (state, users){
         state.allUsers = users.map(user => {
           return {
+            id: user.id,
             firstName: user.first_name,
             lastName: user.last_name,
             email: user.email,
