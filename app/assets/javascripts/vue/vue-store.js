@@ -337,12 +337,15 @@ const store = new Vuex.Store({
         state.user.admin = user.admin
         state.user.showGuide = user.showGuide
         state.user.hasPaid = user.hasPaid
-        state.user.hasSeenCourseOnboarding = user.hasSeenCourseOnboarding
+        state.user.account_url = user.account_url
       }
     },
     getters: {
       userName: state => {
         return state.user.firstName + ' ' + state.user.lastName
+      },
+      userAccountURL: state => {
+        return state.user.account_url
       },
       userFirstName: state => {
         return state.user.firstName

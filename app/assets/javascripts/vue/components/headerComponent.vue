@@ -29,9 +29,9 @@
       <a id="header_user" :class="{open:activeUsername}" @click="toggleUsername">{{ getUserName }}</a>
       <div :class="usernameClass">
         <ul>
-          <li><a href="">My Account</a></li>
+          <li><a :href="getAccountURL">My Account</a></li>
           <li><a href="">View Tour</a></li>
-          <li><a href="">Log Out</a></li>
+          <li><a href="logout">Log Out</a></li>
         </ul>
       </div>
     </div>
@@ -67,6 +67,9 @@ module.exports = {
     },
     getUserName(){
       return this.$store.getters.userName;
+    },
+    getAccountURL(){
+      return this.$store.getters.userAccountURL;
     }
   },
   created: function() {
