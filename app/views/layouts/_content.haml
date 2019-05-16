@@ -1,4 +1,5 @@
 = yield
+= current_user.attributes
 - content_for :scripts do
   %script{:id=>"current-user", :type=>"application/json"}
     {"firstName": "not Erik", "lastName": "Smith"}
