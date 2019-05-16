@@ -1,14 +1,15 @@
 .pageContent
   = render partial: "layouts/alerts", locals: { model: @user, term: "user" }
 
-  %h3 Please note:
-  %p
-    %b If you’re adding a non-University of Michigan user
-    (who also does not have a friend account with the university) to your course,
-    %b please be sure to inform and send them
-    %a{:href => ""} this log-in link.
-  %p Otherwise they will not be able to enter your course because they don’t have Wolverine Access.
-  %br
+  - if Rails.env.production?
+    %h3 Please note:
+    %p
+      %b If you’re adding a non-University of Michigan user
+      (who also does not have a friend account with the university) to your course,
+      %b please be sure to inform and send them
+      %a{:href => "https://umich.gradecraft.com/login"} this log-in link.
+    %p Otherwise they will not be able to enter your course because they don’t have Wolverine Access.
+    %br
 
   #tabs.ui-tabs.ui-widget
     %ul.ui-tabs-nav{role: "tablist"}
