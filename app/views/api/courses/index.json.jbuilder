@@ -18,6 +18,7 @@ if current_user_is_admin?
 
       json.attributes do
         json.name staff_member.name
+        json.url staff_path(staff_member)
       end
     end
   end

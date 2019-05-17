@@ -314,7 +314,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in getAllUsers">
+                <tr v-for="user in allUsers">
                   <td>{{user.id}}</td>
                   <td><a :href="user.url">{{user.firstName}}</a> </td>
                   <td><a :href="user.url">{{user.lastName}}</a> </td>
@@ -627,7 +627,8 @@ module.exports = {
     }
   },
   created: function() {
-    this.$store.dispatch("getAllUsers")
+    this.$store.dispatch("getAllUsers");
+    this.$store.dispatch("getCourseMemberships");
   },
   computed: {
     getUserFirstName(){
@@ -641,8 +642,11 @@ module.exports = {
       var allInstructors = this.allInstructors;
       return allInstructors.filter(this.filterExpiringInstructors)
     },
-    getAllUsers(){
+    allUsers(){
       return this.$store.state.allUsers;
+    },
+    allCourses1(){
+      return this.$store.state.allCourses;
     },
   },
   methods: {

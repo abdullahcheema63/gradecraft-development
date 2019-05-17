@@ -44,7 +44,7 @@ const loadMany = function(modelArray, response, options, filter) {
   };
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff"] });
 
 const store = new Vuex.Store({
   state: {
@@ -223,7 +223,12 @@ const store = new Vuex.Store({
         console.log(json);
         const final = apiResponseToData(json);
         console.log(final);
-        commit('addCourses', final);
+        if (store.state.user.admin){
+          commit('addAdminCourses', final);
+        }
+        else {
+          commit('addCourses', final);
+        }
       },
       getAllUsers: async function({ commit }){
         const resp = await fetch("api/users");
@@ -289,6 +294,34 @@ const store = new Vuex.Store({
             licensed: true,
             published: course.published };
         });
+      },
+      addAdminCourses(state, courses){
+        state.allCourses = courses.map(course => {
+          return {
+            id: course.id,
+            name: course.name,
+            url: course.change_course_path,
+            editURL: course.edit_course_path,
+            copyURL: course.copy_courses_path,
+            copyStudentsURL: course.copy_courses_with_students_path,
+            finalGradesURL: course.final_grades_path,
+            gradebookURL: course.gradebook_file_path,
+            researchGradesURL: course.research_gradebook_path,
+            submissionsURL: course.submissions_path,
+            awardedBadgesURL: course.export_earned_badges_path,
+            created: course.created_at,
+            licensed: course.has_paid,
+            active: course.active,
+            published: course.published,
+            term: course.semester,
+            year: course.year,
+            studentNumber: course.student_count,
+            instructors: course.staff.map(staff => ({
+              text: staff.name,
+              url: staff.url
+            }))
+          }
+        })
       },
       addUsers (state, users){
         state.allUsers = users.map(user => {
