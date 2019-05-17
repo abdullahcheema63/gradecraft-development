@@ -298,6 +298,7 @@ const store = new Vuex.Store({
             lastName: user.last_name,
             email: user.email,
             createdAt: user.created_at,
+            url: user.user_url,
             courses: user.course_memberships.map(course => ({
               name: course.name,
               role: course.role,
@@ -305,7 +306,7 @@ const store = new Vuex.Store({
               semester: course.semester,
               score: course.score,
               year: course.year,
-              url: course.url,
+              url: course.change_course_path,
             }))
           }
         })

@@ -316,17 +316,25 @@
               <tbody>
                 <tr v-for="user in getAllUsers">
                   <td>{{user.id}}</td>
-                  <td><a href="#">{{user.firstName}}</a> </td>
-                  <td><a href="#">{{user.lastName}}</a> </td>
+                  <td><a :href="user.url">{{user.firstName}}</a> </td>
+                  <td><a :href="user.url">{{user.lastName}}</a> </td>
                   <td>{{user.email}}</td>
                   <template v-if="user.courses.length">
-                    <tr v-for="course in user.courses">
-                      <td><a :href="course.change_course_path">{{course.name}}</a> </td>
-                      <td>{{course.role}} </td>
-                      <td>{{course.semester}}</td>
-                      <td>{{course.year}}</td>
-                      <td>{{course.score}}</td>
-                    </tr>
+                    <td>
+                      <ul v-for="course in user.courses"><a :href="course.url">{{course.name}}</a> </ul>
+                    </td>
+                    <td>
+                      <ul v-for="course in user.courses">{{course.role}} </ul>
+                    </td>
+                    <td>
+                      <ul  v-for="course in user.courses">{{course.semester}}</ul>
+                    </td>
+                    <td>
+                      <ul v-for="course in user.courses">{{course.year}}</ul>
+                    </td>
+                    <td>
+                      <ul v-for="course in user.courses">{{course.score}}</ul>
+                    </td>
                   </template>
                   <td></td>
                   <td></td>
