@@ -47,6 +47,7 @@ class UserSessionsController < ApplicationController
       auto_login @user
       record_course_login_event user: @user
       @user.update_login_at
+      @user.update_current_course_id(@course.id)
       respond_with @user, location: dashboard_path
     else
       redirect_to root_path, alert: "An unknown error occurred."

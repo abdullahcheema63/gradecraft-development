@@ -237,6 +237,10 @@ class User < ApplicationRecord
     membership.update_attribute(:last_login_at, DateTime.current) if membership
   end
 
+  def update_current_course_id(course_id)
+    self.current_course_id = course_id
+  end
+
   ### TEAMS
   # Finding a student's team for a course
   def team_for_course(course)

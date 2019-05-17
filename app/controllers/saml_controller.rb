@@ -20,6 +20,7 @@ class SamlController < ApplicationController
         auto_login @user
         @user.update_login_at
         @user.update_course_login_at(current_course.id)
+        @user.update_current_course_id(@course.id)
         session[:course_id] = current_course
         redirect_back_or_to dashboard_path
       else

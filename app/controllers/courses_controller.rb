@@ -55,6 +55,7 @@ class CoursesController < ApplicationController
       auto_login @user
       @user.update_login_at
       @user.update_course_login_at(@course.id)
+      @user.update_current_course_id(@course.id)
       redirect_to dashboard_path, flash: {
         notice: "Course #{@course.name} successfully created"
       }
@@ -84,6 +85,7 @@ class CoursesController < ApplicationController
       bust_course_list_cache current_user
       current_user.update_login_at
       current_user.update_course_login_at(@course.id)
+      current_user.update_current_course_id(@course.id)
       redirect_to edit_course_path(@course), flash: {
         notice: "Course #{@course.name} successfully created"
       }
