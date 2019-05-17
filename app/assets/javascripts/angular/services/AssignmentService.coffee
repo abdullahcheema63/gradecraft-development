@@ -136,6 +136,13 @@
   # Handles incremental updates from the Assignment form
   _updateAssignment = (assignment)->
     if assignment && ValidateDates(assignment).valid
+      #Treats the symptom not the cause
+      #Checks whether threshold_points has a valid
+      #state, if not, set it to 0
+      if isNaN(assignment.threshold_points)
+        assignment.has_threshold = false
+        assignment.threshold_points = 0
+
       $http.put("/api/assignments/#{assignment.id}", assignment: assignment).then(
         (response) ->
           angular.copy(response.data.data.attributes, assignment)
