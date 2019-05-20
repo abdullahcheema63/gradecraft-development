@@ -643,10 +643,10 @@ module.exports = {
       return allInstructors.filter(this.filterExpiringInstructors)
     },
     allUsers(){
-      return this.$store.state.allUsers;
+      return this.$store.getters.allUsers;
     },
     allCourses1(){
-      return this.$store.state.allCourses;
+      return this.$store.getters.allCourses;
     },
   },
   methods: {

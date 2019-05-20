@@ -242,7 +242,7 @@ const store = new Vuex.Store({
         console.log(json);
         const final = apiResponseToData(json);
         console.log(final);
-        commit('addUsers', final)
+        commit('addAllUsers', final)
       },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
@@ -323,7 +323,7 @@ const store = new Vuex.Store({
           }
         })
       },
-      addUsers (state, users){
+      addAllUsers (state, users){
         state.allUsers = users.map(user => {
           return {
             id: user.id,
@@ -407,6 +407,12 @@ const store = new Vuex.Store({
 
             return membership.published
         })
+      },
+      adminCourses: state => {
+        return state.allCourses;
+      },
+      allUsers: state => {
+        return state.allUsers;
       },
       pastCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {
