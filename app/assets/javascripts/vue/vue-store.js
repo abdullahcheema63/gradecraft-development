@@ -408,12 +408,6 @@ const store = new Vuex.Store({
             return membership.published
         })
       },
-      adminCourses: state => {
-        return state.allCourses;
-      },
-      allUsers: state => {
-        return state.allUsers;
-      },
       pastCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {
           var today = new Date();

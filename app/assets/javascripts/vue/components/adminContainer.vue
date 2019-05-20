@@ -373,11 +373,13 @@
                       <ul><li v-for="course in user.courses">{{course.score}}</li></ul>
                     </td>
                   </template>
+                  <template v-else>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
+                  </template>
                 </tr>
               </tbody>
             </table>
