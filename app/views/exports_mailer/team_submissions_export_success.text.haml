@@ -1,10 +1,12 @@
-Dear #{ @professor.first_name },
+Good news, #{ @professor.first_name }!
 
-Your requested submissions export of #{ @course.assignment_term.downcase} "#{ @assignment.name }" in course #{ @course.name } was successfully created for #{ @course.team_term.downcase } #{ @team.name }.
+Your requested submissions export of #{ @course.assignment_term.downcase} "#{ @assignment.name }" in course #{ @course.name } was successfully created for #{ @course.team_term.downcase } "#{ @team.name }."
 
-You can download your completed ZIP archive here: #{ secure_download_url(@secure_token) }. This link will expire after one week.
+You can download your completed ZIP archive using this link below:
+#{ secure_download_url(@secure_token) }.
+This link will expire after one week.
 
-Alternatively you can download the submissions archive on the submissions downloads page here: #{ downloads_url }.
+You can also download the submissions archive from the submissions downloads page here: #{ downloads_url }.
 
 Sincerely,
 GradeCraft

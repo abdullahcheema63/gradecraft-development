@@ -1,9 +1,22 @@
-%h2{:align => "center"}
-  %strong Dear #{ @professor.first_name },
-%h3{:align => "center"} Your requested export for #{ @course.assignment_term.downcase} "#{ @assignment.name }" in course #{ @course.name } failed to complete.
+%td.hero_img
+  = image_tag "email-hero_Sad.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%p
-%p{:align => "center"}
-  Our system administrators have been notified of the problem, but you may send an additional email to
-  %a{:href => "mailto: #{ ExportsMailer::ADMIN_EMAIL }"} #{ExportsMailer::ADMIN_EMAIL}
-  if you'd like.
+%td
+  %h1
+    Uh oh, #{ @professor.first_name }
+
+  %p
+    Your requested export for #{ @course.assignment_term.downcase}
+    %strong
+      #{ @assignment.name }
+    in course #{ @course.name } failed to complete.
+
+  %p
+    Our system administrators have been notified of the problem, but you may send an additional email to
+    %a{:href => "mailto: #{ ExportsMailer::ADMIN_EMAIL }"} #{ExportsMailer::ADMIN_EMAIL}
+    if you’d like. We apologize for any inconvenience this may cause.
+
+  %p
+    Sincerely,
+    %br
+    GradeCraft
