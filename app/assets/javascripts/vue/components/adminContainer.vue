@@ -184,6 +184,43 @@
           <h2>All Courses </h2>
           <p>Manage and view all courses&mdash;active and inactive, published and unpublished. </p>
 
+          <div class="table_container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Course ID </th>
+                  <th>Course Name </th>
+                  <th>Licensed </th>
+                  <th>Active </th>
+                  <th>Published</th>
+                  <th>Instructor(s)</th>
+                  <th># Students </th>
+                  <th>Semester </th>
+                  <th>Year </th>
+                  <th>Created </th>
+                  <th>Actions </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in allCourses">
+                  <td>{{course.id}}</td>
+                  <td>{{course.name}}</td>
+                  <td>{{true}}</td>
+                  <td>{{course.active}}</td>
+                  <td>{{course.published}}</td>
+                  <td>
+                    <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
+                  </td>
+                  <td>{{course.studentNumber}}</td>
+                  <td>{{course.term}}</td>
+                  <td>{{course.year}}</td>
+                  <td>{{course.created}}</td>
+                  <td>Action!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <tableComponent :content="allCourses"></tableComponent>
 
           <button type="button" class="action">Export this table view</button>
@@ -321,19 +358,19 @@
                   <td>{{user.email}}</td>
                   <template v-if="user.courses.length">
                     <td>
-                      <ul v-for="course in user.courses"><a :href="course.url">{{course.name}}</a> </ul>
+                      <ul><li v-for="course in user.courses"><a :href="course.url">{{course.name}}</a> </li></ul>
                     </td>
                     <td>
-                      <ul v-for="course in user.courses">{{course.role}} </ul>
+                      <ul><li v-for="course in user.courses">{{course.role}} </li></ul>
                     </td>
                     <td>
-                      <ul  v-for="course in user.courses">{{course.semester}}</ul>
+                      <ul><li  v-for="course in user.courses">{{course.semester}}</li></ul>
                     </td>
                     <td>
-                      <ul v-for="course in user.courses">{{course.year}}</ul>
+                      <ul><li v-for="course in user.courses">{{course.year}}</li></ul>
                     </td>
                     <td>
-                      <ul v-for="course in user.courses">{{course.score}}</ul>
+                      <ul><li v-for="course in user.courses">{{course.score}}</li></ul>
                     </td>
                   </template>
                   <td></td>
@@ -377,6 +414,8 @@ module.exports = {
   },
   data() {
     return {
+      allUsers: {},
+      allCourses: {},
       tabBarOption: ["Courses", "Instructor Accounts", "Search All Users", "Utilities"],
       tabSection: ["Courses"],
       courseToLicense: "",
@@ -559,70 +598,6 @@ module.exports = {
           term: "Fall",
           year: "2019"
         }
-      ],
-      allCourses: [
-        {
-          id: 123,
-          name: "Test Course",
-          licensed: true,
-          active: true,
-          published: true,
-          instructors: [
-            {
-              text: "Instructor 1",
-              url: "https://gradecraft.com",
-            },
-            {
-              text: "Instructor 2",
-              url: "https://gradecraft.com",
-            }
-          ],
-          studentNumber: "1,000",
-          term: "Fall",
-          year: "2019",
-          created: "Wed, Apr 10, 2019, 4:31pm EDT",
-          url: "https://gradecraft.com",
-        },
-        {
-          id: 223,
-          name: "Blahhhh",
-          licensed: false,
-          active: false,
-          published: false,
-          instructors: [
-            {
-              text: "Instructor 3",
-              url: "https://gradecraft.com",
-            }
-          ],
-          studentNumber: "100",
-          term: "Fall",
-          year: "2017",
-          created: "Wed, Apr 10, 2019, 4:31pm EDT",
-          url: "https://gradecraft.com",
-        },
-        {
-          id: 323,
-          name: "Bloop",
-          licensed: true,
-          active: false,
-          published: false,
-          instructors: [
-            {
-              text: "Instructor 4",
-              url: "https://gradecraft.com",
-            },
-            {
-              text: "Instructor 5",
-              url: "https://gradecraft.com",
-            }
-          ],
-          studentNumber: "500",
-          term: "Winter",
-          year: "2015",
-          created: "Wed, Apr 10, 2019, 4:31pm EDT",
-          url: "https://gradecraft.com",
-        },
       ]
     }
   },
@@ -641,13 +616,18 @@ module.exports = {
     expiringInstructors(){
       var allInstructors = this.allInstructors;
       return allInstructors.filter(this.filterExpiringInstructors)
-    },
-    allUsers(){
-      return this.$store.getters.allUsers;
-    },
-    allCourses1(){
-      return this.$store.getters.allCourses;
-    },
+    }
+  },
+  mounted() {
+    this.$store.subscribe((mutation, state) => {
+      if(mutation.type === 'addAllUsers') {
+        console.log("made it within mutation condition ")
+        this.allUsers = this.$store.state.allUsers;
+      }
+      else if(mutation.type === 'addAdminCourses'){
+        this.allCourses = this.$store.state.allCourses;
+      }
+    })
   },
   methods: {
     addCourse(){
