@@ -45,9 +45,9 @@ class UnlockCondition < ApplicationRecord
         description = "#{ condition_state_do } in the #{ condition.name } #{unlockable.course.assignment_term} Type"
       end
     elsif condition_type == "LearningObjective"
-        description = "#{ condition_state_do } the #{ condition.name } #{unlockable.course.learning_objective_term.singularize}"
+      description = "#{ condition_state_do } the #{ condition.name } #{unlockable.course.learning_objective_term.singularize}"
     else
-        description = "#{ condition_state_do } the #{ condition.name } #{ condition_type }" 
+      description = "#{ condition_state_do } the #{ condition.name } #{ condition_type }" 
     end
     description += condition_date_sentence(condition_date_timezone) if condition_date.present?
     description
