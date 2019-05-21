@@ -73,6 +73,9 @@
         - presenter.assignment.unlock_conditions.each do |uc|
           - if !uc.condition_type == "Learning Objective"
             %li= link_to uc.requirements_description_sentence(current_user.time_zone), uc.condition
+          - elsif uc.condition_type == "Assignment"
+            - if !uc.check_assignment_condition_visible
+              %li= "You have not unlocked this assignment."
           - else
             %li= link_to uc.requirements_description_sentence(current_user.time_zone), learning_objectives_objective_path(uc.condition_id)
 - elsif presenter.assignment.is_unlockable?
