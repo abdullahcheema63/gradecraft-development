@@ -221,7 +221,7 @@
             </table>
           </div>
 
-          <tableComponent :content="allCourses"></tableComponent>
+          <tableComponent v-if="allCourses" :content="allCourses"></tableComponent>
 
           <button type="button" class="action">Export this table view</button>
         </div>

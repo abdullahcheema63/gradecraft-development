@@ -212,6 +212,7 @@ const store = new Vuex.Store({
     }},
     actions: {
       getCourseMemberships: async function({ commit }){
+        console.log("dispatched getCourseMemberships")
         const resp = await fetch("api/courses");
         if (resp.status === 404){
           console.log(resp.status);
@@ -220,9 +221,9 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        console.log(json);
+        //console.log(json);
         const final = apiResponseToData(json);
-        console.log(final);
+        //console.log(final);
         if (store.state.user.admin){
           commit('addAdminCourses', final);
         }
@@ -231,6 +232,7 @@ const store = new Vuex.Store({
         }
       },
       getAllUsers: async function({ commit }){
+        console.log("getAllUsers action dispatched")
         const resp = await fetch("api/users");
         if (resp.status === 404){
           console.log(resp.status);
@@ -239,9 +241,9 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        console.log(json);
+        //console.log(json);
         const final = apiResponseToData(json);
-        console.log(final);
+        //console.log(final);
         commit('addAllUsers', final)
       },
       licenseCourse({ commit }, course_id){
@@ -296,6 +298,7 @@ const store = new Vuex.Store({
         });
       },
       addAdminCourses(state, courses){
+        console.log("inside addAdminCourses mutation")
         state.allCourses = courses.map(course => {
           return {
             id: course.id,
@@ -324,6 +327,7 @@ const store = new Vuex.Store({
         })
       },
       addAllUsers (state, users){
+        console.log("inside addAllUsers mutation")
         state.allUsers = users.map(user => {
           return {
             id: user.id,
