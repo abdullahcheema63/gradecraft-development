@@ -126,6 +126,14 @@ class Assignment < ApplicationRecord
     )
   end
 
+  def copy_unlock_conditions(target_copy_assignment)
+    UnlockCondition.where(unlockable_id: target_copy_assignment.id, course: target_copy_assignment.course, unlockable_type: "Assignment").each do |condition|
+      copied_unlock_condition = condition.copy
+      copied_unlock_condition.unlockable_id = self.id
+      copied_unlock_condition.save
+    end
+  end
+
   def to_json(options = {})
     super(options.merge(only: [:id]))
   end
@@ -164,6 +172,10 @@ class Assignment < ApplicationRecord
 
   def has_grades?
     grades.exists?
+  end
+
+  def has_unlock_condition?
+    UnlockCondition.exists?(unlockable_id: self.id)
   end
 
   # Custom point total if the class has weighted assignments
