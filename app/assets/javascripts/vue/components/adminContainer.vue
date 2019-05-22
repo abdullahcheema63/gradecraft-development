@@ -205,7 +205,7 @@
                 <tr v-for="course in allCourses">
                   <td>{{course.id}}</td>
                   <td>{{course.name}}</td>
-                  <td>{{true}}</td>
+                  <td>unkown</td>
                   <td><span :class="{checked: course.active}">&nbsp;</span></td>
                   <td><span :class="{checked: course.published}">&nbsp;</span></td>
                   <td>
@@ -220,7 +220,7 @@
                       <template slot="button_text">Options</template>
                       <template slot="content">
                         <ul>
-                          <li>What options go in here? </li>
+                          <li>Copy over options from table component </li>
                         </ul>
                       </template>
                     </buttonDropdown>
@@ -330,15 +330,15 @@
           <h3>Search by: </h3>
           <form>
             <div class="form_elem">
-              <input type="text" id="name_contains" placeholder="Name contains..." />
+              <input type="text" id="name_contains" v-model="searchUserName" placeholder="Name contains..." />
               <label for="name_contains">Name contains</label>
             </div>
             <div class="form_elem">
-              <input type="text" id="username_contains" placeholder="Username contains..." />
+              <input type="text" id="username_contains" v-model="searchUserUsername" placeholder="Username contains..." />
               <label for="username_contains">Username contains</label>
             </div>
             <div class="form_elem">
-              <input type="text" id="email_contains" placeholder="Email contains..." />
+              <input type="text" id="email_contains" v-model="searchUserEmail" placeholder="Email contains..." />
               <label for="email_contains">Email contains</label>
             </div>
             <button class="action">Search</button>
@@ -360,7 +360,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in allUsers">
+                <tr v-for="user in filteredAllUsers">
                   <td>{{user.id}}</td>
                   <td><a :href="user.url">{{user.firstName}}</a> </td>
                   <td><a :href="user.url">{{user.lastName}}</a> </td>
@@ -429,6 +429,9 @@ module.exports = {
       allUsers: {},
       allCourses: {},
       allNewCourses: {},
+      searchUserName: "",
+      searchUserUsername: "",
+      searchUserEmail: "",
       tabBarOption: ["Courses", "Instructor Accounts", "Search All Users", "Utilities"],
       tabSection: ["Courses"],
       courseToLicense: "",
@@ -587,6 +590,10 @@ module.exports = {
     expiringInstructors(){
       var allInstructors = this.allInstructors;
       return allInstructors.filter(this.filterExpiringInstructors)
+    },
+    filteredAllUsers(){
+      var allUsers = this.allUsers;
+      return allUsers.filter(this.filterAllUsers)
     }
   },
   mounted() {
@@ -656,6 +663,20 @@ module.exports = {
       }
       return instructor
     },
+    filterAllUsers(user){
+      if(this.searchUserName){
+        var name = user.firstName + user.lastName
+        console.log(name)
+        if(!(name.includes(this.searchUserName))) {return false}
+      }
+      if(this.searchUserEmail){
+        if(!(user.email.includes(this.searchUserEmail))) {return false}
+      }
+      if(this.searchUserUsername){
+        if(!(user.username.includes(this.searchUserUsername))) {return false}
+      }
+      return user
+    }
   }
 }
 `</script>

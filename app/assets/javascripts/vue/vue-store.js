@@ -331,6 +331,7 @@ const store = new Vuex.Store({
         state.allUsers = users.map(user => {
           return {
             id: user.id,
+            username: user.username,
             firstName: user.first_name,
             lastName: user.last_name,
             email: user.email,
@@ -370,6 +371,7 @@ const store = new Vuex.Store({
       },
       setCurrentUser (state, user){
         state.user.id = user.id
+        state.user.username = user.username
         state.user.firstName = user.firstName
         state.user.lastName = user.lastName
         state.user.email = user.email
