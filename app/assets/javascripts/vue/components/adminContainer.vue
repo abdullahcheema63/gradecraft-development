@@ -98,10 +98,10 @@
                     <template slot="button_text">Options</template>
                     <template slot="content">
                       <ul>
-                        <li><a>Edit</a> </li>
-                        <li><a>Copy</a> </li>
-                        <li><a>Copy + Students</a> </li>
-                        <li><a>Delete</a> </li>
+                        <li><a :href="course.editURL">Edit</a> </li>
+                        <li><a :href="course.copyURL">Copy</a> </li>
+                        <li><a :href="course.copyStudentsURL">Copy + Students</a> </li>
+                        <li><a>Delete (needs url link)</a> </li>
                       </ul>
                     </template>
                   </buttonDropdown>
@@ -206,8 +206,8 @@
                   <td>{{course.id}}</td>
                   <td>{{course.name}}</td>
                   <td>{{true}}</td>
-                  <td>{{course.active}}</td>
-                  <td>{{course.published}}</td>
+                  <td><span :class="{checked: course.active}">&nbsp;</span></td>
+                  <td><span :class="{checked: course.published}">&nbsp;</span></td>
                   <td>
                     <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
                   </td>
@@ -215,7 +215,16 @@
                   <td>{{course.term}}</td>
                   <td>{{course.year}}</td>
                   <td>{{course.created}}</td>
-                  <td>Action!</td>
+                  <td>
+                    <buttonDropdown>
+                      <template slot="button_text">Options</template>
+                      <template slot="content">
+                        <ul>
+                          <li>What options go in here? </li>
+                        </ul>
+                      </template>
+                    </buttonDropdown>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -437,10 +446,6 @@ module.exports = {
         licensed: false
       },
       newCourseErrors: [],
-      copyRequest: {
-        course: [],
-        notes: ""
-      },
       allInstructors: [
         {
           userId: 50,
@@ -565,44 +570,6 @@ module.exports = {
           ],
         },
       ],
-      newCourses: [
-        {
-          id: 91,
-          name: "This is a New Course",
-          created: "Wed, Apr 20, 2019, 4:31pm EDT",
-          licensed: true,
-          active: true,
-          published: true,
-          copied: true,
-          instructors: ["Instructor 1"],
-          term: "Fall",
-          year: "2019"
-        },
-        {
-          id: 92,
-          name: "This is a New Course too",
-          created: "Wed, Apr 20, 2019, 4:31pm EDT",
-          licensed: false,
-          active: true,
-          published: true,
-          copied: false,
-          instructors: ["Instructor 1"],
-          term: "Fall",
-          year: "2019"
-        },
-        {
-          id: 93,
-          name: "This One as Well!",
-          created: "Wed, Apr 20, 2019, 4:31pm EDT",
-          licensed: false,
-          active: false,
-          published: true,
-          copied: false,
-          instructors: ["Instructor 1"],
-          term: "Fall",
-          year: "2019"
-        }
-      ]
     }
   },
   created: function() {
@@ -666,9 +633,6 @@ module.exports = {
         this.newCourseErrors.push("Missing input for required fields")
       }
       return this.newCourseErrors
-    },
-    courseCopyRequest(){
-      this.$refs.buttonModal_copy.toggleModalState()
     },
     filterByLicensedAccount(user) {
       if (this.showLicensedAccounts && this.showFreeAccounts) {
