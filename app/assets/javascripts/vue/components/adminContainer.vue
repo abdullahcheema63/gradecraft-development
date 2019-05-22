@@ -665,7 +665,7 @@ module.exports = {
     },
     filterAllUsers(user){
       if(this.searchUserName){
-        var name = user.firstName + user.lastName
+        var name = user.firstName + " " + user.lastName
         console.log(name)
         if(!(name.includes(this.searchUserName))) {return false}
       }
