@@ -76,7 +76,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="course in newCourses" :key="course.id">
+              <tr v-for="course in allNewCourses" :key="course.id">
                 <td><a href="#">{{course.id}}</a> </td>
                 <td><a href="#">{{course.name}}</a> </td>
                 <td><span :class="{checked: course.licensed}"></span> </td>
@@ -85,8 +85,8 @@
                 <td><span :class="{checked: course.copied}"></span> </td>
                 <td>
                   <ul>
-                    <li v-for="instructor in course.instructors" :key="instructor">
-                      <a href="#">{{instructor}}</a>
+                    <li v-for="instructor in course.instructors">
+                      <a :href="instructor.url">{{instructor.text}}</a>
                     </li>
                   </ul>
                 </td>
@@ -221,7 +221,7 @@
             </table>
           </div>
 
-          <tableComponent v-if="allCourses" :content="allCourses"></tableComponent>
+          <tableComponent v-if="toggled" :content="allCourses"></tableComponent>
 
           <button type="button" class="action">Export this table view</button>
         </div>
@@ -416,8 +416,10 @@ module.exports = {
   },
   data() {
     return {
+      toggled: false,
       allUsers: {},
       allCourses: {},
+      allNewCourses: {},
       tabBarOption: ["Courses", "Instructor Accounts", "Search All Users", "Utilities"],
       tabSection: ["Courses"],
       courseToLicense: "",
@@ -628,10 +630,20 @@ module.exports = {
       }
       else if(mutation.type === 'addAdminCourses'){
         this.allCourses = this.$store.state.allCourses;
+        this.allNewCourses = this.filterNewCourses(this.allCourses)
       }
     })
   },
   methods: {
+    filterNewCourses(allCourses){
+      var tenDaysAgo = new Date();
+      tenDaysAgo.setDate(tenDaysAgo.getDate() - 50);
+      return allCourses.filter( course => {
+        var created = new Date(course.created);
+        if( created < tenDaysAgo ){return false}
+        return course
+      })
+    },
     addCourse(){
       var response = this.formResponse[0];
       if( response == "Create a new course"){
