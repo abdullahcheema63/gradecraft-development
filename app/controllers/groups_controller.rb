@@ -31,6 +31,10 @@ class GroupsController < ApplicationController
     end
     respond_to do |format|
       if @group.save
+        @group.students.each do |group_member|
+          NotificationMailer.group_notify(group_member, @group).deliver_later
+        end
+
         format.html { respond_with @group }
       else
         @other_students = potential_team_members
@@ -46,6 +50,10 @@ class GroupsController < ApplicationController
   def update
     respond_to do |format|
       if @group.update_attributes(group_params)
+        @group.students.each do |group_member|
+            NotificationMailer.group_status_updated(group_member, @group).deliver_later
+        end
+
         format.html { respond_with @group }
       else
         @other_students = potential_team_members
