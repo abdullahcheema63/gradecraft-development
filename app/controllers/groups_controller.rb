@@ -51,7 +51,7 @@ class GroupsController < ApplicationController
     respond_to do |format|
       if @group.update_attributes(group_params)
         @group.students.each do |group_member|
-            NotificationMailer.group_status_updated(group_member, @group).deliver_later
+          NotificationMailer.group_status_updated(group_member, @group).deliver_later
         end
 
         format.html { respond_with @group }
@@ -80,7 +80,7 @@ class GroupsController < ApplicationController
       group_membership_attributes: [:accepted, :group_id, :student_id, :id, :course_id],
       assignment_ids: [], student_ids: []
   end
-
+  
   def potential_team_members
     current_course.students.where.not(id: current_user.id).order_by_name
   end

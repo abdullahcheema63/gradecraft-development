@@ -79,7 +79,6 @@ class NotificationMailer < ApplicationMailer
       format.text
       format.html
     end
-
   end
 
   def unlocked_condition(unlocked_item, student, course)
