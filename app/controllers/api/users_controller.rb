@@ -1,6 +1,6 @@
 # rubocop:disable AndOr
 class API::UsersController < ApplicationController
-  before_action :ensure_admin?, only: [:index, :instructors] 
+  before_action :ensure_admin?, only: [:index, :instructors]
 
   # GET api/users
   def index
