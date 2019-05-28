@@ -53,8 +53,8 @@ class API::AssignmentsController < ApplicationController
           success: false
           }, status: 400
       else
-          updated_grades
-          render "api/assignments/show", success: true, status: 200
+        updated_grades
+        render "api/assignments/show", success: true, status: 200
       end
     else
       render json: {

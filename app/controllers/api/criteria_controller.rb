@@ -14,11 +14,11 @@ class API::CriteriaController < ApplicationController
     total_rubric_criteria_points = 0
 
     rubric.criteria.each do |rubric_criterion|
-          total_rubric_criteria_points += rubric_criterion.max_points
+      total_rubric_criteria_points += rubric_criterion.max_points
     end
 
     if total_rubric_criteria_points + criterion_params["max_points"] > assignment_full_points
-        @criterion.max_points = assignment_full_points - total_rubric_criteria_points
+      @criterion.max_points = assignment_full_points - total_rubric_criteria_points
     end
 
     if @criterion.save
@@ -49,11 +49,11 @@ class API::CriteriaController < ApplicationController
     total_rubric_criteria_points = 0
 
     rubric.criteria.each do |rubric_criterion|
-        if rubric_criterion.id == @criterion.id
-          total_rubric_criteria_points += criterion_params["max_points"]
-        else
-          total_rubric_criteria_points += rubric_criterion.max_points
-        end
+      if rubric_criterion.id == @criterion.id
+        total_rubric_criteria_points += criterion_params["max_points"]
+      else
+        total_rubric_criteria_points += rubric_criterion.max_points
+      end
     end
 
     if total_rubric_criteria_points <= assignment_full_points
