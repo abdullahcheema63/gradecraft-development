@@ -212,7 +212,7 @@ const store = new Vuex.Store({
     }},
     actions: {
       getCourseMemberships: async function({ commit }){
-        console.log("dispatched getCourseMemberships")
+        //console.log("dispatched getCourseMemberships")
         const resp = await fetch("api/courses");
         if (resp.status === 404){
           console.log(resp.status);
@@ -232,7 +232,7 @@ const store = new Vuex.Store({
         }
       },
       getAllUsers: async function({ commit }){
-        console.log("getAllUsers action dispatched")
+        //console.log("getAllUsers action dispatched")
         const resp = await fetch("api/users");
         if (resp.status === 404){
           console.log(resp.status);
@@ -247,7 +247,7 @@ const store = new Vuex.Store({
         commit('addAllUsers', final)
       },
       getAllInstructors: async function({ commit }){
-        console.log("getAllInstructors action dispatched")
+        //console.log("getAllInstructors action dispatched")
         const resp = await fetch("api/users/instructors");
         if (resp.status === 404){
           console.log(resp.status);
@@ -313,7 +313,7 @@ const store = new Vuex.Store({
         });
       },
       addAdminCourses(state, courses){
-        console.log("inside addAdminCourses mutation")
+        //console.log("inside addAdminCourses mutation")
         state.allCourses = courses.map(course => {
           return {
             id: course.id,
@@ -342,7 +342,7 @@ const store = new Vuex.Store({
         })
       },
       addAllUsers (state, users){
-        console.log("inside addAllUsers mutation")
+        //console.log("inside addAllUsers mutation")
         state.allUsers = users.map(user => {
           return {
             id: user.id,
@@ -365,7 +365,7 @@ const store = new Vuex.Store({
         })
       },
       addAllInstructors (state, instructors){
-        console.log("inside addAllInstructors mutation")
+        //console.log("inside addAllInstructors mutation")
         state.allInstructors = instructors.map(instructor => {
           return {
             id: instructor.id,

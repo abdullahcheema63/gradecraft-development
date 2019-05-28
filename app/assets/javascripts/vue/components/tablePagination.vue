@@ -18,7 +18,7 @@ module.exports = {
   data() {
     return {
       currentPage: 0,
-      paginateBy: 2,
+      paginateBy: 10,
     }
   },
   computed: {

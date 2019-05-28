@@ -230,6 +230,9 @@
             </table>
           </div>
 
+
+
+
           <tableComponent v-if="toggled" :content="allCourses"></tableComponent>
 
           <button type="button" class="action">Export this table view</button>
@@ -343,7 +346,6 @@
               <input type="text" id="email_contains" v-model="searchUserEmail" placeholder="Email contains..." />
               <label for="email_contains">Email contains</label>
             </div>
-            <button class="action">Search</button>
           </form>
           <h3>Search Results:</h3>
           <div class="table_container">
@@ -362,7 +364,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in filteredAllUsers">
+                <tr v-for="user in currentPageAllUsers">
                   <td>{{user.id}}</td>
                   <td><a :href="user.url">{{user.firstName}}</a> </td>
                   <td><a :href="user.url">{{user.lastName}}</a> </td>
@@ -397,6 +399,8 @@
           </div>
         </div>
 
+        <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
+
         <div v-if="tabSection[0]==='Utilities'">
           <h2>Administrative Utilities</h2>
           <p>__NOTE__ This section will include the current sections: </p>
@@ -424,6 +428,7 @@ module.exports = {
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
     datePicker: () => VComponents.get('vue/components/datePicker'),
     tableComponent: () => VComponents.get('vue/components/tableComponent'),
+    tablePagination: () => VComponents.get('vue/components/tablePagination'),
   },
   data() {
     return {
@@ -437,6 +442,8 @@ module.exports = {
       searchUserName: "",
       searchUserUsername: "",
       searchUserEmail: "",
+      currentPageItemMin: 0,
+      currentPageItemMax: 10,
       tabBarOption: ["Courses", "Instructor Accounts", "Search All Users", "Utilities"],
       tabSection: ["Courses"],
       courseToLicense: "",
@@ -600,6 +607,9 @@ module.exports = {
     filteredAllUsers(){
       var allUsers = this.allUsers;
       return allUsers.filter(this.filterAllUsers)
+    },
+    currentPageAllUsers(){
+      return this.filteredAllUsers.slice(this.currentPageItemMin, this.currentPageItemMax);
     }
   },
   mounted() {
@@ -680,8 +690,9 @@ module.exports = {
     filterAllUsers(user){
       if(this.searchUserName){
         var name = user.firstName + " " + user.lastName
-        console.log(name)
-        if(!(name.includes(this.searchUserName))) {return false}
+        name = name.toLowerCase();
+
+        if(!(name.includes(this.searchUserName.toLowerCase()))) {return false}
       }
       if(this.searchUserEmail){
         if(!(user.email.includes(this.searchUserEmail))) {return false}
@@ -690,6 +701,10 @@ module.exports = {
         if(!(user.username.includes(this.searchUserUsername))) {return false}
       }
       return user
+    },
+    paginateItems(itemRange){
+      this.currentPageItemMin = itemRange.min - 1;
+      this.currentPageItemMax = itemRange.max;
     }
   }
 }
