@@ -6,6 +6,21 @@ class API::CriteriaController < ApplicationController
   def create
     @criterion = Criterion.new(criterion_params)
 
+    rubric = Rubric.find(@criterion.rubric_id)
+    assignment = Assignment.find(rubric.assignment_id)
+    
+    assignment_full_points = assignment.full_points
+   
+    total_rubric_criteria_points = 0
+
+    rubric.criteria.each do |rubric_criterion|
+          total_rubric_criteria_points += rubric_criterion.max_points
+    end
+
+    if total_rubric_criteria_points + criterion_params["max_points"] > assignment_full_points
+        @criterion.max_points = assignment_full_points - total_rubric_criteria_points
+    end
+
     if @criterion.save
       @levels = @criterion.levels.order("criterion_id").order("points").order("sort_order")
       render "api/criteria/show", status: 201
@@ -26,14 +41,30 @@ class API::CriteriaController < ApplicationController
   # PUT api/criteria/:id
   def update
     @criterion = Criterion.find(params[:id])
+    rubric = Rubric.find(@criterion.rubric_id)
+    assignment = Assignment.find(rubric.assignment_id)
 
-    if @criterion.update_attributes(criterion_params)
-      render "api/criteria/show", status: 200
-    else
-      render json: {
-        errors: [{ detail: "failed to update criterion" }], success: false
-        }, status: 500
+    assignment_full_points = assignment.full_points
+    
+    total_rubric_criteria_points = 0
+
+    rubric.criteria.each do |rubric_criterion|
+        if rubric_criterion.id == @criterion.id
+          total_rubric_criteria_points += criterion_params["max_points"]
+        else
+          total_rubric_criteria_points += rubric_criterion.max_points
+        end
     end
+
+    if total_rubric_criteria_points <= assignment_full_points
+      @criterion.update_attributes(criterion_params)
+      render "api/criteria/show", status: 200
+      return
+    end
+    
+    render json: {
+      errors: [{ detail: "failed to update criterion" }], success: false
+      }, status: 500
   end
 
   # DELETE api/criteria/:id

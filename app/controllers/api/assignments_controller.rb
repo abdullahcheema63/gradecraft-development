@@ -46,8 +46,16 @@ class API::AssignmentsController < ApplicationController
     create_or_update_learning_objective_links
 
     if @assignment.update_attributes assignment_params.except(:linked_objective_ids)
-      updated_grades
-      render "api/assignments/show", success: true, status: 200
+      if !validate_rubric_criteria(@assignment)
+        render json: {
+          message: "Rubric criteria points are currently less than the total points for the assignment. Add a new rubric criterion with the missing points or increase the points for one of the existing criteria",
+          errors: "invalid rubric criterion",
+          success: false
+          }, status: 400
+      else
+          updated_grades
+          render "api/assignments/show", success: true, status: 200
+      end
     else
       render json: {
         message: "failed to save assignment",
@@ -55,6 +63,20 @@ class API::AssignmentsController < ApplicationController
         success: false
         }, status: 400
     end
+  end
+
+  def validate_rubric_criteria(assignment)
+    rubric = assignment.rubric
+
+    assignment_full_points = assignment.full_points
+
+    total_rubric_criteria_points = 0
+
+    rubric.criteria.each do |rubric_criterion|
+      total_rubric_criteria_points += rubric_criterion.max_points
+    end
+
+    return total_rubric_criteria_points == assignment_full_points
   end
 
   def sort
