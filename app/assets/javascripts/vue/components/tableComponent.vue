@@ -119,7 +119,7 @@ module.exports = {
   data() {
     return {
       currentPageItemMin: 0,
-      currentPageItemMax: 2,
+      currentPageItemMax: 10,
       active: false,
       showPublished: '',
       showUnpublished: '',

@@ -48,6 +48,9 @@ const apiResponseToData = (responseJson) =>
 
 const store = new Vuex.Store({
   state: {
+    allUsers: [],
+    allCourses: [],
+    allInstructors: [],
     user: {
       id: null,
       firstName: "",

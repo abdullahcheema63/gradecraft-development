@@ -110,17 +110,7 @@
             </tbody>
           </table>
         </div>
-        <div class="table_pagination">
-          <p>
-            Results: <span class="displayed">3</span> of <span class="total">100</span>
-          </p>
-          <div>
-            <span class="table_prev disabled"></span>
-            <p class="active">1</p>
-            <p><a>2</a></p>
-            <span class="table_next"></span>
-          </div>
-        </div>
+        <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
 
         <button class="action next">Add a new course</button>
       </template>
@@ -230,10 +220,7 @@
             </table>
           </div>
 
-
-
-
-          <tableComponent v-if="toggled" :content="allCourses"></tableComponent>
+          <tableComponent v-if="allCourses.length" :content="allCourses"></tableComponent>
 
           <button type="button" class="action">Export this table view</button>
         </div>
@@ -278,7 +265,7 @@
                   <td>{{instructor.licenseExpires}} </td>
                   <td>{{instructor.paymentMethod}} </td>
                   <td style="width: 100px;">{{instructor.accountType}} </td>
-                  <template v-if="instructor.courses.length">
+                  <template v-if="!instructor.courses.length">
                     <td>
                       <ul>
                         <li v-for="course in instructor.courses">
@@ -315,19 +302,7 @@
               </tbody>
             </table>
           </div>
-          <div class="table_pagination">
-            <p>
-              Results: <span class="displayed">3</span> of <span class="total">200</span>
-            </p>
-            <div>
-              <span class="table_prev disabled"></span>
-              <p class="active">1</p>
-              <p><a>2</a></p>
-              <p><a>3</a></p>
-              <p><a>4</a></p>
-              <span class="table_next"></span>
-            </div>
-          </div>
+          <tablePagination :items="allInstructors1" @paginate="paginateItems"></tablePagination>
         </div>
 
         <div v-if="tabSection[0]==='Search All Users'">
@@ -397,9 +372,8 @@
               </tbody>
             </table>
           </div>
+          <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
         </div>
-
-        <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
 
         <div v-if="tabSection[0]==='Utilities'">
           <h2>Administrative Utilities</h2>
@@ -432,12 +406,8 @@ module.exports = {
   },
   data() {
     return {
-      toggled: false,
-      allUsers: {},
-      allCourses: {},
-      allNewCourses: {},
-      allInstructors1: {},
-      showFreeAccounts: true,
+      toggled: true,
+      showFreeAccounts: false,
       showLicensedAccounts: false,
       searchUserName: "",
       searchUserUsername: "",
@@ -480,110 +450,6 @@ module.exports = {
             },
           ],
         },
-        {
-          userId: 60,
-          email: "blah@test.com",
-          firstName: "User",
-          lastName: "McUserpants",
-          licensedAccount: true,
-          expirationDate: "Mon Jul 1 2019 15:22:00 GMT-0400 (Eastern Daylight Time)",
-          paymentMethod: "Stripe",
-          accountType: "Higher Ed #1",
-          activeCoursesNumber: "2",
-          activeCoursesList: [
-            {
-              courseName: "Active Course 1 with a super long name",
-              courseLicensed: true,
-              courseStudents: "200",
-            },
-            {
-              courseName: "Active Course 2",
-              courseLicensed: true,
-              courseStudents: "200",
-            },
-          ],
-        },
-        {
-          userId: 51,
-          email: "mcUserpants@test.com",
-          firstName: "User",
-          lastName: "McUserpants",
-          licensedAccount: true,
-          expirationDate: "Wed May 22 2019 15:22:00 GMT-0400 (Eastern Daylight Time)",
-          paymentMethod: "Legacy",
-          accountType: "K—12",
-          activeCoursesNumber: "7",
-          activeCoursesList: [
-            {
-              courseName: "Active course 1 with long name goes in here",
-              courseLicensed: false,
-              courseStudents: "0",
-            },
-            {
-              courseName: "Active course 2 with long name goes in here",
-              courseLicensed: true,
-              courseStudents: "2,000",
-            },
-            {
-              courseName: "Active course 3 with long name goes in here",
-              courseLicensed: true,
-              courseStudents: "58,000",
-            },
-            {
-              courseName: "Active course 4 with long name goes in here",
-              courseLicensed: false,
-              courseStudents: "0",
-            },
-            {
-              courseName: "Active course 5",
-              courseLicensed: true,
-              courseStudents: "60",
-            },
-            {
-              courseName: "Active course 6",
-              courseLicensed: false,
-              courseStudents: "60",
-            },
-            {
-              courseName: "Active course 7",
-              courseLicensed: true,
-              courseStudents: "600,000",
-            },
-          ],
-        },
-        {
-          userId: 52,
-          email: "bloop@test.com",
-          firstName: "User",
-          lastName: "McUserpants",
-          licensedAccount: true,
-          expirationDate: "Wed May 22 2019 15:22:00 GMT-0400 (Eastern Daylight Time)",
-          paymentMethod: "OTT",
-          accountType: "Higher Ed #2",
-          activeCoursesNumber: "3",
-          activeCoursesList: [
-            {
-              courseName: "Active course 1 with long name goes in here",
-              courseLicensed: false,
-              courseStudents: "0",
-            },
-            {
-              courseName: "Active course 2 with long name goes in here",
-              courseLicensed: true,
-              courseStudents: "2,000",
-            },
-            {
-              courseName: "Active course 3 with long name goes in here",
-              courseLicensed: true,
-              courseStudents: "58,000",
-            },
-            {
-              courseName: "Active course 4 with long name goes in here",
-              courseLicensed: false,
-              courseStudents: "0",
-            },
-          ],
-        },
       ],
     }
   },
@@ -610,28 +476,21 @@ module.exports = {
     },
     currentPageAllUsers(){
       return this.filteredAllUsers.slice(this.currentPageItemMin, this.currentPageItemMax);
+    },
+    allUsers(){
+      return this.$store.state.allUsers;
+    },
+    allCourses(){
+      return this.$store.state.allCourses;
+    },
+    allInstructors1(){
+      return this.filterAllInstructors(this.$store.state.allInstructors);
+    },
+    allNewCourses(){
+      return this.filterNewCourses(this.allCourses)
     }
   },
-  mounted() {
-    this.$store.subscribe((mutation, state) => {
-      if(mutation.type === 'addAllUsers') {
-        this.allUsers = this.$store.state.allUsers;
-        console.log("inside mounted subscribe function calling state allUsers")
-        console.log(this.$store.state.allUsers)
-      }
-      else if(mutation.type === 'addAdminCourses'){
-        this.allCourses = this.$store.state.allCourses;
-        this.allNewCourses = this.filterNewCourses(this.allCourses)
-      }
-      else if(mutation.type === 'addAllInstructors') {
-        this.allInstructors1 = this.$store.state.allInstructors;
-        console.log("inside mounted subscribe function calling state allInstructors")
-        console.log(this.$store.state.allInstructors)
-        console.log("inside mounted subscribe calling this.allInstructors1")
-        console.log(this.allInstructors1)
-      }
-    })
-  },
+
   methods: {
     filterNewCourses(allCourses){
       var tenDaysAgo = new Date();
@@ -640,6 +499,13 @@ module.exports = {
         var created = new Date(course.created);
         if( created < tenDaysAgo ){return false}
         return course
+      })
+    },
+    filterAllInstructors(allInstructors){
+      return allInstructors.filter( instructor => {
+        if( this.showFreeAccounts && instructor.accountType != "the best"){return false}
+        if( this.showLicensedAccounts && instructor.accountType != "the best"){return false}
+        return instructor
       })
     },
     addCourse(){
