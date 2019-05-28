@@ -246,6 +246,21 @@ const store = new Vuex.Store({
         //console.log(final);
         commit('addAllUsers', final)
       },
+      getAllInstructors: async function({ commit }){
+        console.log("getAllInstructors action dispatched")
+        const resp = await fetch("api/users/instructors");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        //console.log(json);
+        const final = apiResponseToData(json);
+        //console.log(final);
+        commit('addAllInstructors', final)
+      },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
       },
@@ -346,6 +361,22 @@ const store = new Vuex.Store({
               year: course.year,
               url: course.change_course_path,
             }))
+          }
+        })
+      },
+      addAllInstructors (state, instructors){
+        console.log("inside addAllInstructors mutation")
+        state.allInstructors = instructors.map(instructor => {
+          return {
+            id: instructor.id,
+            firstName: instructor.first_name,
+            lastName: instructor.last_name,
+            email: instructor.email,
+            url: instructor.url,
+            licenseExpires: instructor.license_expires,
+            paymentMethod: instructor.payment_method,
+            accountType: instructor.account_type,
+            courses: [ ...instructor.course_memberships ]
           }
         })
       },

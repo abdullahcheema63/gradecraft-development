@@ -7,7 +7,7 @@ json.data @instructors.includes(:course_memberships) do |instructor|
     json.last_name instructor.last_name
     json.email instructor.email
     if instructor.current_course
-      json.user_url staff_path(instructor)
+      json.url staff_path(instructor)
     end
     json.license_expires "soon"
     json.payment_method "Legacy"
@@ -32,9 +32,9 @@ json.included do
       course = Course.find(course_membership.course_id)
       if course.active?
         json.attributes do
-          json.name course.name
+          json.course_name course.name
           json.licensed course.has_paid
-          json.number_students course.student_count
+          json.student_count course.student_count
           json.change_course_path change_course_path(course)
         end
       end

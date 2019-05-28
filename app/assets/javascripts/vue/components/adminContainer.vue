@@ -143,7 +143,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in expiringInstructors" :key="user.userId">
+              <tr v-for="user in expiringInstructors1" :key="user.userId">
                 <td><a href="#">{{user.firstName}}</a> </td>
                 <td><a href="#">{{user.lastName}}</a> </td>
                 <td>{{user.expirationDate}} </td>
@@ -269,33 +269,35 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in filteredInstructors" :key="user.userId">
-                  <td><a href="#">{{user.firstName}}</a> </td>
-                  <td><a href="#">{{user.lastName}}</a> </td>
-                  <td>{{user.expirationDate}} </td>
-                  <td>{{user.paymentMethod}} </td>
-                  <td style="width: 100px;">{{user.accountType}} </td>
-                  <td>
-                    <ul>
-                      <li v-for="course in user.activeCoursesList" :key="course.courseName">
-                        <a href="#" class="table_truncate">{{course.courseName}}</a>
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    <ul class="checked_list">
-                      <li v-for="course in user.activeCoursesList" :key="course.courseName">
-                        <span :class="{checked: course.courseLicensed}">&nbsp;</span>
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    <ul class="student_list">
-                      <li v-for="course in user.activeCoursesList" :key="course.courseName">
-                        {{course.courseStudents}}
-                      </li>
-                    </ul>
-                  </td>
+                <tr v-for="instructor in allInstructors1">
+                  <td><a href="#">{{instructor.firstName}}</a> </td>
+                  <td><a href="#">{{instructor.lastName}}</a> </td>
+                  <td>{{instructor.licenseExpires}} </td>
+                  <td>{{instructor.paymentMethod}} </td>
+                  <td style="width: 100px;">{{instructor.accountType}} </td>
+                  <template v-if="instructor.courses.length">
+                    <td>
+                      <ul>
+                        <li v-for="course in instructor.courses">
+                          <a href="#" class="table_truncate">{{course.course_name}}</a>
+                        </li>
+                      </ul>
+                    </td>
+                    <td>
+                      <ul class="checked_list">
+                        <li v-for="course in instructor.courses">
+                          <span :class="{checked: course.licensed}">&nbsp;</span>
+                        </li>
+                      </ul>
+                    </td>
+                    <td>
+                      <ul class="student_list">
+                        <li v-for="course in instructor.courses">
+                          {{course.studentCount}}
+                        </li>
+                      </ul>
+                    </td>
+                  </template>
                   <td>
                     <buttonDropdown>
                       <template slot="button_text">Options</template>
@@ -429,6 +431,9 @@ module.exports = {
       allUsers: {},
       allCourses: {},
       allNewCourses: {},
+      allInstructors1: {},
+      showFreeAccounts: true,
+      showLicensedAccounts: false,
       searchUserName: "",
       searchUserUsername: "",
       searchUserEmail: "",
@@ -578,16 +583,17 @@ module.exports = {
   created: function() {
     this.$store.dispatch("getAllUsers");
     this.$store.dispatch("getCourseMemberships");
+    this.$store.dispatch("getAllInstructors");
   },
   computed: {
     getUserFirstName(){
       return this.$store.getters.userFirstName;
     },
-    filteredInstructors(){
+    filteredInstructors1(){
         var allInstructors = this.allInstructors;
         return allInstructors.filter(this.filterByLicensedAccount)
     },
-    expiringInstructors(){
+    expiringInstructors1(){
       var allInstructors = this.allInstructors;
       return allInstructors.filter(this.filterExpiringInstructors)
     },
@@ -599,12 +605,20 @@ module.exports = {
   mounted() {
     this.$store.subscribe((mutation, state) => {
       if(mutation.type === 'addAllUsers') {
-        console.log("made it within mutation condition ")
         this.allUsers = this.$store.state.allUsers;
+        console.log("inside mounted subscribe function calling state allUsers")
+        console.log(this.$store.state.allUsers)
       }
       else if(mutation.type === 'addAdminCourses'){
         this.allCourses = this.$store.state.allCourses;
         this.allNewCourses = this.filterNewCourses(this.allCourses)
+      }
+      else if(mutation.type === 'addAllInstructors') {
+        this.allInstructors1 = this.$store.state.allInstructors;
+        console.log("inside mounted subscribe function calling state allInstructors")
+        console.log(this.$store.state.allInstructors)
+        console.log("inside mounted subscribe calling this.allInstructors1")
+        console.log(this.allInstructors1)
       }
     })
   },
