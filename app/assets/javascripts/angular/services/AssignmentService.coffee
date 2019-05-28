@@ -166,7 +166,6 @@
           window.location = "/assignments"
         ,(response) ->
           GradeCraftAPI.logResponse(response)
-          console.log("Assignment save:", response)
           if(response.data.errors == "invalid rubric criterion")
             alert(response.data.message)
       )
