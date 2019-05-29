@@ -85,7 +85,7 @@
                 <td><span :class="{checked: course.copied}"></span> </td>
                 <td>
                   <ul>
-                    <li v-for="instructor in course.instructors">
+                    <li v-for="instructor in course.instructors" :key="instructor.id">
                       <a :href="instructor.url">{{instructor.text}}</a>
                     </li>
                   </ul>
@@ -133,7 +133,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in expiringInstructors1" :key="user.userId">
+              <tr v-for="user in expiringInstructors1" :key="user.id">
                 <td><a href="#">{{user.firstName}}</a> </td>
                 <td><a href="#">{{user.lastName}}</a> </td>
                 <td>{{user.expirationDate}} </td>
@@ -259,7 +259,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="instructor in allInstructors1">
+                <tr v-for="instructor in allInstructors1" :key="instructor.id">
                   <td><a href="#">{{instructor.firstName}}</a> </td>
                   <td><a href="#">{{instructor.lastName}}</a> </td>
                   <td>{{instructor.licenseExpires}} </td>
@@ -268,21 +268,21 @@
                   <template v-if="!instructor.courses.length">
                     <td>
                       <ul>
-                        <li v-for="course in instructor.courses">
+                        <li v-for="course in instructor.courses" :key="course.id">
                           <a href="#" class="table_truncate">{{course.course_name}}</a>
                         </li>
                       </ul>
                     </td>
                     <td>
                       <ul class="checked_list">
-                        <li v-for="course in instructor.courses">
+                        <li v-for="course in instructor.courses" :key="course.id">
                           <span :class="{checked: course.licensed}">&nbsp;</span>
                         </li>
                       </ul>
                     </td>
                     <td>
                       <ul class="student_list">
-                        <li v-for="course in instructor.courses">
+                        <li v-for="course in instructor.courses" :key="course.id">
                           {{course.studentCount}}
                         </li>
                       </ul>
@@ -339,26 +339,26 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in currentPageAllUsers">
+                <tr v-for="user in currentPageAllUsers" :key="user.id">
                   <td>{{user.id}}</td>
                   <td><a :href="user.url">{{user.firstName}}</a> </td>
                   <td><a :href="user.url">{{user.lastName}}</a> </td>
                   <td>{{user.email}}</td>
                   <template v-if="user.courses.length">
                     <td>
-                      <ul><li v-for="course in user.courses"><a :href="course.url">{{course.name}}</a> </li></ul>
+                      <ul><li v-for="course in user.courses" :key="course.id"><a :href="course.url">{{course.name}}</a> </li></ul>
                     </td>
                     <td>
-                      <ul><li v-for="course in user.courses">{{course.role}} </li></ul>
+                      <ul><li v-for="course in user.courses" :key="course.id">{{course.role}} </li></ul>
                     </td>
                     <td>
-                      <ul><li  v-for="course in user.courses">{{course.semester}}</li></ul>
+                      <ul><li  v-for="course in user.courses" :key="course.id">{{course.semester}}</li></ul>
                     </td>
                     <td>
-                      <ul><li v-for="course in user.courses">{{course.year}}</li></ul>
+                      <ul><li v-for="course in user.courses" :key="course.id">{{course.year}}</li></ul>
                     </td>
                     <td>
-                      <ul><li v-for="course in user.courses">{{course.score}}</li></ul>
+                      <ul><li v-for="course in user.courses" :key="course.id">{{course.score}}</li></ul>
                     </td>
                   </template>
                   <template v-else>
@@ -433,7 +433,7 @@ module.exports = {
       newCourseErrors: [],
       allInstructors: [
         {
-          userId: 50,
+          id: 50,
           email: "blah@test.com",
           firstName: "User",
           licensedAccount: false,
@@ -503,6 +503,8 @@ module.exports = {
     },
     filterAllInstructors(allInstructors){
       return allInstructors.filter( instructor => {
+        console.log("logging instructor courses")
+        console.log(instructor.courses)
         if( this.showFreeAccounts && instructor.accountType != "the best"){return false}
         if( this.showLicensedAccounts && instructor.accountType != "the best"){return false}
         return instructor
