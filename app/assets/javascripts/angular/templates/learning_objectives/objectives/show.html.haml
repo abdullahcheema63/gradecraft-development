@@ -21,6 +21,7 @@
             %ul.no-style
               %li{"ng-repeat"=>"assignment in loShowCtrl.linkedAssignments"}
                 %a{"ng-href"=>"/assignments/{{assignment.id}}"} {{assignment.name}}
+<<<<<<< HEAD
                 
                 %descriptor-icon{"data-icon"=>"lock", "ng-if"=>"assignment.unlock_conditions"}
                   %ul.icon-list
@@ -32,6 +33,12 @@
                     %li{"ng-repeat"=>"key in assignment.unlock_keys"}
                       {{key}}
 
+=======
+                %descriptor-icon{"data-icon"=>"lock"}
+                  %ul.icon-list
+                    %li{"ng-repeat"=>"condition in assignment.unlock_conditions"}
+                      {{condition}}
+>>>>>>> edit-assignment-grading-message
       %tr{"ng-if"=>"loShowCtrl.studentId"}
         %th Progress:
         %td
