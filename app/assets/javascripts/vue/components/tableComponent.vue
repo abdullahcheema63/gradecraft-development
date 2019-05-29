@@ -62,6 +62,9 @@
               <span v-if="isString(value)">
                 {{value}}
               </span>
+              <span v-if="isNum(value)">
+                {{value}}
+              </span>
               <ul v-if="isHyperlinkArray(value)">
                 <li v-for="link in value" :key="link.text">
                   <a :href="link.url">{{link.text}}</a>
@@ -197,6 +200,9 @@ module.exports = {
     },
     isString(value){
       return typeof value === "string"
+    },
+    isNum(value){
+      return typeof value === "number"
     },
     isHyperlinkArray(value){
       return typeof value[0] === "object"
