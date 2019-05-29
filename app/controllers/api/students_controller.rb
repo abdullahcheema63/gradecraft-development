@@ -35,6 +35,5 @@ class API::StudentsController < ApplicationController
     else 
       @course_potential_points_for_student = current_course.full_points
     end
-
   end
 end
