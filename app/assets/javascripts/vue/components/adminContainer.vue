@@ -174,52 +174,6 @@
           <h2>All Courses </h2>
           <p>Manage and view all courses&mdash;active and inactive, published and unpublished. </p>
 
-          <div class="table_container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Course ID </th>
-                  <th>Course Name </th>
-                  <th>Licensed </th>
-                  <th>Active </th>
-                  <th>Published</th>
-                  <th>Instructor(s)</th>
-                  <th># Students </th>
-                  <th>Semester </th>
-                  <th>Year </th>
-                  <th>Created </th>
-                  <th>Actions </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="course in allCourses">
-                  <td>{{course.id}}</td>
-                  <td>{{course.name}}</td>
-                  <td>unkown</td>
-                  <td><span :class="{checked: course.active}">&nbsp;</span></td>
-                  <td><span :class="{checked: course.published}">&nbsp;</span></td>
-                  <td>
-                    <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
-                  </td>
-                  <td>{{course.studentNumber}}</td>
-                  <td>{{course.term}}</td>
-                  <td>{{course.year}}</td>
-                  <td>{{course.created}}</td>
-                  <td>
-                    <buttonDropdown>
-                      <template slot="button_text">Options</template>
-                      <template slot="content">
-                        <ul>
-                          <li>Copy over options from table component </li>
-                        </ul>
-                      </template>
-                    </buttonDropdown>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
           <tableComponent v-if="allCourses.length" :content="allCourses"></tableComponent>
 
           <button type="button" class="action">Export this table view</button>
