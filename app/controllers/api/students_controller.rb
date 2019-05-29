@@ -29,6 +29,12 @@ class API::StudentsController < ApplicationController
     @student = student
     @assignment_types = current_course.assignment_types
     @earned_badge_points = @student.earned_badge_score_for_course current_course
-    @course_potential_points_for_student = current_course.total_points + @earned_badge_points
+  
+    if current_course.full_points.nil? || current_course.full_points == 0
+      @course_potential_points_for_student = current_course.total_points + @earned_badge_points
+    else 
+      @course_potential_points_for_student = current_course.full_points
+    end
+
   end
 end
