@@ -37,7 +37,6 @@ class HomeController < ApplicationController
 
   def overview
     @user_role = current_role
-    @current_user = current_user
   end
 
   private

@@ -5,7 +5,9 @@ class AssignmentsController < ApplicationController
   include AssignmentsHelper
 
   before_action :ensure_staff?, except: [:show, :index]
-  before_action :use_current_course, only: [:index, :settings, :show, :new, :edit, :grades_review]
+  before_action :use_current_course, only: [:index, :settings, :show, :new, :edit, :grades_review, :new_assignments_page]
+
+  layout "blank", only: [:new_assignments_page]
 
   def index
     @assignment_types = @course.assignment_types.ordered.includes(:assignments)
@@ -92,6 +94,10 @@ class AssignmentsController < ApplicationController
       team_id: params[:team_id],
       view_context: view_context
       })
+  end
+
+  def new_assignments_page
+    @assignment_types = @course.assignment_types.ordered.includes(:assignments)
   end
 end
 

@@ -62,6 +62,7 @@ Rails.application.routes.draw do
       post "/assignments/:id/refresh", action: :refresh_assignment, as: :refresh_assignment
       post "/assignments/:id/update", action: :update_assignment, as: :update_assignment
     end
+    get :new_assignments_page
   end
 
   resources :assignments, except: [:create, :update]  do
