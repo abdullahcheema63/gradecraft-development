@@ -379,7 +379,13 @@ const store = new Vuex.Store({
             licenseExpires: instructor.license_expires,
             paymentMethod: instructor.payment_method,
             accountType: instructor.account_type,
-            courses: [ ...instructor.course_memberships ]
+            courses: instructor.course_memberships.map(course => ({
+              id: course.id,
+              name: course.course_name,
+              studentCount: course.student_count,
+              changeCoursePath: course.change_course_path,
+              licensed: course.licensed
+            }))
           }
         })
       },

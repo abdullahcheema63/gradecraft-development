@@ -265,11 +265,11 @@
                   <td>{{instructor.licenseExpires}} </td>
                   <td>{{instructor.paymentMethod}} </td>
                   <td style="width: 100px;">{{instructor.accountType}} </td>
-                  <template v-if="!instructor.courses.length">
+                  <template v-if="instructor.courses.length">
                     <td>
                       <ul>
                         <li v-for="course in instructor.courses" :key="course.id">
-                          <a href="#" class="table_truncate">{{course.course_name}}</a>
+                          <a :href="course.changeCoursePath" class="table_truncate">{{course.name}}</a>
                         </li>
                       </ul>
                     </td>
@@ -433,7 +433,7 @@ module.exports = {
       newCourseErrors: [],
       allInstructors: [
         {
-          id: 50,
+          userId: 50,
           email: "blah@test.com",
           firstName: "User",
           licensedAccount: false,
@@ -503,8 +503,6 @@ module.exports = {
     },
     filterAllInstructors(allInstructors){
       return allInstructors.filter( instructor => {
-        console.log("logging instructor courses")
-        console.log(instructor.courses)
         if( this.showFreeAccounts && instructor.accountType != "the best"){return false}
         if( this.showLicensedAccounts && instructor.accountType != "the best"){return false}
         return instructor

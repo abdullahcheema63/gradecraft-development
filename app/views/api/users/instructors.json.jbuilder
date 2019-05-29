@@ -30,13 +30,12 @@ json.included do
       json.id course_membership.id
 
       course = Course.find(course_membership.course_id)
-      if course.active?
-        json.attributes do
-          json.course_name course.name
-          json.licensed course.has_paid
-          json.student_count course.student_count
-          json.change_course_path change_course_path(course)
-        end
+      json.attributes do
+        json.id course.id
+        json.course_name course.name
+        json.licensed course.has_paid
+        json.student_count course.student_count
+        json.change_course_path change_course_path(course)
       end
     end
   end
