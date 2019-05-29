@@ -401,3 +401,59 @@ i.missing_grade
         line-height: 1.25em
     li
       margin-bottom: 0.25em
+
+.accordion_table
+  min-width: 800px
+
+  .accordion_table-head
+    background-color: $blue-medium_1
+    color: white
+    font-family: 'ProximaNova_semibold', sans-serif
+    font-size: 0.85em
+    line-height: 1em
+    hyphens: none
+    display: flex
+
+    & > p
+      margin: 0
+      padding: 0.4em
+      box-sizing: border-box
+      border-right: 1px solid white
+
+      &:first-of-type
+        width: 50%
+
+      &:nth-of-type(2)
+        width: 200px
+
+      &:last-of-type
+        border-right: 0
+
+  .accordion_table-body
+    .accordion.in_table
+      &:last-of-type
+        .row_heading
+          border-bottom: 0px solid white
+
+        .is-open
+          border-bottom: 0px solid white
+
+table.accordion_table
+  .accordion
+    h3
+      padding-right: 0.4em
+      padding-left: 2.4em
+
+      span
+        left: 0.4em
+        background: url(asset_path("icon-arrow_next_action.svg")) no-repeat center center
+        background-size: contain
+
+  tbody
+    tr:last-child
+      & > .accordion
+        h3
+          border-bottom: 0px solid transparent
+
+        & > div.is-open
+          border-bottom: 0px solid transparent

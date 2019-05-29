@@ -161,3 +161,73 @@
 
     &.hiding
       display: none
+
+  /* Accordions within tables */
+  &.in_table
+    .row_heading
+      display: flex
+      padding: 1em 0.4em
+      box-sizing: border-box
+      border-bottom: 1px solid $blue-medium_2
+      cursor: pointer
+
+      & > h3
+        width: 50%
+        position: relative
+        color: $blue-medium_1
+        margin: 0
+        padding-left: 2em
+        box-sizing: border-box
+        transition: all 0.3s
+
+        span
+          position: absolute
+          left: 0
+          top: 0
+          background: url(asset_path("icon-arrow_next_action.svg")) no-repeat center center
+          background-size: contain
+          width: 1.25em
+          height: 1.25em
+          display: block
+          transform: rotate(90deg)
+          transition: all 0.3s
+
+      p
+        margin: 0
+
+        &.date
+          width: 200px
+          padding-left: 0.4em
+
+      &.open
+        border-color: transparent
+        background-color: $blue_dark
+        color: white
+        font-family: 'ProximaNova_regular', sans-serif
+
+        & > h3
+          color: white
+
+          span
+            background: url(asset_path("icon-arrow_next_action.svg")) no-repeat center center
+            background-size: contain
+            transform: rotate(-90deg)
+
+    & > div
+      &.is-open
+        border-bottom: 2px solid $blue_dark
+
+      .content
+        padding: 0
+        display: flex
+
+        p
+          margin: 0 0 0.25em 0
+
+        & > div
+          padding: 1.25em
+          width: 50%
+          box-sizing: border-box
+
+          &:first-of-type
+            background: $bg-yellow
