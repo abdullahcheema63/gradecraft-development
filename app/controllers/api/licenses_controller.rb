@@ -103,7 +103,7 @@ class API::LicensesController < ApplicationController
     }, status: status
   end
 
-  def payment_permitted_params 
+  def payment_permitted_params
     [ :first_name, :last_name, :organization, :phone, :addr1, :addr2, :country, :state, :city, :zip, :stripe_token ]
   end
 
