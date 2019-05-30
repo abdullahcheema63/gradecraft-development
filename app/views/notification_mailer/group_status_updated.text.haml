@@ -1,12 +1,12 @@
-- if @group.approved
+- if @group.approved == "Approved"
   Good news, #{ @student.first_name }!
-- if !@group.approved
+- if @group.approved == "Rejected"
   Uh oh, #{ @student.first_name }
 
 Your group, “#{ @group.name }” has been #{ @group.approved } in course #{ @course.name }.
 
 Log in to GradeCraft to read your feedback.
 
-- if @group.approved
+- if @group.approved == "Approved"
   Play on!
   GradeCraft

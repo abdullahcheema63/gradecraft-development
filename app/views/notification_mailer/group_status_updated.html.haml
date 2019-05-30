@@ -1,14 +1,14 @@
 %td.hero_img
-  - if @group.approved
+  - if @group.approved == "Approved"
     = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
-  - if !@group.approved
+  - if @group.approved == "Rejected"
     = image_tag "email-hero_Sad.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
 %td
-  - if @group.approved
+  - if @group.approved == "Approved"
     %h1
       Good news, #{ @student.first_name }!
-  - if !@group.approved
+  - if @group.approved == "Rejected"
     %h1
       Uh oh, #{ @student.first_name }
 
@@ -21,7 +21,7 @@
   %p
     Log in to GradeCraft to read your feedback.
 
-  - if @group.approved
+  - if @group.approved == "Approved"
     %p
       Play on!
       %br
