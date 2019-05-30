@@ -136,7 +136,7 @@ describe API::LicensesController do
       expect(response.status).to eq 200
     end
 
-    it "returns 400 if courses exceed maximum", focus: true do
+    it "returns 400 if courses exceed maximum" do
       login_user(license_standard.user)
       license_standard.max_courses = 1
       course_ids = license_standard.user.course_memberships.where(role: "professor").map{|cm| cm.course.id}
