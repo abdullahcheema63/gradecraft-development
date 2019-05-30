@@ -158,6 +158,13 @@
 
   submitAssignment = (id)->
     assignment = _.find(assignments, {id: id})
+  
+    console.log(RubricService.criteria);
+
+    for criterion in RubricService.criteria
+      RubricService.queueUpdateCriterion(criterion)
+      console.log(criterion)
+
     DebounceQueue.runAllEvents()
     if assignment && ValidateDates(assignment).valid
       $http.put("/api/assignments/#{id}", assignment: assignment).then(
