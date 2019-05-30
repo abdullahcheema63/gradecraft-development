@@ -11,8 +11,7 @@
       #{ @assignment.name }
     in #{ @course.name }.
 
-  =link_to assignment_url(@assignment)
-    %button View your results!
+  =link_to "View your results!", assignment_url(@assignment), class: "button"
 
   - if @course.show_grade_predictor?
     %p
