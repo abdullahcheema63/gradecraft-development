@@ -9,6 +9,8 @@ class HomeController < ApplicationController
 
   layout "blank", only: [:style_guide, :overview]
 
+  include ApplicationHelper
+
   # root
   # GET /
   def index
@@ -34,6 +36,7 @@ class HomeController < ApplicationController
   end
 
   def overview
+    @user_role = current_role
   end
 
   private

@@ -22,7 +22,7 @@ textarea,
     border: 1px solid rgba(42, 43, 43, 0.8)
   &:disabled
     color: $grey_1
-  @media (max-width: $media-small-max)
+  @include mobile-xl
     width: 100%
 
 /* annoying jquery-ui overrides */
@@ -43,6 +43,7 @@ textarea,
   input[type="email"],
   input[type="number"],
   input[type="password"],
+  input[type="search"],
   textarea,
   select
     background: url(asset_path("icon-form_WriteIn.svg")) no-repeat center right
@@ -88,6 +89,10 @@ textarea,
     background: url(asset_path("icon-arrow_select.svg")) no-repeat center right
     background-size: 1em auto
     cursor: pointer
+
+  input[type="search"]
+    background: url(asset_path("icon-table_Search.svg")) no-repeat center right
+    background-size: 1.25em auto
 
   input.calendar
     background: url(asset_path("icon-calendar.svg")) no-repeat center right
@@ -200,10 +205,6 @@ textarea,
     //   color: white
     //   cursor: default
 
-
-  // style hack for Angular form fields
-  .boolean
-    margin: 0.5em 0
 
 .flex-2
   &.form_pair

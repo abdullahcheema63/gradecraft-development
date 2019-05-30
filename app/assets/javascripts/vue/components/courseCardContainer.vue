@@ -1,5 +1,18 @@
 <template>
   <div>
+    <div class="content_block intro">
+      <h1>My Dashboard</h1>
+
+      <guideMessage v-if="!getUserOnboardingStatus">
+        <p>Hello, {{ getUserFirstName }}, and welcome to your GradeCraft dashboard! </p>
+        <p>As your Guide, I’m here to help orient you in the many opportunities this tool offers. Look for my messages if you want some tips on how to use our features! </p>
+      </guideMessage>
+      <guideMessage v-else>
+        <p>Welcome back to your GradeCraft dashboard, {{ getUserFirstName }}!</p>
+        <p>As your Guide, I’m here to help orient you in the many opportunities this tool offers. Look for my messages if you want some tips on how to use our features! </p>
+      </guideMessage>
+    </div>
+
     <div class="content_block">
       <h2 class="unspace-top">Current Courses</h2>
       <div class="course_box" v-if="currentCourses">
@@ -12,7 +25,7 @@
       </div>
     </div>
 
-    <div class="content_block">
+    <div class="content_block" v-if="getUserIsInstructor">
       <h2 class="unspace-top">Unpublished Courses</h2>
       <div class="course_box" v-if="unpublishedCourses">
         <courseCard v-for= "course in unpublishedCourses" :course="course" status="unpublished"></courseCard>
@@ -24,7 +37,7 @@
       </div>
     </div>
 
-    <div class="content_block" v-if="pastCourses">
+    <div class="content_block" v-if="pastCourses.length">
       <h2 class="unspace-top">Past Courses</h2>
       <guideMessage>
         <p>
@@ -37,13 +50,13 @@
       <div class="filter_box">
         <p>Select which filters you want to apply:</p>
         <div>
-          <span v-for="year in courseTermYear">
-            <input :id="year"type="checkbox" v-model="termYear" :value="year"/>
+          <span v-for="year in courseTermYear" :key="year">
+            <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
             <label :for="year">{{year}}</label>
           </span>
         </div>
         <div>
-          <span v-for="term in courseTermName">
+          <span v-for="term in courseTermName" :key="term">
             <input :id="term" type="checkbox" v-model="termName" :value="term"/>
             <label :for="term">{{term}}</label>
           </span>
@@ -54,7 +67,7 @@
       </div>
     </div>
 
-    <div class="content_block bg-green_mint">
+    <div class="content_block bg-green_mint" v-if="getUserIsInstructor">
       <h2>Add a New Course</h2>
 
       <p v-if="userHasPaid">
@@ -106,7 +119,7 @@
                       Please fill out the <b>required fields</b> below if you want to create a new course.
                     </p>
                   </div>
-                  <div class="flex-2">
+                  <div class="flex-2 form_pair">
                     <div class="form_elem">
                       <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
                       <label for="course_number">Course #</label>
@@ -276,6 +289,9 @@ module.exports = {
       }
     }
   },
+  created: function() {
+    this.$store.dispatch("getCourseMemberships")
+  },
   computed: {
     currentCourses(){
       return this.$store.getters.currentCourseMembership;
@@ -298,6 +314,10 @@ module.exports = {
     unpublishedCourses(){
       return this.$store.getters.unpublishedCourseMembership;
     },
+    allCourses(){
+      var courses = this.currentAndPastCourses.concat(this.unpublishedCourses);
+      return courses
+    },
     unLicensedCourses(){
       return this.$store.getters.unLicensedCourseMembership;
     },
@@ -309,6 +329,15 @@ module.exports = {
     },
     userHasPaid(){
       return this.$store.getters.userHasPaid;
+    },
+    getUserFirstName(){
+      return this.$store.getters.userFirstName;
+    },
+    getUserOnboardingStatus(){
+      return this.$store.getters.userOnboardingStatus;
+    },
+    getUserIsInstructor(){
+      return this.$store.getters.userIsInstructor;
     }
   },
   methods: {

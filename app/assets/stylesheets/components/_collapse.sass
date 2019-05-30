@@ -26,7 +26,7 @@
 .accordion
   background-color: white
 
-  h3
+  & > h3
     position: relative
     color: $blue-medium_1
     border-bottom: 2px solid $blue-medium_2
@@ -72,10 +72,14 @@
 
     &.is-open
       max-height: 100%
+      border-bottom: 2px solid $grey_1
       //transition: all ease-in 0.4s
 
     & > div
-      padding: 1em 5%
+      padding: 1em 5% 2em 5%
+
+      @include mobile-xl
+        padding: 1em 3% 2em 3%
 
   &.locked
     h3

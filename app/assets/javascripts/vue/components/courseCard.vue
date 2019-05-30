@@ -71,10 +71,14 @@
           </p>
         </div>
       </div>
+      <div class="empty" v-if="!course.assignments.length">
+        <p v-if="is_staff"><em>There aren’t any assignments coming up for this course</em></p>
+        <p v-else><em>You don’t have any assignments coming up for this course</em></p>
+      </div>
     </div>
 
     <div class="button_box">
-      <a class="button next">View course</a>
+      <a class="button next" v-bind:href="course.url">View course</a>
     </div>
 
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
@@ -113,7 +117,7 @@
     </div>
 
     <div>
-      <a class="button next">View course</a>
+      <a class="button next" v-bind:href="course.url">View course</a>
     </div>
 
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
@@ -152,7 +156,7 @@
     </div>
 
     <div>
-      <a class="button next">View course</a>
+      <a class="button next" v-bind:href="course.url">View course</a>
     </div>
   </div>
 </template>
@@ -172,7 +176,7 @@ module.exports = {
   },
   computed: {
     is_staff() {
-      return this.course.role === 'Instructor' || this.course.role === 'GSI';
+      return this.course.role === 'Instructor' || this.course.role === 'gsi';
     },
     user_card_class() {
       if( this.is_staff ){ return 'instructor' }

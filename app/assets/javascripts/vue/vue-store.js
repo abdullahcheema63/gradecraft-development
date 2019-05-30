@@ -2,16 +2,64 @@
 
 Vue.use(Vuex)
 
+const dataItem = function(item, response, options){
+    // attach JSON API type to attributes ("badges", "assignments", etc.)
+    if (response == null) { response = {}; }
+    if (options == null) { options = {"include":[]}; }
+    item.attributes.type = item.type;
+
+    // attach associated models from included list within
+    _.each(options.include, function(included){
+      let predicate, relationships;
+      if (!response.included || !item.relationships || !item.relationships[included]) { return; }
+
+      if (Array.isArray(item.relationships[included].data)) {
+        const related = {
+          ids: _.pluck(item.relationships[included].data, "id"),
+          types: _.pluck(item.relationships[included].data, "type")
+        };
+        predicate = item => Array.from(related.ids).includes(item.id) && Array.from(related.types).includes(item.type);
+        relationships = _.filter(response.included, predicate);
+        if (relationships != null) { return item.attributes[included] = _.pluck(relationships, "attributes"); }
+      } else {
+        predicate = {
+          id: item.relationships[included].data.id,
+          type: item.relationships[included].data.type
+        };
+        const relationship = _.find(response.included, predicate);
+        if (relationship != null) { return item.attributes[included] = relationship.attributes; }
+      }
+    });
+    return item.attributes;
+  };
+
+const loadMany = function(modelArray, response, options, filter) {
+    if (options == null) { options = {"include":[]}; }
+    if (filter == null) { filter = ()=> true; }
+    return _(response.data)
+      .map(item => dataItem(item, response, options))
+      .filter(filter)
+      .each(item => modelArray.push(item))
+      .value();
+  };
+
+const apiResponseToData = (responseJson) =>
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff"] });
+
 const store = new Vuex.Store({
   state: {
+    allUsers: [],
+    allCourses: [],
+    allInstructors: [],
     user: {
-      id: 1,
-      firstName: "Erik",
-      lastName: "Barroso",
-      email: "ebarr@gmail.com",
-      admin: true,
-      showGuide: true,
-      hasPaid: true,
+      id: null,
+      firstName: "",
+      lastName: "",
+      email: "",
+      admin: null,
+      showGuide: null,
+      hasPaid: null,
+      hasSeenCourseOnboarding: null,
       courseMembership: [{
         id: 1,
         name: "GradeCraft101",
@@ -163,10 +211,59 @@ const store = new Vuex.Store({
         },
         licensed: false,
         published: true
-      },
-    ]
+      }]
     }},
     actions: {
+      getCourseMemberships: async function({ commit }){
+        //console.log("dispatched getCourseMemberships")
+        const resp = await fetch("api/courses");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        //console.log(json);
+        const final = apiResponseToData(json);
+        //console.log(final);
+        if (store.state.user.admin){
+          commit('addAdminCourses', final);
+        }
+        else {
+          commit('addCourses', final);
+        }
+      },
+      getAllUsers: async function({ commit }){
+        //console.log("getAllUsers action dispatched")
+        const resp = await fetch("api/users");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        //console.log(json);
+        const final = apiResponseToData(json);
+        //console.log(final);
+        commit('addAllUsers', final)
+      },
+      getAllInstructors: async function({ commit }){
+        //console.log("getAllInstructors action dispatched")
+        const resp = await fetch("api/users/instructors");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        //console.log(json);
+        const final = apiResponseToData(json);
+        //console.log(final);
+        commit('addAllInstructors', final)
+      },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
       },
@@ -178,9 +275,120 @@ const store = new Vuex.Store({
       },
       addNewCourse({ commit }, course){
         commit('addNewCourse', {course: course})
+      },
+      setCurrentUser({ commit }, user){
+        commit('setCurrentUser', user)
       }
     },
     mutations: {
+      addCourses (state, courses){
+        state.user.courseMembership = courses.map(course => {
+          return {
+            id: course.id,
+            name: course.name,
+            number: course.course_number,
+            role: course.role,
+            instructor: "Cait Holman",
+            url: course.change_course_path,
+            gradingStatus: {
+              url: "",
+              ungraded: course.ungraded,
+              ready: course.ready_for_release,
+              resubmissions: course.resubmissions
+            },
+            eventCount: course.events_this_week,
+            announcementCount: course.unread_announcements,
+            assignments: course.assignments.map(assignment => ({
+              name: assignment.name,
+              dueDate: assignment.due_at,
+              planned: assignment.planned,
+              submitted: assignment.submitted,
+              graded: assignment.graded,
+            })),
+            term: {
+              name: course.semester,
+              year: course.year,
+              start: "2019-01-01T00:00:00",
+              end: "2019-09-01T00:00:00"
+            },
+            licensed: true,
+            published: course.published };
+        });
+      },
+      addAdminCourses(state, courses){
+        //console.log("inside addAdminCourses mutation")
+        state.allCourses = courses.map(course => {
+          return {
+            id: course.id,
+            name: course.name,
+            url: course.change_course_path,
+            editURL: course.edit_course_path,
+            copyURL: course.copy_courses_path,
+            copyStudentsURL: course.copy_courses_with_students_path,
+            finalGradesURL: course.final_grades_path,
+            gradebookURL: course.gradebook_file_path,
+            researchGradesURL: course.research_gradebook_path,
+            submissionsURL: course.submissions_path,
+            awardedBadgesURL: course.export_earned_badges_path,
+            created: course.created_at,
+            licensed: course.has_paid,
+            active: course.active,
+            published: course.published,
+            term: course.semester,
+            year: course.year,
+            studentNumber: course.student_count,
+            instructors: course.staff.map(staff => ({
+              text: staff.name,
+              url: staff.url
+            }))
+          }
+        })
+      },
+      addAllUsers (state, users){
+        //console.log("inside addAllUsers mutation")
+        state.allUsers = users.map(user => {
+          return {
+            id: user.id,
+            username: user.username,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            createdAt: user.created_at,
+            url: user.user_url,
+            courses: user.course_memberships.map(course => ({
+              name: course.name,
+              role: course.role,
+              score: course.score,
+              semester: course.semester,
+              score: course.score,
+              year: course.year,
+              url: course.change_course_path,
+            }))
+          }
+        })
+      },
+      addAllInstructors (state, instructors){
+        //console.log("inside addAllInstructors mutation")
+        state.allInstructors = instructors.map(instructor => {
+          return {
+            id: instructor.id,
+            firstName: instructor.first_name,
+            lastName: instructor.last_name,
+            email: instructor.email,
+            url: instructor.url,
+            licenseExpires: instructor.license_expires,
+            paymentMethod: instructor.payment_method,
+            accountType: instructor.account_type,
+            courses: instructor.course_memberships.map(course => ({
+              id: course.id,
+              name: course.course_name,
+              studentCount: course.student_count,
+              changeCoursePath: course.change_course_path,
+              licensed: course.licensed
+            }))
+          }
+        })
+      },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)
         var membershipIndex = course_ids.indexOf(course_id)
@@ -200,11 +408,37 @@ const store = new Vuex.Store({
         newCourse.eventCount = ""
         newCourse.announcementCount = ""
         state.user.courseMembership.push(newCourse)
+      },
+      setCurrentUser (state, user){
+        state.user.id = user.id
+        state.user.username = user.username
+        state.user.firstName = user.firstName
+        state.user.lastName = user.lastName
+        state.user.email = user.email
+        state.user.admin = user.admin
+        state.user.showGuide = user.showGuide
+        state.user.hasPaid = user.hasPaid
+        state.user.account_url = user.account_url
       }
     },
     getters: {
       userName: state => {
         return state.user.firstName + ' ' + state.user.lastName
+      },
+      userAccountURL: state => {
+        return state.user.account_url
+      },
+      userFirstName: state => {
+        return state.user.firstName
+      },
+      userOnboardingStatus: state => {
+        return state.user.hasSeenCourseOnboarding
+      },
+      userGuideStatus: state => {
+        return state.user.showGuide;
+      },
+      userHasPaid: state => {
+        return state.user.hasPaid;
       },
       currentCourseMembership: state => {
         return state.user.courseMembership.filter( membership => {
@@ -245,11 +479,11 @@ const store = new Vuex.Store({
           return membership
         })
       },
-      userGuideStatus: state => {
-        return state.user.showGuide;
-      },
-      userHasPaid: state => {
-        return state.user.hasPaid;
+      userIsInstructor: state => {
+        var courseRoles = state.user.courseMembership.map( course =>{
+          return course.role
+        });
+        return courseRoles.includes('Instructor')
       }
     }
 })

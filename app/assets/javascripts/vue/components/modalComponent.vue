@@ -39,6 +39,17 @@ module.exports = {
       }
       return 'is-closed';
     }
+  },
+  directives: {
+    modalPresent: {
+      inserted: function(el){
+        document.querySelector(".wrapper").classList.add("freeze");
+      },
+      compontentUpdated: function(el){
+        console.log(el)
+        document.querySelector(".wrapper").classList.remove("freeze");
+      }
+    }
   }
 }
 `</script>

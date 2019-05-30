@@ -51,19 +51,6 @@
       @media (max-width: $media-800)
         background: white
 
-  .flex-2
-    max-width: 800px
-
-    & > div
-      width: 46%
-      margin-bottom: 2em
-
-      &.form_elem
-        padding: 0
-
-      @media (max-width: $media-650)
-        width: 100%
-
   .accordion
     margin: 1em -1.5em
 
@@ -101,3 +88,12 @@
 
   button:last-child
     margin: 1.5em 1em 0 0
+
+/* When the modal is open, prevent scrolling on content behind it */
+.wrapper
+  &.freeze
+    position: fixed
+    overflow: hidden
+    width: 100vw
+    left: 0
+    right: 0

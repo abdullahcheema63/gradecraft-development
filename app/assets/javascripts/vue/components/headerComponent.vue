@@ -1,10 +1,10 @@
 <template>
   <div id="header" class="fancy">
-    <a id="header_link" href="#">
+    <a id="header_link" href="https://gradecraft.com" v-focus>
       <img class="small-hide" src="/assets/logo.svg" width="450" height="100" alt="Return to your GradeCraft dashboard" />
       <img class="small-show" src="/assets/logo-monogram.svg" width="110" height="100" alt="Return to your GradeCraft dashboard" />
     </a>
-    <div class="header-actions">
+    <div class="header-actions" ref="clickAway">
       <p id="free_trial_user" v-if="userHasPaid == false" :class="{open:activeFreetrialMsg}" @click="toggleFreetrialMsg">
         <a class="small-hide">Free Trial Account</a>
         <a class="small-show">Free Trial</a>
@@ -29,9 +29,9 @@
       <a id="header_user" :class="{open:activeUsername}" @click="toggleUsername">{{ getUserName }}</a>
       <div :class="usernameClass">
         <ul>
-          <li><a href="">My Account</a></li>
-          <li><a href="">View Tour</a></li>
-          <li><a href="">Log Out</a></li>
+          <li><a :href="getAccountURL">My Account</a></li>
+          <li><a href="dashboard/#">View Tour</a></li>
+          <li><a href="logout">Log Out</a></li>
         </ul>
       </div>
     </div>
@@ -67,6 +67,9 @@ module.exports = {
     },
     getUserName(){
       return this.$store.getters.userName;
+    },
+    getAccountURL(){
+      return this.$store.getters.userAccountURL;
     }
   },
   created: function() {
@@ -91,18 +94,38 @@ module.exports = {
       }
 
       this.prevScrollPos = currentScrollPos;
-
-      document.getElementById("header_link").focus(function() {
-        document.getElementById("header").style.top = "0";
-      });
     },
-    toggleUsername() {
+    toggleUsername(e) {
       this.activeUsername = !this.activeUsername;
       this.activeFreetrialMsg = false;
+      if (this.activeUsername) {
+        window.addEventListener('click', this.closeDropdowns);
+      };
+      e.stopPropagation();
     },
-    toggleFreetrialMsg() {
+    toggleFreetrialMsg(e) {
       this.activeFreetrialMsg = !this.activeFreetrialMsg
       this.activeUsername = false;
+      if (this.activeFreetrialMsg) {
+        window.addEventListener('click', this.closeDropdowns);
+      };
+      e.stopPropagation();
+    },
+    closeDropdowns(e) {
+      if(!this.$refs.clickAway.contains(e.target)){
+        this.activeUsername = false;
+        this.activeFreetrialMsg = false;
+        window.removeEventListener('click', this.closeDropdowns);
+      }
+    }
+  },
+  directives: {
+    focus: {
+      bind: function(el){
+        el.addEventListener('focus', function(e){
+          e.target.offsetParent.style.top = "0";
+        });
+      }
     }
   }
 }
