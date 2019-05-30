@@ -8,8 +8,7 @@
   %p
     Your new account is almost done! Please activate your account by confirming your email address and setting your password.
 
-  = link_to activate_set_password_user_url(@user.activation_token).html_safe
-    %button Activate your account
+  = link_to "Activate your account", activate_set_password_user_url(@user.activation_token).html_safe, class: "button"
 
   %p
     Go gameful!

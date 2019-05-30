@@ -11,9 +11,8 @@
       #{ @assignment.name }
     in #{ @course.name }.
 
-  %center
-    =link_to "View your results!", assignment_url(@assignment)
-  
+  =link_to "View your results!", assignment_url(@assignment), class: "button"
+
   - if @course.show_grade_predictor?
     %p
       Don’t forget to update your plan for the semester by checking your
