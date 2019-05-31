@@ -52,9 +52,8 @@ class API::AssignmentsController < ApplicationController
         success: false
         }, status: 400
         return
-    end
-
-    if @assignment.update_attributes assignment_params.except(:linked_objective_ids)
+    
+    elsif @assignment.update_attributes assignment_params.except(:linked_objective_ids)
       updated_grades
       if !validate_rubric_criteria(@assignment.rubric, @assignment.full_points)
         render json: {

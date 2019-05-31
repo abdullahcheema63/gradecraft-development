@@ -147,6 +147,8 @@
           GradeCraftAPI.logResponse(response)
         ,(response) ->
           GradeCraftAPI.logResponse(response)
+          if response.data.errors == "invalid assignment total points"
+            alert(response.data.message)
       )
 
   queueUpdateAssignment = (id)->
