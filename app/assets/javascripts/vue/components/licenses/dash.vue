@@ -93,6 +93,9 @@ module.exports = {
     stripePk: String,
   },
   computed: {
+    licensedCourses(){
+      return this.$store.state.allLicenses[0].courses
+    },
     hasLicense: function() {
       return !!this.license;
     },
@@ -112,9 +115,13 @@ module.exports = {
         throw resp;
       }
       const json = await resp.json();
+      console.log("json variable from api response from dash-vue component")
       console.log(json);
       data.courses = coursesFromResponse(json);
+
       const final = apiResponseToData(json);
+      console.log("final variable from api response from dash-vue component")
+      console.log(final)
       return final;
     },
     toggleRenew: function() {
@@ -131,6 +138,7 @@ module.exports = {
   },
   created: async function() {
     data.license = await this.getLicense();
+    this.$store.dispatch("getAllLicenses");
   },
 }
 ```

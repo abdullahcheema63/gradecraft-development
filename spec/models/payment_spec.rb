@@ -1,7 +1,7 @@
 describe Payment do
   let(:payment_stripe) { create :payment_stripe }
   let(:payment_legacy) { create :payment_legacy }
-  
+
   describe "set_defaults" do
     it "sets source to Stripe if stripe_token" do
       expect(payment_stripe.source).to eq("Stripe")

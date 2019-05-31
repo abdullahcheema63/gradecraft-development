@@ -2,6 +2,7 @@ json.type "licenses"
 json.id license.id.to_s
 
 json.attributes do
+  json.id license.id
   json.is_expired license.is_expired?
   json.expires license.expires
   json.license_type_id license.license_type_id.to_s

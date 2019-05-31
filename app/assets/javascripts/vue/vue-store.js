@@ -44,13 +44,17 @@ const loadMany = function(modelArray, response, options, filter) {
   };
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "licenses", "license_types"] });
+
+const apiResponseToDataDataItem = (responseJson) =>
+  dataItem(responseJson.data, responseJson, { include: ["courses", "payments"] });
 
 const store = new Vuex.Store({
   state: {
     allUsers: [],
     allCourses: [],
     allInstructors: [],
+    allLicenses: [],
     user: {
       id: null,
       firstName: "",
@@ -224,7 +228,6 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        //console.log(json);
         const final = apiResponseToData(json);
         //console.log(final);
         if (store.state.user.admin){
@@ -263,6 +266,22 @@ const store = new Vuex.Store({
         const final = apiResponseToData(json);
         //console.log(final);
         commit('addAllInstructors', final)
+      },
+      getAllLicenses: async function({ commit}){
+        console.log("getAllLicenses action dispatched")
+        const resp = await fetch("/api/licenses");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log("json: and json.data (response.data) from vue store");
+        console.log(json);
+        const final = apiResponseToDataDataItem(json);
+        console.log(final);
+        commit('addAllLicenses', final)
       },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
@@ -388,6 +407,10 @@ const store = new Vuex.Store({
             }))
           }
         })
+      },
+      addAllLicenses (state, licenseObj){
+        console.log("inside addAllLicenses mutation")
+        state.allLicenses.push(licenseObj)
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)
