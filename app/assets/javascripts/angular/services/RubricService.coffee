@@ -104,10 +104,22 @@
         GradeCraftAPI.logResponse(response)
     )
 
+  getLevelsForCriterion = (criterion)->
+    criterion_levels = []
+
+    for level in criterion.relationships.levels.data
+      criterion_levels.push((levels.filter (level_element) -> parseInt(level_element.id) == parseInt(level.id))[0] )
+
+    return criterion_levels
+
   queueUpdateCriterion = (criterion)->
     DebounceQueue.addEvent(
       "criteria", criterion.id, _updateCriterion, [criterion]
     )
+
+    for level in getLevelsForCriterion(criterion)
+      console.log(level)
+      queueUpdateLevel(level)
 
   updateCriterionOrder = (start, end)->
     criteria.splice( end, 0, criteria.splice(start, 1)[0])
@@ -165,10 +177,14 @@
   _updateLevel = (level)->
     $http.put("/api/levels/#{level.id}", level).then(
       (response)-> # success
-        angular.copy(response.data.data.attributes, level)
-        GradeCraftAPI.logResponse(response)
+        # for element_level in levels
+        #   if element_level.id == level.id
+        #     angular.copy(response.data.data.attributes, element_level)
+        angular.copy(response.data.data.attributes, element_level)
+     
       ,(response)-> # error
         GradeCraftAPI.logResponse(response)
+        console.log("Could not update level")
     )
 
   queueUpdateLevel = (level)->

@@ -45,15 +45,24 @@ class API::AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
     create_or_update_learning_objective_links
 
+    if @assignment.full_points > assignment_params["full_points"] && !validate_rubric_criteria(@assignment.rubric, assignment_params["full_points"])
+      render json: {
+        message: "The total points for the assignment are currently less than the total points for the rubric criteria. Decrease the points assigned for the rubric criterion or increase the total points for the assignment.",
+        errors: "invalid assignment total points",
+        success: false
+        }, status: 400
+        return
+    end
+
     if @assignment.update_attributes assignment_params.except(:linked_objective_ids)
-      if !validate_rubric_criteria(@assignment)
+      updated_grades
+      if !validate_rubric_criteria(@assignment.rubric, @assignment.full_points)
         render json: {
-          message: "Rubric criteria points are currently less than the total points for the assignment. Add a new rubric criterion with the missing points or increase the points for one of the existing criteria",
+          message: "Rubric criteria points are currently do not match the total points for the assignment. Add a new rubric criterion with the missing points or increase the points for one of the existing criteria",
           errors: "invalid rubric criterion",
           success: false
           }, status: 400
       else
-        updated_grades
         render "api/assignments/show", success: true, status: 200
       end
     else
@@ -65,11 +74,7 @@ class API::AssignmentsController < ApplicationController
     end
   end
 
-  def validate_rubric_criteria(assignment)
-    rubric = assignment.rubric
-
-    assignment_full_points = assignment.full_points
-
+  def validate_rubric_criteria(rubric, assignment_full_points)
     total_rubric_criteria_points = 0
 
     rubric.criteria.each do |rubric_criterion|

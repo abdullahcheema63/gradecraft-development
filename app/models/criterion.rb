@@ -59,6 +59,11 @@ class Criterion < ApplicationRecord
     self.criterion_grades.where(student_id: student_id).first.try(:comments)
   end
 
+  def update_full_credit
+    find_and_set_full_credit_level unless full_credit_level
+    full_credit_level.update_attributes points: max_points
+  end
+
   protected
 
   def add_default_levels?
@@ -73,11 +78,6 @@ class Criterion < ApplicationRecord
     @full_credit_level = create_full_credit_level
     create_no_credit_level
     # update_attributes full_credit_level_id: @full_credit_level[:id]
-  end
-
-  def update_full_credit
-    find_and_set_full_credit_level unless full_credit_level
-    full_credit_level.update_attributes points: max_points
   end
 
   def find_and_set_full_credit_level

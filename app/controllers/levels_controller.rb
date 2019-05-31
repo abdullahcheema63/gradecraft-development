@@ -16,8 +16,10 @@ class LevelsController < ApplicationController
   end
 
   def update
-    @level.update_attributes level_params
-    respond_with @level, layout: false
+    if level_params["points"] <= @level.criterion.max_points && level_params["points"] >= 0
+      @level.update_attributes level_params
+      respond_with @level, layout: false
+    end
   end
 
   private

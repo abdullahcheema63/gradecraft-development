@@ -58,6 +58,8 @@ class API::CriteriaController < ApplicationController
 
     if total_rubric_criteria_points <= assignment_full_points
       @criterion.update_attributes(criterion_params)
+      puts @criterion.inspect
+      @criterion.update_full_credit
       render "api/criteria/show", status: 200
       return
     end
