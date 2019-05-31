@@ -94,7 +94,7 @@ module.exports = {
   },
   computed: {
     licensedCourses(){
-      return this.$store.state.allLicenses[0].courses
+      return this.$store.state.userLicense[0].courses
     },
     hasLicense: function() {
       return !!this.license;
@@ -138,7 +138,7 @@ module.exports = {
   },
   created: async function() {
     data.license = await this.getLicense();
-    this.$store.dispatch("getAllLicenses");
+    this.$store.dispatch("getUserLicense");
   },
 }
 ```

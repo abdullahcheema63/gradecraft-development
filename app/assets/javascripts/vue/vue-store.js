@@ -54,7 +54,7 @@ const store = new Vuex.Store({
     allUsers: [],
     allCourses: [],
     allInstructors: [],
-    allLicenses: [],
+    userLicense: [],
     user: {
       id: null,
       firstName: "",
@@ -267,7 +267,7 @@ const store = new Vuex.Store({
         //console.log(final);
         commit('addAllInstructors', final)
       },
-      getAllLicenses: async function({ commit}){
+      getUserLicense: async function({ commit}){
         console.log("getAllLicenses action dispatched")
         const resp = await fetch("/api/licenses");
         if (resp.status === 404){
@@ -281,7 +281,7 @@ const store = new Vuex.Store({
         console.log(json);
         const final = apiResponseToDataDataItem(json);
         console.log(final);
-        commit('addAllLicenses', final)
+        commit('addUserLicense', final)
       },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
@@ -408,9 +408,8 @@ const store = new Vuex.Store({
           }
         })
       },
-      addAllLicenses (state, licenseObj){
-        console.log("inside addAllLicenses mutation")
-        state.allLicenses.push(licenseObj)
+      addUserLicense (state, licenseObj){
+        state.userLicense.push(licenseObj)
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)
