@@ -16,7 +16,7 @@
     <div class="content_block">
       <h2 class="unspace-top">Current Courses</h2>
       <div class="course_box" v-if="currentCourses.length">
-        <courseCard v-for="course in currentCourses" :course="course" status="published"></courseCard>
+        <courseCard v-for="course in currentCourses" :key="course.id"  :course="course" status="published"></courseCard>
       </div>
       <div class="course_box" v-else>
         <div class="course_card empty">
@@ -28,7 +28,7 @@
     <div class="content_block" v-if="userIsInstructor && unpublishedCourses.length">
       <h2 class="unspace-top">Unpublished Courses</h2>
       <div class="course_box" v-if="unpublishedCourses.length">
-        <courseCard v-for= "course in unpublishedCourses" :course="course" status="unpublished"></courseCard>
+        <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
       </div>
       <div class="course_box" v-else>
         <div class="course_card empty">
@@ -63,7 +63,7 @@
         </div>
       </div>
       <div class="course_box">
-        <courseCard v-for="course in filteredPastCourses" :course="course" status="past"></courseCard>
+        <courseCard v-for="course in filteredPastCourses" :key="course.id" :course="course" status="past"></courseCard>
       </div>
     </div>
 
@@ -176,7 +176,7 @@
                 </div>
                 <div v-else-if="formResponse[0]==='Convert a trial course' && userHasPaid">
                   <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
-                  <div class="form_options" v-for="course in unLicensedCourses">
+                  <div class="form_options" v-for="course in unLicensedCourses" :key="course.id" >
                     <input type="radio" :id="'convert-license-' + course.id" v-model="courseToLicense" :value="course.id">
                     <label :for="'convert-license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                   </div>
@@ -210,7 +210,7 @@
               <h2>Request a copy of an existing course</h2>
               <p>Which existing course would you like to copy?</p>
               <form>
-                <div class="form_options" v-for="course in currentAndPastCourses">
+                <div class="form_options" v-for="course in currentAndPastCourses" :key="course.id" >
                   <input type="radio" :id="'copy-' + course.id" v-model="copyRequest.course" :value="course.id"></input>
                   <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                 </div>
