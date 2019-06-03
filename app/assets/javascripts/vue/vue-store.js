@@ -451,62 +451,11 @@ const store = new Vuex.Store({
       userAccountURL: state => {
         return state.user.account_url
       },
-      userFirstName: state => {
-        return state.user.firstName
-      },
       userOnboardingStatus: state => {
         return state.user.hasSeenCourseOnboarding
       },
       userGuideStatus: state => {
         return state.user.showGuide;
-      },
-      userHasPaid: state => {
-        return state.user.hasPaid;
-      },
-      currentCourseMembership: state => {
-        return state.user.courseMembership.filter( membership => {
-            var today = new Date();
-            var start = new Date(membership.term.start);
-            var end = new Date(membership.term.end);
-
-            if (today < start)
-              {return false;}
-            if (today > end)
-              {return false;}
-
-            return membership.published
-        })
-      },
-      pastCourseMembership: state => {
-        return state.user.courseMembership.filter( membership => {
-          var today = new Date();
-          var end = new Date(membership.term.end);
-
-          if(today < end)
-            {return false;}
-
-          return membership.published
-        })
-      },
-      unpublishedCourseMembership: state => {
-        return state.user.courseMembership.filter( membership => {
-          if(membership.published)
-            {return false;}
-          return membership
-        })
-      },
-      unLicensedCourseMembership: state => {
-        return state.user.courseMembership.filter( membership =>{
-          if(membership.licensed)
-            {return false;}
-          return membership
-        })
-      },
-      userIsInstructor: state => {
-        var courseRoles = state.user.courseMembership.map( course =>{
-          return course.role
-        });
-        return courseRoles.includes('Instructor')
       }
     }
 })

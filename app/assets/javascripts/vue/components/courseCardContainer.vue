@@ -15,7 +15,7 @@
 
     <div class="content_block">
       <h2 class="unspace-top">Current Courses</h2>
-      <div class="course_box" v-if="currentCourses">
+      <div class="course_box" v-if="currentCourses.length">
         <courseCard v-for="course in currentCourses" :course="course" status="published"></courseCard>
       </div>
       <div class="course_box" v-else>
@@ -25,9 +25,9 @@
       </div>
     </div>
 
-    <div class="content_block" v-if="getUserIsInstructor">
+    <div class="content_block" v-if="userIsInstructor && unpublishedCourses.length">
       <h2 class="unspace-top">Unpublished Courses</h2>
-      <div class="course_box" v-if="unpublishedCourses">
+      <div class="course_box" v-if="unpublishedCourses.length">
         <courseCard v-for= "course in unpublishedCourses" :course="course" status="unpublished"></courseCard>
       </div>
       <div class="course_box" v-else>
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div class="content_block bg-green_mint" v-if="getUserIsInstructor">
+    <div class="content_block bg-green_mint" v-if="userIsInstructor">
       <h2>Add a New Course</h2>
 
       <p v-if="userHasPaid">
@@ -196,7 +196,7 @@
         </template>
       </buttonModal>
 
-      <div v-if="pastCourses || currentCourses || unpublishedCourses">
+      <div v-if="pastCourses.length || currentCourses.length || unpublishedCourses.length">
         <h3>Copy an existing course</h3>
         <p>If you like your setup from a previous course and would like to
           duplicate it instead of starting from scratch, we can also
@@ -294,10 +294,25 @@ module.exports = {
   },
   computed: {
     currentCourses(){
-      return this.$store.getters.currentCourseMembership;
+      return this.$store.state.user.courseMembership.filter( membership => {
+        var today = new Date();
+        var start = new Date(membership.term.start);
+        var end = new Date(membership.term.end);
+
+        if (today < start){return false;}
+        if (today > end){return false;}
+
+        return membership.published
+      });
     },
     pastCourses(){
-      return this.$store.getters.pastCourseMembership;
+      return this.$store.state.user.courseMembership.filter( membership => {
+        var today = new Date();
+        var end = new Date(membership.term.end);
+        if(today < end){return false;}
+
+        return membership.published
+      })
     },
     currentAndPastCourses(){
       var courses = this.currentCourses.concat(this.pastCourses);
@@ -311,15 +326,21 @@ module.exports = {
           return true
       })
     },
-    unpublishedCourses(){
-      return this.$store.getters.unpublishedCourseMembership;
-    },
     allCourses(){
       var courses = this.currentAndPastCourses.concat(this.unpublishedCourses);
       return courses
     },
+    unpublishedCourses(){
+      return this.$store.state.user.courseMembership.filter( membership => {
+        if(membership.licensed){return false;}
+        return membership
+      })
+    },
     unLicensedCourses(){
-      return this.$store.getters.unLicensedCourseMembership;
+      return this.$store.state.user.courseMembership.filter( membership => {
+        if(membership.licensed){return false;}
+        return membership
+      })
     },
     courseTermYear(){
       return this.pastCourses.map(courseMembership => courseMembership.term.year)
@@ -328,16 +349,19 @@ module.exports = {
       return this.pastCourses.map(courseMembership => courseMembership.term.name)
     },
     userHasPaid(){
-      return this.$store.getters.userHasPaid;
+      return this.$store.state.user.hasPaid;
     },
     getUserFirstName(){
-      return this.$store.getters.userFirstName;
+      return this.$store.state.user.firstName;
     },
     getUserOnboardingStatus(){
       return this.$store.getters.userOnboardingStatus;
     },
-    getUserIsInstructor(){
-      return this.$store.getters.userIsInstructor;
+    userIsInstructor(){
+      var courseRoles = this.$store.state.user.courseMembership.map( course => {
+        return course.role
+      })
+      return courseRoles.includes('professor')
     }
   },
   methods: {
