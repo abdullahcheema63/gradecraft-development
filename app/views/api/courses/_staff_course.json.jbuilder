@@ -7,6 +7,8 @@ json.attributes do
   json.role current_user.role(course)
   json.active course.active?
   json.published course.published?
+  json.events_this_week Event.where(course: course).this_week.count
+  json.unread_announcements Announcement.unread_count_for(current_user, course)
 
   json.name course.name
   json.semester course.semester
@@ -20,6 +22,7 @@ json.attributes do
 
   json.course_path course_path course
   json.change_course_path change_course_path course
+  json.grading_status_path grading_status_path
 
   # !! Change these to grading status attributes !!
   json.ungraded Submission.ungraded.where(course: course).count

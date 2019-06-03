@@ -46,11 +46,15 @@ const loadMany = function(modelArray, response, options, filter) {
 const apiResponseToData = (responseJson) =>
   loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff"] });
 
+const apiResponseToDataDataItem = (responseJson) =>
+  dataItem(responseJson.data, responseJson, { include: ["courses", "payments"] });
+
 const store = new Vuex.Store({
   state: {
     allUsers: [],
     allCourses: [],
     allInstructors: [],
+    userLicense: [],
     user: {
       id: null,
       firstName: "",
@@ -227,7 +231,7 @@ const store = new Vuex.Store({
         //console.log(json);
         const final = apiResponseToData(json);
         //console.log(final);
-        if (store.state.user.admin){
+        if (store.state.user.admin === true){
           commit('addAdminCourses', final);
         }
         else {
@@ -264,6 +268,22 @@ const store = new Vuex.Store({
         //console.log(final);
         commit('addAllInstructors', final)
       },
+      getUserLicense: async function({ commit}){
+        console.log("getAllLicenses action dispatched")
+        const resp = await fetch("/api/licenses");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log("json: and json.data (response.data) from vue store");
+        console.log(json);
+        const final = apiResponseToDataDataItem(json);
+        console.log(final);
+        commit('addUserLicense', final)
+      },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
       },
@@ -291,7 +311,7 @@ const store = new Vuex.Store({
             instructor: "Cait Holman",
             url: course.change_course_path,
             gradingStatus: {
-              url: "",
+              url: course.grading_status_path,
               ungraded: course.ungraded,
               ready: course.ready_for_release,
               resubmissions: course.resubmissions
@@ -388,6 +408,9 @@ const store = new Vuex.Store({
             }))
           }
         })
+      },
+      addUserLicense (state, licenseObj){
+        state.userLicense.push(licenseObj)
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)
