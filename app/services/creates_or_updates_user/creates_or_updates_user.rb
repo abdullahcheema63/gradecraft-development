@@ -36,7 +36,6 @@ module Services
 
       def self.find_and_set_user_context(context, email, username)
         user = User.find_by_insensitive_email email
-        user ||= User.find_by_insensitive_username username
         context[:user] = user unless user.nil?
       end
     end
