@@ -16,7 +16,7 @@
     Your group
     %strong
       #{ @group.name }
-    has been #{ @group.approved } in course #{ @course.name }.
+    has been #{ @group.approved.downcase } in course #{ @course.name }.
 
   %p
     Log in to GradeCraft to read your feedback.
