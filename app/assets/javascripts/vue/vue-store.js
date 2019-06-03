@@ -230,7 +230,7 @@ const store = new Vuex.Store({
         const json = await resp.json();
         const final = apiResponseToData(json);
         //console.log(final);
-        if (store.state.user.admin){
+        if (store.state.user.admin === true){
           commit('addAdminCourses', final);
         }
         else {
