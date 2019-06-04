@@ -130,7 +130,6 @@
                     </div>
                     <flat-pickr v-model="newCourseStartDate" :config="config" placeholder="Course Start Date"></flat-pickr>
                     <flat-pickr v-model="newCourseEndDate" :config="config" placeholder="Course End Date"></flat-pickr>
-                    </datePicker>
 
                     <div class="form_elem">
                       <select id="course_semester" v-model="newCourse.term.name">
@@ -257,7 +256,6 @@ module.exports = {
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
     formContainer: () => VComponents.get('vue/components/formContainer'),
-    datePicker: () => VComponents.get('vue/components/datePicker'),
     VueFlatpickr
   },
   data() {
