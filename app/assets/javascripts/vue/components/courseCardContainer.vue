@@ -128,11 +128,8 @@
                       <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
                       <label for="course_name">Course name</label>
                     </div>
-                    <datePicker @update-date="updateStartDate" id="course_start" placeholder="Course start date">
-                      <label for="course_start">Start date</label>
-                    </datePicker>
-                    <datePicker @update-date="updateEndDate" id="course_end" placeholder="Course end date">
-                      <label for="course_end">End date</label>
+                    <flat-pickr v-model="newCourseStartDate" :config="config" placeholder="Course Start Date"></flat-pickr>
+                    <flat-pickr v-model="newCourseEndDate" :config="config" placeholder="Course End Date"></flat-pickr>
                     </datePicker>
 
                     <div class="form_elem">
@@ -261,9 +258,17 @@ module.exports = {
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
     formContainer: () => VComponents.get('vue/components/formContainer'),
     datePicker: () => VComponents.get('vue/components/datePicker'),
+    VueFlatpickr
   },
   data() {
     return {
+      config: {
+        allowInput: true,
+        enableTime: true,
+        dateFormat: "D, M d, Y at H:i K",
+      },
+      newCourseStartDate: null,
+      newCourseEndDate: null,
       termYear: [],
       termName: [],
       formQuestion: ["Create a new course", "Convert a trial course"],

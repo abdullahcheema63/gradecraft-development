@@ -8,6 +8,8 @@
     = stylesheet_link_tag "application", media: "all"
     = render partial: "layouts/favicon"
     = javascript_include_tag "https://cdn.statuspage.io/se-v2.js"
+    %link{:href => "https://cdn.jsdelivr.net/npm/flatpickr@4/dist/flatpickr.min.css", :rel => "stylesheet"}
+    %script{:src => "https://cdn.jsdelivr.net/npm/flatpickr@4/dist/flatpickr.min.js"}
     = yield(:head)
 
   %body.new_style= render partial: "layouts/content"
