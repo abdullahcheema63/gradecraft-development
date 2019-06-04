@@ -2,5 +2,6 @@
 
 
 // The style sheet and html pages for this component are included in script tags within the views/layouts/blank
+// https://flatpickr.js.org/examples/ -- examples / docs 
 
 Vue.component('flat-pickr', VueFlatpickr);

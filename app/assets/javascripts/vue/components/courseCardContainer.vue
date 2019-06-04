@@ -128,8 +128,8 @@
                       <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
                       <label for="course_name">Course name</label>
                     </div>
-                    <flat-pickr v-model="newCourseStartDate" :config="config" placeholder="Course Start Date"></flat-pickr>
-                    <flat-pickr v-model="newCourseEndDate" :config="config" placeholder="Course End Date"></flat-pickr>
+                    <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course Start Date"></flat-pickr>
+                    <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course End Date"></flat-pickr>
 
                     <div class="form_elem">
                       <select id="course_semester" v-model="newCourse.term.name">
@@ -280,8 +280,8 @@ module.exports = {
         term: {
           name: "",
           year: "",
-          start: "",
-          end: ""
+          start: null,
+          end: null
         },
         licensed: false
       },
