@@ -270,6 +270,7 @@ module.exports = {
         allowInput: true,
         enableTime: true,
         dateFormat: "D, M d, Y at H:i K",
+        static: true,
       },
       newCourseStartDate: null,
       newCourseEndDate: null,
