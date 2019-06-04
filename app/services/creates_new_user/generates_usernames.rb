@@ -9,16 +9,7 @@ module Services
         user = context[:user]
 
         if user.username.blank?
-          new_username = username_from_email(user.email) 
-        
-          username_duplicates = User.where(username: new_username).length
-      
-          if username_duplicates > 0
-            changed_username_duplicates = User.where("username ~* ?", new_username.to_s + '_\d+').length
-            new_username += "_#{username_duplicates + changed_username_duplicates}"
-          end
-
-          user.username = new_username
+          user.username = generate_username_from_email(user.email)
         end
         
         if user.internal?
@@ -33,8 +24,17 @@ module Services
         "#{username}@umich.edu"
       end
 
-      def self.username_from_email(email)
-        email.split(/@/).first
+      def self.generate_username_from_email(user_email)
+        new_username = user_email.split(/@/).first
+        
+        username_duplicates = User.where(username: new_username).length
+      
+        if username_duplicates > 0
+          changed_username_duplicates = User.where("username ~* ?", new_username.to_s + '_\d+').length
+          new_username += "_#{username_duplicates + changed_username_duplicates}"
+        end
+
+        return new_username
       end
     end
   end
