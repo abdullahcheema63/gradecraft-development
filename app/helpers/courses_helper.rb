@@ -18,6 +18,11 @@ module CoursesHelper
     roles
   end
 
+  def available_teams(course)
+      teams = course.teams.pluck("name")
+      return teams
+  end
+
   def bust_course_list_cache(user)
     expire_fragment current_courses_cache_key(user)
     expire_fragment archived_courses_cache_key(user)
