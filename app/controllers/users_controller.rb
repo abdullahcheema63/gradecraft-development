@@ -86,7 +86,7 @@ class UsersController < ApplicationController
   end
 
   def add_to_team(course, team_name, role)
-    if !course.has_teams || team_name.nil?
+    if !course.has_teams || team_name.nil? || team_name.length == 0
       return false
     end
 

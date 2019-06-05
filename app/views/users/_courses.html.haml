@@ -14,7 +14,7 @@
     - if current_course.has_teams
       .form-item
         = cm.label :team_in_course, "Select Team"
-        = cm.select :team_in_course, available_teams(current_course)
+        = cm.select :team_in_course, available_teams(current_course), selected: 1, include_blank: true
 
     - if current_course.has_team_roles?
       .form-item
