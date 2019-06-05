@@ -85,19 +85,56 @@ class UsersController < ApplicationController
     @course_membership = @user.course_memberships.where(course: current_course).first
   end
 
+  def add_to_team(course, team_name, role)
+    if !course.has_teams || team_name.nil?
+      return false
+    end
+
+    team = Team.find_by(name: team_name, course_id: course.id)
+
+    if team.nil?
+      return false
+    end
+
+    if role == "student"
+      team.students.push(@user)
+    elsif role == "staff"
+      team.leaders.push(@user)
+    end
+      
+    team.save
+      
+    return true
+  end
+
   def create
     if user_exists
       result = Services::CreatesOrUpdatesUser.call user_params, current_course,
         params[:send_welcome] == "1"
       @user = result[:user]
       if result.success?
+        team_name = user_params["course_memberships_attributes"]["0"]["team_in_course"]
+        
         if @user.is_student?(current_course)
+          student_added_to_team_message = ""
+
+          if add_to_team(current_course, team_name, "student")
+            student_added_to_team_message = "The #{(term_for :student).downcase} #{@user.name} has also been added to the #{(term_for :team).downcase} #{team_name}"
+          end
+
           redirect_to students_path,
-            notice: "#{term_for :student} #{@user.name} was successfully created!" and return
+            notice: "#{term_for :student} #{@user.name} was successfully created!" + " #{student_added_to_team_message}" and return
         elsif @user.is_staff?(current_course)
           Services::SendsResourceEmail.call @user
+          
+          staff_added_to_team_message = ""
+
+          if add_to_team(current_course, team_name, "staff")
+            staff_added_to_team_message = "The staff member #{@user.name} has also been added to the #{(term_for :team).downcase} #{team_name}"
+          end
+
           redirect_to staff_index_path,
-            notice: "Staff Member #{@user.name} was successfully created!" and return
+            notice: "Staff Member #{@user.name} was successfully created!" + " #{staff_added_to_team_message}" and return
         elsif @user.is_observer?(current_course)
           redirect_to observers_path,
             notice: "Observer #{@user.name} was successfully created!" and return
@@ -328,7 +365,7 @@ class UsersController < ApplicationController
       earned_badges_attributes: [:points, :feedback, :student_id, :badge_id,
         :submission_id, :course_id, :assignment_id, :level_id, :criterion_id, :grade_id,
         :student_visible, :id, :_destroy],
-      course_memberships_attributes: [:auditing, :pseudonym, :character_profile, :course_id,
+      course_memberships_attributes: [:auditing, :pseudonym, :character_profile, :team_in_course, :course_id,
         :instructor_of_record, :user_id, :role, :last_login_at, :id, :team_role, :email_announcements,
         :email_badge_awards, :email_grade_notifications, :email_challenge_grade_notifications,
         :email_learning_objective_achieved, :_destroy]
