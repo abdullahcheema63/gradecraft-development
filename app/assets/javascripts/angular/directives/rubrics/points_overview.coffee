@@ -6,6 +6,9 @@
     templateUrl: 'rubrics/points_overview.html'
     link: (scope, el, attr) ->
 
+      scope.noPoints = () ->
+        AssignmentService.assignment().full_points == 0
+
       scope.fullPoints = () ->
         AssignmentService.assignment().full_points || RubricService.fullPoints()
 
@@ -13,15 +16,15 @@
         RubricService.pointsAssigned()
 
       scope.pointsRemaining = () ->
-        RubricService.fullPoints() - RubricService.pointsAssigned()
+        AssignmentService.assignment().full_points && AssignmentService.assignment().full_points - RubricService.pointsAssigned()
 
       scope.pointsAreSatisfied = () ->
-        RubricService.fullPoints() == RubricService.pointsAssigned()
+        AssignmentService.assignment().full_points && AssignmentService.assignment().full_points == RubricService.pointsAssigned()
 
       scope.pointsAreMissing = () ->
-        RubricService.fullPoints() > RubricService.pointsAssigned()
+        AssignmentService.assignment().full_points && AssignmentService.assignment().full_points > RubricService.pointsAssigned()
 
       scope.pointsAreOver = () ->
-        RubricService.fullPoints() < RubricService.pointsAssigned()
+        AssignmentService.assignment().full_points && AssignmentService.assignment().full_points < RubricService.pointsAssigned()
   }
 ]
