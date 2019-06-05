@@ -31,7 +31,7 @@
     margin: 0 40% 10px 10px
 
 
-/* New datepicker __=^o.o^= */
+/* First attemp at new datepicker __=^o.o^= */
 .ui-datepicker
   background-color: $bg-blue_2
   padding: 0
@@ -165,3 +165,108 @@
   .ui_tpicker_hour, .ui_tpicker_minute
     margin: 0
     width: 49%
+
+
+/* New Vue datepicker—hollah at Aditya! __=^o.o^= */
+.flatpickr-wrapper
+  display: block
+
+.flatpickr-calendar
+  font-size: 0.85em
+  box-shadow: none
+  border: 2px solid $blue_dark
+  border-radius: $button-radius
+  width: 312px
+
+  &.arrowTop
+    &:before
+      border-width: 0.85em
+      border-bottom-color: $blue_dark
+    &:after
+      display: none
+
+  &.static
+    top: calc(100% + 1.5em)
+
+    @include tablet
+      left: -2em
+
+.flatpickr-months
+  background: $blue_dark
+  color: white
+  height: auto
+
+  .flatpickr-month
+    height: 2.5em
+    margin: 0.5em 0
+
+  .flatpickr-prev-month, .flatpickr-next-month
+    color: white
+    fill: white
+    padding: 1em 5px 0 5px
+    box-sizing: border-box
+    height: 3.5em
+
+    svg
+      width: 20px
+      height: 20px
+
+    &:hover
+      svg
+        fill: white
+
+.flatpickr-current-month
+  font-size: 1.25em
+  padding: 0
+  height: 100%
+  display: flex
+  justify-content: space-between
+
+  select.flatpickr-monthDropdown-months
+    -webkit-appearance: none
+    appearance: none
+    background: transparent url(asset_path("icon-arrow_select-white.svg")) no-repeat center right
+    background-size: 0.85em auto
+    color: white
+    margin: 0
+    padding: 0
+    height: 100%
+    min-width: 0
+    width: 52%
+
+    &:focus
+      border-bottom: 0px solid transparent
+      background: transparent url(asset_path("icon-arrow_select-white.svg")) no-repeat center right
+      background-size: 0.85em auto
+
+    &:hover
+      background: transparent url(asset_path("icon-arrow_select-white.svg")) no-repeat center right
+      background-size: 0.85em auto
+
+  .numInputWrapper
+    display: block
+    width: 35%
+
+    &:hover
+      background: transparent
+
+    input[type="number"]
+      -webkit-appearance: none
+      appearance: none
+      background: none
+      border: 0
+      line-height: 1em
+      color: white
+
+    span.arrowUp, span.arrowDown
+      opacity: 1
+      border: 0
+
+      &:after
+        border-width: 6px
+        border-color: white
+        border-right-color: transparent
+        border-left-color: transparent
+
+      &:hover
+        background: transparent
