@@ -447,7 +447,7 @@ module.exports = {
   methods: {
     filterNewCourses(allCourses){
       var tenDaysAgo = new Date();
-      tenDaysAgo.setDate(tenDaysAgo.getDate() - 50);
+      tenDaysAgo.setDate(tenDaysAgo.getDate() - 100);
       return allCourses.filter( course => {
         var created = new Date(course.created);
         if( created < tenDaysAgo ){return false}

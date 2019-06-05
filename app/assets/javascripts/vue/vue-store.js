@@ -445,6 +445,9 @@ const store = new Vuex.Store({
       }
     },
     getters: {
+      userFirstName: state => {
+        return state.user.firstName
+      },
       userName: state => {
         return state.user.firstName + ' ' + state.user.lastName
       },
