@@ -12,9 +12,9 @@
 
   %p
     Check out what other #{ @course.learning_objective_term.downcase }" you can earn in #{ @course.name }
-
-  =link_to learning_objectives_objectives_url
-    %button See more #{ @course.learning_objective_term.downcase }
+    
+  %center
+    =link_to "See more #{ @course.learning_objective_term.downcase }", learning_objectives_links_url
 
   %p
     Play on!
