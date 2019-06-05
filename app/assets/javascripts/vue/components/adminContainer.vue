@@ -354,7 +354,6 @@ module.exports = {
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
     tabContainer: () => VComponents.get('vue/components/tabContainer'),
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
-    datePicker: () => VComponents.get('vue/components/datePicker'),
     tableComponent: () => VComponents.get('vue/components/tableComponent'),
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
   },

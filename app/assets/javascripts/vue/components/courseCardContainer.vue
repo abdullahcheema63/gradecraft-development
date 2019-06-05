@@ -15,8 +15,8 @@
 
     <div class="content_block">
       <h2 class="unspace-top">Current Courses</h2>
-      <div class="course_box" v-if="currentCourses">
-        <courseCard v-for="course in currentCourses" :course="course" status="published"></courseCard>
+      <div class="course_box" v-if="currentCourses.length">
+        <courseCard v-for="course in currentCourses" :key="course.id"  :course="course" status="published"></courseCard>
       </div>
       <div class="course_box" v-else>
         <div class="course_card empty">
@@ -25,10 +25,10 @@
       </div>
     </div>
 
-    <div class="content_block" v-if="getUserIsInstructor">
+    <div class="content_block" v-if="userIsInstructor && unpublishedCourses.length">
       <h2 class="unspace-top">Unpublished Courses</h2>
-      <div class="course_box" v-if="unpublishedCourses">
-        <courseCard v-for= "course in unpublishedCourses" :course="course" status="unpublished"></courseCard>
+      <div class="course_box" v-if="unpublishedCourses.length">
+        <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
       </div>
       <div class="course_box" v-else>
         <div class="course_card empty">
@@ -63,11 +63,11 @@
         </div>
       </div>
       <div class="course_box">
-        <courseCard v-for="course in filteredPastCourses" :course="course" status="past"></courseCard>
+        <courseCard v-for="course in filteredPastCourses" :key="course.id" :course="course" status="past"></courseCard>
       </div>
     </div>
 
-    <div class="content_block bg-green_mint" v-if="getUserIsInstructor">
+    <div class="content_block bg-green_mint" v-if="userIsInstructor">
       <h2>Add a New Course</h2>
 
       <p v-if="userHasPaid">
@@ -128,12 +128,14 @@
                       <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
                       <label for="course_name">Course name</label>
                     </div>
-                    <datePicker @update-date="updateStartDate" id="course_start" placeholder="Course start date">
-                      <label for="course_start">Start date</label>
-                    </datePicker>
-                    <datePicker @update-date="updateEndDate" id="course_end" placeholder="Course end date">
-                      <label for="course_end">End date</label>
-                    </datePicker>
+                    <div class="form_elem">
+                      <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar"></flat-pickr>
+                      <label for="course_start">Course start date</label>
+                    </div>
+                    <div class="form_elem">
+                      <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar"></flat-pickr>
+                      <label for="course_end">Course end date</label>
+                    </div>
 
                     <div class="form_elem">
                       <select id="course_semester" v-model="newCourse.term.name">
@@ -176,7 +178,7 @@
                 </div>
                 <div v-else-if="formResponse[0]==='Convert a trial course' && userHasPaid">
                   <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
-                  <div class="form_options" v-for="course in unLicensedCourses">
+                  <div class="form_options" v-for="course in unLicensedCourses" :key="course.id" >
                     <input type="radio" :id="'convert-license-' + course.id" v-model="courseToLicense" :value="course.id">
                     <label :for="'convert-license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                   </div>
@@ -196,7 +198,7 @@
         </template>
       </buttonModal>
 
-      <div v-if="pastCourses || currentCourses || unpublishedCourses">
+      <div v-if="pastCourses.length || currentCourses.length || unpublishedCourses.length">
         <h3>Copy an existing course</h3>
         <p>If you like your setup from a previous course and would like to
           duplicate it instead of starting from scratch, we can also
@@ -210,7 +212,7 @@
               <h2>Request a copy of an existing course</h2>
               <p>Which existing course would you like to copy?</p>
               <form>
-                <div class="form_options" v-for="course in currentAndPastCourses">
+                <div class="form_options" v-for="course in currentAndPastCourses" :key="course.id" >
                   <input type="radio" :id="'copy-' + course.id" v-model="copyRequest.course" :value="course.id"></input>
                   <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                 </div>
@@ -260,10 +262,18 @@ module.exports = {
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
     formContainer: () => VComponents.get('vue/components/formContainer'),
-    datePicker: () => VComponents.get('vue/components/datePicker'),
+    VueFlatpickr
   },
   data() {
     return {
+      config: {
+        allowInput: true,
+        enableTime: true,
+        dateFormat: "D, M d, Y at H:i K",
+        static: true,
+      },
+      newCourseStartDate: null,
+      newCourseEndDate: null,
       termYear: [],
       termName: [],
       formQuestion: ["Create a new course", "Convert a trial course"],
@@ -277,8 +287,8 @@ module.exports = {
         term: {
           name: "",
           year: "",
-          start: "",
-          end: ""
+          start: null,
+          end: null
         },
         licensed: false
       },
@@ -294,10 +304,25 @@ module.exports = {
   },
   computed: {
     currentCourses(){
-      return this.$store.getters.currentCourseMembership;
+      return this.$store.state.user.courseMembership.filter( membership => {
+        var today = new Date();
+        var start = new Date(membership.term.start);
+        var end = new Date(membership.term.end);
+
+        if (today < start){return false;}
+        if (today > end){return false;}
+
+        return membership.published
+      });
     },
     pastCourses(){
-      return this.$store.getters.pastCourseMembership;
+      return this.$store.state.user.courseMembership.filter( membership => {
+        var today = new Date();
+        var end = new Date(membership.term.end);
+        if(today < end){return false;}
+
+        return membership.published
+      })
     },
     currentAndPastCourses(){
       var courses = this.currentCourses.concat(this.pastCourses);
@@ -311,15 +336,21 @@ module.exports = {
           return true
       })
     },
-    unpublishedCourses(){
-      return this.$store.getters.unpublishedCourseMembership;
-    },
     allCourses(){
       var courses = this.currentAndPastCourses.concat(this.unpublishedCourses);
       return courses
     },
+    unpublishedCourses(){
+      return this.$store.state.user.courseMembership.filter( membership => {
+        if(membership.licensed){return false;}
+        return membership
+      })
+    },
     unLicensedCourses(){
-      return this.$store.getters.unLicensedCourseMembership;
+      return this.$store.state.user.courseMembership.filter( membership => {
+        if(membership.licensed){return false;}
+        return membership
+      })
     },
     courseTermYear(){
       return this.pastCourses.map(courseMembership => courseMembership.term.year)
@@ -328,16 +359,19 @@ module.exports = {
       return this.pastCourses.map(courseMembership => courseMembership.term.name)
     },
     userHasPaid(){
-      return this.$store.getters.userHasPaid;
+      return this.$store.state.user.hasPaid;
     },
     getUserFirstName(){
-      return this.$store.getters.userFirstName;
+      return this.$store.state.user.firstName;
     },
     getUserOnboardingStatus(){
       return this.$store.getters.userOnboardingStatus;
     },
-    getUserIsInstructor(){
-      return this.$store.getters.userIsInstructor;
+    userIsInstructor(){
+      var courseRoles = this.$store.state.user.courseMembership.map( course => {
+        return course.role
+      })
+      return courseRoles.includes('professor')
     }
   },
   methods: {
