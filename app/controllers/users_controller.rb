@@ -86,15 +86,13 @@ class UsersController < ApplicationController
   end
 
   def add_to_team(course, team_name, role)
-    if !course.has_teams || team_name.nil? || team_name.length == 0
-      return false
-    end
+    return false if !course.has_teams
+    return false if team_name.nil?
+    return false if team_name.length == 0
 
     team = Team.find_by(name: team_name, course_id: course.id)
 
-    if team.nil?
-      return false
-    end
+    return false if team.nil?
 
     if role == "student"
       team.students.push(@user)
@@ -114,27 +112,24 @@ class UsersController < ApplicationController
       @user = result[:user]
       if result.success?
         team_name = user_params["course_memberships_attributes"]["0"]["team_in_course"]
+        added_to_team_message = ""
         
         if @user.is_student?(current_course)
-          student_added_to_team_message = ""
-
           if add_to_team(current_course, team_name, "student")
-            student_added_to_team_message = "The #{(term_for :student).downcase} #{@user.name} has also been added to the #{(term_for :team).downcase} #{team_name}"
+            added_to_team_message = "The #{(term_for :student).downcase} #{@user.name} has also been added to the #{(term_for :team).downcase} #{team_name}"
           end
 
           redirect_to students_path,
-            notice: "#{term_for :student} #{@user.name} was successfully created!" + " #{student_added_to_team_message}" and return
+            notice: "#{term_for :student} #{@user.name} was successfully created!" + " #{added_to_team_message}" and return
         elsif @user.is_staff?(current_course)
           Services::SendsResourceEmail.call @user
-          
-          staff_added_to_team_message = ""
-
+ 
           if add_to_team(current_course, team_name, "staff")
-            staff_added_to_team_message = "The staff member #{@user.name} has also been added to the #{(term_for :team).downcase} #{team_name}"
+            added_to_team_message = "The staff member #{@user.name} has also been added to the #{(term_for :team).downcase} #{team_name}"
           end
 
           redirect_to staff_index_path,
-            notice: "Staff Member #{@user.name} was successfully created!" + " #{staff_added_to_team_message}" and return
+            notice: "Staff Member #{@user.name} was successfully created!" + " #{added_to_team_message}" and return
         elsif @user.is_observer?(current_course)
           redirect_to observers_path,
             notice: "Observer #{@user.name} was successfully created!" and return
