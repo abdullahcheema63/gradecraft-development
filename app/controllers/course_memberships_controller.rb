@@ -56,10 +56,31 @@ class CourseMembershipsController < ApplicationController
     end
   end
 
+  def remove_leaders_from_teams(course_membership)
+    if !course_membership.user.is_staff?(course_membership.course)
+      return false
+    end
+
+    staff_member = course_membership.user
+
+    course = course_membership.course
+
+    staff_member.team_leaderships_for_course(course).each do |team_leadership|
+      team = team_leadership.team 
+      team.leaders = team.leaders.reject {|member| member["id"] == staff_member.id}
+      team.save
+    end
+
+    return true
+  end
+
   def destroy
     course_membership = current_course.course_memberships.find(params[:id])
-    Services::CancelsCourseMembership.call course_membership
+    
+    remove_leaders_from_teams(course_membership)
 
+    Services::CancelsCourseMembership.call course_membership
+   
     respond_to do |format|
       format.html { redirect_to session[:return_to], notice: "#{course_membership.user.name} was successfully removed from course." }
       format.json { head :ok }
