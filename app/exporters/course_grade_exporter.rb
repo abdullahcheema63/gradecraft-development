@@ -1,7 +1,10 @@
 class CourseGradeExporter
 
   # final grades: total score + grade earned in course
-  def final_grades_for_course(course)
+  def final_grades_for_course(course, start_date, end_date)
+    puts "Start Date: #{start_date}"
+    puts "End Date: #{end_date}"
+    
     CSV.generate do |csv|
       csv.add_row baseline_headers
       course.students.order_by_name.each do |student|

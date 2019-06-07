@@ -3,6 +3,12 @@
 
   .download_type
     %h2 Data Downloads
+    Start Date:
+    %input{:type => "date", :name => "start_date", :class => "start_date_input"}
+    End Date:
+    %input{:type => "date", :name => "end_date", :class => "end_date_input"}
+    %br
+    %br
     %table.dynatable
       %caption.sr-only Course Data Downloads
       %thead
@@ -11,39 +17,39 @@
           %th Contents
       %tbody
         %tr
-          %td= link_to glyph("file-excel-o") + "Final Grades", final_grades_path(id: current_course.id, format: "csv")
+          %td= link_to glyph("file-excel-o") + "Final Grades", final_grades_path(id: current_course.id, format: "csv"), class: "download_link"
           %td First Name, Last Name, Email, Username, Score, Grade, Level, Team, Earned Badge #, GradeCraft ID, Last Logged In, Auditing
         %tr
           %td= link_to glyph("file-excel-o") + "Full Gradebook", gradebook_file_path(id: current_course.id, format: "csv")
           %td First Name, Last Name, Email, Username, #{ term_for :team }, Final grades for all #{ term_for :assignments }
         - if current_course.student_weighted?
           %tr
-            %td= link_to glyph("file-excel-o") + "#{ (term_for :weight).titleize } Gradebook",  multiplied_gradebook_path(id: current_course.id, format: "csv")
+            %td= link_to glyph("file-excel-o") + "#{ (term_for :weight).titleize } Gradebook",  multiplied_gradebook_path(id: current_course.id, format: "csv"), class: "download_link"
             %td First Name, Last Name, Email, Username, #{ term_for :team }, Raw and #{ (term_for :weight).titleize }-weighted grades for all #{ term_for :assignments }
         - if current_course.learning_objectives.present?
           %tr
-            %td= link_to glyph("file-excel-o") + "Learning Objectives Outcomes", learning_objectives_outcomes_file_path(id: current_course.id, format: "csv")
+            %td= link_to glyph("file-excel-o") + "Learning Objectives Outcomes", learning_objectives_outcomes_file_path(id: current_course.id, format: "csv"), class: "download_link"
             %td First Name, Last Name, Email, Username, #{ term_for :team }, Current Outcomes for All #{ term_for :learning_objectives }
         %tr
           %td
-            = link_to glyph("file-excel-o") + "#{(term_for :assignment_type).titleize } Summaries", export_all_scores_assignment_types_path(id: current_course.id, format: "csv")
+            = link_to glyph("file-excel-o") + "#{(term_for :assignment_type).titleize } Summaries", export_all_scores_assignment_types_path(id: current_course.id, format: "csv"), class: "download_link"
           %td First Name, Last Name, Email, Username, #{ term_for :team }, Raw and capped scores for all #{ term_for :assignment_types }
         %tr
-          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Structure", export_structure_assignments_path(id: current_course.id, format: "csv")
+          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Structure", export_structure_assignments_path(id: current_course.id, format: "csv"), class: "download_link"
           %td= (AssignmentExporter::FORMAT + AssignmentExporter::ADDITIONAL_HEADERS).join(", ")
         %tr
-          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Submissions", submissions_path(id: current_course.id, format: "csv")
+          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Submissions", submissions_path(id: current_course.id, format: "csv"), class: "download_link"
           %td= "Submission ID, #{term_for(:assignment_type)}, #{term_for(:assignment)} ID, #{term_for(:assignment)} Name, #{term_for(:student)} Email, #{term_for(:student)} ID, #{term_for(:team)} Name, #{term_for(:group)} Name, #{term_for(:student)} Comment, Created At, Updated At, Score, Graded By, Grader Feedback, Grade Last Updated"
         - if current_course.has_badges?
           %tr
             %td
-              = link_to glyph("file-excel-o") + "Awarded #{current_course.badge_term.pluralize}",  export_earned_badges_path(id: current_course.id, format: "csv")
+              = link_to glyph("file-excel-o") + "Awarded #{current_course.badge_term.pluralize}",  export_earned_badges_path(id: current_course.id, format: "csv"), class: "download_link"
             %td First Name, Last Name, Uniqname, Email, Badge ID, Badge Name, Feedback, Awarded Date
           %tr
-            %td= link_to glyph("file-excel-o") + "#{term_for :badges}", export_structure_badges_path(id: current_course.id, format: "csv")
+            %td= link_to glyph("file-excel-o") + "#{term_for :badges}", export_structure_badges_path(id: current_course.id, format: "csv"), class: "download_link"
             %td Badge ID, Name, Point Total, Description, Times Earned
         %tr
-          %td= link_to glyph("file-excel-o") + "Grading Scheme", export_structure_grade_scheme_elements_path(id: current_course.id, format: "csv")
+          %td= link_to glyph("file-excel-o") + "Grading Scheme", export_structure_grade_scheme_elements_path(id: current_course.id, format: "csv"), class: "download_link"
           %td Level ID, Letter Grade, Level Name, Lowest Points, Highest Points
 
         -#%tr
@@ -51,7 +57,7 @@
         -#  %td Event data including pageviews, predictions, and logins
 
         %tr
-          %td= link_to glyph("file-excel-o") + "Multiplier Choices", export_course_multipliers_path(course_id: current_course, format: "csv")
+          %td= link_to glyph("file-excel-o") + "Multiplier Choices", export_course_multipliers_path(course_id: current_course, format: "csv"), class: "download_link"
           %td First Name, Last Name, Email, Fully Assigned, Unassigned Number, Weightable Assignment Types
 
   - if current_course.assignment_types.present?
@@ -67,6 +73,8 @@
             %tr
               %td= link_to glyph("file-excel-o") + "#{assignment_type.name}", export_scores_assignment_type_path(assignment_type.id, course_id: current_course.id, format: "csv")
 
+  = javascript_include_tag "application", "downloads" => true
+  = yield(:scripts)
 
   = render partial: "downloads/submissions_exports/table",
       locals: { presenter: presenter }

@@ -60,10 +60,19 @@ class InfoController < ApplicationController
   end
 
   def final_grades
+    begin
+      start_date = Date::strptime(params[:start_date], "%Y-%m-%d")
+      end_date = Date::strptime(params[:end_date], "%Y-%m-%d")
+    rescue ArgumentError => _error
+      flash[:error] = "Invalid start and end date provided"
+      redirect_to :back
+      return
+    end
+
     course = current_user.courses.find_by(id: params[:id])
     respond_to do |format|
       format.csv do
-        send_data CourseGradeExporter.new.final_grades_for_course(course),
+        send_data CourseGradeExporter.new.final_grades_for_course(course, start_date, end_date),
         filename: "#{ course.name } Final Grades - #{ Date.today }.csv"
       end
     end
