@@ -7,7 +7,7 @@ class CourseGradeExporter
     
     CSV.generate do |csv|
       csv.add_row baseline_headers
-      course.students.order_by_name.each do |student|
+      course.students.where(:created_at => start_date.beginning_of_day..end_date.end_of_day).order_by_name.each do |student|
         csv.add_row student_data(student, course)
       end
     end
