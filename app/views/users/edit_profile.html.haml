@@ -86,4 +86,4 @@
 
   - if !(Rails.env.production?) && !(@user.is_student?(current_course))
     .content_block.bg-green_mint
-      %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-types": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }
+      %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-type-options": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }

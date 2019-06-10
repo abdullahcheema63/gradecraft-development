@@ -29,7 +29,7 @@
       <template slot="content">
         <div>
           <licenses-renew-form @updated="onUpdated" v-if="hasLicense" :license="this.userLicense" :license-type="licenseType" :stripePk="stripePk" />
-          <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
+          <licenses-buy-form @updated="onUpdated" v-if="hasLicense" :license-type-options="licenseTypeOptions" :stripePk="stripePk" />
         </div>
       </template>
     </buttonModal>
@@ -89,7 +89,7 @@ module.exports = {
   },
   data: function() { return data; },
   props: {
-    licenseTypes: Array,
+    licenseTypeOptions: Array,
     stripePk: String,
   },
   computed: {
@@ -103,8 +103,8 @@ module.exports = {
       return !!this.userLicense;
     },
     licenseType: function() {
-      return (this.license && this.licenseTypes)
-        ? this.licenseTypes.find(lt => lt.id === this.license.license_type_id)
+      return (this.userLicense && this.licenseTypeOptions)
+        ? this.licenseTypeOptions.find(lt => lt.id === this.userLicense.license_type_id)
         : undefined;
     },
   },

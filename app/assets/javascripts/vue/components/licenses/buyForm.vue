@@ -8,7 +8,7 @@
 
     <h3>Choose Your Account License</h3>
     <div class="flex-3 selection_cards">
-      <div class="form_options" v-for="lt of licenseTypes" :key="lt.id">
+      <div class="form_options" v-for="lt of licenseTypeOptions" :key="lt.id">
         <licenses-type-radio-button
           :selected="licenseType"
           :on-selected="() => onLicenseTypeSelected(lt)"
@@ -48,7 +48,7 @@ module.exports = {
   },
   data: function() { return data; },
   props: {
-    licenseTypes: Array,
+    licenseTypeOptions: Array,
     stripePk: String,
   },
   methods: {
