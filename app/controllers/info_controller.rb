@@ -59,20 +59,34 @@ class InfoController < ApplicationController
     end
   end
 
-  def final_grades
+  def get_start_end_dates
+    date_range = {}
+
     begin
-      start_date = Date::strptime(params[:start_date], "%Y-%m-%d")
-      end_date = Date::strptime(params[:end_date], "%Y-%m-%d")
-    rescue ArgumentError => _error
+      date_range[:start_date] = if params.has_key?(:start_date) then Date::strptime(params[:start_date], "%Y-%m-%d") else Date.new(1955, 5, 11) end
+      date_range[:end_date] = if params.has_key?(:end_date) then Date::strptime(params[:end_date], "%Y-%m-%d") else Date.today end
+
+      if date_range[:start_date] > date_range[:end_date]
+        date_range[:start_date] = Date.new(1955, 5, 11)
+      end
+
+      return date_range
+    rescue ArgumentError
       flash[:error] = "Invalid start and end date provided"
       redirect_to :back
       return
     end
+  end
 
+  def final_grades
+    date_range = get_start_end_dates
+
+    field = if params.has_key?(:field) then params[:field] else "created_at" end
+      
     course = current_user.courses.find_by(id: params[:id])
     respond_to do |format|
       format.csv do
-        send_data CourseGradeExporter.new.final_grades_for_course(course, start_date, end_date),
+        send_data CourseGradeExporter.new.final_grades_for_course(course, date_range[:start_date], date_range[:end_date], field),
         filename: "#{ course.name } Final Grades - #{ Date.today }.csv"
       end
     end
@@ -134,8 +148,12 @@ class InfoController < ApplicationController
   end
 
   def submissions
+    date_range = get_start_end_dates
+
+    field = if params.has_key?(:field) then params[:field] else "created_at" end
+      
     course = current_user.courses.find_by(id: params[:id])
-    @submission_export_job = SubmissionExportJob.new(user_id: current_user.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv")
+    @submission_export_job = SubmissionExportJob.new(user_id: current_user.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv", start_date: date_range[:start_date], end_date: date_range[:end_date], field: field)
     @submission_export_job.enqueue
 
     flash[:notice]="Your request to export submissions from course \"#{ course.name }\" is currently being processed. We will email you the data shortly."

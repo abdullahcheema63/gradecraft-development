@@ -1,30 +1,62 @@
 class SubmissionExporter
-  def export(course)
-    CSV.generate do |csv|
-      csv << baseline_headers(course)
-      course.submissions.submitted.find_each(batch_size: 500) do |submission|
-        csv << [
-          submission.id,
-          submission.assignment.assignment_type.name,
-          submission.assignment_id,
-          submission.assignment.name,
-          submission.student&.email,
-          submission.student_id,
-          submission.group&.name,
-          find_team_name(submission),
-          submission.text_comment,
-          submission.created_at,
-          submission.updated_at,
-          submission.grade&.score,
-          find_graded_by_name(submission.grade&.graded_by_id),
-          submission.grade&.feedback,
-          submission.grade&.graded_at
-        ]
+  def export(course, start_date, end_date, field)
+    start_date = Date.strptime(start_date, "%Y-%m-%d")
+    end_date = Date.strptime(end_date, "%Y-%m-%d")
+
+    puts "Start Date: #{start_date.inspect}"
+    puts "End Date: #{end_date}"
+    puts "Field: #{field}"
+
+    if confirm_model_has_field(course.submissions.submitted, field)
+      CSV.generate do |csv|
+        csv << baseline_headers(course)
+
+        if field == "graded_at"
+          query = course.submissions.submitted.includes(:grade).where("grades.graded_at" => start_date.beginning_of_day..end_date.end_of_day).references(:grade)
+        else
+          query = course.submissions.submitted.where(field => start_date.beginning_of_day..end_date.end_of_day)
+        end
+
+        query.find_each(batch_size: 500) do |submission|
+          csv << [
+            submission.id,
+            submission.assignment.assignment_type.name,
+            submission.assignment_id,
+            submission.assignment.name,
+            submission.student&.email,
+            submission.student_id,
+            submission.group&.name,
+            find_team_name(submission),
+            submission.text_comment,
+            submission.created_at,
+            submission.updated_at,
+            submission.grade&.score,
+            find_graded_by_name(submission.grade&.graded_by_id),
+            submission.grade&.feedback,
+            submission.grade&.graded_at
+          ]
+        end
       end
     end
   end
 
   private
+
+  def confirm_model_has_field(model, field)
+    if field == "graded_at"
+      return true
+    end
+
+    model.columns.each do |column|
+      if column.name == field
+        puts "Model has field #{column.name}"
+        return true
+      end
+    end 
+
+    puts "Model does not have field #{field}"
+    return false
+  end
 
   def baseline_headers(course)
     [
