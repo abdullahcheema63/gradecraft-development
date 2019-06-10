@@ -54,7 +54,7 @@ const store = new Vuex.Store({
     allUsers: [],
     allCourses: [],
     allInstructors: [],
-    userLicense: [],
+    userLicense: null,
     user: {
       id: null,
       firstName: "",
@@ -409,7 +409,7 @@ const store = new Vuex.Store({
         })
       },
       addUserLicense (state, licenseObj){
-        state.userLicense.push(licenseObj)
+        state.userLicense = licenseObj
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)

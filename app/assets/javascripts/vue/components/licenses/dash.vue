@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Account Status</h2>
-    <licenses-details v-if="hasLicense" :license="license"/>
+    <licenses-details v-if="hasLicense" :license="this.userLicense"/>
     <div v-else>
       <p>
         Your
@@ -28,7 +28,7 @@
 
       <template slot="content">
         <div>
-          <licenses-renew-form @updated="onUpdated" v-if="hasLicense" :license="license" :license-type="licenseType" :stripePk="stripePk" />
+          <licenses-renew-form @updated="onUpdated" v-if="hasLicense" :license="this.userLicense" :license-type="licenseType" :stripePk="stripePk" />
           <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-types="licenseTypes" :stripePk="stripePk" />
         </div>
       </template>
@@ -43,7 +43,7 @@
       <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!
     </p>
 
-    <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="license" :courses="courses" />
+    <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="this.userLicense" :courses="courses" />
   </div>
 </template>
 
@@ -93,11 +93,14 @@ module.exports = {
     stripePk: String,
   },
   computed: {
+    userLicense(){
+      return this.$store.state.userLicense
+    },
     licensedCourses(){
-      return this.$store.state.userLicense[0].courses
+      return this.$store.state.userLicense.courses
     },
     hasLicense: function() {
-      return !!this.license;
+      return !!this.userLicense;
     },
     licenseType: function() {
       return (this.license && this.licenseTypes)
