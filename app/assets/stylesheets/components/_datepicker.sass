@@ -1,71 +1,22 @@
 @import "../utilities/variables"
+@import "../utilities/mixins"
+
 
 #ui-datepicker-div.ui-datepicker
  z-index: 100 !important
 
-.ui-datepicker.ui-widget-content
-	margin-top: .15rem !important
-	background: $color-blue-4
+// Override for important z-index; need to phase out this Important BS
+.new_style
+  #ui-datepicker-div.ui-datepicker
+    z-index: 120 !important
 
-.ui-datepicker
-	.ui-datepicker-prev, .ui-datepicker-next
-		border: 1px solid $color-grey-5
-		top: 1px
 
-	.ui-datepicker-prev .ui-icon, .ui-datepicker-next .ui-icon
-		background-image: image-url('ui-icons_454545_256x240.png')
-
-	.ui-datepicker-prev
-		left: 2px
-
-	.ui-datepicker-next
-		right: 2px
-
-	button.ui-datepicker-current
-		opacity: 1
-		font-weight: 700
-
-	.ui-state-default
-		background: $color-grey-7
-
-	.ui-state-active
-		border: 1px solid $color-blue-3
-		background: $color-blue-3
-		color: $color-white
-
-	table tr:nth-child(even)
-		background-color: inherit
-
-	table tr
-		border-bottom: none
-
-.ui-timepicker-div
-  .ui-widget-header
-    margin-bottom: 8px
-
-  dl
-    text-align: left
-
-  dl dt
-    float: left
-    clear:left
-    padding: 0 0 0 5px
-
-  dl dd
-    margin: 0 10px 10px 40%
-
-  td
-    font-size: 90%
-
-  .ui_tpicker_unit_hide
-    display: none
-
+// Old timepicker styling (may need to refactor?)
 .ui-tpicker-grid-label
   background: none
   border: none
   margin: 0
   padding: 0
-
 .ui-timepicker-rtl
   direction: rtl
 
@@ -79,31 +30,324 @@
   dl dd
     margin: 0 40% 10px 10px
 
-/* Shortened version style */
-.ui-timepicker-div.ui-timepicker-oneLine
-  padding-right: 2px
+
+/* First attemp at new datepicker __=^o.o^= */
+.ui-datepicker
+  background-color: $bg-blue_2
+  padding: 0
+  margin-top: 20px
+
+  &.ui-widget-content
+    border: 2px solid $blue_dark
+
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    top: 0
+    left: 30px
+    transform: translateY(-100%)
+    width: 0
+    height: 0
+    border-left: 12px solid transparent
+    border-right: 12px solid transparent
+    border-bottom: 10px solid $blue_dark
+
+  table
+    margin: 0
+
+  tr
+    border-bottom: none
+
+  td
+    padding: 0
+
+    a
+      &.ui-state-default
+        background: white
+        color: $blue-medium_1
+        padding: 10px
+        text-align: center
+        border: 0px solid white
+      &.ui-state-highlight
+        background: $bg-blue_2
+
+      &.ui-state-hover
+        background: $blue
+        color: white
+
+      &.ui-state-active
+        background: $blue_dark
+        color: white
+
+  .ui-datepicker-buttonpane
+    margin: 0
+    display: flex
+    justify-content: space-between
+
+    button
+      padding: 0.6em 1em
+      opacity: 1
+      float: none !important
+      width: 49%
+
+      &:first-child
+        background: white
+        color: $blue-medium_1
+        border: 2px solid $blue-medium_2
+
+        &:hover
+          color: $blue_dark
+
+      &:last-child
+        background: $pink_1
+        color: white
+        border: 2px solid $pink_2
+
+        &:hover
+          background: $pink_2
+
+  select.ui-timepicker-select
+    background: $blue-medium_1
+    color: white
+    border: 2px solid $blue-medium_2
+    width: 100%
+    min-width: unset
+    display: inline-block
+
+    &:hover
+      background: $blue-medium_2
+
+.ui-datepicker-header
+  background: $blue_dark
+  color: white
+  font-family: 'KlinicSlab_medium', serif
+  font-size: 1em
+  letter-spacing: 0.05em
+
+  .ui-state-hover, .ui-state-focus
+    background: $blue_dark !important
+    border: 1px solid $blue_dark !important
+
+  .ui-datepicker-next-hover
+    right: 0
+
+  .ui-datepicker-prev-hover
+    left: 0
+
+  a
+    border-bottom: 0px solid transparent
+
+  .ui-datepicker-prev, .ui-datepicker-next
+    .ui-icon
+      background-image: url(asset_path("icon-arrow_next.svg"))
+      background-position: center center
+      background-size: contain
+      width: 1em
+      height: 1em
+
+  .ui-datepicker-prev
+    transform: rotate(180deg)
+
+.ui-timepicker-div
+  padding: 0.5em 0
 
   .ui_tpicker_time, dt
     display: none
-
-  .ui_tpicker_time_label
-    display: block
-    padding-top: 2px
-
-  dl
-    text-align: right
-
-  dl dd, dl dd > div
-    display: inline-block
-    margin: 0
-
-  dl dd.ui_tpicker_minute:before, dl dd.ui_tpicker_second:before
-    content: ':'
-    display: inline-block
-
-  dl dd.ui_tpicker_millisec:before, dl dd.ui_tpicker_microsec:before
-    content: '.'
-    display: inline-block
-
   .ui_tpicker_unit_hide, .ui_tpicker_unit_hide:before
     display: none
+
+  dl
+    display: flex
+    justify-content: space-between
+    margin: 0 0.5em
+
+  .ui_tpicker_hour, .ui_tpicker_minute
+    margin: 0
+    width: 49%
+
+
+/* New Vue datepicker—hollah at Aditya! __=^o.o^= */
+.flatpickr-wrapper
+  display: block
+
+.flatpickr-calendar
+  font-size: 0.85em
+  box-shadow: none
+  border: 2px solid $blue_dark
+  border-radius: $button-radius
+  width: 312px
+
+  &.arrowTop
+    &:before
+      border-width: 0.85em
+      border-bottom-color: $blue_dark
+    &:after
+      display: none
+
+  &.static
+    top: calc(100% + 1.5em)
+
+    @include tablet
+      left: -2em
+
+  &.showTimeInput.hasTime
+    .flatpickr-time
+      border-top: 2px solid $grey_1
+
+.flatpickr-months
+  background: $blue_dark
+  color: white
+  height: auto
+
+  .flatpickr-month
+    height: 2.5em
+    margin: 0.5em 0
+
+  .flatpickr-prev-month, .flatpickr-next-month
+    color: white
+    fill: white
+    padding: 1em 5px 0 5px
+    box-sizing: border-box
+    height: 3.5em
+
+    svg
+      width: 20px
+      height: 20px
+
+    &:hover
+      svg
+        fill: white
+
+.flatpickr-current-month
+  font-size: 1.25em
+  padding: 0
+  height: 100%
+  display: flex
+  justify-content: space-between
+
+  select.flatpickr-monthDropdown-months
+    -webkit-appearance: none
+    appearance: none
+    background: transparent url(asset_path("icon-arrow_select-white.svg")) no-repeat center right
+    background-size: 0.85em auto
+    color: white
+    margin: 0
+    padding: 0
+    height: 100%
+    min-width: 0
+    width: 52%
+
+    &:focus
+      border-bottom: 0px solid transparent
+      background: transparent url(asset_path("icon-arrow_select-white.svg")) no-repeat center right
+      background-size: 0.85em auto
+
+    &:hover
+      background: transparent url(asset_path("icon-arrow_select-white.svg")) no-repeat center right
+      background-size: 0.85em auto
+
+  .numInputWrapper
+    display: block
+    width: 35%
+
+    &:hover
+      background: transparent
+
+    input[type="number"]
+      -webkit-appearance: none
+      appearance: none
+      background: none
+      border: 0
+      line-height: 1em
+      color: white
+
+    span.arrowUp, span.arrowDown
+      opacity: 1
+      border: 0
+
+      &:after
+        border-width: 6px
+        border-color: white
+        border-right-color: transparent
+        border-left-color: transparent
+
+      &:hover
+        background: transparent
+
+span.flatpickr-weekday
+  font-size: inherit
+  color: $grey_3
+
+.flatpickr-day
+  color: $blue-medium_1
+  font-family: 'ProximaNova_regular', sans-serif
+  font-size: initial
+  border: 0
+
+  &:hover
+    background: $bg-blue_2
+
+  &.today
+    background: $grey-faint
+
+    &:hover
+      background: $bg-blue_2
+      color: $blue-medium_1
+
+  &.prevMonthDay, &.nextMonthDay
+    color: $blue
+
+    &:hover
+      background: $bg-blue_2
+
+  &.selected
+    background: $blue_dark
+
+    &:hover
+      background: $blue_dark
+      color: white
+
+    &.prevMonthDay, &.nextMonthDay
+      background: $blue_dark
+
+.flatpickr-time
+  border-top: 2px solid $grey_1
+  height: 50px
+  font-size: 1.25em
+  display: flex
+  justify-content: space-between
+
+  .flatpickr-am-pm
+    height: 35px
+    color: $blue_dark
+    
+    &:hover
+      background: none
+
+  .numInputWrapper
+    float: none
+    flex: none
+    width: 35%
+    height: 35px
+    margin-top: 2px
+
+    &:hover
+      background: transparent
+
+    input[type="number"]
+      border-bottom: 0
+      background: none
+
+    span.arrowUp, span.arrowDown
+      opacity: 1
+      border: 0
+
+      &:after
+        border-width: 6px
+        border-color: $blue_dark
+        border-right-color: transparent
+        border-left-color: transparent
+
+      &:hover
+        background: transparent

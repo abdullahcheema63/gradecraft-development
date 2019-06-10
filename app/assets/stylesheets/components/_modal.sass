@@ -1,0 +1,99 @@
+@import "../utilities/variables"
+@import "../utilities/mixins"
+
+/* MODAL styling */
+.overlay
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  background: rgba(255,255,255,0.9)
+
+  &.is-closed
+    opacity: 0
+    z-index: -100
+    transition: all linear 0.4s
+
+  &.is-open
+    z-index: 110
+    opacity: 1
+    transition: all linear 0.2s
+
+.modal
+  position: fixed
+  top: 2vh
+  left: 50%
+  transform: translate(-50%, 0)
+  box-shadow: 0 1px 10px rgba(0,0,0,0.3)
+  background-color: white
+  max-width: 1100px
+  width: 92%
+
+  &.is-closed
+    opacity: 0
+    z-index: -100
+    transition: all linear 0.2s
+
+  &.is-open
+    z-index: 120
+    opacity: 1
+    transition: all linear 0.2s
+
+  &.getting_started
+    #alert
+      display: none
+
+    .modal_content
+      background: white url(asset_path("bg-getting_started.svg")) no-repeat top 1em right 1em
+      background-size: 40% auto
+
+      @media (max-width: $media-800)
+        background: white
+
+  .accordion
+    margin: 1em -1.5em
+
+    h3
+      padding: 1em 0 1em 3em
+      span
+        left: 1em
+
+.modal_heading
+  background-color: $blue_dark
+  color: white
+  text-transform: uppercase
+  font-family: 'KlinicSlab_medium', serif
+  -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased
+  padding: 0.5em 2.5em 0.5em 1.25em
+  margin: 0
+  position: relative
+
+  .close
+    position: absolute
+    right: 0
+    top: 0
+    display: block
+    width: 2.1em
+    height: 100%
+    background: $blue-medium_1 url(asset_path("icon-close.svg")) no-repeat center center
+    background-size: 60% auto
+    cursor: pointer
+
+.modal_content
+  padding: 0 1.5em 2.5em 1.5em
+  max-height: 80vh
+  overflow-y: scroll
+
+  button:last-child
+    margin: 1.5em 1em 0 0
+
+/* When the modal is open, prevent scrolling on content behind it */
+.wrapper
+  &.freeze
+    position: fixed
+    overflow: hidden
+    width: 100vw
+    left: 0
+    right: 0

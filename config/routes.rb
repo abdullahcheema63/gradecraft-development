@@ -269,6 +269,7 @@ Rails.application.routes.draw do
     get :reset_password
     get :health_check
     get :style_guide, constraints: AdminConstraint.new
+    get :overview
   end
 
   # 11. Grade Schemes
@@ -580,8 +581,9 @@ Rails.application.routes.draw do
     end
     get "courses/:id/unlock_conditions", to: "unlock_conditions#for_course"
 
-    resources :users, only: [] do
+    resources :users, only: [:index, :instructors] do
       collection do
+        get :instructors
         resources :importers, only: [], module: :users, param: :provider_id do
           get "/course/:id/users", action: :index, as: :users
         end
