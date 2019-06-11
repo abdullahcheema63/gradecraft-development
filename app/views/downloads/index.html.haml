@@ -40,8 +40,7 @@
               Submission ID, #{term_for(:assignment_type)}, #{term_for(:assignment)} ID, #{term_for(:assignment)} Name, #{term_for(:student)} Email, #{term_for(:student)} ID, #{term_for(:team)} Name, #{term_for(:group)} Name, #{term_for(:student)} Comment, Created At, Updated At, Score, Graded By, Grader Feedback, Grade Last Updated. 
               %br
               %br
-              %em{:style => "padding-bottom: 8px"}
-                Choose your export date range 
+              Choose your export date range 
               %br
               %em
                 Start:
@@ -53,7 +52,7 @@
               Choose which column the date range is applicable to:
               
               %select.for_assignment_submissions{:style => "display: inline-block"}
-                - SubmissionExporter.get_fields_for_export.each do |field|
+                - SubmissionExporter.fields_for_export.each do |field|
                   %option{:value => field} #{present_dropdown_option(field)}
 
         - if current_course.has_badges?

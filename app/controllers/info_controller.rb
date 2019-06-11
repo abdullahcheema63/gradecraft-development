@@ -59,19 +59,6 @@ class InfoController < ApplicationController
     end
   end
 
-  def get_start_end_dates
-    date_range = {}
-
-    date_range[:start_date] = if params.has_key?(:start_date) then Date::strptime(params[:start_date], "%Y-%m-%d") else Date.new(1955, 5, 11) end
-    date_range[:end_date] = if params.has_key?(:end_date) then Date::strptime(params[:end_date], "%Y-%m-%d") else Date.today end
-
-    if date_range[:start_date] > date_range[:end_date]
-      date_range[:start_date] = Date.new(1955, 5, 11)
-    end
-
-    return date_range
-  end
-
   def final_grades
     course = current_user.courses.find_by(id: params[:id])
     respond_to do |format|
@@ -137,12 +124,24 @@ class InfoController < ApplicationController
     @teams = current_course.teams
   end
 
+  def start_end_dates
+    date_range = {}
+
+    date_range[:start_date] = params.key?(:start_date) ? Date.strptime(params[:start_date], "%Y-%m-%d") : Date.new(1955, 5, 11)
+    date_range[:end_date] =  params.key?(:end_date) ? Date.strptime(params[:end_date], "%Y-%m-%d") : Date.today
+
+    if date_range[:start_date] > date_range[:end_date]
+      date_range[:start_date] = Date.new(1955, 5, 11)
+    end
+
+    return date_range
+  end
+
   def submissions
-    date_range = get_start_end_dates
-  
-    field = if params.has_key?(:field) then params[:field] else "created_at" end
-      
+    date_range = start_end_dates
+    field = params.key?(:field) && SubmissionExporter.field_for_export?(params[:field]) ? params[:field] : "created_at"
     course = current_user.courses.find_by(id: params[:id])
+    
     @submission_export_job = SubmissionExportJob.new(user_id: current_user.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv", start_date: date_range[:start_date], end_date: date_range[:end_date], field: field)
     @submission_export_job.enqueue
 
