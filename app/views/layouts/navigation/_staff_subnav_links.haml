@@ -1,62 +1,88 @@
-%h3 Overview
-%li= link_to_unless_current decorative_glyph(:home) + "Dashboard", dashboard_path
-%li
-  - grading_status_count = grading_status_count_for(current_course)
-  = link_to_unless_current decorative_glyph("flag-checkered") + "Grading Status", grading_status_path do |name|
-    = raw("<span class='sidebar-nav'>#{name}</span>")
-  - if grading_status_count > 0
-    %div.notification-badge.staff-notification-badge= grading_status_count
+%section{ class: "navigation_section" } 
+  %h3{ class: "collapsible_navigation_toggle" } 
+    Overview
+    %span{ class: "collapsible_indicator" }
+      = decorative_glyph("angle-down")
+  %navigation-items
+    %li= link_to_unless_current decorative_glyph(:home) + "Dashboard", dashboard_path
+    %li
+      - grading_status_count = grading_status_count_for(current_course)
+      = link_to_unless_current decorative_glyph("flag-checkered") + "Grading Status", grading_status_path do |name|
+        = raw("<span class='sidebar-nav'>#{name}</span>")
+      - if grading_status_count > 0
+        %div.notification-badge.staff-notification-badge= grading_status_count
 
-- if current_course.student_weighted?
-  %li= link_to_unless_current decorative_glyph(:cubes) + "#{term_for :weight} Choices", multiplier_choices_path
+    - if current_course.student_weighted?
+      %li= link_to_unless_current decorative_glyph(:cubes) + "#{term_for :weight} Choices", multiplier_choices_path
 
-- if current_course.has_badges?
-  %li= link_to_unless_current decorative_glyph(:shield) + "Awarded #{current_course.badge_term} Chart", earned_badges_path
+    - if current_course.has_badges?
+      %li= link_to_unless_current decorative_glyph(:shield) + "Awarded #{current_course.badge_term} Chart", earned_badges_path
 
-%li
-  = link_to_unless_current decorative_glyph("file-archive-o") + "Course Data Exports", downloads_path
-%li= link_to_unless_current decorative_glyph("bar-chart") + "Analytics", per_assign_path
-%li= link_to_unless_current decorative_glyph(:bullhorn) + "Announcements", announcements_path
-%li= link_to_unless_current decorative_glyph(:calendar) + "Calendar Events", events_path
+    %li
+      = link_to_unless_current decorative_glyph("file-archive-o") + "Course Data Exports", downloads_path
+    %li= link_to_unless_current decorative_glyph("bar-chart") + "Analytics", per_assign_path
+    %li= link_to_unless_current decorative_glyph(:bullhorn) + "Announcements", announcements_path
+    %li= link_to_unless_current decorative_glyph(:calendar) + "Calendar Events", events_path
 
-%h3 Coursework
-%li= link_to_unless_current decorative_glyph('file-text') + "#{term_for :assignments}", assignments_path
-- if current_course.has_badges?
-  %li= link_to_unless_current decorative_glyph(:shield) + "#{term_for :badges}", badges_path
-- if current_course.has_team_challenges?
-  %li= link_to_unless_current decorative_glyph(:trophy) + "#{term_for :challenges}", challenges_path
-%li= link_to_unless_current decorative_glyph("calendar-check-o") + "Attendance", attendance_index_path
-%li= link_to_unless_current decorative_glyph(:th) + "Gradebook", gradebook_path
+%section{ class: "navigation_section" } 
+  %h3{ class: "collapsible_navigation_toggle" } 
+    Coursework
+    %span{ class: "collapsible_indicator" }
+      = decorative_glyph("angle-down")
+  %navigation-items
+    %li= link_to_unless_current decorative_glyph('file-text') + "#{term_for :assignments}", assignments_path
+    - if current_course.has_badges?
+      %li= link_to_unless_current decorative_glyph(:shield) + "#{term_for :badges}", badges_path
+    - if current_course.has_team_challenges?
+      %li= link_to_unless_current decorative_glyph(:trophy) + "#{term_for :challenges}", challenges_path
+    %li= link_to_unless_current decorative_glyph("calendar-check-o") + "Attendance", attendance_index_path
+    %li= link_to_unless_current decorative_glyph(:th) + "Gradebook", gradebook_path
 
-%h3 Users
-%li= link_to_unless_current decorative_glyph(:user) + "#{term_for :students}", students_path
-- if current_course.has_teams?
-  %li= link_to_unless_current decorative_glyph(:users) + "#{term_for :teams}", teams_path
-%li
-  = link_to_unless_current decorative_glyph("user-plus") + "#{term_for :groups}", groups_path do |name|
-    = raw("<span class='sidebar-nav'>#{name}</span>")
-  - if current_course.groups_to_review_count > 0
-    %div.notification-badge.staff-notification-badge= current_course.groups_to_review_count
-%li= link_to_unless_current decorative_glyph("user-secret") + "Staff", staff_index_path
-%li= link_to_unless_current decorative_glyph("user-o") + "Observers", observers_path
+%section{ class: "navigation_section" } 
+  %h3{ class: "collapsible_navigation_toggle" } 
+    Users
+    %span{ class: "collapsible_indicator" }
+      = decorative_glyph("angle-down")
+  %navigation-items
+    %li= link_to_unless_current decorative_glyph(:user) + "#{term_for :students}", students_path
+    - if current_course.has_teams?
+      %li= link_to_unless_current decorative_glyph(:users) + "#{term_for :teams}", teams_path
+    %li
+      = link_to_unless_current decorative_glyph("user-plus") + "#{term_for :groups}", groups_path do |name|
+        = raw("<span class='sidebar-nav'>#{name}</span>")
+      - if current_course.groups_to_review_count > 0
+        %div.notification-badge.staff-notification-badge= current_course.groups_to_review_count
+    %li= link_to_unless_current decorative_glyph("user-secret") + "Staff", staff_index_path
+    %li= link_to_unless_current decorative_glyph("user-o") + "Observers", observers_path
 
-%h3 Course Setup
-%li= link_to_unless_current decorative_glyph(:cog) + "Course Settings", edit_course_path(current_course)
-- if current_course.uses_learning_objectives?
-  %li= link_to_unless_current decorative_glyph("mortar-board") + "#{term_for(:learning_objective).pluralize}", learning_objectives_objectives_path
-%li= link_to_unless_current decorative_glyph(:check) + "#{ term_for :assignment } Settings", settings_assignments_path
-- if current_course.show_grade_predictor?
-  %li= link_to_unless_current decorative_glyph(:tasks) + "#{ term_for :grade_predictor } Preview", predictor_path
-%li= link_to_unless_current decorative_glyph("level-up") + "Grading Scheme", grade_scheme_elements_path
-%li= link_to_unless_current decorative_glyph(:university) + "My Courses", courses_path
+%section{ class: "navigation_section" } 
+  %h3{ class: "collapsible_navigation_toggle" } 
+    Course Setup
+    %span{ class: "collapsible_indicator" }
+      = decorative_glyph("angle-down")
+      
+  %navigation-items
+    %li= link_to_unless_current decorative_glyph(:cog) + "Course Settings", edit_course_path(current_course)
+    - if current_course.uses_learning_objectives?
+      %li= link_to_unless_current decorative_glyph("mortar-board") + "#{term_for(:learning_objective).pluralize}", learning_objectives_objectives_path
+    %li= link_to_unless_current decorative_glyph(:check) + "#{ term_for :assignment } Settings", settings_assignments_path
+    - if current_course.show_grade_predictor?
+      %li= link_to_unless_current decorative_glyph(:tasks) + "#{ term_for :grade_predictor } Preview", predictor_path
+    %li= link_to_unless_current decorative_glyph("level-up") + "Grading Scheme", grade_scheme_elements_path
+    %li= link_to_unless_current decorative_glyph(:university) + "My Courses", courses_path
 
 - if current_user_is_admin?
   .hide-for-small
-    %h3{ class: "make-lizards" } Admin
-    %li= active_course_link_to decorative_glyph(:plus) + "New Course", new_course_path
-    %li= link_to_unless_current decorative_glyph(:university) + "Manage Courses", overview_courses_path
-    %li= link_to_unless_current decorative_glyph(:trash) + "Delete Course Memberships", course_memberships_path
-    %li= link_to_unless_current decorative_glyph(:building) + "All Institutions", institutions_path
-    %li= link_to_unless_current decorative_glyph("user-times") + "Current Course Users", users_path
-    %li= link_to_unless_current decorative_glyph(:search) + "Search Users", search_users_path
-    %li= link_to_unless_current decorative_glyph(:wrench) + "Tools", admin_tools_path
+    %section{ class: "navigation_section" }
+      %h3{ class: "make-lizards collapsible_navigation_toggle" } 
+        Admin
+        %span{ class: "collapsible_indicator" }
+          = decorative_glyph("angle-down")
+      %navigation-items
+        %li= active_course_link_to decorative_glyph(:plus) + "New Course", new_course_path
+        %li= link_to_unless_current decorative_glyph(:university) + "Manage Courses", overview_courses_path
+        %li= link_to_unless_current decorative_glyph(:trash) + "Delete Course Memberships", course_memberships_path
+        %li= link_to_unless_current decorative_glyph(:building) + "All Institutions", institutions_path
+        %li= link_to_unless_current decorative_glyph("user-times") + "Current Course Users", users_path
+        %li= link_to_unless_current decorative_glyph(:search) + "Search Users", search_users_path
+        %li= link_to_unless_current decorative_glyph(:wrench) + "Tools", admin_tools_path

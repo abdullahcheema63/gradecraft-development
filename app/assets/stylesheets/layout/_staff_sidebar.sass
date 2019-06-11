@@ -150,3 +150,29 @@ ul.nav-pill .has-form
 
 .progress-bar-title
   margin-left: 10%
+
+navigation-items
+  display: block
+  transition: all 0.2s linear
+
+.hidden
+  display: none
+  transition: all 0.2s linear
+
+.collapsible_navigation_toggle
+  cursor: pointer
+  transition: linear all 0.1s
+  padding-top: 5px
+  padding-bottom: 5px
+  &:hover
+    background: #b8d7e4
+    padding-left: 8px;
+
+.collapsible_indicator i
+  float: right
+  margin-top: 3px;
+  transition: all 0.1s linear
+
+.collapsible__indicator_collapsed
+  transform: rotate(90deg) translateX(3px);
+  transition: all 0.1s linear
