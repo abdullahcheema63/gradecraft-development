@@ -72,6 +72,8 @@ class CoursesController < ApplicationController
   end
 
   def create
+    #check how course_params come in through API call  
+
     @course = Course.new(course_params)
     if @course.save
       if !current_user_is_admin?

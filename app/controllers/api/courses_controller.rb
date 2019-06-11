@@ -33,6 +33,9 @@ class API::CoursesController < ApplicationController
     @course = Course.includes(:grade_scheme_elements).find params[:id]
   end
 
+  def create
+  end
+
   # GET api/courses/analytics
   def analytics
     if current_user_is_student?

@@ -468,7 +468,7 @@ Rails.application.routes.draw do
 
     resources :challenges, only: :index
 
-    resources :courses, only: [:index, :show] do
+    resources :courses, only: [:index, :show, :create] do
       resource :copy_log, only: [:show]
       resources :students, only: :index, module: :courses
       collection do
