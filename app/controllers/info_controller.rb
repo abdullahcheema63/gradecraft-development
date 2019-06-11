@@ -62,31 +62,21 @@ class InfoController < ApplicationController
   def get_start_end_dates
     date_range = {}
 
-    begin
-      date_range[:start_date] = if params.has_key?(:start_date) then Date::strptime(params[:start_date], "%Y-%m-%d") else Date.new(1955, 5, 11) end
-      date_range[:end_date] = if params.has_key?(:end_date) then Date::strptime(params[:end_date], "%Y-%m-%d") else Date.today end
+    date_range[:start_date] = if params.has_key?(:start_date) then Date::strptime(params[:start_date], "%Y-%m-%d") else Date.new(1955, 5, 11) end
+    date_range[:end_date] = if params.has_key?(:end_date) then Date::strptime(params[:end_date], "%Y-%m-%d") else Date.today end
 
-      if date_range[:start_date] > date_range[:end_date]
-        date_range[:start_date] = Date.new(1955, 5, 11)
-      end
-
-      return date_range
-    rescue ArgumentError
-      flash[:error] = "Invalid start and end date provided"
-      redirect_to :back
-      return
+    if date_range[:start_date] > date_range[:end_date]
+      date_range[:start_date] = Date.new(1955, 5, 11)
     end
+
+    return date_range
   end
 
   def final_grades
-    date_range = get_start_end_dates
-
-    field = if params.has_key?(:field) then params[:field] else "created_at" end
-      
     course = current_user.courses.find_by(id: params[:id])
     respond_to do |format|
       format.csv do
-        send_data CourseGradeExporter.new.final_grades_for_course(course, date_range[:start_date], date_range[:end_date], field),
+        send_data CourseGradeExporter.new.final_grades_for_course(course),
         filename: "#{ course.name } Final Grades - #{ Date.today }.csv"
       end
     end
@@ -149,7 +139,7 @@ class InfoController < ApplicationController
 
   def submissions
     date_range = get_start_end_dates
-
+  
     field = if params.has_key?(:field) then params[:field] else "created_at" end
       
     course = current_user.courses.find_by(id: params[:id])

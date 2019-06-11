@@ -3,101 +3,78 @@
 
   .download_type
     %h2 Data Downloads
-    Start Date:
-    %input{:type => "date", :name => "start_date", :class => "start_date_input"}
-    End Date:
-    %input{:type => "date", :name => "end_date", :class => "end_date_input"}
-    %br
-    %br
     %table.dynatable
       %caption.sr-only Course Data Downloads
       %thead
         %tr
           %th File Type
           %th Contents
-          %th Date Range Field
       %tbody
         %tr
-          %td= link_to glyph("file-excel-o") + "Final Grades", final_grades_path(id: current_course.id, format: "csv"), class: "download_link"
+          %td= link_to glyph("file-excel-o") + "Final Grades", final_grades_path(id: current_course.id, format: "csv")
           %td First Name, Last Name, Email, Username, Score, Grade, Level, Team, Earned Badge #, GradeCraft ID, Last Logged In, Auditing
-          %td
-            %select.select_field.for_final_grades
-              - get_date_fields("final_grades").each do |field|
-                %option{:value => field.downcase.tr(" ", "_")} #{field}
-
         %tr
           %td= link_to glyph("file-excel-o") + "Full Gradebook", gradebook_file_path(id: current_course.id, format: "csv")
           %td First Name, Last Name, Email, Username, #{ term_for :team }, Final grades for all #{ term_for :assignments }
-          %td
-            %p
-              Date Created
 
         - if current_course.student_weighted?
           %tr
-            %td= link_to glyph("file-excel-o") + "#{ (term_for :weight).titleize } Gradebook",  multiplied_gradebook_path(id: current_course.id, format: "csv"), class: "download_link"
+            %td= link_to glyph("file-excel-o") + "#{ (term_for :weight).titleize } Gradebook",  multiplied_gradebook_path(id: current_course.id, format: "csv")
             %td First Name, Last Name, Email, Username, #{ term_for :team }, Raw and #{ (term_for :weight).titleize }-weighted grades for all #{ term_for :assignments }
-            %td
-              %p
-                Date Created
                   
         - if current_course.learning_objectives.present?
           %tr
-            %td= link_to glyph("file-excel-o") + "Learning Objectives Outcomes", learning_objectives_outcomes_file_path(id: current_course.id, format: "csv"), class: "download_link"
+            %td= link_to glyph("file-excel-o") + "Learning Objectives Outcomes", learning_objectives_outcomes_file_path(id: current_course.id, format: "csv")
             %td First Name, Last Name, Email, Username, #{ term_for :team }, Current Outcomes for All #{ term_for :learning_objectives }
-            %td
-              %p
-                Date Created
         %tr
           %td
-            = link_to glyph("file-excel-o") + "#{(term_for :assignment_type).titleize } Summaries", export_all_scores_assignment_types_path(id: current_course.id, format: "csv"), class: "download_link"
+            = link_to glyph("file-excel-o") + "#{(term_for :assignment_type).titleize } Summaries", export_all_scores_assignment_types_path(id: current_course.id, format: "csv")
           %td First Name, Last Name, Email, Username, #{ term_for :team }, Raw and capped scores for all #{ term_for :assignment_types }
-          %td
-            %p
-              Date Created
         %tr
-          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Structure", export_structure_assignments_path(id: current_course.id, format: "csv"), class: "download_link"
+          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Structure", export_structure_assignments_path(id: current_course.id, format: "csv")
           %td= (AssignmentExporter::FORMAT + AssignmentExporter::ADDITIONAL_HEADERS).join(", ")
-          %td
-            %p
-              Date Created
         %tr
-          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Submissions", submissions_path(id: current_course.id, format: "csv"), class: "download_link"
-          %td= "Submission ID, #{term_for(:assignment_type)}, #{term_for(:assignment)} ID, #{term_for(:assignment)} Name, #{term_for(:student)} Email, #{term_for(:student)} ID, #{term_for(:team)} Name, #{term_for(:group)} Name, #{term_for(:student)} Comment, Created At, Updated At, Score, Graded By, Grader Feedback, Grade Last Updated"
-          %td
-            %select.select_field.for_assignment_submissions
-              - get_date_fields("assignment_submissions").each do |field|
-                %option{:value => field.downcase.tr(" ", "_")} #{field}
+          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Submissions", submissions_path(id: current_course.id, format: "csv"), class: "assignment_submissions_link"
+          %td 
+            %p
+              Submission ID, #{term_for(:assignment_type)}, #{term_for(:assignment)} ID, #{term_for(:assignment)} Name, #{term_for(:student)} Email, #{term_for(:student)} ID, #{term_for(:team)} Name, #{term_for(:group)} Name, #{term_for(:student)} Comment, Created At, Updated At, Score, Graded By, Grader Feedback, Grade Last Updated. 
+              %br
+              %br
+              %em{:style => "padding-bottom: 8px"}
+                Choose your export date range 
+              %br
+              %em
+                Start:
+              %input{:type => "date", :name => "start_date", :class => "start_date_input", :value => get_course_submissions_earliest_date(current_course), :style => "margin-top: 10px;height: 2em;border: 1px solid #215089;font: 1em/1em 'ProximaNova_light', sans-serif;cursor: pointer;"}
+              %em{:style => "margin-left: 14px"}
+                End:
+              %input{:type => "date", :name => "end_date", :class => "end_date_input", :style => "margin-bottom: 7px", :value => get_course_submissions_latest_date(current_course), :style => "margin-bottom: 15px;height: 2em;border: 1px solid #215089;font: 1em/1em 'ProximaNova_light', sans-serif;cursor: pointer;"}
+              %br
+              Choose which column the date range is applicable to:
+              
+              %select.for_assignment_submissions{:style => "display: inline-block"}
+                - SubmissionExporter.get_fields_for_export.each do |field|
+                  %option{:value => field} #{present_dropdown_option(field)}
 
         - if current_course.has_badges?
           %tr
             %td
-              = link_to glyph("file-excel-o") + "Awarded #{current_course.badge_term.pluralize}",  export_earned_badges_path(id: current_course.id, format: "csv"), class: "download_link"
+              = link_to glyph("file-excel-o") + "Awarded #{current_course.badge_term.pluralize}",  export_earned_badges_path(id: current_course.id, format: "csv")
             %td First Name, Last Name, Uniqname, Email, Badge ID, Badge Name, Feedback, Awarded Date
-            %td
-              %p
-                Date Created
           %tr
-            %td= link_to glyph("file-excel-o") + "#{term_for :badges}", export_structure_badges_path(id: current_course.id, format: "csv"), class: "download_link"
+            %td= link_to glyph("file-excel-o") + "#{term_for :badges}", export_structure_badges_path(id: current_course.id, format: "csv")
             %td Badge ID, Name, Point Total, Description, Times Earned
-            %td
-              %p
-                Date Created
+
         %tr
-          %td= link_to glyph("file-excel-o") + "Grading Scheme", export_structure_grade_scheme_elements_path(id: current_course.id, format: "csv"), class: "download_link"
+          %td= link_to glyph("file-excel-o") + "Grading Scheme", export_structure_grade_scheme_elements_path(id: current_course.id, format: "csv")
           %td Level ID, Letter Grade, Level Name, Lowest Points, Highest Points
-          %td
-            %p
-              Date Created
         -#%tr
         -#  %td= link_to glyph("file-excel-o") + "Course Analytics", course_analytics_exports_path, method: :post
         -#  %td Event data including pageviews, predictions, and logins
 
         %tr
-          %td= link_to glyph("file-excel-o") + "Multiplier Choices", export_course_multipliers_path(course_id: current_course, format: "csv"), class: "download_link"
+          %td= link_to glyph("file-excel-o") + "Multiplier Choices", export_course_multipliers_path(course_id: current_course, format: "csv")
           %td First Name, Last Name, Email, Fully Assigned, Unassigned Number, Weightable Assignment Types
-          %td
-            %p
-              Date Created
               
   - if current_course.assignment_types.present?
     .download_type

@@ -3,11 +3,7 @@ class SubmissionExporter
     start_date = Date.strptime(start_date, "%Y-%m-%d")
     end_date = Date.strptime(end_date, "%Y-%m-%d")
 
-    puts "Start Date: #{start_date.inspect}"
-    puts "End Date: #{end_date}"
-    puts "Field: #{field}"
-
-    if confirm_model_has_field(course.submissions.submitted, field)
+    if confirm_model_has_field(field)
       CSV.generate do |csv|
         csv << baseline_headers(course)
 
@@ -40,22 +36,15 @@ class SubmissionExporter
     end
   end
 
+  def self.get_fields_for_export
+    return ["created_at", "updated_at", "submitted_at", "graded_at"]
+  end
+
   private
 
-  def confirm_model_has_field(model, field)
-    if field == "graded_at"
-      return true
-    end
 
-    model.columns.each do |column|
-      if column.name == field
-        puts "Model has field #{column.name}"
-        return true
-      end
-    end 
-
-    puts "Model does not have field #{field}"
-    return false
+  def confirm_model_has_field(field)
+    return ["created_at", "updated_at", "submitted_at", "graded_at"].include?(field)
   end
 
   def baseline_headers(course)
