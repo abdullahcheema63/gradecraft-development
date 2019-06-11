@@ -1,16 +1,9 @@
 class SubmissionExporter
   def export(course, start_date, end_date, field)
-    start_date = Date.strptime(start_date, "%Y-%m-%d")
-    end_date = Date.strptime(end_date, "%Y-%m-%d")
-
     CSV.generate do |csv|
       csv << baseline_headers(course)
 
-      if field == "graded_at"
-        query = course.submissions.submitted.includes(:grade).where("grades.graded_at" => start_date.beginning_of_day..end_date.end_of_day).references(:grade)
-      else
-        query = course.submissions.submitted.where(field => start_date.beginning_of_day..end_date.end_of_day)
-      end
+      query = (field == "graded_at") ? course.submissions.submitted.includes(:grade).where("grades.graded_at" => start_date.beginning_of_day..end_date.end_of_day).references(:grade) : course.submissions.submitted.where(field => start_date.beginning_of_day..end_date.end_of_day)
 
       query.find_each(batch_size: 500) do |submission|
         csv << [
@@ -32,7 +25,6 @@ class SubmissionExporter
         ]
       end
     end
-
   end
 
   def self.fields_for_export
