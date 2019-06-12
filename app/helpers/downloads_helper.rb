@@ -1,4 +1,8 @@
 module DownloadsHelper
+  def allow_assignment_submissions_export(course)
+    return course.course_number == "Talent Gateway Online Community"
+  end
+
   def get_course_submissions_earliest_date(course)
     earliest_date = course.submissions.submitted.minimum("created_at")
  
