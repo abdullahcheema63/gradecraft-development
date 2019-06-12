@@ -2,6 +2,9 @@
   AwardedBadgesCtrl = [()->
     vm = this
     vm.BadgeService = BadgeService
+    
+    vm.badgeFeedback = null
+
     BadgeService.getBadges(vm.studentId)
 
     # Has the student currently earned this badge on this grade?
@@ -30,7 +33,10 @@
         BadgeService.deleteEarnedBadge(earnedBadge)
         badge.available_for_student = true
       else
-        BadgeService.createEarnedBadge(badge.id, vm.studentId, GradeService.grades[0].id)
+        BadgeService.createEarnedBadge(badge.id, vm.studentId, GradeService.grades[0].id, vm.badgeFeedback)
+
+    vm.setBadgeFeedback = (feedback)->
+      console.log(vm.badgeFeedback)
   ]
 
   {
@@ -38,7 +44,8 @@
     controller: AwardedBadgesCtrl,
     controllerAs: 'vm',
     scope: {
-      studentId: '@'
+      studentId: '@',
+      badgeFeedbackInput: '@'
     },
     templateUrl: 'grades/earned_badges_select.html'
   }

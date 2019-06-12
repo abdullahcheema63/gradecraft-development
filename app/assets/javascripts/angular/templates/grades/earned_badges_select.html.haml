@@ -4,6 +4,8 @@
     %span Award {{vm.BadgeService.termFor("badges")}}
 
 %section.badge-index-section.collapse.collapsed
+  %textarea(ng-model="vm.badgeFeedback" froala)
+
   %label.badge-award-container(for="{{vm.inputId(badge)}}"
   ng-repeat="badge in vm.BadgeService.badges"
   ng-class='{"unavailable":!vm.badgeIsActionable(badge), "awardable":vm.badgeIsAwardable(badge), "awarded":vm.badgeIsEarnedForGrade(badge)}'
@@ -20,4 +22,5 @@
         %img(ng-src="{{badge.icon}}" alt="")
 
     .badge-award-name {{badge.name}}
+
 .clear

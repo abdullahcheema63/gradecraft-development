@@ -174,12 +174,15 @@
   #------ Earned Badge Methods ------------------------------------------------#
 
   # currently creates explictly for a student and a grade
-  createEarnedBadge = (badgeId, studentId, gradeId)->
+  createEarnedBadge = (badgeId, studentId, gradeId, badgeFeedback)->
+    console.log(badgeFeedback)
+    
     setBadgeIsUpdating(badgeId)
     requestParams = {
       "student_id": studentId,
       "badge_id": badgeId,
-      "grade_id": gradeId
+      "grade_id": gradeId,
+      "feedback": badgeFeedback
     }
 
     $http.post('/api/earned_badges/', requestParams).then(
