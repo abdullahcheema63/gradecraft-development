@@ -1,5 +1,4 @@
 @import "../utilities/variables"
-@import "../utilities/mixins"
 
 table
   clear: both
@@ -7,11 +6,18 @@ table
   font-size: 1em
   text-align: left
   width: 100%
-  background-color: white
+  background-color: $color-white
   border-collapse: collapse
 
+  tr:nth-child(even)
+    background-color: $color-grey-7
+
+  tr
+    border-bottom: 1px solid $color-grey-6
+
   td
-    padding: 0.4em
+    //padding: .5rem
+    padding: 0.5em 0.25em
 
     &.center
         text-align: center !important
@@ -22,49 +28,37 @@ table
       padding: 0
       display: inherit
 
-thead
-  background-color: $blue-medium_2
-  color: white
-  font-size: 0.85em
-  hyphens: none
+  thead
+    background-color: $blue-medium_2
+    color: white
+    //text-transform: capitalize
+    font-size: 0.9em
 
-  th
-    padding: 0.4em
+    th
+      padding: 0.5em 0.25em
 
-    // a,
-    // a.active,
-    // a.sorted
-    a
-      color: white
-      font-family: 'ProximaNova_regular', sans-serif
+      a,
+      a.active,
+      a.sorted
+        color: white !important
+        font: 0.9em/1em 'ProximaNova_light', serif
 
-      &:hover
-        color: white
+        &:hover
+          text-decoration: none
 
-      span
-        font-size: 0.5em
-        margin-left: 2em
+        span
+          font-size: 0.5em
+          margin-left: 2em
 
-    span[tabindex="0"]
-      color: white
+      span[tabindex="0"]
+        color: $color-white
 
-    /* table last column "options" _=^o.o^= */
-    &.options
-      width: 4em
+      /* table last column "options" _=^o.o^= */
+      &.options
+        width: 4em
 
-    &.has_button
-      min-width: 150px
-
-tbody
-  tr
-    &:nth-child(even)
-      background-color: $grey-faint
-
-    &:hover
-      background-color: $bg-blue
-
-  td
-    vertical-align: initial
+      &.has_button
+        min-width: 150px
 
 .scroll-table
   overflow: hidden
@@ -205,199 +199,3 @@ i.missing_grade
         padding: .25rem
       .st-key, .st-val
         font-size: .7rem
-
-
-/* New table styling __=^o.o^= */
-.table_container
-  border: 1px solid $blue-medium_2
-  overflow-x: scroll
-
-  table
-    min-width: 800px
-    border-bottom: 0px solid transparent
-
-  td
-    a.table_truncate
-      width: 280px
-      text-overflow: ellipsis
-      white-space: nowrap
-      overflow-x: hidden
-      display: block
-
-.table_functions
-  display: flex
-  flex-wrap: wrap
-  justify-content: space-between
-
-  & > div
-    &:first-child
-      flex: 1
-      margin-right: 2em
-
-      @include tablet
-        margin-right: 0
-
-    &:last-child
-      width: 400px
-
-      @include tablet
-        width: 100%
-
-  .filter_box
-    margin-top: 0
-
-  .search_box
-    margin-top: -0.5em
-
-.table_pagination
-  margin: 0.75em 0
-  color: $grey_3
-
-  p
-    display: inline-block
-    margin: 0
-
-  & > div
-    display: inline-block
-    position: relative
-    margin-left: 2em
-
-    button
-      min-width: 1.25em
-      margin: 0
-      padding: 0
-      border: 0px solid transparent
-      background: none
-      color: $blue-medium_1
-
-      &:hover
-        background: none
-        color: $pink_2
-
-      &.active
-        color: $blue_dark
-        font-family: 'ProximaNova_regular', sans-serif
-        cursor: default
-
-  button.table_prev, button.table_next
-    background: url(asset_path("icon-arrow_next.svg")) no-repeat center center
-    background-size: contain
-    width: 1.25em
-    height: 1.25em
-    display: inline-block
-    position: absolute
-    cursor: pointer
-    border: 0px solid transparent
-
-    &:hover
-      background: url(asset_path("icon-arrow_next.svg")) no-repeat center center
-      background-size: contain
-
-    &:disabled
-      background: url(asset_path("icon-arrow_next-disabled.svg")) no-repeat center center
-      background-size: contain
-      cursor: not-allowed
-
-  .table_next
-    top: 0.5px
-    right: -1.25em
-
-  .table_prev
-    left: -1.25em
-    transform: rotate(180deg)
-
-.new_style
-  table
-    .button_container
-      display: inline-block
-      position: relative
-
-    button, .button
-      min-width: fit-content
-      display: inline-block
-      border: 2px solid $blue-medium_2
-      color: $blue-medium_1
-      padding: 0.85em 0.5em
-      margin: 2px 0.25em 2px 0
-      font-size: 0.9em
-      line-height: 0
-      border-radius: $radius-small
-
-      &.dropdown
-        padding-right: 1.5em
-        background: white url(asset_path("icon-arrow_select.svg")) no-repeat center right 5px
-        background-size: 0.9em auto
-
-        &.open
-          background: $blue-medium_2
-          color: white
-
-        & + div
-          border: 2px solid $blue-medium_2
-          background: white
-          width: 240px
-          position: absolute
-          right: 2px
-          z-index: 1
-
-          &.is-closed
-            display: none
-
-          &.is-open
-            display: block
-
-          ul
-            margin-top: 0
-            margin-left: -40px
-
-          li
-            padding: 0.5em
-            border-bottom: 1px solid $blue-medium_2
-            &:last-of-type
-              border-bottom: 0px solid transparent
-
-    span.checked
-      display: block
-      width: 1em
-      height: 1em
-      background: url(asset_path("icon-table_Checked.svg")) no-repeat center center
-      background-size: contain
-
-    &.has_actions
-      tbody
-        tr
-          td
-            &:last-child
-              width: 206px
-
-  thead
-    background-color: $blue-medium_1
-    font-size: 0.85em
-    border-bottom: 1px solid $blue-medium_2
-    font-family: 'ProximaNova_regular', sans-serif
-
-  th
-    border-right: 1px solid white
-
-    &:last-child
-      border-right: 0px solid transparent
-
-  td
-    ul
-      list-style-type: none
-      margin-left: -2.25em
-
-      @include mobile-xl
-        margin-left: -2.5em
-
-      &:last-child
-        margin-bottom: 0
-
-      &.checked_list
-        li
-          margin-bottom: 0.4em
-
-      &.student_list
-        line-height: 1.25em
-    li
-      margin-bottom: 0.25em

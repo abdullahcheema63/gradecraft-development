@@ -7,9 +7,7 @@ class HomeController < ApplicationController
   before_action :ensure_admin?, only: :health_check
   before_action :redirect_if_logged_in!, only: [:index, :login]
 
-  layout "blank", only: [:style_guide, :overview]
-
-  include ApplicationHelper
+  layout "blank", only: :style_guide
 
   # root
   # GET /
@@ -33,12 +31,6 @@ class HomeController < ApplicationController
       @error = e.message
       raise
     end
-  end
-
-  def overview
-    # Only checks the current role of the user in the current course they are in
-    # Should really only be used to determine if user is Admin or not
-    @user_role = current_role
   end
 
   private

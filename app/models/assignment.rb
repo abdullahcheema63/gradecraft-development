@@ -84,7 +84,6 @@ class Assignment < ApplicationRecord
 
   # Filtering Assignments by various date properties
   scope :with_dates, -> { where("assignments.due_at IS NOT NULL OR assignments.open_at IS NOT NULL") }
-  scope :upcoming, -> {where(due_at: Time.current .. 10.days.from_now).chronological.limit(5)}
 
   delegate :student_weightable?, to: :assignment_type
 
@@ -177,38 +176,6 @@ class Assignment < ApplicationRecord
 
   def has_unlock_condition?
     UnlockCondition.exists?(unlockable_id: self.id)
-  end
-
-  def has_student_grade?(student_id)
-    grades.exists?(student_id: student_id, student_visible: true)
-  end
-
-  #Like the idea of having this to call the default (not group assignment)
-  #Comments below explain why it doesn't work for group assignments
-  #Only use the current_user.submission_for_assignment(assignment) if has_group? ~ thought?
-  def has_student_or_group_submission?(student)
-    if has_groups?
-      group_id = student.group_memberships.for_course(self.course).first.group_id
-      #Need to add another check to make sure that this is the group for the assignment
-      #Possible that a student could have multiple groups for each course their in
-      # Will need to check that this is the group for the specific assignment
-
-      submissions.exists?(group_id: group_id)
-    else
-      submissions.exists?(student_id: student.id)
-    end
-  end
-
-  def has_student_predicted_grade?(student_id)
-    predicted_earned_grades.exists?(student_id: student_id)
-  end
-
-  def planned_assignments_count
-    predicted_earned_grades.count
-  end
-
-  def submission_count
-    submissions.count
   end
 
   # Custom point total if the class has weighted assignments

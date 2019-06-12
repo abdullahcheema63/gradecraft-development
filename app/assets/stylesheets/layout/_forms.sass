@@ -1,5 +1,4 @@
 @import "../utilities/variables"
-@import "../utilities/mixins"
 
 /* base form styling */
 label, input
@@ -19,10 +18,10 @@ textarea,
   border: 1px solid rgba(42, 43, 43, 0.2)
   transition: border-color 0.2s
   &:focus
-    border: 1px solid rgba(42, 43, 43, 0.8)
+    border: 1px solid rgba(42, 43, 43, 0.8) 
   &:disabled
     color: $grey_1
-  @include mobile-xl
+  @media (max-width: $media-small-max)
     width: 100%
 
 /* annoying jquery-ui overrides */
@@ -43,9 +42,7 @@ textarea,
   input[type="email"],
   input[type="number"],
   input[type="password"],
-  input[type="search"],
-  textarea,
-  select
+  textarea
     background: url(asset_path("icon-form_WriteIn.svg")) no-repeat center right
     background-size: auto 1.1em
     display: block
@@ -75,30 +72,7 @@ textarea,
         text-transform: lowercase
 
     @media (max-width: $media-small-max)
-      border-bottom-width: 2px
-
-  textarea
-    height: 2.7em
-    background: url(asset_path("icon-form_WriteIn.svg")) no-repeat bottom 0.5em right
-    background-size: auto 1.1em
-
-  select
-    -webkit-appearance: none
-    -webkit-border-radius: 0px
-    height: 2.75em
-    background: url(asset_path("icon-arrow_select.svg")) no-repeat center right
-    background-size: 1em auto
-    color: $grey_3
-    cursor: pointer
-
-  input[type="search"]
-    background: url(asset_path("icon-table_Search.svg")) no-repeat center right
-    background-size: 1.25em auto
-
-  input.calendar
-    background: url(asset_path("icon-calendar.svg")) no-repeat center right
-    background-size: 1em auto
-    cursor: pointer
+      border-bottom: 2px solid $blue-medium_1
 
   label
     position: absolute
@@ -109,6 +83,10 @@ textarea,
     color: $blue-medium_1
     font: 0.8em/1em 'ProximaNova_semibold', sans-serif
     letter-spacing: 0.04em
+
+  textarea
+    height: 2.7em
+    background-position: bottom 0.5em right
 
 .form_options
   margin: 0.5em 0
@@ -207,21 +185,7 @@ textarea,
     //   cursor: default
 
 
-.flex-2
-  &.form_pair
-    max-width: 800px
 
-    & > div
-      padding: 0
-      width: 46%
-      margin-bottom: 2em
-
-      @include mobile-xl
-        width: 100%
-
-
-
-// REFACTOR -- may need to refactor below code at some point, TBD __=^o.o^=
 input.hasDatepicker
   margin-right: 1rem
 
@@ -251,9 +215,9 @@ select,
   font: 1em/1em 'ProximaNova_light', sans-serif
   cursor: pointer
 
-  // &:hover
-  //   background-color: $blue-medium_2
-  //   color: white
+  &:hover
+    background-color: $blue-medium_2
+    color: white
   @media (max-width: $media-small-max)
     width: 100%
   &.multiple
@@ -359,11 +323,10 @@ error
   margin: 0
   padding-left: 1rem
 
-// TO DELETE ONCE VARIFIED that is doesn't FSU
-// .ui-datepicker
-//   margin-top: -2.7rem !important
-//   background-color: $color-blue-4
-//   border: 1px solid $color-grey-5 !important
+.ui-datepicker
+  margin-top: -2.7rem !important
+  background-color: $color-blue-4
+  border: 1px solid $color-grey-5 !important
 
 ul.locked-display li
   list-style: none

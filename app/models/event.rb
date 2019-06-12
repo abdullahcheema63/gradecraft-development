@@ -8,8 +8,6 @@ class Event < ApplicationRecord
 
   scope :with_dates, -> { where("events.due_at IS NOT NULL OR events.open_at IS NOT NULL") }
 
-  scope :this_week, -> { where(due_at: Time.current .. 7.days.from_now)}
-
   # Check to make sure the event has a name before saving
   validates_presence_of :name
 

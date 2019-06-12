@@ -2244,17 +2244,8 @@
 
 }));
 
-$(document).on('focus',".datetimepicker-input", function(){
-  var pickerInput = $(this);
-  pickerInput.after('<div class="datetimepicker"></div>');
-
-  $(".datetimepicker").datetimepicker({
-    onSelect: function(dateText, inst) {
-      var dateAsString = dateText; //the first parameter of this function
-      var dateAsObject = $(this).datepicker( 'getDate' ); //the getDate method
-
-      pickerInput.val(dateAsObject);
-    },
+$(document).on('focus',".datetimepicker", function(){
+  $(this).datetimepicker({
     controlType: 'select',
     oneLine: true,
     dateFormat: 'MM d, yy -',
