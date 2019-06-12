@@ -43,8 +43,10 @@ const loadMany = function(modelArray, response, options, filter) {
       .value();
   };
 
+const csrftoken = document.head.querySelector("[name='csrf-token']").attributes.content.value;
+
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "licenses", "license_types"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
   dataItem(responseJson.data, responseJson, { include: ["courses", "payments"] });
@@ -54,7 +56,7 @@ const store = new Vuex.Store({
     allUsers: [],
     allCourses: [],
     allInstructors: [],
-    userLicense: [],
+    userLicense: null,
     user: {
       id: null,
       firstName: "",
@@ -228,7 +230,6 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        //console.log(json);
         const final = apiResponseToData(json);
         //console.log(final);
         if (store.state.user.admin === "true"){
@@ -284,6 +285,23 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserLicense', final)
       },
+      addNewCourse: async function({commit}, course){
+        const resp = await fetch("/api/courses", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(course)
+        }).then((response) => {
+          console.log("inside add resp action" , response)
+        })
+        console.log("inside addNewCourse action" , resp)
+
+      },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
       },
@@ -292,9 +310,6 @@ const store = new Vuex.Store({
       },
       toggleGuideControl({ commit }){
         commit('toggleGuide')
-      },
-      addNewCourse({ commit }, course){
-        commit('addNewCourse', {course: course})
       },
       setCurrentUser({ commit }, user){
         commit('setCurrentUser', user)
@@ -410,7 +425,7 @@ const store = new Vuex.Store({
         })
       },
       addUserLicense (state, licenseObj){
-        state.userLicense.push(licenseObj)
+        state.userLicense = licenseObj
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)
@@ -445,9 +460,6 @@ const store = new Vuex.Store({
       }
     },
     getters: {
-      userFirstName: state => {
-        return state.user.firstName
-      },
       userName: state => {
         return state.user.firstName + ' ' + state.user.lastName
       },
