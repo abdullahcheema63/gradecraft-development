@@ -56,6 +56,7 @@ const store = new Vuex.Store({
     allUsers: [],
     allCourses: [],
     allInstructors: [],
+    allInstitutions: [],
     userLicense: null,
     user: {
       id: null,
@@ -269,6 +270,20 @@ const store = new Vuex.Store({
         //console.log(final);
         commit('addAllInstructors', final)
       },
+      getAllInstitutions: async function({ commit }){
+        const resp = await fetch("api/institutions");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        //console.log(json);
+        const final = apiResponseToData(json);
+        //console.log(final);
+        commit('addAllInstitutions', final);
+      },
       getUserLicense: async function({ commit}){
         console.log("getAllLicenses action dispatched")
         const resp = await fetch("/api/licenses");
@@ -421,6 +436,17 @@ const store = new Vuex.Store({
               changeCoursePath: course.change_course_path,
               licensed: course.licensed
             }))
+          }
+        })
+      },
+      addAllInstitutions (state, institutions){
+        state.allInstitutions = institutions.map(institution => {
+          return {
+            id: institution.id,
+            name: institution.name,
+            editURL: institution.edit_url,
+            hasSiteLicense: institution.has_site_license,
+            institutionType: institution.institution_type
           }
         })
       },
