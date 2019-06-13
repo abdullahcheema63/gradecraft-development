@@ -5,6 +5,7 @@
 
   badges = []
   earnedBadges = []
+  earnedBadgesFeedback = {}
   fileUploads = []
   update = {}
 
@@ -44,6 +45,12 @@
         badge.prediction = {predicted_times_earned: badge.earned_badge_count} if !badge.prediction
       )
       GradeCraftAPI.loadFromIncluded(earnedBadges,"earned_badges", response)
+
+      for earned_badge in earnedBadges
+        earnedBadgesFeedback[earned_badge.badge_id] = earned_badge.feedback
+
+      console.log("earned badges", earnedBadgesFeedback)
+
       GradeCraftAPI.setTermFor("badges", response.meta.term_for_badges)
       GradeCraftAPI.setTermFor("badge", response.meta.term_for_badge)
       update.predictions = response.meta.allow_updates
@@ -173,6 +180,8 @@
 
   #------ Earned Badge Methods ------------------------------------------------#
 
+  EarnedBadges = []
+
   # currently creates explictly for a student and a grade
   createEarnedBadge = (badgeId, studentId, gradeId, badgeFeedback)->
     console.log(badgeFeedback)
@@ -189,6 +198,7 @@
       (response)-> # success
         if response.status == 201
           GradeCraftAPI.addItem(earnedBadges, "earned_badges", response.data)
+          EarnedBadges.push(response.data)
         GradeCraftAPI.logResponse(response)
         setBadgeIsUpdating(badgeId, false)
       ,(response)-> # error
@@ -196,6 +206,23 @@
         setBadgeIsUpdating(badgeId, false)
     )
 
+
+  updateEarnedBadge = (badgeId, earnedBadge, badgeFeedback)->
+    setBadgeIsUpdating(badgeId)
+    requestParams = {
+      "id": earnedBadge.id
+      "feedback": badgeFeedback
+    }
+    $http.put("/api/earned_badges/#{earnedBadge.id}", requestParams).then(
+      (response)-> # success
+        if response.status == 200
+          setBadgeIsUpdating(earnedBadge.badge_id, false)
+        GradeCraftAPI.logResponse(response)
+      ,(response)-> # error
+        setBadgeIsUpdating(badgeId, false)
+        GradeCraftAPI.logResponse(response)
+    )
+  
   deleteEarnedBadge = (earnedBadge)->
     setBadgeIsUpdating(earnedBadge.badge_id)
     $http.delete("/api/earned_badges/#{earnedBadge.id}").then(
@@ -215,7 +242,9 @@
       getBadges: getBadges
       getBadge: getBadge
       badges: badges
-
+      earnedBadges: earnedBadges
+      earnedBadgesFeedback: earnedBadgesFeedback
+      
       createBadge: createBadge
       queueUpdateBadge: queueUpdateBadge
       submitBadge: submitBadge
@@ -231,6 +260,7 @@
 
       earnedBadges: earnedBadges
       createEarnedBadge: createEarnedBadge
+      updateEarnedBadge: updateEarnedBadge
       deleteEarnedBadge: deleteEarnedBadge
       studentEarnedBadgeForGrade: studentEarnedBadgeForGrade
   }

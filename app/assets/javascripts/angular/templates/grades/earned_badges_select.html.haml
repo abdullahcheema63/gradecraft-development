@@ -4,23 +4,24 @@
     %span Award {{vm.BadgeService.termFor("badges")}}
 
 %section.badge-index-section.collapse.collapsed
-  %textarea(ng-model="vm.badgeFeedback" froala)
-
   %label.badge-award-container(for="{{vm.inputId(badge)}}"
-  ng-repeat="badge in vm.BadgeService.badges"
-  ng-class='{"unavailable":!vm.badgeIsActionable(badge), "awardable":vm.badgeIsAwardable(badge), "awarded":vm.badgeIsEarnedForGrade(badge)}'
-  )
+    ng-repeat="badge in vm.BadgeService.badges"
+    ng-class='{"unavailable":!vm.badgeIsActionable(badge), "awardable":vm.badgeIsAwardable(badge), "awarded":vm.badgeIsEarnedForGrade(badge)}'
+    )
     .badge-award-checkmark
       %input(id="{{vm.inputId(badge)}}"
       ng-if="vm.badgeIsActionable(badge)"
       type="checkbox"
       ng-checked="vm.badgeIsEarnedForGrade(badge)"
-      ng-click="vm.awardBadge(badge)"
-    )
-    .badge-award-image
-      .img-cropper.small-crop
-        %img(ng-src="{{badge.icon}}" alt="")
+      ng-click="vm.awardBadge(badge)")
 
-    .badge-award-name {{badge.name}}
+    .img-cropper.small-crop
+      %img(ng-src="{{badge.icon}}" alt="")
 
-.clear
+    %p.badge-award-name {{badge.name}}
+
+  %div(ng-repeat="badge in vm.BadgeService.badges" ng-if="vm.badgeIsEarnedForGrade(badge)"){:style => "margin-top: 40px;"}
+    %p(ng-if="vm.badgeIsEarnedForGrade(badge)")
+      Feedback for {{badge.name}}       
+    %textarea(ng-model="vm.BadgeService.earnedBadgesFeedback[badge.id]" ng-model-options="{debounce: 1000}" ng-change="vm.setBadgeFeedback(badge)" ng-if="vm.badgeIsEarnedForGrade(badge)" froala)
+
