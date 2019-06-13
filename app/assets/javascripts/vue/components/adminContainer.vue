@@ -112,7 +112,7 @@
         </div>
         <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
 
-        <button class="action next">Add a new course</button>
+        <a class="button action next" href="courses/new">Add a new course</a>
       </template>
     </accordionComponent>
 
@@ -367,10 +367,9 @@
 
         <div v-if="tabSection[0]==='Utilities'">
           <h2>Administrative Utilities</h2>
-          <p>__NOTE__ This section will include the current sections: </p>
+          <p>Most "Admin" options from the nav bar have been generally replaced by this overview page</p>
+          <p>Admin abilites that are tied to a specifc course have been moved to "Course settings" "admin" tab</p>
           <ul>
-            <li>Delete Course Memberships </li>
-            <li>Manage Institutions </li>
             <li>__New__ Unlocks </li>
           </ul>
         </div>
