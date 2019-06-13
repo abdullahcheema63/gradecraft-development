@@ -532,6 +532,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :institutions, only: :index
+
     namespace :learning_objectives do
       resources :objectives, only: [:index, :show, :create, :update, :destroy] do
         get "outcomes", to: "outcomes#outcomes_for_objective"
