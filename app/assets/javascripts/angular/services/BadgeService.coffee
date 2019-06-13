@@ -180,12 +180,8 @@
 
   #------ Earned Badge Methods ------------------------------------------------#
 
-  EarnedBadges = []
-
   # currently creates explictly for a student and a grade
   createEarnedBadge = (badgeId, studentId, gradeId, badgeFeedback)->
-    console.log(badgeFeedback)
-    
     setBadgeIsUpdating(badgeId)
     requestParams = {
       "student_id": studentId,
@@ -198,7 +194,6 @@
       (response)-> # success
         if response.status == 201
           GradeCraftAPI.addItem(earnedBadges, "earned_badges", response.data)
-          EarnedBadges.push(response.data)
         GradeCraftAPI.logResponse(response)
         setBadgeIsUpdating(badgeId, false)
       ,(response)-> # error
@@ -244,7 +239,7 @@
       badges: badges
       earnedBadges: earnedBadges
       earnedBadgesFeedback: earnedBadgesFeedback
-      
+
       createBadge: createBadge
       queueUpdateBadge: queueUpdateBadge
       submitBadge: submitBadge

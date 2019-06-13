@@ -23,7 +23,7 @@
       %p.badge-award-name {{badge.name}}
 
   %div(ng-repeat="badge in vm.BadgeService.badges" ng-if="vm.badgeIsEarnedForGrade(badge)"){:style => "margin-top: 40px;"}
-    %p(ng-if="vm.badgeIsEarnedForGrade(badge)")
-      Feedback for {{badge.name}}       
+    %h3(ng-if="vm.badgeIsEarnedForGrade(badge)")
+      Provide feedback for badge {{badge.name}}       
     %textarea(ng-model="vm.BadgeService.earnedBadgesFeedback[badge.id]" ng-model-options="{debounce: 1000}" ng-change="vm.setBadgeFeedback(badge)" ng-if="vm.badgeIsEarnedForGrade(badge)" froala)
 

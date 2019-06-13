@@ -2,22 +2,8 @@
   AwardedBadgesCtrl = [()->
     vm = this
     vm.BadgeService = BadgeService
-    
-    #for earned_badge in BadgeService.earnedBadges
-    #  console.log(earnedBadge)
-    #  vm.badgeFeedbackData[earned_badge.badge_id] = earned_badge.feedback
-
-    vm.badgeFeedbackData = BadgeService.earnedBadges
 
     BadgeService.getBadges(vm.studentId)
-
-    vm.setBadgeFeedback = ()->
-      for earned_badge in BadgeService.earnedBadges
-        vm.badgeFeedbackData[earned_badge.badge_id] = earned_badge.feedback
-
-      console.log(vm.badgeFeedbackData)
-
-      return true
 
     # Has the student currently earned this badge on this grade?
     vm.badgeIsEarnedForGrade = (badge)->
@@ -48,7 +34,6 @@
         BadgeService.createEarnedBadge(badge.id, vm.studentId, GradeService.grades[0].id, vm.badgeFeedback)
 
     vm.setBadgeFeedback = (badge)->
-      #console.log(vm.BadgeService.earnedBadgesFeedback[badge.id], badge)
       return if !vm.badgeIsActionable(badge)
       if earnedBadge = vm.badgeIsEarnedForGrade(badge)
         BadgeService.updateEarnedBadge(badge.id, earnedBadge, vm.BadgeService.earnedBadgesFeedback[badge.id])
