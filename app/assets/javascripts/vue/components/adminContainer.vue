@@ -179,7 +179,7 @@
           <button type="button" class="action">Export this table view</button>
         </div>
 
-        <div v-if="tabSection[0]==='Instructor Accounts'">
+        <div v-if="tabSection[0]==='Instructors'">
           <h2>All Instructor Users</h2>
           <p>Manage instructor users and their licensed accounts.</p>
           <div class="table_functions">
@@ -259,7 +259,7 @@
           <tablePagination :items="allInstructors1" @paginate="paginateItems"></tablePagination>
         </div>
 
-        <div v-if="tabSection[0]==='Search All Users'">
+        <div v-if="tabSection[0]==='Users'">
           <h2>Search for users across all courses and account types </h2>
           <h3>Search by: </h3>
           <form>
@@ -329,6 +329,42 @@
           <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
         </div>
 
+        <div v-if="tabSection[0]==='Institutions'">
+          <h2>All Institutions</h2>
+          <p>Need to add button to add Institution</p>
+          <p>Need to add search text bar</p>
+          <div class="table_container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name </th>
+                  <th>Has Site License?</th>
+                  <th>Type</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="institution in allInstitutions" :key="institution.id">
+                  <td>{{institution.name}}</td>
+                  <td><span :class="{checked: institution.hasSiteLicense}"></span> </td>
+                  <td>{{institution.institutionType}}</td>
+                  <td>
+                    <buttonDropdown>
+                      <template slot="button_text">Options</template>
+                      <template slot="content">
+                        <ul>
+                          <li><a :href="institution.editURL">Edit</a> </li>
+                        </ul>
+                      </template>
+                    </buttonDropdown>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <tablePagination :items="allInstitutions" @paginate="paginateItems"></tablePagination>
+        </div>
+
         <div v-if="tabSection[0]==='Utilities'">
           <h2>Administrative Utilities</h2>
           <p>__NOTE__ This section will include the current sections: </p>
@@ -367,7 +403,7 @@ module.exports = {
       searchUserEmail: "",
       currentPageItemMin: 0,
       currentPageItemMax: 10,
-      tabBarOption: ["Courses", "Instructor Accounts", "Search All Users", "Utilities"],
+      tabBarOption: ["Courses", "Instructors", "Users", "Institutions", "Utilities"],
       tabSection: ["Courses"],
       courseToLicense: "",
       newCourse: {
@@ -410,6 +446,7 @@ module.exports = {
     this.$store.dispatch("getAllUsers");
     this.$store.dispatch("getCourseMemberships");
     this.$store.dispatch("getAllInstructors");
+    this.$store.dispatch("getAllInstitutions");
   },
   computed: {
     getUserFirstName(){
@@ -438,6 +475,9 @@ module.exports = {
     },
     allInstructors1(){
       return this.filterAllInstructors(this.$store.state.allInstructors);
+    },
+    allInstitutions(){
+      return this.$store.state.allInstitutions;
     },
     allNewCourses(){
       return this.filterNewCourses(this.allCourses)
