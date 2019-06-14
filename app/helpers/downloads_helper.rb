@@ -1,6 +1,5 @@
 module DownloadsHelper
   def allow_assignment_submissions_export(course)
-    #return course.course_number == "Talent Gateway Online Community"
     return course.id == 110 && (Rails.env.production? || Rails.env.staging?)
   end
 
