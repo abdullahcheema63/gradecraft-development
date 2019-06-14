@@ -341,9 +341,7 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
 
   def info_per_assign
     dashboard
-    if objects[:course].assignment_types.length > 0
-      breadcrumb(objects[:assignment_types].first.course.assignment_term + " Analytics")
-    end
+    breadcrumb(objects[:course].assignment_term + " Analytics")
   end
 
   def institutions_edit
