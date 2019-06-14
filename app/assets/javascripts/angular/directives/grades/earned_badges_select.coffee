@@ -2,7 +2,6 @@
   AwardedBadgesCtrl = [()->
     vm = this
     vm.BadgeService = BadgeService
-
     BadgeService.getBadges(vm.studentId)
 
     # Has the student currently earned this badge on this grade?
@@ -31,7 +30,7 @@
         BadgeService.deleteEarnedBadge(earnedBadge)
         badge.available_for_student = true
       else
-        BadgeService.createEarnedBadge(badge.id, vm.studentId, GradeService.grades[0].id, vm.badgeFeedback)
+        BadgeService.createEarnedBadge(badge.id, vm.studentId, GradeService.grades[0].id)
 
     vm.setBadgeFeedback = (badge)->
       return if !vm.badgeIsActionable(badge)

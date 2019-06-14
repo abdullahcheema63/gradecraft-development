@@ -49,8 +49,6 @@
       for earned_badge in earnedBadges
         earnedBadgesFeedback[earned_badge.badge_id] = earned_badge.feedback
 
-      console.log("earned badges", earnedBadgesFeedback)
-
       GradeCraftAPI.setTermFor("badges", response.meta.term_for_badges)
       GradeCraftAPI.setTermFor("badge", response.meta.term_for_badge)
       update.predictions = response.meta.allow_updates
@@ -181,13 +179,12 @@
   #------ Earned Badge Methods ------------------------------------------------#
 
   # currently creates explictly for a student and a grade
-  createEarnedBadge = (badgeId, studentId, gradeId, badgeFeedback)->
+  createEarnedBadge = (badgeId, studentId, gradeId)->
     setBadgeIsUpdating(badgeId)
     requestParams = {
       "student_id": studentId,
       "badge_id": badgeId,
       "grade_id": gradeId,
-      "feedback": badgeFeedback
     }
 
     $http.post('/api/earned_badges/', requestParams).then(
