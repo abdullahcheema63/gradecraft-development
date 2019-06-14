@@ -29,6 +29,22 @@ class API::EarnedBadgesController < ApplicationController
     end
   end
 
+  def update    
+    @earned_badge = EarnedBadge.find(params[:id])
+
+    if @earned_badge.nil?
+      render json: { message: "Earned badge could not be updated", success: false },
+        status: 400
+    end
+
+    @earned_badge.feedback = params[:feedback]
+    
+    @earned_badge.save
+
+    render json: { message: "Earned badge feedback updated", success: true },
+        status: 200
+  end
+
   # DELETE /api/earned_badges/:id
   def destroy
     earned_badge = EarnedBadge.where(id: params[:id]).first
