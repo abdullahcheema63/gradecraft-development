@@ -127,8 +127,14 @@ class InfoController < ApplicationController
   def start_end_dates
     date_range = {}
 
-    date_range[:start_date] = params.key?(:start_date) ? Date.strptime(params[:start_date], "%Y-%m-%d") : Date.new(1955, 5, 11)
-    date_range[:end_date] =  params.key?(:end_date) ? Date.strptime(params[:end_date], "%Y-%m-%d") : Date.today
+    begin
+      date_range[:start_date] = params.key?(:start_date) ? Date.strptime(params[:start_date], "%Y-%m-%d") : Date.new(1955, 5, 11)
+      date_range[:end_date] =  params.key?(:end_date) ? Date.strptime(params[:end_date], "%Y-%m-%d") : Date.today
+    rescue ArgumentError
+      puts "Invalid date"
+      date_range[:start_date] = Date.new(1955, 5, 11)
+      date_range[:end_date] = Date.today
+    end
 
     if date_range[:start_date] > date_range[:end_date]
       date_range[:start_date] = Date.new(1955, 5, 11)

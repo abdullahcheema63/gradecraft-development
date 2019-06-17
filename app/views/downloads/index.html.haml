@@ -45,10 +45,16 @@
                 %br
                 %em
                   Start:
-                %input{:type => "date", :name => "start_date", :class => "start_date_input", :value => get_course_submissions_earliest_date(current_course), :style => "margin-top: 10px;height: 2em;border: 1px solid #215089;font: 1em/1em 'ProximaNova_light', sans-serif;cursor: pointer;"}
+                %span{:class => "calendar_indicator"}
+                  = glyph(:calendar)
+                %input{:type => "date", :name => "start_date", :class => "datetimepicker start_date_input", :value => get_course_submissions_earliest_date(current_course)}
+               
+
                 %em{:style => "margin-left: 14px"}
                   End:
-                %input{:type => "date", :name => "end_date", :class => "end_date_input", :style => "margin-bottom: 7px", :value => get_course_submissions_latest_date(current_course), :style => "margin-bottom: 15px;height: 2em;border: 1px solid #215089;font: 1em/1em 'ProximaNova_light', sans-serif;cursor: pointer;"}
+                %span{:class => "calendar_indicator"}
+                  = glyph(:calendar)
+                %input{:type => "date", :name => "end_date", :class => "datetimepicker end_date_input", :value => get_course_submissions_latest_date(current_course)}
                 %br
                 Choose which column the date range is applicable to:
                 
