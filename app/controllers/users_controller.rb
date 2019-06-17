@@ -200,6 +200,7 @@ class UsersController < ApplicationController
     if @user.update_attributes user_params
       @user.activate!
       auto_login @user
+      @user.update_login_at
       redirect_to dashboard_path, notice: "Welcome to GradeCraft!" and return
     end
     render :activate, alert: @user.errors.full_messages.first

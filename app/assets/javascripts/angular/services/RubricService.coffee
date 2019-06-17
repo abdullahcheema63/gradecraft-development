@@ -18,6 +18,9 @@
     $http.get("/api/rubrics/" + rubricId).then(
       (response) ->
         if response.data.data?  # if no rubric is found, data is null
+          rubric.length = 0
+          criteria.length = 0
+          levels.length = 0
           GradeCraftAPI.loadItem(rubric, "rubrics", response.data)
           GradeCraftAPI.loadFromIncluded(criteria, "criteria", response.data)
           GradeCraftAPI.loadFromIncluded(levels, "levels", response.data)
