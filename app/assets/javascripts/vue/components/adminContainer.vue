@@ -13,11 +13,11 @@
         <div class="bg-blue_2">
           <h4>New User Accounts</h4>
           <p class="summary_data">
-            <span class="lining_figures">{{newTrialUserCount}}</span>
+            <span class="lining_figures">{{newTrialUsers.length}}</span>
             free trial accounts
           </p>
           <p class="summary_data">
-            <span class="lining_figures">{{newLicenseUserCount}}</span>
+            <span class="lining_figures">{{newLicenseUsers.length}}</span>
             licensed accounts
           </p>
         </div>
@@ -35,19 +35,19 @@
         <div class="bg-blue_2">
           <h4>New Courses</h4>
           <p class="summary_data column-2">
-            <span class="lining_figures">16</span>
+            <span class="lining_figures">{{allNewCourses.length}}</span>
             total
           </p>
           <p class="summary_data column-2">
-            <span class="lining_figures">306</span>
+            <span class="lining_figures">{{newTrialCourses.length}}</span>
             free trial courses
           </p>
           <p class="summary_data column-2">
-            <span class="lining_figures">5</span>
+            <span class="lining_figures">Uh</span>
             copied
           </p>
           <p class="summary_data column-2">
-            <span class="lining_figures">6</span>
+            <span class="lining_figures">{{newLicenseCourses.length}}</span>
             licensed courses
           </p>
         </div>
@@ -481,24 +481,36 @@ module.exports = {
     allNewCourses(){
       return this.filterNewCourses(this.allCourses)
     },
+    newTrialCourses(){
+      var allNewCourses = this.allNewCourses;
+      return allNewCourses.filter( course => {
+        if( course.licensed === false){return course}
+        return false
+        })
+    },
+    newLicenseCourses(){
+      var allNewCourses = this.allNewCourses;
+      return allNewCourses.filter( course => {
+        if( course.licensed === true){return course}
+        return false
+        })
+    },
     allNewUsers(){
       return this.filterNewUsers(this.allUsers)
     },
-    newTrialUserCount(){
+    newTrialUsers(){
       var allNewUsers = this.allNewUsers;
-      trialUsers = allNewUsers.filter( user => {
+      return allNewUsers.filter( user => {
         if( user.license === "trial" ){return user}
         return false
       })
-      return trialUsers.length
     },
-    newLicenseUserCount(){
+    newLicenseUsers(){
       var allNewUsers = this.allNewUsers;
-      licenseUsers = allNewUsers.filter( user => {
+      return allNewUsers.filter( user => {
         if( user.license === "licensed" ){return user}
         return false
       })
-      return licenseUsers.length
     },
   },
 
