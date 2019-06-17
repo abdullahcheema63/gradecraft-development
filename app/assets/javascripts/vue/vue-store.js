@@ -405,6 +405,7 @@ const store = new Vuex.Store({
             email: user.email,
             createdAt: user.created_at,
             url: user.user_url,
+            license: "trial",
             courses: user.course_memberships.map(course => ({
               name: course.name,
               role: course.role,

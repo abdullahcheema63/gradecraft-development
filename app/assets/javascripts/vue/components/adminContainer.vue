@@ -13,11 +13,11 @@
         <div class="bg-blue_2">
           <h4>New User Accounts</h4>
           <p class="summary_data">
-            <span class="lining_figures">36</span>
+            <span class="lining_figures">{{newTrialUserCount}}</span>
             free trial accounts
           </p>
           <p class="summary_data">
-            <span class="lining_figures">2</span>
+            <span class="lining_figures">{{newLicenseUserCount}}</span>
             licensed accounts
           </p>
         </div>
@@ -480,7 +480,26 @@ module.exports = {
     },
     allNewCourses(){
       return this.filterNewCourses(this.allCourses)
-    }
+    },
+    allNewUsers(){
+      return this.filterNewUsers(this.allUsers)
+    },
+    newTrialUserCount(){
+      var allNewUsers = this.allNewUsers;
+      trialUsers = allNewUsers.filter( user => {
+        if( user.license === "trial" ){return user}
+        return false
+      })
+      return trialUsers.length
+    },
+    newLicenseUserCount(){
+      var allNewUsers = this.allNewUsers;
+      licenseUsers = allNewUsers.filter( user => {
+        if( user.license === "licensed" ){return user}
+        return false
+      })
+      return licenseUsers.length
+    },
   },
 
   methods: {
@@ -488,8 +507,7 @@ module.exports = {
       var tenDaysAgo = new Date();
       tenDaysAgo.setDate(tenDaysAgo.getDate() - 100);
       return allCourses.filter( course => {
-        var created = new Date(course.created);
-        if( created < tenDaysAgo ){return false}
+        if( course.created < tenDaysAgo ){return false}
         return course
       })
     },
@@ -559,6 +577,14 @@ module.exports = {
         if(!(user.username.includes(this.searchUserUsername))) {return false}
       }
       return user
+    },
+    filterNewUsers(allUsers){
+      var tenDaysAgo = new Date();
+      tenDaysAgo.setDate(tenDaysAgo.getDate() - 100);
+      return allUsers.filter( user => {
+        if( user.createdAt < tenDaysAgo ){ return false }
+        return user
+      })
     },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;
