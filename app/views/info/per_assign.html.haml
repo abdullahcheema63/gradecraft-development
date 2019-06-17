@@ -6,11 +6,7 @@
   - if @assignment_types.length == 0 || @course.assignments.length == 0
     %p
       There are currently no assignments in this course; add an assignment to see analytics.
-  
-  - if Grade.find_by(course_id: @course.id).nil?
-    %p
-      There are currently no assignments with grades in this course; grade an assignment to see analytics.
-  
+
   - if !any_one_assignment_has_two_submissions?(@assignment_types)
     %p
       No assignment currently has more than one graded assignment visible to students; grade and release more assignments to see analytics.
