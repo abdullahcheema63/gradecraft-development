@@ -5,6 +5,7 @@ var AssignmentSubmissionsDropdowns = document.querySelectorAll(".for_assignment_
 
 var SelectedStartDate = localStorage.getItem("start_date");
 var SelectedEndDate = localStorage.getItem("end_date");
+var SelectedField = localStorage.getItem("selected_field");
 
 function UpdateParameterInLink(_Link, _Key, _Value){
     var Link = new URL(_Link);
@@ -15,7 +16,12 @@ function UpdateParameterInLink(_Link, _Key, _Value){
 }
 
 AssignmentSubmissionsDropdowns.forEach(function(_Dropdown){
+    if(SelectedField != null){
+        _Dropdown.value = SelectedField;
+    }
+
     _Dropdown.addEventListener("change", function(){
+        localStorage.setItem("selected_field", _Dropdown.value);
         AssignmentSubmissionsDownloadLinks.forEach(function(_Link){
             _Link.href = UpdateParameterInLink(_Link.href, "field", _Dropdown.value);
         });
