@@ -31,7 +31,7 @@ module Services
       
         if username_duplicates > 0
           changed_username_duplicates = User.where("username ~* ?", new_username.to_s + '\d+').length
-          new_username += "_#{username_duplicates + changed_username_duplicates}"
+          new_username += "#{username_duplicates + changed_username_duplicates}"
         end
 
         return new_username
