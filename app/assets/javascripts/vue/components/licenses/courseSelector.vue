@@ -70,26 +70,8 @@ module.exports = {
       return this.license.courses
         && this.license.courses.some(c => c.id === course.id);
     },
-    updateCourses: async function(courseIds) {
-      const resp = await fetch(api, {
-        method: "PUT",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ courses: courseIds }),
-      });
-      if (!resp.ok) {
-        console.error("resp not ok!");
-        console.error(resp);
-        console.error(await resp.text());
-      }
-      const body = await resp.json();
-      console.log(resp);
-      console.log(body);
-      const data = apiResponseToData(body);
-      console.log(data);
-      this.$emit("updated", data);
+    updateCourses: function(courseIds) {
+      this.$store.dispatch("updateCourseLicense", courseIds)
     },
     addCourse: async function(course) {
       const newList = this.license.courses

@@ -267,7 +267,7 @@ const store = new Vuex.Store({
         //console.log(final);
         commit('addAllInstructors', final)
       },
-      getUserLicense: async function({ commit}){
+      getUserLicense: async function({ commit }){
         console.log("getAllLicenses action dispatched")
         const resp = await fetch("/api/licenses");
         if (resp.status === 404){
@@ -283,7 +283,7 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserLicense', final)
       },
-      newLicensePayment: async function({ commit}, payment){
+      newLicensePayment: async function({ commit }, payment){
         const resp = await fetch("/api/licenses", {
           method: 'POST',
           headers: {
@@ -293,10 +293,20 @@ const store = new Vuex.Store({
           body: JSON.stringify(payment),
         });
         const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
         license = apiResponseToDataDataItem(body)
         commit('updateUserLicense', license)
       },
-      updateLicensePayment: async function({ commit}, payment){
+      updateLicensePayment: async function({ commit }, payment){
         const resp = await fetch("/api/licenses", {
           method: 'PATCH',
           headers: {
@@ -305,10 +315,42 @@ const store = new Vuex.Store({
           },
           body: JSON.stringify(payment),
         });
-        console.log(resp)
         const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
 
         license = apiResponseToDataDataItem(body)
+        commit('updateUserLicense', license)
+      },
+      updateCourseLicense: async function({ commit }, courseIds){
+        const resp = await fetch("/api/licenses/edit", {
+          method: "PUT",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ courses: courseIds }),
+        });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
+        const license = apiResponseToDataDataItem(body)
         commit('updateUserLicense', license)
       },
       licenseCourse({ commit }, course_id){
