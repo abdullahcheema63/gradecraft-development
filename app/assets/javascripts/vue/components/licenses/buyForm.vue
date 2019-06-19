@@ -29,17 +29,6 @@ const data = {
   errors: [],
 };
 
-const api = "/api/licenses";
-
-const getService = (serviceName) =>
-  angular.element(document.body).injector().get(serviceName);
-
-const getAPIHelper = () =>
-  getService("GradeCraftAPI");
-
-const apiResponseToData = (responseJson) =>
-  getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
-
 module.exports = {
   name: "licenses-buy-form",
   components: {
@@ -61,32 +50,7 @@ module.exports = {
         payment,
         license_type_id: this.licenseType.id,
       };
-      console.log("pre action dispatch submission:", submission);
-      console.log("action dispatch", this.$store.dispatch("newLicensePayment", submission))
-      const resp = await fetch(api, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submission),
-      });
-      const body = await resp.json();
-      if (!resp.ok) {
-        this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
-          ? body.errors
-          : Object.entries(body.errors); //Need polyfill
-        console.error("resp not ok!");
-        console.error(this);
-        console.error(resp);
-        console.error(body);
-        return;
-      }
-      console.log(resp);
-      console.log("body response inside component", body);
-      const data = apiResponseToData(body);
-      console.log(data);
-      this.$emit("updated", data);
+      this.$store.dispatch("newLicensePayment", submission)
     },
   },
   computed: {
