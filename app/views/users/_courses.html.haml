@@ -11,9 +11,9 @@
         = cm.label :pseudonym, "Pseudonym"
         = cm.text_field :pseudonym
 
-    - if current_course.has_teams
+    - if !edit_user && current_course.has_teams
       .form-item
-        = cm.label :team_in_course, "Select Team"
+        = cm.label :team_in_course, "Select #{term_for(:teams).singularize}"
         = cm.select :team_in_course, available_teams(current_course), selected: 1, include_blank: true
 
     - if current_course.has_team_roles?
