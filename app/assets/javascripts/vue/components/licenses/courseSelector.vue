@@ -43,16 +43,6 @@
 
 <script lang="coffee">
 ```
-const api = "/api/licenses/edit";
-
-const getService = (serviceName) =>
-  angular.element(document.body).injector().get(serviceName);
-
-const getAPIHelper = () =>
-  getService("GradeCraftAPI");
-
-const apiResponseToData = (responseJson) =>
-  getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
 
 module.exports = {
   name: "licenses-course-selector",
