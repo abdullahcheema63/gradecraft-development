@@ -49,7 +49,7 @@ module LinkHelper
   end
 
   def edit_group_grade_link_to(assignment, group, options={})
-    grades_visible_to_any_student = assignment.grades.where(student_id: group.students.ids).pluck("student_visible").include? true
+    grades_visible_to_any_student = assignment.grades.where(student_id: group.students.ids, student_visible: true).exists?
     if grades_visible_to_any_student
       confirm_message = 'These grades are about to be marked as ungraded and unavailable to the students - they won\'t be visible again until you click "Submit" - are you sure?'
       options.merge! data: { confirm:  confirm_message }
