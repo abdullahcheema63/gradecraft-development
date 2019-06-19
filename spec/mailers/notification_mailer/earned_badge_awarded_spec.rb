@@ -58,10 +58,6 @@ describe NotificationMailer do
 
       it_behaves_like "a complete earned badge email body"
 
-      it "doesn't include a template" do
-        should_not include "Regents of The University of Michigan"
-      end
-
       it "contains the badges url" do
         should include badges_url
       end
@@ -77,10 +73,6 @@ describe NotificationMailer do
         # this isn't included in the text part
         it "includes the badge icon" do
           should include earned_badge.badge.icon
-        end
-
-        it "should use include a template" do
-          should include "Regents of The University of Michigan"
         end
 
         it "declares a doctype" do

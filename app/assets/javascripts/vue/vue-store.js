@@ -43,8 +43,10 @@ const loadMany = function(modelArray, response, options, filter) {
       .value();
   };
 
+const csrftoken = document.head.querySelector("[name='csrf-token']").attributes.content.value;
+
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "licenses", "license_types"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
   dataItem(responseJson.data, responseJson, { include: ["courses", "payments"] });
@@ -54,7 +56,8 @@ const store = new Vuex.Store({
     allUsers: [],
     allCourses: [],
     allInstructors: [],
-    userLicense: [],
+    allInstitutions: [],
+    userLicense: null,
     user: {
       id: null,
       firstName: "",
@@ -228,7 +231,6 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        //console.log(json);
         const final = apiResponseToData(json);
         //console.log(final);
         if (store.state.user.admin === "true"){
@@ -268,6 +270,20 @@ const store = new Vuex.Store({
         //console.log(final);
         commit('addAllInstructors', final)
       },
+      getAllInstitutions: async function({ commit }){
+        const resp = await fetch("api/institutions");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        //console.log(json);
+        const final = apiResponseToData(json);
+        //console.log(final);
+        commit('addAllInstitutions', final);
+      },
       getUserLicense: async function({ commit}){
         console.log("getAllLicenses action dispatched")
         const resp = await fetch("/api/licenses");
@@ -284,6 +300,23 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserLicense', final)
       },
+      addNewCourse: async function({commit}, course){
+        const resp = await fetch("/api/courses", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(course)
+        }).then((response) => {
+          console.log("inside add resp action" , response)
+        })
+        console.log("inside addNewCourse action" , resp)
+
+      },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
       },
@@ -292,9 +325,6 @@ const store = new Vuex.Store({
       },
       toggleGuideControl({ commit }){
         commit('toggleGuide')
-      },
-      addNewCourse({ commit }, course){
-        commit('addNewCourse', {course: course})
       },
       setCurrentUser({ commit }, user){
         commit('setCurrentUser', user)
@@ -375,6 +405,7 @@ const store = new Vuex.Store({
             email: user.email,
             createdAt: user.created_at,
             url: user.user_url,
+            license: "trial",
             courses: user.course_memberships.map(course => ({
               name: course.name,
               role: course.role,
@@ -409,8 +440,19 @@ const store = new Vuex.Store({
           }
         })
       },
+      addAllInstitutions (state, institutions){
+        state.allInstitutions = institutions.map(institution => {
+          return {
+            id: institution.id,
+            name: institution.name,
+            editURL: institution.edit_url,
+            hasSiteLicense: institution.has_site_license,
+            institutionType: institution.institution_type
+          }
+        })
+      },
       addUserLicense (state, licenseObj){
-        state.userLicense.push(licenseObj)
+        state.userLicense = licenseObj
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)

@@ -49,8 +49,11 @@ module LinkHelper
   end
 
   def edit_group_grade_link_to(assignment, group, options={})
-    confirm_message = 'These grades are about to be marked as ungraded and unavailable to the students - they won\'t be visible again until you click "Submit" - are you sure?'
-    options.merge! data: { confirm:  confirm_message }
+    grades_visible_to_any_student = assignment.grades.where(student_id: group.students.ids, student_visible: true).exists?
+    if grades_visible_to_any_student
+      confirm_message = 'These grades are about to be marked as ungraded and unavailable to the students - they won\'t be visible again until you click "Submit" - are you sure?'
+      options.merge! data: { confirm:  confirm_message }
+    end
     link_to decorative_glyph(:edit) + "Edit Group Grades", grade_assignment_group_path(assignment, group), options
   end
 

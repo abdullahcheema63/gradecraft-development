@@ -280,7 +280,6 @@ module.exports = {
       formResponse: ["Create a new course"],
       courseToLicense: "",
       newCourse: {
-        id: "",
         name: "",
         number: "",
         role: "Instructor",
