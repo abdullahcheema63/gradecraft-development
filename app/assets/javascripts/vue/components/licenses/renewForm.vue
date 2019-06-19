@@ -55,7 +55,10 @@ module.exports = {
       const submission = {
         payment,
       };
-      console.log(submission);
+      console.log("submission:", submission);
+      console.log("action dispatch", this.$store.dispatch("updateLicensePayment", submission))
+    },
+    extra: async function(){
       const resp = await fetch(api, {
         method: 'PATCH',
         headers: {
@@ -75,11 +78,11 @@ module.exports = {
         console.error(body);
         return;
       }
-      console.log(resp);
-      console.log(body);
+      console.log("response from component call", resp);
+      console.log("body from component call:", body);
       alert(body);
       const data = apiResponseToData(body);
-      console.log(data);
+      console.log("data to see whats emited", data);
       this.$emit("updated", data);
     },
   },

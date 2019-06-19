@@ -29,7 +29,7 @@
       <template slot="content">
         <div>
           <licenses-renew-form @updated="onUpdated" v-if="hasLicense" :license="this.userLicense" :license-type="licenseType" :stripePk="stripePk" />
-          <licenses-buy-form @updated="onUpdated" v-if="hasLicense" :license-type-options="licenseTypeOptions" :stripePk="stripePk" />
+          <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-type-options="licenseTypeOptions" :stripePk="stripePk" />
         </div>
       </template>
     </buttonModal>

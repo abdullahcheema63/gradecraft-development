@@ -283,6 +283,34 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserLicense', final)
       },
+      newLicensePayment: async function({ commit}, payment){
+        const resp = await fetch("/api/licenses", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payment),
+        });
+        const body = await resp.json();
+        license = apiResponseToDataDataItem(body)
+        commit('updateUserLicense', license)
+      },
+      updateLicensePayment: async function({ commit}, payment){
+        const resp = await fetch("/api/licenses", {
+          method: 'PATCH',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payment),
+        });
+        console.log(resp)
+        const body = await resp.json();
+
+        license = apiResponseToDataDataItem(body)
+        commit('updateUserLicense', license)
+      },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
       },
@@ -441,6 +469,9 @@ const store = new Vuex.Store({
         state.user.showGuide = user.showGuide
         state.user.hasPaid = user.hasPaid
         state.user.account_url = user.account_url
+      },
+      updateUserLicense (state, license){
+        state.userLicense = license;
       }
     },
     getters: {

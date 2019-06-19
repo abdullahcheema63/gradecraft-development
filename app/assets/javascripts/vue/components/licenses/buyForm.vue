@@ -61,7 +61,8 @@ module.exports = {
         payment,
         license_type_id: this.licenseType.id,
       };
-      console.log(submission);
+      console.log("pre action dispatch submission:", submission);
+      console.log("action dispatch", this.$store.dispatch("newLicensePayment", submission))
       const resp = await fetch(api, {
         method: 'POST',
         headers: {
@@ -82,7 +83,7 @@ module.exports = {
         return;
       }
       console.log(resp);
-      console.log(body);
+      console.log("body response inside component", body);
       const data = apiResponseToData(body);
       console.log(data);
       this.$emit("updated", data);
