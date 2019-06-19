@@ -50,33 +50,9 @@
 <script lang="coffee">
 ```
 const data = {
-  license: undefined,
   courses: [],
   showRenew: false,
 };
-
-const api = "/api/licenses";
-
-const getService = (serviceName) =>
-  angular.element(document.body).injector().get(serviceName);
-
-const getAPIHelper = () =>
-  getService("GradeCraftAPI");
-
-const apiResponseToData = (responseJson) =>
-  getAPIHelper().dataItem(responseJson.data, responseJson, { include: [ "courses", "payments" ] });
-
-const coursesFromResponse = (responseJson) => {
-  const arr = [];
-  getAPIHelper().loadFromIncluded(arr, "courses", responseJson)
-  return arr;
-}
-
-const licenseTypesFromResponse = (responseJson) => {
-  const arr = [];
-  getAPIHelper().loadFromIncluded(arr, "license_types", responseJson)
-  return arr;
-}
 
 module.exports = {
   name: "licenses-dash",
@@ -109,24 +85,6 @@ module.exports = {
     },
   },
   methods: {
-    getLicense: async function() {
-      const resp = await fetch(api);
-      if (resp.status === 404) {
-        return undefined;
-      }
-      else if (!resp.ok) {
-        throw resp;
-      }
-      const json = await resp.json();
-      console.log("json variable from api response from dash-vue component")
-      console.log(json);
-      data.courses = coursesFromResponse(json);
-
-      const final = apiResponseToData(json);
-      console.log("final variable from api response from dash-vue component")
-      console.log(final)
-      return final;
-    },
     toggleRenew: function() {
       this.showRenew = !this.showRenew;
     },
@@ -140,7 +98,6 @@ module.exports = {
     }
   },
   created: async function() {
-    data.license = await this.getLicense();
     this.$store.dispatch("getUserLicense");
   },
 }
