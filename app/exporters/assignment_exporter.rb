@@ -53,11 +53,11 @@ class AssignmentExporter
 
   def visibility(assignment)
     if assignment.unlock_conditions.length > 0
-      if assignment.visible_when_locked
-        return "Yes (even if assignment locked)"
-      else
+      if !assignment.visible_when_locked
         return "If Unlocked"
       end
+      
+      return "Yes (even if assignment locked)"
     end
 
     return "Yes" if assignment.visible
