@@ -5,6 +5,7 @@ json.attributes do
   json.merge! badge.attributes
   json.icon badge.icon.url
   json.default_url !badge.icon.file.present?
+
   json.is_a_condition badge.is_a_condition?
   if badge.is_a_condition?
     json.unlock_keys badge.unlock_keys.map {
