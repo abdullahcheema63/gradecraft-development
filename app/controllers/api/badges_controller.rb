@@ -31,14 +31,18 @@ class API::BadgesController < ApplicationController
   end
 
   def show
-    @badge = Badge.find(params[:id])
+    #@badge = Badge.find(params[:id])
   end
 
   # PUT api/badges/:id
   def update
     @badge = Badge.find(params[:id])
+
+    puts Badge.find(params[:id]).icon.url.inspect
+
     if @badge.update_attributes badge_params
-      render "api/badges/show", success: true, status: 200
+      puts Badge.find(params[:id]).icon.url.inspect
+      render "api/badges/show", :locals => { :badge => Badge.find(params[:id]) }, success: true, status: 200
     else
       render json: {
         message: "failed to save badge",
@@ -51,7 +55,7 @@ class API::BadgesController < ApplicationController
   def create
     @badge = current_course.badges.new(badge_params)
     if @badge.save
-      render "api/badges/show", success: true, status: 201
+      render "api/badges/show",:locals => { :badge => @badge }, success: true, status: 201
     else
       render json: {
         message: "failed to save badge",

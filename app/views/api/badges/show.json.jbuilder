@@ -1,6 +1,6 @@
 json.data do
   return if @badge.course != current_course
-  json.partial! 'api/badges/badge', badge: @badge
+  json.partial! 'api/badges/badge', badge: badge
 end
 
 json.included do
