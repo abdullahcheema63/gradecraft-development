@@ -31,17 +31,13 @@ class API::BadgesController < ApplicationController
   end
 
   def show
-    #@badge = Badge.find(params[:id])
   end
 
   # PUT api/badges/:id
   def update
     @badge = Badge.find(params[:id])
 
-    puts Badge.find(params[:id]).icon.url.inspect
-
     if @badge.update_attributes badge_params
-      puts Badge.find(params[:id]).icon.url.inspect
       render "api/badges/show", :locals => { :badge => Badge.find(params[:id]) }, success: true, status: 200
     else
       render json: {
