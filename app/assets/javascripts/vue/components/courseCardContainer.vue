@@ -269,7 +269,7 @@ module.exports = {
       config: {
         allowInput: true,
         enableTime: true,
-        dateFormat: "D, M d, Y at H:i K",
+        dateFormat: "D, M d, Y at h:i K",
         static: true,
       },
       newCourseStartDate: null,
@@ -280,7 +280,6 @@ module.exports = {
       formResponse: ["Create a new course"],
       courseToLicense: "",
       newCourse: {
-        id: "",
         name: "",
         number: "",
         role: "Instructor",

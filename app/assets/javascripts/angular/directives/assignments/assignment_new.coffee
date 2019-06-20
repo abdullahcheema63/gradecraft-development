@@ -11,12 +11,16 @@
     vmAssignmentNew.assignmentTypes = AssignmentTypeService.assignmentTypes
     vmAssignmentNew.termFor = AssignmentTypeService.termFor
 
+    URLQueries = new URLSearchParams(window.location.search)
+
+    vmAssignmentNew.assignmentTypeID = parseInt(URLQueries.get("assignment_type_id"))
+
     services(@courseUsesLearningObjectives).then(() ->
       vmAssignmentNew.loading = false
     )
 
     vmAssignmentNew.newAssignment = {
-      assignment_type_id: null
+      assignment_type_id: vmAssignmentNew.assignmentTypeID
       name: null
     }
 

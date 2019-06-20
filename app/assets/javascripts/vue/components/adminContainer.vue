@@ -13,11 +13,11 @@
         <div class="bg-blue_2">
           <h4>New User Accounts</h4>
           <p class="summary_data">
-            <span class="lining_figures">36</span>
+            <span class="lining_figures">{{newTrialUsers.length}}</span>
             free trial accounts
           </p>
           <p class="summary_data">
-            <span class="lining_figures">2</span>
+            <span class="lining_figures">{{newLicenseUsers.length}}</span>
             licensed accounts
           </p>
         </div>
@@ -35,19 +35,19 @@
         <div class="bg-blue_2">
           <h4>New Courses</h4>
           <p class="summary_data column-2">
-            <span class="lining_figures">16</span>
+            <span class="lining_figures">{{allNewCourses.length}}</span>
             total
           </p>
           <p class="summary_data column-2">
-            <span class="lining_figures">306</span>
+            <span class="lining_figures">{{newTrialCourses.length}}</span>
             free trial courses
           </p>
           <p class="summary_data column-2">
-            <span class="lining_figures">5</span>
+            <span class="lining_figures">Uh</span>
             copied
           </p>
           <p class="summary_data column-2">
-            <span class="lining_figures">6</span>
+            <span class="lining_figures">{{newLicenseCourses.length}}</span>
             licensed courses
           </p>
         </div>
@@ -112,7 +112,7 @@
         </div>
         <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
 
-        <button class="action next">Add a new course</button>
+        <a class="button action next" href="courses/new">Add a new course</a>
       </template>
     </accordionComponent>
 
@@ -174,14 +174,17 @@
           <h2>All Courses </h2>
           <p>Manage and view all courses&mdash;active and inactive, published and unpublished. </p>
 
-          <tableComponent v-if="allCourses.length" :content="allCourses"></tableComponent>
+          <tableComponent v-if="allCourses.length" :content="allCourses" table-type="courses"></tableComponent>
 
           <button type="button" class="action">Export this table view</button>
         </div>
 
-        <div v-if="tabSection[0]==='Instructor Accounts'">
+        <div v-if="tabSection[0]==='Instructors'">
           <h2>All Instructor Users</h2>
           <p>Manage instructor users and their licensed accounts.</p>
+
+          <tableComponent v-if="allInstructors1.length" :content="allInstructors1" table-type="instructors"></tableComponent>
+
           <div class="table_functions">
             <div class="filter_box">
               <p>Select which filters you want to apply to the table below: </p>
@@ -259,7 +262,7 @@
           <tablePagination :items="allInstructors1" @paginate="paginateItems"></tablePagination>
         </div>
 
-        <div v-if="tabSection[0]==='Search All Users'">
+        <div v-if="tabSection[0]==='Users'">
           <h2>Search for users across all courses and account types </h2>
           <h3>Search by: </h3>
           <form>
@@ -329,12 +332,47 @@
           <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
         </div>
 
+        <div v-if="tabSection[0]==='Institutions'">
+          <h2>All Institutions</h2>
+          <p>Need to add button to add Institution</p>
+          <p>Need to add search text bar</p>
+          <div class="table_container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name </th>
+                  <th>Has Site License?</th>
+                  <th>Type</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="institution in allInstitutions" :key="institution.id">
+                  <td>{{institution.name}}</td>
+                  <td><span :class="{checked: institution.hasSiteLicense}"></span> </td>
+                  <td>{{institution.institutionType}}</td>
+                  <td>
+                    <buttonDropdown>
+                      <template slot="button_text">Options</template>
+                      <template slot="content">
+                        <ul>
+                          <li><a :href="institution.editURL">Edit</a> </li>
+                        </ul>
+                      </template>
+                    </buttonDropdown>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <tablePagination :items="allInstitutions" @paginate="paginateItems"></tablePagination>
+        </div>
+
         <div v-if="tabSection[0]==='Utilities'">
           <h2>Administrative Utilities</h2>
-          <p>__NOTE__ This section will include the current sections: </p>
+          <p>Most "Admin" options from the nav bar have been generally replaced by this overview page</p>
+          <p>Admin abilites that are tied to a specifc course have been moved to "Course settings" "admin" tab</p>
           <ul>
-            <li>Delete Course Memberships </li>
-            <li>Manage Institutions </li>
             <li>__New__ Unlocks </li>
           </ul>
         </div>
@@ -367,7 +405,7 @@ module.exports = {
       searchUserEmail: "",
       currentPageItemMin: 0,
       currentPageItemMax: 10,
-      tabBarOption: ["Courses", "Instructor Accounts", "Search All Users", "Utilities"],
+      tabBarOption: ["Courses", "Instructors", "Users", "Institutions", "Utilities"],
       tabSection: ["Courses"],
       courseToLicense: "",
       newCourse: {
@@ -410,6 +448,7 @@ module.exports = {
     this.$store.dispatch("getAllUsers");
     this.$store.dispatch("getCourseMemberships");
     this.$store.dispatch("getAllInstructors");
+    this.$store.dispatch("getAllInstitutions");
   },
   computed: {
     getUserFirstName(){
@@ -439,18 +478,51 @@ module.exports = {
     allInstructors1(){
       return this.filterAllInstructors(this.$store.state.allInstructors);
     },
+    allInstitutions(){
+      return this.$store.state.allInstitutions;
+    },
     allNewCourses(){
       return this.filterNewCourses(this.allCourses)
-    }
+    },
+    newTrialCourses(){
+      var allNewCourses = this.allNewCourses;
+      return allNewCourses.filter( course => {
+        if( course.licensed === false){return course}
+        return false
+        })
+    },
+    newLicenseCourses(){
+      var allNewCourses = this.allNewCourses;
+      return allNewCourses.filter( course => {
+        if( course.licensed === true){return course}
+        return false
+        })
+    },
+    allNewUsers(){
+      return this.filterNewUsers(this.allUsers)
+    },
+    newTrialUsers(){
+      var allNewUsers = this.allNewUsers;
+      return allNewUsers.filter( user => {
+        if( user.license === "trial" ){return user}
+        return false
+      })
+    },
+    newLicenseUsers(){
+      var allNewUsers = this.allNewUsers;
+      return allNewUsers.filter( user => {
+        if( user.license === "licensed" ){return user}
+        return false
+      })
+    },
   },
 
   methods: {
     filterNewCourses(allCourses){
       var tenDaysAgo = new Date();
-      tenDaysAgo.setDate(tenDaysAgo.getDate() - 50);
+      tenDaysAgo.setDate(tenDaysAgo.getDate() - 100);
       return allCourses.filter( course => {
-        var created = new Date(course.created);
-        if( created < tenDaysAgo ){return false}
+        if( course.created < tenDaysAgo ){return false}
         return course
       })
     },
@@ -520,6 +592,14 @@ module.exports = {
         if(!(user.username.includes(this.searchUserUsername))) {return false}
       }
       return user
+    },
+    filterNewUsers(allUsers){
+      var tenDaysAgo = new Date();
+      tenDaysAgo.setDate(tenDaysAgo.getDate() - 100);
+      return allUsers.filter( user => {
+        if( user.createdAt < tenDaysAgo ){ return false }
+        return user
+      })
     },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;

@@ -10,6 +10,7 @@
     = stylesheet_link_tag "application", media: "all"
     = render partial: "layouts/favicon"
     = javascript_include_tag "https://cdn.statuspage.io/se-v2.js"
+    = csrf_meta_tags
     = yield(:head)
 
   %body.new_style= render partial: "layouts/content"

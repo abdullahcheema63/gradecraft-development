@@ -13,3 +13,9 @@
       = f.input :disable_grade_emails, label: "Disable Grade Emails?", hint: " Emails are not sent to students upon the release of a grade"
     .form-item
       = f.association :institution, collection: Institution.all, prompt: "Select an institution"
+    .form-item
+      = link_to "Check Unlockables", unlocks_admin_tools_path
+      .p Retroactively check unlock conditions after conditions have been changed partway through in a course
+    .form-item
+      = link_to "Manage Course Memberships", course_memberships_path
+      .p Remove staff or students from this course

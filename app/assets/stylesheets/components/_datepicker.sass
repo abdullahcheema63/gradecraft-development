@@ -191,6 +191,10 @@
     @include tablet
       left: -2em
 
+  &.showTimeInput.hasTime
+    .flatpickr-time
+      border-top: 2px solid $grey_1
+
 .flatpickr-months
   background: $blue_dark
   color: white
@@ -265,6 +269,83 @@
       &:after
         border-width: 6px
         border-color: white
+        border-right-color: transparent
+        border-left-color: transparent
+
+      &:hover
+        background: transparent
+
+span.flatpickr-weekday
+  font-size: inherit
+  color: $grey_3
+
+.flatpickr-day
+  color: $blue-medium_1
+  font-family: 'ProximaNova_regular', sans-serif
+  font-size: initial
+  border: 0
+
+  &:hover
+    background: $bg-blue_2
+
+  &.today
+    background: $grey-faint
+
+    &:hover
+      background: $bg-blue_2
+      color: $blue-medium_1
+
+  &.prevMonthDay, &.nextMonthDay
+    color: $blue
+
+    &:hover
+      background: $bg-blue_2
+
+  &.selected
+    background: $blue_dark
+
+    &:hover
+      background: $blue_dark
+      color: white
+
+    &.prevMonthDay, &.nextMonthDay
+      background: $blue_dark
+
+.flatpickr-time
+  border-top: 2px solid $grey_1
+  height: 50px
+  font-size: 1.25em
+  display: flex
+  justify-content: space-between
+
+  .flatpickr-am-pm
+    height: 35px
+    color: $blue_dark
+    
+    &:hover
+      background: none
+
+  .numInputWrapper
+    float: none
+    flex: none
+    width: 35%
+    height: 35px
+    margin-top: 2px
+
+    &:hover
+      background: transparent
+
+    input[type="number"]
+      border-bottom: 0
+      background: none
+
+    span.arrowUp, span.arrowDown
+      opacity: 1
+      border: 0
+
+      &:after
+        border-width: 6px
+        border-color: $blue_dark
         border-right-color: transparent
         border-left-color: transparent
 

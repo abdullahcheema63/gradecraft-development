@@ -3,6 +3,8 @@ class API::CoursesController < ApplicationController
   before_action :ensure_staff?, only: :show
   before_action :use_current_course, only: [:analytics, :one_week_analytics]
 
+  # skip_before_action :verify_authenticity_token, only: :create
+
   # GET api/search
   # Used specifically for typeahead on course search input
   def search
@@ -33,6 +35,25 @@ class API::CoursesController < ApplicationController
     @course = Course.includes(:grade_scheme_elements).find params[:id]
   end
 
+  # POST /api/courses
+  def create
+    puts("inside api/courses#create")
+    course_params = format_course_params(params)
+
+    @course = Course.new(course_params)
+    if @course.save
+      puts("saved created course")
+      if !current_user_is_admin?
+        puts("current_user.id", current_user.id)
+        @course.course_memberships.create(user_id: current_user.id,
+                                          role: current_user.role(current_course))
+      end
+      session[:course_id] = @course.id
+    else
+      puts("Course was not saved")
+    end
+  end
+
   # GET api/courses/analytics
   def analytics
     if current_user_is_student?
@@ -54,5 +75,20 @@ class API::CoursesController < ApplicationController
   # GET api/timeline_events
   def timeline_events
     @events = Timeline.new(current_course).events_by_due_date
+  end
+
+  private
+
+  def format_course_params(params)
+    term = params["term"]
+    formatted_params = {
+      "course_number" => params["number"],
+      "name" => params["name"],
+      "semester" => term["name"],
+      "year" => term["year"],
+      "start_date" => term["start"],
+      "end_date" => term["end"],
+      "has_paid" => params["licensed"]
+    }
   end
 end

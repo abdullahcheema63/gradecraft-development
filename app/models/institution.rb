@@ -5,4 +5,6 @@ class Institution < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   accepts_nested_attributes_for :providers, reject_if: proc { |attr| attr[:consumer_key].blank? }
+
+  scope :order_by_name, -> { order name: :asc }
 end
