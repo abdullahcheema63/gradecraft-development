@@ -1,89 +1,81 @@
 .pageContent
   = render partial: "layouts/alerts", locals: { model: @user, term: "profile" }
 
-  %h1 My Account
-
   = simple_form_for(@user, method: :put, :url => update_profile_users_path) do |f|
-    %h2 General Settings
-    %p These are settings that apply to your GradeCraft account.
-    .form-item
-      %label.user-avatar-label{for: "user_avatar"} Your Avatar
-      = f.file_field :avatar_file_name, {class: "media-image-upload"}
-      .preview-wrapper{ class: @user.avatar_file_name.present? ? "" : "hidden"}
-        .icon-preview.avatar-preview
-          .img-cropper.avatar-crop
-            %img.img-rounded{:src => @user.avatar_file_name}
-          %span.xaxis-label 100px
-          %span.yaxis-label 100px
-        .icon-preview.tiny-preview
-          .img-cropper.xsmall-crop
-            %img.img-rounded{:src => @user.avatar_file_name}
-          %span.xaxis-label 20px
-          %span.yaxis-label 20px
-        - if @user.avatar_file_name.present? && @user.errors[:avatar_file_name].empty?
-          = f.check_box :remove_avatar_file_name
-          Remove Image
+    %section
+      %h2.form-title Account Settings
+      .form-item
+        %label.user-avatar-label{for: "user_avatar"} Your Avatar
+        = f.file_field :avatar_file_name, {class: "media-image-upload"}
+        .preview-wrapper{ class: @user.avatar_file_name.present? ? "" : "hidden"}
+          .icon-preview.avatar-preview
+            .img-cropper.avatar-crop
+              %img.img-rounded{:src => @user.avatar_file_name}
+            %span.xaxis-label 100px
+            %span.yaxis-label 100px
+          .icon-preview.tiny-preview
+            .img-cropper.xsmall-crop
+              %img.img-rounded{:src => @user.avatar_file_name}
+            %span.xaxis-label 20px
+            %span.yaxis-label 20px
+          - if @user.avatar_file_name.present? && @user.errors[:avatar_file_name].empty?
+            = f.check_box :remove_avatar_file_name
+            Remove Image
 
-    - if ! @user.kerberos_uid.present?
-      .update-password-wrapper
-        %button.button-link.update-button#update-password Change Password
-        .update-password-form{"aria-hidden": "true"}
-          %button#cancel-password-change.button-link.cancel-button Cancel
-          .form-item
-            = f.label :password, "New password"
-            = f.password_field :password, as: :password
-          .form-item.no-margin
-            = f.label :password_confirmation, "Confirm new password"
-            = f.password_field :password_confirmation, as: :password
+      - if ! @user.kerberos_uid.present? && ! @user.lti_uid.present?
+        .update-password-wrapper
+          %button.button-link.update-button#update-password Change Password
+          .update-password-form{"aria-hidden": "true"}
+            %button#cancel-password-change.button-link.cancel-button Cancel
+            .form-item
+              = f.label :password, "New password"
+              = f.password_field :password, as: :password
+            .form-item.no-margin
+              = f.label :password_confirmation, "Confirm new password"
+              = f.password_field :password_confirmation, as: :password
 
-    .form_elem
-      = f.label :time_zone
-      = f.time_zone_select :time_zone
+      .form-item
+        = f.label :time_zone
+        = f.time_zone_select :time_zone
 
-    = f.simple_fields_for :course_memberships, @course_membership do |p|
-      %h2 Course Settings
-      %p
-        These are settings that are specific to
-        %b #{ current_course.course_number } #{ current_course.name }.
-
-      - if @user.is_student?(current_course)
+      %hr.dotted
+      %h2.form-title My Profile in #{ current_course.name }
+      = f.simple_fields_for :course_memberships, @course_membership do |p|
         - if current_course.has_character_profiles?
-          %h4 My Character Profile
-          %p What’s the background of your character in this class? What skills do you have and what are you motivated by?
-          .form_elem
-            = p.input :character_profile, :placeholder => "What’s your character profile?"
-        - if current_course.teams_visible? && (current_course.has_in_team_leaderboards? || current_course.has_character_names?)
-          %h4 My Pseudonym
-          %p What would you like your name to be on the leaderboards?
-          .form_elem
-            = p.input :pseudonym, :placeholder => "What’s your pseudonym?"
-        - if current_course.has_team_roles?
-          %h4 My #{term_for :team} Role
-          %p What is your role in your #{term_for :team}? What will you contribute?
-          .form_elem
-            = p.input :team_role, :input_html => { :maxlength => 255 }, :label => "#{term_for :team} Role", :placeholder => "What’s your role?"
-
-      %h4 Course-level Email Settings
-      - if @user.is_student?(current_course)
-        %p You will always see your notifications in the announcement center above. If there's a type of email you'd rather not get from GradeCraft, just uncheck the box below.
-      %p Send me emails about:
-      .form_options
-        = p.input :email_announcements, :label => "Announcements"
-        - if @user.is_student?(current_course) && current_course.has_badges?
-          = p.input :email_badge_awards, :label => "#{term_for :badge} achievements"
+          .form-item
+            = p.input :character_profile
+            .form-hint What's the background of your character in this class? What skills do you have and what are you motivated by?
         - if @user.is_student?(current_course)
-          = p.input :email_grade_notifications, :label => "Grade notifications"
-        - if @user.is_student?(current_course) && current_course.has_team_challenges?
-          = p.input :email_challenge_grade_notifications, :label => "Challenge grade notifications"
-        - if @user.is_student?(current_course) && current_course.uses_learning_objectives?
-          = p.input :email_learning_objective_achieved, :label => "Learning Objective achievements"
+          - if current_course.teams_visible? && (current_course.has_in_team_leaderboards? || current_course.has_character_names?)
+            .form-item
+              = p.input :pseudonym
+              .form-hint What would you like your name to be on the leaderboards?
 
-    - if impersonating?
-      You cannot update this information in preview mode
-    - else
-      .content_block
-        = submit_tag "Save my settings", class: "button action secondary"
+        - if current_course.has_team_roles?
+          .form-item
+            = p.input :team_role, :input_html => { :maxlength => 255 }, :label => "#{term_for :team} Role"
+            .form-hint What will you contribute to your #{term_for :team}?
 
-  - if !(Rails.env.production?) && !(@user.is_student?(current_course))
-    .content_block.bg-green_mint
-      %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-type-options": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }
+        %h3.form-subtitle Email Settings
+        .form-hint You will always see your notifications in the announcement center above. If there's a type of email you'd rather not get from GradeCraft, just uncheck the box below.
+        .form-item
+          = p.input :email_announcements
+          - if current_course.has_badges?
+            = p.input :email_badge_awards
+          = p.input :email_grade_notifications
+          - if current_course.has_team_challenges?
+            = p.input :email_challenge_grade_notifications
+          - if current_course.uses_learning_objectives?
+            = p.input :email_learning_objective_achieved
+
+      - if impersonating?
+        You cannot update this information in preview mode
+      - else
+        .main-buttons
+          = submit_tag "Update Settings", class: "button action"
+          = link_to glyph("times-circle") + "Cancel", root_path, class: "button secondary"
+
+        
+      - if !(Rails.env.production?) && !(@user.is_student?(current_course))
+        .content_block.bg-green_mint
+          %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-type-options": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }
