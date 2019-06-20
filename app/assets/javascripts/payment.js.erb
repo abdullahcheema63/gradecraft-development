@@ -1,0 +1,36 @@
+!function() {
+  e = document.querySelector("#card-element");
+  if (!e) return;
+
+  const stripe = Stripe('<%= Rails.configuration.stripe[:publishable_key] %>');
+
+  const elements = stripe.elements();
+
+  const card = elements.create('card');
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  const form = document.getElementById("payment-form");
+
+  const stripeTokenHandler = (token, form) => {
+    const hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'license[payments_attributes][0][stripe_token]');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    form.submit();
+  }
+
+  form.addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    stripe.createToken(card).then((result) => {
+      if (result.error) {
+        const errorElement = document.getElementById("card-errors");
+        errorElement.textContent = result.error.message;
+      } else {
+        stripeTokenHandler(result.token, form);
+      }
+    });
+  });
+}();

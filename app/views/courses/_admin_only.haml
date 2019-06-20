@@ -4,7 +4,7 @@
     .form-item
       = f.input :status, label: "Active?", hint: " Is this an active course?"
     .form-item
-      = f.input :has_paid, label: "Has Paid?", hint: " If this course is not at Michigan, has it been paid for? This affects whether or not instructors can add users."
+      = f.input :has_paid, label: "Has Paid?", hint: " If this course is not at Michigan, has it been paid for? This affects whether or not instructors can add users. This flag is independent of the Licensing section in Edit Profile."
     .form-item
       = f.input :allows_canvas, label: "Allows Canvas?", hint: " Does this course allow integration with Canvas?"
     .form-item

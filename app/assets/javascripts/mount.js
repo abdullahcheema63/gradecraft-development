@@ -9,19 +9,21 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  const sanitaryComponents = {};
+  const components = {};
   for (k in VComponents) {
     const sanitizedKey = k
       .replace("vue/components/", "")
       .replace("/", "-");
     const v = VComponents[k];
-    sanitaryComponents[sanitizedKey] = v;
+    components[sanitizedKey] = v;
   }
 
-  [...rootElems].map((e) =>
+  for (el of rootElems) {
+    console.log(el);
     new Vue({
-      el: e,
+      el,
       store,
-      components: sanitaryComponents,
-    }));
+      components,
+    });
+  }
 });

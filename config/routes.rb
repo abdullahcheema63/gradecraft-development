@@ -7,30 +7,30 @@ Rails.application.routes.draw do
   mount Resque::Server, at: "/jobs", constraints: AdminConstraint.new
   mount JasmineRails::Engine, at: '/specs', constraints: AdminConstraint.new if defined?(JasmineRails)
 
-  # 1. Analytics & Charts
-  # 2. Announcements
-  # 3. Assignments, Submissions, Grades
-  # 4. Assignment Types
-  # 5. Badges
-  # 6. Challenges
-  # 7. Integrations
-  # 8. Courses
-  # 9. Groups
-  # 10. Informational Pages
-  # 11. Grade Schemes
-  # 12. Teams
-  # 13. Users
-  # 14. User Auth
-  # 15. Uploads
-  # 16. Events
-  # 17. Attendance
-  # 18. API Calls
-  # 19. Exports
-  # 20. Learning Objectives
-  # 21. Errors
-  # 22. Admin
+  #1. Analytics & Charts
+  #2. Announcements
+  #3. Assignments, Submissions, Grades
+  #4. Assignment Types
+  #5. Badges
+  #6. Challenges
+  #7. Integrations
+  #8. Courses
+  #9. Groups
+  #10. Informational Pages
+  #11. Grade Schemes
+  #12. Teams
+  #13. Users
+  #14. User Auth
+  #15. Uploads
+  #16. Events
+  #17. Attendance
+  #18. API Calls
+  #19. Exports
+  #20. Learning Objectives
+  #21. Errors
+  #22. Admin
 
-  # 1. Analytics & Charts
+  #1. Analytics & Charts
   namespace :analytics do
     get :staff
     get :students
@@ -546,6 +546,11 @@ Rails.application.routes.draw do
 
     resources :levels, only: [:create, :update, :destroy]
     resources :level_badges, only: [:create, :destroy]
+
+    resources :licenses, only: [:index, :create] do
+      patch :update, on: :collection
+      put :edit, on: :collection
+    end
 
     resources :predicted_earned_badges, only: [:create, :update]
     resources :predicted_earned_challenges, only: [:create, :update]

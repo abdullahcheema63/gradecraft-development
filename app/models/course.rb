@@ -83,6 +83,7 @@ class Course < ApplicationRecord
     c.has_many :learning_objectives
     c.has_many :unlock_conditions
     c.has_one  :copy_log
+    c.belongs_to :license
   end
 
   has_many :users, through: :course_memberships
@@ -235,6 +236,10 @@ class Course < ApplicationRecord
     return nonpredictors
   end
 
+  def is_licensed?
+    !!(self.has_paid || (self.license && !self.license.is_expired?))
+  end
+
   def admin_disabled_grade_email?
     return self.disable_grade_emails
   end
@@ -260,7 +265,7 @@ class Course < ApplicationRecord
   def mark_umich_as_paid
     self.has_paid = true if Rails.env.production?
   end
-
+  
   def copy_with_associations(attributes, associations)
     ModelCopier.new(self).copy(attributes: attributes,
                                associations: [

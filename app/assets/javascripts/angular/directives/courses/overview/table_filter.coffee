@@ -15,8 +15,8 @@
       unpublished: (course) => course.published is false
       badges: (course) => course.has_badges is true
       sections: (course) => course.has_sections is true
-      paid: (course) => course.has_paid is true
-      unpaid: (course) => course.has_paid is false
+      paid: (course) => course.is_licensed is true
+      unpaid: (course) => course.is_licensed is false
     }
   ]
 

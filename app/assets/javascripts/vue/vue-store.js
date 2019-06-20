@@ -222,8 +222,7 @@ const store = new Vuex.Store({
     }},
     actions: {
       getCourseMemberships: async function({ commit }){
-        //console.log("dispatched getCourseMemberships")
-        const resp = await fetch("api/courses");
+        const resp = await fetch("/api/courses");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -242,7 +241,7 @@ const store = new Vuex.Store({
       },
       getAllUsers: async function({ commit }){
         //console.log("getAllUsers action dispatched")
-        const resp = await fetch("api/users");
+        const resp = await fetch("/api/users");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -257,7 +256,7 @@ const store = new Vuex.Store({
       },
       getAllInstructors: async function({ commit }){
         //console.log("getAllInstructors action dispatched")
-        const resp = await fetch("api/users/instructors");
+        const resp = await fetch("/api/users/instructors");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -284,8 +283,8 @@ const store = new Vuex.Store({
         //console.log(final);
         commit('addAllInstitutions', final);
       },
-      getUserLicense: async function({ commit}){
-        console.log("getAllLicenses action dispatched")
+      getUserLicense: async function({ commit }){
+        console.log("getUserLicenses action dispatched")
         const resp = await fetch("/api/licenses");
         if (resp.status === 404){
           console.log(resp.status);
@@ -294,7 +293,6 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        console.log("json: and json.data (response.data) from vue store");
         console.log(json);
         const final = apiResponseToDataDataItem(json);
         console.log(final);
@@ -315,7 +313,76 @@ const store = new Vuex.Store({
           console.log("inside add resp action" , response)
         })
         console.log("inside addNewCourse action" , resp)
+      },
+      newLicensePayment: async function({ commit }, payment){
+        const resp = await fetch("/api/licenses", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payment),
+        });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
+        license = apiResponseToDataDataItem(body)
+        commit('updateUserLicense', license)
+      },
+      updateLicensePayment: async function({ commit }, payment){
+        const resp = await fetch("/api/licenses", {
+          method: 'PATCH',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payment),
+        });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
 
+        license = apiResponseToDataDataItem(body)
+        commit('updateUserLicense', license)
+      },
+      updateCourseLicense: async function({ commit }, courseIds){
+        const resp = await fetch("/api/licenses/edit", {
+          method: "PUT",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ courses: courseIds }),
+        });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
+        const license = apiResponseToDataDataItem(body)
+        commit('updateUserLicense', license)
       },
       licenseCourse({ commit }, course_id){
         commit('updateLicense', {course_id: course_id, status: true})
@@ -484,6 +551,9 @@ const store = new Vuex.Store({
         state.user.showGuide = user.showGuide
         state.user.hasPaid = user.hasPaid
         state.user.account_url = user.account_url
+      },
+      updateUserLicense (state, license){
+        state.userLicense = license;
       }
     },
     getters: {
@@ -498,6 +568,9 @@ const store = new Vuex.Store({
       },
       userGuideStatus: state => {
         return state.user.showGuide;
+      },
+      userCourseMemberships: state => {
+        return state.user.courseMembership;
       }
     }
 })

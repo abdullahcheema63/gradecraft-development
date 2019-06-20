@@ -484,6 +484,26 @@ describe Course do
     end
   end
 
+  describe "#is_licensed?" do
+    it "returns true if has_paid is true" do
+      subject.has_paid = true
+      expect(subject.is_licensed?).to eq(true)
+    end
+    
+    it "returns true if has unexpired license" do
+      subject.has_paid = false
+      subject.license = create(:standard_license)
+      expect(subject.is_licensed?).to eq(true)
+    end
+
+    it "returns false if has expired license" do
+      subject.has_paid = false
+      subject.license = create(:standard_license)
+      subject.license.expires = DateTime.now - 1.weeks
+      expect(subject.is_licensed?).to eq(false)
+    end
+  end
+
   describe "#valuable_badges?" do
     it "does not have badge with points by default" do
       expect(subject.valuable_badges?).to eq(false)

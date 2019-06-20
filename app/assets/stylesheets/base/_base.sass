@@ -83,6 +83,7 @@ body
   h4
     line-height: 1.25em
 
+
 /* Div styles - Background Colors, typically for divs __=^o.o^= */
 .content_block
   background-color: white
@@ -115,6 +116,12 @@ body
   background-color: $bg-blue_2
 
 
+// To accommodate current design
+.pageContent
+  .content_block
+    padding: 1em
+    margin: 2em -1em
+
 
 /* Styling Add-on for divs __=^o.o^= */
 .highlight
@@ -139,10 +146,10 @@ body
     width: 23.5%
     margin-bottom: 1.5em
 
-    @media (max-width: $media-950)
+    @include tablet-l
       width: 48.5%
 
-    @media (max-width: $media-490)
+    @include mobile
       width: 100%
 
   &.alt-2
@@ -241,7 +248,6 @@ body
       img
         width: 100%
         max-width: 250px
-
 
 
 /* Buttons, both true button's and a.button's __=^o.o^= */
@@ -355,7 +361,6 @@ body
     @include mobile-xl
       position: static
       margin: 0
-
 
 
 /* New dynamic header __=^o.o^= */
@@ -576,6 +581,7 @@ body
   &.fancy
     background: white
     box-shadow: 0 1px 5px rgba(0,0,0,0.2)
+
 
 
 

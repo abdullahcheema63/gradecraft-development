@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button :class=button_class @click="toggleModalState">
+    <button :class=button_class @click.prevent="toggleModalState">
       <slot name="button-text"></slot>
     </button>
 

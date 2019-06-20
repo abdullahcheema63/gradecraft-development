@@ -1,5 +1,6 @@
 require "./db/samples/courses.rb"
 require "./db/samples/badges.rb"
+require "./db/samples/license_types.rb"
 require "./db/samples/assignment_types.rb"
 require "./db/samples/assignments.rb"
 require "./db/samples/challenges.rb"
@@ -70,6 +71,17 @@ end
 puts "Constructing Beauxbatons Academy of Magic..."
 Institution.create! do |i|
   i.name = "Beauxbatons"
+end
+
+# ---------------------------- Create License Types! -------------------------#
+
+@license_types.each do |data|
+  license_type = LicenseType.create! do |l|
+    data.keys.each do |k|
+      l[k] = data[k]
+    end
+  end
+  print "Created License Type: " + license_type.name
 end
 
 # ---------------------------- Users and Courses -----------------------------#
@@ -157,6 +169,24 @@ puts "Children must be taught how to think, not what to think. ― Margaret Mead
     puts_success :course, course_name, :teams_created
   end
 end
+
+p = Payment.new({
+  first_name: "Albus",
+  last_name: "Dumbledore",
+  organization: "Hogwarts University",
+  phone: "555-555-5555",
+  addr1: "1234 Hoggy Ln",
+  city: "Mumblescrud",
+  country: "UK",
+  amount_usd: 0.0,
+  source: "Freebie"
+})
+
+license = License.new({
+  license_type: LicenseType.last,
+  user: User.find_by(username: "albus"),
+})
+license.start! p
 
 # create a hash on each course config to store assignment types and assignments
 @courses.each do |name,config|
@@ -276,7 +306,36 @@ User.create! do |u|
     FlaggedUser.toggle! cm.course, u, @students.sample.id
     FlaggedUser.toggle! cm.course, u, @students.sample.id
   end
+  u.course_memberships.create! do |cm|
+    cm.course = @courses[:power_ups_locks_weighting_config][:course]
+    cm.role = "professor"
+    FlaggedUser.toggle! cm.course, u, @students.sample.id
+    FlaggedUser.toggle! cm.course, u, @students.sample.id
+    FlaggedUser.toggle! cm.course, u, @students.sample.id
+  end
 end.activate!
+
+p = Payment.new({
+  first_name: "Snippity",
+  last_name: "Snapington",
+  organization: "College of Hogwarts",
+  phone: "555-555-5555",
+  addr1: "1234 Stalker Dr.",
+  city: "Nob End",
+  country: "UK",
+  amount_usd: 50.0,
+  source: "NotStripe"
+})
+
+license = License.new({
+  license_type: LicenseType.first,
+  user: User.find_by(username: "severus"),
+  courses: [
+    @courses[:leaderboards_team_challenges][:course],
+    @courses[:power_ups_locks_weighting_config][:course],
+  ]
+})
+license.start! p
 
 # Generate sample GSI
 User.create! do |u|

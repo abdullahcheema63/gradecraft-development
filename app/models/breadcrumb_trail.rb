@@ -498,6 +498,20 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb("Add #{objects[:course].learning_objective_term}")
   end
 
+  def licenses_index
+    breadcrumb("Licenses")
+  end
+
+  def licenses_new
+    licenses_index
+    breadcrumb("Buy")
+  end
+
+  def licenses_edit
+    licenses_index
+    breadcrumb("Renew")
+  end
+
   def rubrics_index_for_copy
     dashboard
   end

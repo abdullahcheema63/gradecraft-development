@@ -93,6 +93,7 @@
 //= require d3
 //= require_tree ./behaviors
 //= require utilities
+//= require payment
 
 //= require rollbar.js.js
 //= require ng-rollbar

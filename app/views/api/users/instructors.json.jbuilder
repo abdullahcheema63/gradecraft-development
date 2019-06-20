@@ -31,7 +31,7 @@ json.included do
 
       course = Course.find(course_membership.course_id)
       json.attributes do
-        json.id course.id
+        json.id course.id.to_s
         json.course_name course.name
         json.licensed course.has_paid
         json.student_count course.student_count
