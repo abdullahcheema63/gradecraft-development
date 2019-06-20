@@ -174,7 +174,7 @@
           <h2>All Courses </h2>
           <p>Manage and view all courses&mdash;active and inactive, published and unpublished. </p>
 
-          <tableComponent v-if="allCourses.length" :content="allCourses" table-type="courses"></tableComponent>
+          <tableComponent v-if="allCourses.length" :content="allCourses"></tableComponent>
 
           <button type="button" class="action">Export this table view</button>
         </div>
@@ -182,9 +182,6 @@
         <div v-if="tabSection[0]==='Instructors'">
           <h2>All Instructor Users</h2>
           <p>Manage instructor users and their licensed accounts.</p>
-
-          <tableComponent v-if="allInstructors1.length" :content="allInstructors1" table-type="instructors"></tableComponent>
-
           <div class="table_functions">
             <div class="filter_box">
               <p>Select which filters you want to apply to the table below: </p>

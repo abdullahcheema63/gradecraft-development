@@ -50,8 +50,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in formattedRowsCourseLink" :key="row.rowKey.number">
-            <td v-for="value in removeHiddenValue(row)">
+          <tr v-for="row in formattedRowsCourseLink" :key="row.id.text">
+            <td v-for="value in row">
               <span v-if="isObjectOrArray(value) && value.type === 'hyperlink'">
                 <a :href="value.url">{{value.text}}</a>
               </span>
@@ -118,7 +118,7 @@ module.exports = {
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
   },
-  props: ['content', 'tableType'],
+  props: ['content'],
   data() {
     return {
       currentPageItemMin: 0,
@@ -138,7 +138,7 @@ module.exports = {
   },
   computed: {
     rawTableHeaders(){
-      return Object.keys(this.formattedRowsCourseLink[0]).filter(key => key !== "rowKey")
+      return Object.keys(this.formattedRowsCourseLink[0])
     },
     filteredContent(){
       var allContent = this.content;
@@ -155,74 +155,31 @@ module.exports = {
       return this.filteredContent.slice(this.currentPageItemMin, this.currentPageItemMax);
     },
     formattedRowsCourseLink(){
-      if (this.tableType === 'courses'){
-        return this.currentPageContent.map(course => {
-          return {
-            rowKey: {
-              number: course.id
-            },
-            id: {
-              text: course.id,
-              url: course.url,
-              type: "hyperlink",
-            },
-            name: {
-              text: course.name,
-              url: course.url,
-              type: "hyperlink",
-            },
-            licensed: course.licensed,
-            active: course.active,
-            published: course.published,
-            instructors: course.instructors,
-            studentNumber: course.studentNumber,
-            term: course.term,
-            year: course.year,
-            created: course.created,
-          }
-        })
-      } else if (this.tableType === 'instructors'){
-        return this.currentPageContent.map(instructor => {
-          return {
-            rowKey: {
-              number: instructor.id
-            },
-            firstName: {
-              text: instructor.firstName,
-              url: instructor.url,
-              type: "hyperlink",
-            },
-            lastName: {
-              text: instructor.lastName,
-              url: instructor.url,
-              type: "hyperlink",
-            },
-            licenseExpiration: instructor.licenseExpires,
-            paymentMethod: instructor.paymentMethod,
-            accountType: instructor.accountType,
-            activeCourses: instructor.courses,
-            licensedCourse: instructor.courses.map(course => {
-              return course.licensed
-            }),
-            studentCount: instructor.courses.map(course => {
-              return course.studentCount
-            }),
-          }
-        })
-      }
+      return this.currentPageContent.map(course => {
+        return {
+          id: {
+            text: course.id,
+            url: course.url,
+            type: "hyperlink",
+          },
+          name: {
+            text: course.name,
+            url: course.url,
+            type: "hyperlink",
+          },
+          licensed: course.licensed,
+          active: course.active,
+          published: course.published,
+          instructors: course.instructors,
+          studentNumber: course.studentNumber,
+          term: course.term,
+          year: course.year,
+          created: course.created,
+        }
+      })
     }
   },
   methods: {
-    removeHiddenValue(row) {
-      let rowKeys = Object.keys(row);
-      let correctRow = {};
-      rowKeys.forEach(key => {
-        if (key !== "rowKey") {
-          correctRow[key] = row[key]
-        }
-      })
-      return correctRow
-    },
     formattedTableHeaders(label){
       if (label === 'id'){return 'Course #'}
       if (label === 'name'){return 'Course Name'}
@@ -234,15 +191,6 @@ module.exports = {
       if (label === 'studentNumber'){return '# Students'}
       if (label === 'term'){return 'Semester'}
       if (label === 'year'){return 'Year'}
-
-      if (label === 'firstName'){return 'First Name'}
-      if (label === 'lastName'){return 'Last Name'}
-      if (label === 'licenseExpiration'){return 'License Expiration'}
-      if (label === 'paymentMethod'){return 'Payment Method'}
-      if (label === 'accountType'){return 'Account Type'}
-      if (label === 'activeCourses'){return 'Active Courses'}
-      if (label === 'licensedCourse'){return 'Licensed Course'}
-      if (label === 'studentCount'){return '# Students in Course'}
     },
     isObjectOrArray(value){
       return typeof value === "object"
