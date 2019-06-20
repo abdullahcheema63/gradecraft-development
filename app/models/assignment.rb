@@ -171,7 +171,7 @@ class Assignment < ApplicationRecord
   end
 
   def has_grades?
-    grades.where(student_visible: true).exists?
+    grades.exists?
   end
 
   def has_unlock_condition?
