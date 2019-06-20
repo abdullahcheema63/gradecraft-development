@@ -26,10 +26,10 @@
         </div>
         <p><b>Change course status:</b> </p>
         <div>
-          <button class="action" v-if="isLicensed(c)" @click="removeCourse(c)">
+          <button class="action" v-if="isLicensed(c)" @click.prevent="removeCourse(c)">
             Revert to trial course
           </button>
-          <button v-if="!isLicensed(c) && (license.max_courses === null || licensedCourses.length < license.max_courses)" @click="addCourse(c)">
+          <button v-if="!isLicensed(c) && (license.max_courses === null || licensedCourses.length < license.max_courses)" @click.prevent="addCourse(c)">
             Convert to licensed course
           </button>
         </div>
@@ -51,33 +51,30 @@ module.exports = {
     license: Object,
   },
   computed: {
-    licensedCourses: function() {
-      return this.courses.filter(c => this.isLicensed(c));
+    licensedCourses(){
+      return this.$store.state.userLicense.courses
     },
   },
   methods: {
-    isLicensed: function(course) {
-      return this.license.courses
-        && this.license.courses.some(c => c.id === course.id);
+    isLicensed(course) {
+      return this.licensedCourses
+        && this.licensedCourses.some(c => c.id === course.id);
     },
-    updateCourses: function(courseIds) {
+    updateCourses(courseIds) {
       this.$store.dispatch("updateCourseLicense", courseIds)
     },
-    addCourse: async function(course) {
-      const newList = this.license.courses
+    addCourse(course) {
+      const newList = this.licensedCourses
         .map(c => c.id);
       newList.push(course.id);
-      await this.updateCourses(newList);
+      this.updateCourses(newList);
     },
-    removeCourse: async function(course) {
-      const newList = this.license.courses
+    removeCourse(course) {
+      const newList = this.licensedCourses
         .map(c => c.id)
         .filter(id => id !== course.id);
-      await this.updateCourses(newList);
+      this.updateCourses(newList);
     },
-  },
-  created: function() {
-    console.log(this.license);
   }
 }
 ```

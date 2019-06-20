@@ -28,8 +28,8 @@
 
       <template slot="content">
         <div>
-          <licenses-renew-form @updated="onUpdated" v-if="hasLicense" :license="this.userLicense" :license-type="licenseType" :stripePk="stripePk" />
-          <licenses-buy-form @updated="onUpdated" v-if="!hasLicense" :license-type-options="licenseTypeOptions" :stripePk="stripePk" />
+          <licenses-renew-form v-if="hasLicense" :license="this.userLicense" :license-type="licenseType" :stripePk="stripePk" />
+          <licenses-buy-form v-if="!hasLicense" :license-type-options="licenseTypeOptions" :stripePk="stripePk" />
         </div>
       </template>
     </buttonModal>
@@ -43,7 +43,7 @@
       <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!
     </p>
 
-    <licenses-course-selector @updated="onUpdated" v-if="hasLicense" :license="this.userLicense" :courses="courses" />
+    <licenses-course-selector v-if="hasLicense" :license="userLicense" :courses="userCourses" />
   </div>
 </template>
 
@@ -72,33 +72,29 @@ module.exports = {
     userLicense(){
       return this.$store.state.userLicense
     },
-    licensedCourses(){
-      return this.$store.state.userLicense.courses
+    userCourses(){
+      return this.$store.getters.userCourseMemberships
     },
-    hasLicense: function() {
+    hasLicense(){
       return !!this.userLicense;
     },
-    licenseType: function() {
+    licenseType() {
       return (this.userLicense && this.licenseTypeOptions)
         ? this.licenseTypeOptions.find(lt => lt.id === this.userLicense.license_type_id)
         : undefined;
     },
   },
   methods: {
-    toggleRenew: function() {
+    toggleRenew() {
       this.showRenew = !this.showRenew;
-    },
-    onUpdated: function(license) {
-      console.log("onUpdated");
-      console.log(license);
-      data.license = license;
     },
     updateLicense(){
       this.$refs.buttonModal_license.toggleModalState()
     }
   },
-  created: async function() {
+  created: function() {
     this.$store.dispatch("getUserLicense");
+    this.$store.dispatch("getCourseMemberships");
   },
 }
 ```

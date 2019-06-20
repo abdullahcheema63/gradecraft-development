@@ -219,8 +219,7 @@ const store = new Vuex.Store({
     }},
     actions: {
       getCourseMemberships: async function({ commit }){
-        //console.log("dispatched getCourseMemberships")
-        const resp = await fetch("api/courses");
+        const resp = await fetch("/api/courses");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -239,7 +238,7 @@ const store = new Vuex.Store({
       },
       getAllUsers: async function({ commit }){
         //console.log("getAllUsers action dispatched")
-        const resp = await fetch("api/users");
+        const resp = await fetch("/api/users");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -254,7 +253,7 @@ const store = new Vuex.Store({
       },
       getAllInstructors: async function({ commit }){
         //console.log("getAllInstructors action dispatched")
-        const resp = await fetch("api/users/instructors");
+        const resp = await fetch("/api/users/instructors");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -268,7 +267,7 @@ const store = new Vuex.Store({
         commit('addAllInstructors', final)
       },
       getUserLicense: async function({ commit }){
-        console.log("getAllLicenses action dispatched")
+        console.log("getUserLicenses action dispatched")
         const resp = await fetch("/api/licenses");
         if (resp.status === 404){
           console.log(resp.status);
@@ -277,7 +276,6 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        console.log("json: and json.data (response.data) from vue store");
         console.log(json);
         const final = apiResponseToDataDataItem(json);
         console.log(final);
@@ -479,6 +477,7 @@ const store = new Vuex.Store({
         })
       },
       addUserLicense (state, licenseObj){
+        console.log("userLicense:", licenseObj)
         state.userLicense = licenseObj
       },
       updateLicense (state, {course_id, status}){
@@ -528,6 +527,9 @@ const store = new Vuex.Store({
       },
       userGuideStatus: state => {
         return state.user.showGuide;
+      },
+      userCourseMemberships: state => {
+        return state.user.courseMembership;
       }
     }
 })
