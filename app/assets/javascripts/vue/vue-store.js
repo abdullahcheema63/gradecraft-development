@@ -336,7 +336,10 @@ const store = new Vuex.Store({
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
           },
+          credentials: 'same-origin',
           body: JSON.stringify(payment),
         });
         const body = await resp.json();
@@ -359,7 +362,10 @@ const store = new Vuex.Store({
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
           },
+          credentials: 'same-origin',
           body: JSON.stringify(payment),
         });
         const body = await resp.json();
@@ -383,7 +389,10 @@ const store = new Vuex.Store({
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
           },
+          credentials: 'same-origin',
           body: JSON.stringify({ courses: courseIds }),
         });
         const body = await resp.json();
