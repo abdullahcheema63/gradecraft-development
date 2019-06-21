@@ -31,6 +31,7 @@
         <ul>
           <li><a :href="getAccountURL">My Account</a></li>
           <li><a href="dashboard/#">View Tour</a></li>
+          <li><a href="licenses">Manage Licenses</a></li>
           <li><a href="logout">Log Out</a></li>
         </ul>
       </div>

@@ -13,6 +13,10 @@ class API::LicensesController < ApplicationController
     @payments = @license.payments.all
   end
 
+  def license_type_options
+    @license_types = LicenseType.all
+  end
+
   # POST api/licenses
   def create
     if current_user.license

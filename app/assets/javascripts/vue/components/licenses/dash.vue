@@ -65,10 +65,12 @@ module.exports = {
   },
   data: function() { return data; },
   props: {
-    licenseTypeOptions: Array,
     stripePk: String,
   },
   computed: {
+    licenseTypeOptions(){
+      return this.$store.state.allLicenseTypes
+    },
     userLicense(){
       return this.$store.state.userLicense
     },
@@ -95,6 +97,7 @@ module.exports = {
   created: function() {
     this.$store.dispatch("getUserLicense");
     this.$store.dispatch("getCourseMemberships");
+    this.$store.dispatch("getAllLicenseTypes");
   },
 }
 ```

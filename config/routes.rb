@@ -548,7 +548,8 @@ Rails.application.routes.draw do
     resources :levels, only: [:create, :update, :destroy]
     resources :level_badges, only: [:create, :destroy]
 
-    resources :licenses, only: [:index, :create] do
+    resources :licenses, only: [:index, :create, :license_type_options] do
+      get :license_type_options, on: :collection
       patch :update, on: :collection
       put :edit, on: :collection
     end

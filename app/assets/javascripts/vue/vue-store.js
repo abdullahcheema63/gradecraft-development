@@ -57,6 +57,7 @@ const store = new Vuex.Store({
     allCourses: [],
     allInstructors: [],
     allInstitutions: [],
+    allLicenseTypes: [],
     userLicense: null,
     user: {
       id: null,
@@ -298,6 +299,21 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserLicense', final)
       },
+      getAllLicenseTypes: async function({ commit }){
+        console.log("getAllLicenseTypes action dispatched")
+        const resp = await fetch("/api/licenses/license_type_options");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log(json);
+        const final = apiResponseToData(json);
+        console.log(final);
+        commit('addAllLicenseTypes', final)
+      },
       addNewCourse: async function({commit}, course){
         const resp = await fetch("/api/courses", {
           method: 'POST',
@@ -517,6 +533,9 @@ const store = new Vuex.Store({
             institutionType: institution.institution_type
           }
         })
+      },
+      addAllLicenseTypes(state, licenseTypes){
+        state.allLicenseTypes = licenseTypes
       },
       addUserLicense (state, licenseObj){
         state.userLicense = licenseObj

@@ -1,8 +1,8 @@
 json.data @instructors.includes(:course_memberships) do |instructor|
   json.type "instructors"
-  json.id instructor.id
+  json.id instructor.id.to_s
   json.attributes do
-    json.id instructor.id
+    json.id instructor.id.to_s
     json.first_name instructor.first_name
     json.last_name instructor.last_name
     json.email instructor.email
