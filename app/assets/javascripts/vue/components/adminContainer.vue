@@ -133,15 +133,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in expiringInstructors1" :key="user.id">
-                <td><a href="#">{{user.firstName}}</a> </td>
-                <td><a href="#">{{user.lastName}}</a> </td>
-                <td>{{user.expirationDate}} </td>
-                <td>{{user.paymentMethod}} </td>
-                <td>{{user.activeCoursesNumber}} </td>
+              <tr v-for="instructor in expiringLicenseInstructors" :key="instructor.id">
+                <td><a href="#">{{instructor.firstName}}</a> </td>
+                <td><a href="#">{{instructor.lastName}}</a> </td>
+                <td>{{instructor.licenseExpires}} </td>
+                <td>{{instructor.paymentMethod}} </td>
+                <td>{{instructor.activeCoursesNumber}} </td>
                 <td>
                   <div class="button-container">
-                    <a class="button secondary" :href="'mailto:' + user.email" >Send email</a>
+                    <a class="button secondary" :href="'mailto:' + instructor.email" >Send email</a>
                   </div>
                 </td>
               </tr>
@@ -419,7 +419,7 @@ module.exports = {
         licensed: false
       },
       newCourseErrors: [],
-      allInstructors: [
+      allInstructorsOLD: [
         {
           userId: 50,
           email: "blah@test.com",
@@ -452,10 +452,10 @@ module.exports = {
       return this.$store.getters.userFirstName;
     },
     filteredInstructors1(){
-        var allInstructors = this.allInstructors;
+        var allInstructors = this.allInstructors1;
         return allInstructors.filter(this.filterByLicensedAccount)
     },
-    expiringInstructors1(){
+    expiringLicenseInstructors(){
       var allInstructors = this.allInstructors;
       return allInstructors.filter(this.filterExpiringInstructors)
     },
@@ -471,6 +471,9 @@ module.exports = {
     },
     allCourses(){
       return this.$store.state.allCourses;
+    },
+    allInstructors(){
+      return this.$store.state.allInstructors
     },
     allInstructors1(){
       return this.filterAllInstructors(this.$store.state.allInstructors);
@@ -567,12 +570,15 @@ module.exports = {
       var now = new Date();
       var expirationMax = now.setDate(now.getDate() + 30);
       var formattedDate = new Date(expirationMax);
-      var formattedInstructorExpiration = new Date(instructor.expirationDate);
-      if (!instructor.licensedAccount) {
+      var formattedInstructorExpiration = new Date(instructor.licenseExpires);
+      if (!instructor.licenseExpires) {
+        console.log("instructor no license:", instructor.name)
         return false
-      } else if (new Date(instructor.expirationDate) >= formattedDate) {
+      } else if (new Date(instructor.licenseExpires) >= formattedDate) {
+        console.log("instructor not going to expire:", instructor.name)
         return false
       }
+      instructor.licenseExpires = formattedInstructorExpiration
       return instructor
     },
     filterAllUsers(user){
