@@ -23,10 +23,6 @@ class ExportsMailer < ApplicationMailer
     mail_submissions_export("failed to build", professor, assignment)
   end
 
-  def team_submissions_export_started(professor, assignment, team)
-    mail_team_submissions_export("is being created", professor, assignment, team)
-  end
-
   def team_submissions_export_success(professor, assignment, team,
                                       submissions_export, secure_token)
     cache_success_mailer_attrs(submissions_export, secure_token)
