@@ -1,0 +1,11 @@
+<header-component data-component></header-component>
+
+<div class='wrapper dashboard'>
+  <guide-control data-component></guide-control>
+  <h2>Mannage Accounts</h2>
+  <% if !(Rails.env.production?) %>
+    <div class="content_block bg-green_mint">
+      <licenses-dash data-component>{ "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-type-options": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }</licenses-dash>
+    </div>
+  <% end %>
+</div>

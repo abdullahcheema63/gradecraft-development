@@ -29,8 +29,9 @@ Rails.application.routes.draw do
   #20. Learning Objectives
   #21. Errors
   #22. Admin
+  #23. Licenses
 
-  #1. Analytics & Charts
+  # 1. Analytics & Charts
   namespace :analytics do
     get :staff
     get :students
@@ -648,6 +649,9 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # 23. Licenses
+  resources :licenses, only: :index
 
   # root, bro
   root to: "home#index"
