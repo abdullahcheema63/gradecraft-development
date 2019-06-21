@@ -1,11 +1,5 @@
 class ExportsMailerPreview < ActionMailer::Preview
 
-  def submissions_export_started
-    assignment = Assignment.first
-    professor = User.with_role_in_courses("professor", Course.first).first
-    ExportsMailer.submissions_export_started professor, assignment
-  end
-
   def submissions_export_success
     assignment = Assignment.first
     professor = User.with_role_in_courses("professor", Course.first).first

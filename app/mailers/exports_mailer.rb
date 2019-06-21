@@ -13,10 +13,6 @@ class ExportsMailer < ApplicationMailer
     send_export_email "Submission export for #{ course.name } is attached"
   end
 
-  def submissions_export_started(professor, assignment)
-    mail_submissions_export("is being created", professor, assignment)
-  end
-
   def submissions_export_success(professor, assignment, submissions_export,
                                  secure_token)
     cache_success_mailer_attrs(submissions_export, secure_token)

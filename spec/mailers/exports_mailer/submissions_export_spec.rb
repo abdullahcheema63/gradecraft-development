@@ -35,38 +35,6 @@ describe ExportsMailer do
 
   before(:each) { deliver_email }
 
-  describe "#submissions_export_started" do
-    let(:deliver_email) do
-      ExportsMailer
-        .submissions_export_started(professor, assignment)
-        .deliver_now
-    end
-
-    it_behaves_like "a gradecraft email to a professor"
-
-    it "BCC's to the gradecraft admin" do
-      expect(email.bcc).to eq [admin_email]
-    end
-
-    it "has the correct subject" do
-      expect(email.subject).to eq "Submissions export for #{ assignment_term } #{assignment.name} is being created"
-    end
-
-    describe "text part body" do
-      subject { text_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a submissions export email without archive data"
-      it_behaves_like "an email text part"
-    end
-
-    describe "html part body" do
-      subject { html_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a submissions export email without archive data"
-      it_behaves_like "an email html part"
-    end
-  end
-
   describe "#submissions_export_success" do
     let(:deliver_email) do
       ExportsMailer
