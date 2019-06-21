@@ -1,6 +1,7 @@
 class LearningObjective < ApplicationRecord
   include UnlockableCondition
   include AutoAwardOnUnlock
+  include Copyable
 
   NOT_STARTED_STATUS = "Not Started".freeze
   IN_PROGRESS_STATUS = "In Progress".freeze
@@ -119,6 +120,14 @@ class LearningObjective < ApplicationRecord
     end
   end
 
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
+      attributes: attributes,
+      associations: [assignments: {course_id: :course_id}, learning_objective_links: {course_id: :course_id}],
+      options: { lookups: [:course, :category, :learning_objective_links, :learning_objective_linkable] }
+    )
+  end
+
   private
 
   def earned_assignment_points(cumulative_outcome)
@@ -150,4 +159,6 @@ class LearningObjective < ApplicationRecord
   def send_email_on_unlock(unlockable, student)
     NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
   end
+
+ 
 end

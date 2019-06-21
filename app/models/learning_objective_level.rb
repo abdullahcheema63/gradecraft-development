@@ -8,6 +8,12 @@ class LearningObjectiveLevel < ApplicationRecord
 
   scope :ordered, -> { order :order }
 
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
+      attributes: attributes,
+    )
+  end
+
   class << self
     def flagged_values_to_h
       flagged_values.map do |k, v|

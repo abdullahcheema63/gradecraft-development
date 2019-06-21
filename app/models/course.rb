@@ -262,14 +262,19 @@ class Course < ApplicationRecord
   end
 
   def copy_with_associations(attributes, associations)
+    course_associations = [
+      :badges,
+      { assignment_types: { course_id: :id }},
+      :rubrics,
+      :challenges,
+      :grade_scheme_elements,
+    ] + associations
+
+    course_associations.push({ learning_objectives: { course_id: :id, categories: { course_id: :id } } }) if has_learning_objectives?
+    course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
+    
     ModelCopier.new(self).copy(attributes: attributes,
-                               associations: [
-                                 :badges,
-                                 { assignment_types: { course_id: :id }},
-                                 :rubrics,
-                                 :challenges,
-                                 :grade_scheme_elements
-                               ] + associations,
+                               associations: course_associations,
                                cross_references: [
                                  :unlock_conditions
                                ],

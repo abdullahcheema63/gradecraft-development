@@ -94,11 +94,32 @@ class CoursesController < ApplicationController
     end
   end
 
+  def copy_learning_objectives(course)
+    course.learning_objectives.each do |learning_objective|
+      if learning_objective.category.present?
+          learning_objective.category = find_learning_objective_category(course, learning_objective.category.name)
+      end
+    end
+  end
+
+  def find_learning_objective_category(course, name)
+    course.learning_objective_categories.each do |category|
+        if category.name == name
+            return category
+        end
+    end
+  end
+
   def copy
     authorize! :read, @course
 
+
     begin
       duplicated = @course.copy(params[:copy_type])
+
+      if @course.has_learning_objectives?
+        copy_learning_objectives(duplicated)
+      end
 
       if duplicated.save
         if !current_user_is_admin? && current_user.role(duplicated).nil?
