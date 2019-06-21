@@ -30,13 +30,6 @@ class ExportsMailerPreview < ActionMailer::Preview
     ExportsMailer.team_submissions_export_success professor, assignment, team, submissions_export, secure_token
   end
 
-  def team_submissions_export_failure
-    professor = User.with_role_in_courses("professor", Course.first).first
-    assignment = Assignment.first
-    team = Team.first
-    ExportsMailer.team_submissions_export_failure professor, assignment, team
-  end
-
   def grade_export
     course = Course.first
     ExportsMailer.grade_export(
