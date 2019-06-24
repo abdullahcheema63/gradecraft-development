@@ -113,13 +113,12 @@ class CoursesController < ApplicationController
   def copy
     authorize! :read, @course
 
-
     begin
       duplicated = @course.copy(params[:copy_type])
 
-      if @course.has_learning_objectives?
-        copy_learning_objectives(duplicated)
-      end
+      #if @course.has_learning_objectives?
+      #  copy_learning_objectives(duplicated)
+      #end
 
       if duplicated.save
         if !current_user_is_admin? && current_user.role(duplicated).nil?

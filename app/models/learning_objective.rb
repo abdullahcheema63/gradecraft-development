@@ -123,8 +123,7 @@ class LearningObjective < ApplicationRecord
   def copy(attributes={}, lookup_store=nil)
     ModelCopier.new(self, lookup_store).copy(
       attributes: attributes,
-      associations: [assignments: {course_id: :course_id}, learning_objective_links: {course_id: :course_id}],
-      options: { lookups: [:course, :category, :learning_objective_links, :learning_objective_linkable] }
+      options: { lookups: [:course, :category, :assignments, :learning_objective_links] }
     )
   end
 
