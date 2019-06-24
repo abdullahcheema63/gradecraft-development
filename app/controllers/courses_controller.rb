@@ -94,48 +94,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def fix_learning_objectives_links(original_course, copied_course)
-    copied_course.learning_objectives.each do |copied_learning_objective|
-      original_learning_objective = find_original_learning_objective(original_course, copied_learning_objective)
-
-      puts "Original Learning Objective: #{original_learning_objective.inspect}"
-
-      link_new_course_assignments(copied_course, original_learning_objective, copied_learning_objective)
-    end
-  end
-
-  def find_original_learning_objective(original_course, copied_learning_objective)
-    return original_course.learning_objectives.find_by(name: copied_learning_objective.name, description: copied_learning_objective.description, count_to_achieve: copied_learning_objective.count_to_achieve, points_to_completion: copied_learning_objective.points_to_completion)
-  end
-
-  def has_linked_assignments?(learning_objective)
-    return learning_objective.assignments.length > 0
-  end
-
-  def link_new_course_assignments(copied_course, original_learning_objective, copied_learning_objective)
-    original_learning_objective.assignments.each do |assignment|
-      copied_assignment = copied_course.assignments.find_by(name: assignment.name, description: assignment.description, full_points: assignment.full_points)
-      puts "Copied Assignment: #{copied_assignment}"
-      copied_learning_objective.assignments.push(copied_assignment)
-    end
-  end
-
-  def fix_learning_objectives_copy(course)
-    course.learning_objectives.each do |learning_objective|
-      if learning_objective.category.present?
-          learning_objective.category = find_learning_objective_category(course, learning_objective.category.name)
-      end
-    end
-  end
-
-  def find_learning_objective_category(course, name)
-    course.learning_objective_categories.each do |category|
-        if category.name == name
-            return category
-        end
-    end
-  end
-
   def copy
     authorize! :read, @course
 
@@ -143,14 +101,14 @@ class CoursesController < ApplicationController
       duplicated = @course.copy(params[:copy_type])
 
       if @course.has_learning_objectives?
-        fix_learning_objectives_copy(duplicated)
+        fix_learning_objectives_category(duplicated)
       end
 
       if duplicated.save
         if @course.has_learning_objectives?
-          fix_learning_objectives_links(@course, duplicated)
+          fix_learning_objectives_and_assignments_links(@course, duplicated)
         end
-        
+
         if !current_user_is_admin? && current_user.role(duplicated).nil?
           duplicated.course_memberships.create(user: current_user, role: current_role)
         end
