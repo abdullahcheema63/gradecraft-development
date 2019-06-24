@@ -53,7 +53,7 @@ module CoursesHelper
   def fix_learning_objectives_category(course)
     course.learning_objectives.each do |learning_objective|
       if learning_objective.category.present?
-          learning_objective.category = course.learning_objective_categories.find_by(name: learning_objective.category.name)
+        learning_objective.category = course.learning_objective_categories.find_by(name: learning_objective.category.name)
       end
     end
   end

@@ -124,7 +124,6 @@ class LearningObjective < ApplicationRecord
     ModelCopier.new(self, lookup_store).copy(
       attributes: attributes,
       associations: [:levels],
-      #associations: [learning_objective_links: { course_id: course.id }],
       options: { lookups: [:course, :category, :assignments] }
     )
   end
