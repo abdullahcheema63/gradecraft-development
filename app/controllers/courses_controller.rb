@@ -147,7 +147,9 @@ class CoursesController < ApplicationController
       end
 
       if duplicated.save
-        fix_learning_objectives_links(@course, duplicated)
+        if @course.has_learning_objectives?
+          fix_learning_objectives_links(@course, duplicated)
+        end
         
         if !current_user_is_admin? && current_user.role(duplicated).nil?
           duplicated.course_memberships.create(user: current_user, role: current_role)
