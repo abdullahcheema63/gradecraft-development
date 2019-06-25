@@ -272,7 +272,6 @@ class Course < ApplicationRecord
       :grade_scheme_elements,
     ] + associations
 
-
     course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
     course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
     
