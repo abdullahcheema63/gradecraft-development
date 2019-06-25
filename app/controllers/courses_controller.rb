@@ -6,9 +6,9 @@ class CoursesController < ApplicationController
 
   skip_before_action :require_login, only: [:badges, :new_external, :create_external]
   skip_before_action :require_course_membership, only: [:badges, :new_external, :create_external]
-  before_action :ensure_staff?, except: [:index, :badges, :change, :new_external, :create_external]
+  before_action :ensure_staff?, except: [:index, :copy, :badges, :change, :new_external, :create_external]
   before_action :ensure_not_impersonating?, only: [:index]
-  before_action :ensure_admin?, only: [:copy, :activate_all_students, :recalculate_student_scores, :overview]
+  before_action :ensure_admin?, only: [:activate_all_students, :recalculate_student_scores, :overview]
   before_action :ensure_can_create_courses?, only: [:new, :create]
   before_action :find_course, only: [:edit,
                                      :copy,

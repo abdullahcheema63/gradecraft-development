@@ -1,6 +1,6 @@
 # rubocop:disable AndOr
 class API::CoursesController < ApplicationController
-  before_action :ensure_staff?, only: :show
+  before_action :ensure_staff?, only: [:show, :copy]
   before_action :use_current_course, only: [:analytics, :one_week_analytics]
 
   # skip_before_action :verify_authenticity_token, only: :create
@@ -35,9 +35,39 @@ class API::CoursesController < ApplicationController
     @course = Course.includes(:grade_scheme_elements).find params[:id]
   end
 
+  # POST /api/courses/copy
+  #instructor's use in overview
+  def copy
+    puts("inside api/courses/copy")
+    course_id = params[:_json] #not sure how/why the variable is _json
+    #see vuestore action `copyCourse`
+    @course = Course.find(course_id)
+
+    authorize! :read, @course
+
+    begin
+      duplicated = @course.copy(course_id)
+
+      if duplicated.save
+        if !current_user_is_admin? && current_user.role(duplicated).nil?
+          duplicated.course_memberships.create(user: current_user, role: current_role)
+        end
+
+        session[:course_id] = duplicated.id
+      end
+    end
+  end
+      #   redirect_to edit_course_path(duplicated.id), flash: {
+      #     notice: "#{@course.name} successfully copied"
+      #   }
+      # else
+      #   redirect_to courses_path, flash: {
+      #     alert: "#{@course.name} was not successfully copied"
+      #   }
+      # end
+
   # POST /api/courses
   def create
-    puts("inside api/courses#create")
     course_params = format_course_params(params)
 
     @course = Course.new(course_params)

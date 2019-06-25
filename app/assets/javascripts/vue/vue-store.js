@@ -223,7 +223,7 @@ const store = new Vuex.Store({
     }},
     actions: {
       getCourseMemberships: async function({ commit }){
-        const resp = await fetch("/api/courses");
+        const resp = await fetch("api/courses");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -329,6 +329,23 @@ const store = new Vuex.Store({
           console.log("inside add resp action" , response)
         })
         console.log("inside addNewCourse action" , resp)
+      },
+      copyCourse: async function({commit}, course ){
+        const resp = await fetch("/api/courses/copy", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(course)
+        }).then((response) => {
+          console.log("inside copyCourse action", response)
+        })
+        console.log("inside copyCourse action", resp)
+
       },
       newLicensePayment: async function({ commit }, payment){
         const resp = await fetch("/api/licenses", {
@@ -453,8 +470,9 @@ const store = new Vuex.Store({
               start: "2019-01-01T00:00:00",
               end: "2019-09-01T00:00:00"
             },
-            licensed: true,
-            published: course.published };
+            licensed: course.licensed,
+            published: course.published
+           };
         });
       },
       addAdminCourses(state, courses){

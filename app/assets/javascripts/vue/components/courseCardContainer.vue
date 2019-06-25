@@ -198,7 +198,7 @@
         </template>
       </buttonModal>
 
-      <div v-if="pastCourses.length || currentCourses.length || unpublishedCourses.length">
+      <div v-if="allCourses.length">
         <h3>Copy an existing course</h3>
         <p>If you like your setup from a previous course and would like to
           duplicate it instead of starting from scratch, we can also
@@ -213,7 +213,7 @@
               <p>Which existing course would you like to copy?</p>
               <form>
                 <div class="form_options" v-for="course in currentAndPastCourses" :key="course.id" >
-                  <input type="radio" :id="'copy-' + course.id" v-model="copyRequest.course" :value="course.id"></input>
+                  <input type="radio" :id="'copy-' + course.id" v-model="copyCourseID" :value="course.id"></input>
                   <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                 </div>
                 <br>
@@ -221,12 +221,6 @@
                   <b>Please note that your copy will be a trial course by default.</b>
                   You will need to add more licensed courses to your account in order to convert it to a licensed course.
                 </p>
-                <p>Are there any additional notes you would like us to know?</p>
-                <div class='form_elem'>
-                  <textarea v-model="copyRequest.notes"></textarea>
-                  <label>Additional notes</label>
-                </div>
-                <p>You will receive an email confirmation of your request after submitting, and a GradeCraft support staff member will reach out to you within 24 hours, Monday&ndash;Friday, 9am&ndash;5pm EST.</p>
                 <button class='action' type="button" @click.prevent="courseCopyRequest()">Submit request</button>
               </form>
             </div>
@@ -292,10 +286,7 @@ module.exports = {
         licensed: false
       },
       newCourseErrors: [],
-      copyRequest: {
-        course: [],
-        notes: ""
-      }
+      copyCourseID: ""
     }
   },
   created: function() {
@@ -405,6 +396,7 @@ module.exports = {
     },
     courseCopyRequest(){
       this.$refs.buttonModal_copy.toggleModalState()
+      this.$store.dispatch('copyCourse', this.copyCourseID)
     }
   }
 }
