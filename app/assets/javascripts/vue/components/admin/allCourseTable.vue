@@ -66,7 +66,7 @@
           <tr v-for="course in allCourses">
             <td>{{course.id}}</td>
             <td>{{course.name}}</td>
-            <td>unkown</td>
+            <td><span :class="{checked: course.licesed}">&nbsp;</span></td>
             <td><span :class="{checked: course.active}">&nbsp;</span></td>
             <td><span :class="{checked: course.published}">&nbsp;</span></td>
             <td>

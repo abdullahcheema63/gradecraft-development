@@ -172,87 +172,10 @@
       <template slot="tabSections">
         <div v-if="tabSection[0]==='Courses'">
           <allCourseTable></allCourseTable>
-          
         </div>
 
         <div v-if="tabSection[0]==='Instructors'">
-          <h2>All Instructor Users</h2>
-          <p>Manage instructor users and their licensed accounts.</p>
-          <div class="table_functions">
-            <div class="filter_box">
-              <p>Select which filters you want to apply to the table below: </p>
-              <div>
-                <span>
-                  <input id="licensed_acccounts" type="checkbox" value="licensed" v-model="showLicensedAccounts" />
-                  <label for="licensed_acccounts">Licensed Accounts</label>
-                </span>
-                <span>
-                  <input id="free_trial_accounts" type="checkbox" value="free" v-model="showFreeAccounts" />
-                  <label for="free_trial_accounts">Free trial accounts</label>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="table_container">
-            <table>
-              <thead>
-                <tr>
-                  <th>First Name </th>
-                  <th>Last Name </th>
-                  <th>License Expiration </th>
-                  <th>Payment Method </th>
-                  <th>Account Type</th>
-                  <th>Active Courses </th>
-                  <th>Licensed Course </th>
-                  <th># Students in Course </th>
-                  <th>Actions </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="instructor in allInstructors1" :key="instructor.id">
-                  <td><a href="#">{{instructor.firstName}}</a> </td>
-                  <td><a href="#">{{instructor.lastName}}</a> </td>
-                  <td>{{instructor.licenseExpires}} </td>
-                  <td>{{instructor.paymentMethod}} </td>
-                  <td style="width: 100px;">{{instructor.accountType}} </td>
-                  <template v-if="instructor.courses.length">
-                    <td>
-                      <ul>
-                        <li v-for="course in instructor.courses" :key="course.id">
-                          <a :href="course.changeCoursePath" class="table_truncate">{{course.name}}</a>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul class="checked_list">
-                        <li v-for="course in instructor.courses" :key="course.id">
-                          <span :class="{checked: course.licensed}">&nbsp;</span>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul class="student_list">
-                        <li v-for="course in instructor.courses" :key="course.id">
-                          {{course.studentCount}}
-                        </li>
-                      </ul>
-                    </td>
-                  </template>
-                  <td>
-                    <buttonDropdown>
-                      <template slot="button_text">Options</template>
-                      <template slot="content">
-                        <ul>
-                          <li>What options go in here? </li>
-                        </ul>
-                      </template>
-                    </buttonDropdown>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <tablePagination :items="allInstructors1" @paginate="paginateItems"></tablePagination>
+          <allInstructorTable></allInstructorTable>
         </div>
 
         <div v-if="tabSection[0]==='Users'">
@@ -290,13 +213,12 @@ module.exports = {
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
     allCourseTable: () => VComponents.get('vue/components/admin/allCourseTable'),
     allUserTable: () => VComponents.get('vue/components/admin/allUserTable'),
+    allInstructorTable: () => VComponents.get('vue/components/admin/allInstructorTable'),
     allInstitutionTable: () => VComponents.get('vue/components/admin/allInstitutionTable'),
   },
   data() {
     return {
       toggled: true,
-      showFreeAccounts: false,
-      showLicensedAccounts: false,
       currentPageItemMin: 0,
       currentPageItemMax: 10,
       tabBarOption: ["Courses", "Instructors", "Users", "Institutions", "Utilities"],
@@ -316,39 +238,14 @@ module.exports = {
         licensed: false
       },
       newCourseErrors: [],
-      allInstructorsOLD: [
-        {
-          userId: 50,
-          email: "blah@test.com",
-          firstName: "User",
-          licensedAccount: false,
-          lastName: "Free Trial",
-          expirationDate: "",
-          paymentMethod: "",
-          accountType: "Free Trial",
-          activeCoursesNumber: "1",
-          activeCoursesList: [
-            {
-              courseName: "Active Course 1",
-              courseLicensed: false,
-              courseStudents: "10",
-            },
-          ],
-        },
-      ],
     }
   },
   created: function() {
     this.$store.dispatch("getCourseMemberships");
-    this.$store.dispatch("getAllInstructors");
   },
   computed: {
     getUserFirstName(){
       return this.$store.getters.userFirstName;
-    },
-    filteredInstructors1(){
-        var allInstructors = this.allInstructors1;
-        return allInstructors.filter(this.filterByLicensedAccount)
     },
     expiringLicenseInstructors(){
       var allInstructors = this.allInstructors;
@@ -362,9 +259,6 @@ module.exports = {
     },
     allInstructors(){
       return this.$store.state.allInstructors
-    },
-    allInstructors1(){
-      return this.filterAllInstructors(this.$store.state.allInstructors);
     },
     allNewCourses(){
       return this.filterNewCourses(this.allCourses)
@@ -409,13 +303,6 @@ module.exports = {
       return allCourses.filter( course => {
         if( course.created < tenDaysAgo ){return false}
         return course
-      })
-    },
-    filterAllInstructors(allInstructors){
-      return allInstructors.filter( instructor => {
-        if( this.showFreeAccounts && instructor.accountType != "the best"){return false}
-        if( this.showLicensedAccounts && instructor.accountType != "the best"){return false}
-        return instructor
       })
     },
     addCourse(){
