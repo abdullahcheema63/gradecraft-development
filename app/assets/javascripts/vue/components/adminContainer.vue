@@ -174,7 +174,52 @@
           <h2>All Courses </h2>
           <p>Manage and view all courses&mdash;active and inactive, published and unpublished. </p>
 
-<<<<<<< HEAD
+          <div class="table_container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Course ID </th>
+                  <th>Course Name </th>
+                  <th>Licensed </th>
+                  <th>Active </th>
+                  <th>Published</th>
+                  <th>Instructor(s)</th>
+                  <th># Students </th>
+                  <th>Semester </th>
+                  <th>Year </th>
+                  <th>Created </th>
+                  <th>Actions </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in allCourses">
+                  <td>{{course.id}}</td>
+                  <td>{{course.name}}</td>
+                  <td>unkown</td>
+                  <td><span :class="{checked: course.active}">&nbsp;</span></td>
+                  <td><span :class="{checked: course.published}">&nbsp;</span></td>
+                  <td>
+                    <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
+                  </td>
+                  <td>{{course.studentNumber}}</td>
+                  <td>{{course.term}}</td>
+                  <td>{{course.year}}</td>
+                  <td>{{course.created}}</td>
+                  <td>
+                    <buttonDropdown>
+                      <template slot="button_text">Options</template>
+                      <template slot="content">
+                        <ul>
+                          <li>Copy over options from table component </li>
+                        </ul>
+                      </template>
+                    </buttonDropdown>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <tableComponent v-if="allCourses.length" :content="allCourses"></tableComponent>
 =======
           <tableComponent v-if="!allCourses.length" :content="allCourses" table-type="courses"></tableComponent>
@@ -186,12 +231,6 @@
         <div v-if="tabSection[0]==='Instructors'">
           <h2>All Instructor Users</h2>
           <p>Manage instructor users and their licensed accounts.</p>
-<<<<<<< HEAD
-=======
-
-          <tableComponent v-if="!allInstructors1.length" :content="allInstructors1" table-type="instructors"></tableComponent>
-
->>>>>>> 8ea81fce9... adds conditional to check if course has instructors before adding them into the store from mutation
           <div class="table_functions">
             <div class="filter_box">
               <p>Select which filters you want to apply to the table below: </p>
