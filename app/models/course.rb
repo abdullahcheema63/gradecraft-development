@@ -262,21 +262,28 @@ class Course < ApplicationRecord
   end
 
   def copy_with_associations(attributes, associations)
-    ModelCopier.new(self).copy(attributes: attributes,
-                               associations: [
-                                 :badges,
-                                 { assignment_types: { course_id: :id }},
-                                 :rubrics,
-                                 :challenges,
-                                 :grade_scheme_elements
-                               ] + associations,
-                               cross_references: [
-                                 :unlock_conditions
-                               ],
-                               options: {
-                                 prepend: { name: "Copy of " },
-                                 overrides: [-> (copy) { copy_syllabus copy }]
-                               })
+    @lookups = ModelCopierLookups.new
+
+    course_associations = [
+      :badges,
+      { assignment_types: { course_id: :id }},
+      :rubrics,
+      :challenges,
+      :grade_scheme_elements,
+    ] + associations
+
+    course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
+    course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
+    
+    ModelCopier.new(self, @lookups).copy(attributes: attributes,
+                                         associations: course_associations,
+                                         cross_references: [
+                                           :unlock_conditions
+                                         ],
+                                         options: {
+                                           prepend: { name: "Copy of " },
+                                           overrides: [-> (copy) { copy_syllabus copy }]
+                                         })
   end
 
   # Copy course syllabus
