@@ -101,7 +101,7 @@
                         <li><a :href="course.editURL">Edit</a> </li>
                         <li><a :href="course.copyURL">Copy</a> </li>
                         <li><a :href="course.copyStudentsURL">Copy + Students</a> </li>
-                        <li><a>Delete (needs url link)</a> </li>
+                        <li><a>Delete (needs API link made)</a> </li>
                       </ul>
                     </template>
                   </buttonDropdown>
