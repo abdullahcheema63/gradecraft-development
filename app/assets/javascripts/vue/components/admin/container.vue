@@ -304,73 +304,7 @@
         </div>
 
         <div v-if="tabSection[0]==='Users'">
-          <h2>Search for users across all courses and account types </h2>
-          <h3>Search by: </h3>
-          <form>
-            <div class="form_elem">
-              <input type="text" id="name_contains" v-model="searchUserName" placeholder="Name contains..." />
-              <label for="name_contains">Name contains</label>
-            </div>
-            <div class="form_elem">
-              <input type="text" id="username_contains" v-model="searchUserUsername" placeholder="Username contains..." />
-              <label for="username_contains">Username contains</label>
-            </div>
-            <div class="form_elem">
-              <input type="text" id="email_contains" v-model="searchUserEmail" placeholder="Email contains..." />
-              <label for="email_contains">Email contains</label>
-            </div>
-          </form>
-          <h3>Search Results:</h3>
-          <div class="table_container">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID # </th>
-                  <th>First Name </th>
-                  <th>Last Name </th>
-                  <th>Email </th>
-                  <th>Courses </th>
-                  <th>Course User Type</th>
-                  <th>Semester </th>
-                  <th>Year </th>
-                  <th>Student Score </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="user in currentPageAllUsers" :key="user.id">
-                  <td>{{user.id}}</td>
-                  <td><a :href="user.url">{{user.firstName}}</a> </td>
-                  <td><a :href="user.url">{{user.lastName}}</a> </td>
-                  <td>{{user.email}}</td>
-                  <template v-if="user.courses.length">
-                    <td>
-                      <ul><li v-for="course in user.courses" :key="course.id"><a :href="course.url">{{course.name}}</a> </li></ul>
-                    </td>
-                    <td>
-                      <ul><li v-for="course in user.courses" :key="course.id">{{course.role}} </li></ul>
-                    </td>
-                    <td>
-                      <ul><li  v-for="course in user.courses" :key="course.id">{{course.semester}}</li></ul>
-                    </td>
-                    <td>
-                      <ul><li v-for="course in user.courses" :key="course.id">{{course.year}}</li></ul>
-                    </td>
-                    <td>
-                      <ul><li v-for="course in user.courses" :key="course.id">{{course.score}}</li></ul>
-                    </td>
-                  </template>
-                  <template v-else>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  </template>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
+          <allUserTable></allUserTable>
         </div>
 
         <div v-if="tabSection[0]==='Institutions'">
@@ -434,15 +368,13 @@ module.exports = {
     tabContainer: () => VComponents.get('vue/components/tabContainer'),
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
+    allUserTable: () => VComponents.get('vue/components/admin/allUserTable'),
   },
   data() {
     return {
       toggled: true,
       showFreeAccounts: false,
       showLicensedAccounts: false,
-      searchUserName: "",
-      searchUserUsername: "",
-      searchUserEmail: "",
       currentPageItemMin: 0,
       currentPageItemMax: 10,
       tabBarOption: ["Courses", "Instructors", "Users", "Institutions", "Utilities"],
@@ -485,7 +417,6 @@ module.exports = {
     }
   },
   created: function() {
-    this.$store.dispatch("getAllUsers");
     this.$store.dispatch("getCourseMemberships");
     this.$store.dispatch("getAllInstructors");
     this.$store.dispatch("getAllInstitutions");
@@ -502,18 +433,11 @@ module.exports = {
       var allInstructors = this.allInstructors;
       return allInstructors.filter(this.filterExpiringInstructors)
     },
-    filteredAllUsers(){
-      var allUsers = this.allUsers;
-      return allUsers.filter(this.filterAllUsers)
-    },
-    currentPageAllUsers(){
-      return this.filteredAllUsers.slice(this.currentPageItemMin, this.currentPageItemMax);
+    allCourses(){
+      return this.$store.state.allCourses;
     },
     allUsers(){
       return this.$store.state.allUsers;
-    },
-    allCourses(){
-      return this.$store.state.allCourses;
     },
     allInstructors(){
       return this.$store.state.allInstructors
@@ -621,21 +545,6 @@ module.exports = {
       }
       instructor.licenseExpires = formattedInstructorExpiration
       return instructor
-    },
-    filterAllUsers(user){
-      if(this.searchUserName){
-        var name = user.firstName + " " + user.lastName
-        name = name.toLowerCase();
-
-        if(!(name.includes(this.searchUserName.toLowerCase()))) {return false}
-      }
-      if(this.searchUserEmail){
-        if(!(user.email.includes(this.searchUserEmail))) {return false}
-      }
-      if(this.searchUserUsername){
-        if(!(user.username.includes(this.searchUserUsername))) {return false}
-      }
-      return user
     },
     filterNewUsers(allUsers){
       var tenDaysAgo = new Date();
