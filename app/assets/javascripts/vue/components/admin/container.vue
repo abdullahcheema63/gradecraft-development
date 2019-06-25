@@ -220,11 +220,6 @@
             </table>
           </div>
 
-          <tableComponent v-if="allCourses.length" :content="allCourses"></tableComponent>
-=======
-          <tableComponent v-if="!allCourses.length" :content="allCourses" table-type="courses"></tableComponent>
->>>>>>> 8ea81fce9... adds conditional to check if course has instructors before adding them into the store from mutation
-
           <button type="button" class="action">Export this table view</button>
         </div>
 
@@ -431,14 +426,13 @@
 <!-- adding back ticks ` escapes coffeescript to js -->
 <script lang='coffee'>`
 module.exports = {
-  name: 'admin-container',
+  name: 'container',
   components: {
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
     tabContainer: () => VComponents.get('vue/components/tabContainer'),
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
-    tableComponent: () => VComponents.get('vue/components/tableComponent'),
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
   },
   data() {
@@ -621,10 +615,8 @@ module.exports = {
       var formattedDate = new Date(expirationMax);
       var formattedInstructorExpiration = new Date(instructor.licenseExpires);
       if (!instructor.licenseExpires) {
-        console.log("instructor no license:", instructor.name)
         return false
       } else if (new Date(instructor.licenseExpires) >= formattedDate) {
-        console.log("instructor not going to expire:", instructor.name)
         return false
       }
       instructor.licenseExpires = formattedInstructorExpiration
