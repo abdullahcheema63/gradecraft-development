@@ -130,19 +130,19 @@ class LearningObjective < ApplicationRecord
     )
   end
 
-  def copy_category(copy, lookup_store)
-    if copy.category.present?
+  def copy_category(learning_objective_copy, lookup_store)
+    if learning_objective_copy.category.present?
       equivalent_category_id_in_copied_course = lookup_store.lookup(:learning_objective_categories, self.category.id)
-      copy.category = copy.course.learning_objective_categories.find(equivalent_category_id_in_copied_course)
+      learning_objective_copy.category = learning_objective_copy.course.learning_objective_categories.find(equivalent_category_id_in_copied_course)
     end
   end
 
-  def copy_assignment_links(copy, lookup_store)
-    copy.save
+  def copy_assignment_links(learning_objective_copy, lookup_store)
+    learning_objective_copy.save
 
     self.assignments.each do |assignment|
       equivalent_assignment_id_in_copied_course = lookup_store.lookup(:assignments, assignment.id)
-      copy.assignments.push(copy.course.assignments.find(equivalent_assignment_id_in_copied_course))
+      learning_objective_copy.assignments.push(learning_objective_copy.course.assignments.find(equivalent_assignment_id_in_copied_course))
     end
   end
 
