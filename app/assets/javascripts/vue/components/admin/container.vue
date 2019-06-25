@@ -308,39 +308,7 @@
         </div>
 
         <div v-if="tabSection[0]==='Institutions'">
-          <h2>All Institutions</h2>
-          <p>Need to add button to add Institution</p>
-          <p>Need to add search text bar</p>
-          <div class="table_container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Name </th>
-                  <th>Has Site License?</th>
-                  <th>Type</th>
-                  <th>Options</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="institution in allInstitutions" :key="institution.id">
-                  <td>{{institution.name}}</td>
-                  <td><span :class="{checked: institution.hasSiteLicense}"></span> </td>
-                  <td>{{institution.institutionType}}</td>
-                  <td>
-                    <buttonDropdown>
-                      <template slot="button_text">Options</template>
-                      <template slot="content">
-                        <ul>
-                          <li><a :href="institution.editURL">Edit</a> </li>
-                        </ul>
-                      </template>
-                    </buttonDropdown>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <tablePagination :items="allInstitutions" @paginate="paginateItems"></tablePagination>
+          <allInstitutionTable></allInstitutionTable>
         </div>
 
         <div v-if="tabSection[0]==='Utilities'">
@@ -369,6 +337,7 @@ module.exports = {
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
     allUserTable: () => VComponents.get('vue/components/admin/allUserTable'),
+    allInstitutionTable: () => VComponents.get('vue/components/admin/allInstitutionTable'),
   },
   data() {
     return {
@@ -419,7 +388,6 @@ module.exports = {
   created: function() {
     this.$store.dispatch("getCourseMemberships");
     this.$store.dispatch("getAllInstructors");
-    this.$store.dispatch("getAllInstitutions");
   },
   computed: {
     getUserFirstName(){
@@ -444,9 +412,6 @@ module.exports = {
     },
     allInstructors1(){
       return this.filterAllInstructors(this.$store.state.allInstructors);
-    },
-    allInstitutions(){
-      return this.$store.state.allInstitutions;
     },
     allNewCourses(){
       return this.filterNewCourses(this.allCourses)
