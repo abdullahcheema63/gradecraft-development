@@ -105,10 +105,6 @@ class CoursesController < ApplicationController
       duplicated = @course.copy(params[:copy_type])
 
       if duplicated.save
-        #if @course.has_learning_objectives?
-        #  @course.fix_learning_objectives_and_assignments_links
-        #end
-
         if !current_user_is_admin? && current_user.role(duplicated).nil?
           duplicated.course_memberships.create(user: current_user, role: current_role)
         end

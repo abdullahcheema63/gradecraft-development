@@ -142,7 +142,6 @@ class LearningObjective < ApplicationRecord
 
     self.assignments.each do |assignment|
       equivalent_assignment_id_in_copied_course = lookup_store.lookup(:assignments, assignment.id)
-      puts "Assignment: #{equivalent_assignment_id_in_copied_course}"
       copy.assignments.push(copy.course.assignments.find(equivalent_assignment_id_in_copied_course))
     end
   end
