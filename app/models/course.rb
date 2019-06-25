@@ -239,6 +239,25 @@ class Course < ApplicationRecord
     return self.disable_grade_emails
   end
 
+  def fix_learning_objectives_and_assignments_links
+    @copy.learning_objectives.each do |copied_learning_objective|
+      original_learning_objective = self.learning_objectives.find(copied_key_from_value(:learning_objectives, copied_learning_objective.id))
+
+      original_learning_objective.assignments.each do |assignment|
+          equivalent_assignment_in_copy = @copy.assignments.find(copied_value_from_key(:assignments, assignment.id))
+          copied_learning_objective.assignments.push(equivalent_assignment_in_copy)
+      end
+    end
+  end
+
+  def copied_value_from_key(key_type, key)
+    return @lookups.lookup(key_type, key)
+  end
+
+  def copied_key_from_value(value_type, value)
+    return @lookups.lookup_key_from_value(value_type, value)
+  end
+
   private
 
   # If not using multipliers, reset the related columns
@@ -261,7 +280,18 @@ class Course < ApplicationRecord
     self.has_paid = true if Rails.env.production?
   end
 
+  def fix_learning_objectives_category
+    @copy.learning_objectives.each do |learning_objective|
+      if learning_objective.category.present?
+        equivalent_category_in_copy_id = copied_value_from_key(:learning_objective_categories, learning_objective.category.id)
+        learning_objective.category = @copy.learning_objective_categories.find(equivalent_category_in_copy_id)
+      end
+    end
+  end
+
   def copy_with_associations(attributes, associations)
+    @lookups = ModelCopierLookups.new
+
     course_associations = [
       :badges,
       { assignment_types: { course_id: :id }},
@@ -273,7 +303,7 @@ class Course < ApplicationRecord
     course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
     course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
     
-    ModelCopier.new(self).copy(attributes: attributes,
+    @copy = ModelCopier.new(self, @lookups).copy(attributes: attributes,
                                associations: course_associations,
                                cross_references: [
                                  :unlock_conditions
@@ -282,6 +312,10 @@ class Course < ApplicationRecord
                                  prepend: { name: "Copy of " },
                                  overrides: [-> (copy) { copy_syllabus copy }]
                                })
+
+    fix_learning_objectives_category if has_learning_objectives?
+    
+    return @copy
   end
 
   # Copy course syllabus
