@@ -460,6 +460,13 @@ const store = new Vuex.Store({
       addAdminCourses(state, courses){
         //console.log("inside addAdminCourses mutation")
         state.allCourses = courses.map(course => {
+          var instructors = []
+          if(course.staff){
+            instructors = course.staff.map(staff => ({
+              text: staff.name,
+              url: staff.url
+            }))
+          }
           return {
             id: course.id,
             name: course.name,
@@ -479,10 +486,7 @@ const store = new Vuex.Store({
             term: course.semester,
             year: course.year,
             studentNumber: course.student_count,
-            instructors: course.staff.map(staff => ({
-              text: staff.name,
-              url: staff.url
-            }))
+            instructors: instructors
           }
         })
       },
