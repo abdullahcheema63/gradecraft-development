@@ -20,7 +20,6 @@ class ModelCopier
     # be run after all associations have already been copied.
     copy_associations options.delete(:cross_references) {[]}, attributes
     copied.save_copy_logs(lookup_store) if copied.respond_to?(:save_copy_logs)
-    puts @lookup_store.inspect
     copied
   end
 

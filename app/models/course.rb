@@ -300,8 +300,9 @@ class Course < ApplicationRecord
       :grade_scheme_elements,
     ] + associations
 
-    course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
+
     course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
+    course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
     
     @copy = ModelCopier.new(self, @lookups).copy(attributes: attributes,
                                associations: course_associations,
@@ -313,7 +314,7 @@ class Course < ApplicationRecord
                                  overrides: [-> (copy) { copy_syllabus copy }]
                                })
 
-    fix_learning_objectives_category if has_learning_objectives?
+    #fix_learning_objectives_category if has_learning_objectives?
     
     return @copy
   end

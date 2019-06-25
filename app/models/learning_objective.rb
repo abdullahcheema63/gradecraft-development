@@ -124,8 +124,20 @@ class LearningObjective < ApplicationRecord
     ModelCopier.new(self, lookup_store).copy(
       attributes: attributes,
       associations: [:levels],
-      options: { lookups: [:course, :category, :assignments] }
+      options: { lookups: [:course, :category, :assignments],
+                 overrides: [-> (copy) { copy_category(copy, lookup_store) }] }
     )
+  end
+
+  def copy_category(copy, lookup_store)
+    puts "Learning Objective parent: #{self.inspect}"
+    puts "Learning Objective Category copying: #{copy.inspect}"
+    puts "Lookups: #{lookup_store.inspect}"
+
+    if copy.category.present?
+      equivalent_category_id_in_copied_course = lookup_store.lookup(:learning_objective_categories, self.category.id)
+      copy.category = copy.course.learning_objective_categories.find(equivalent_category_id_in_copied_course)
+    end
   end
 
   private
