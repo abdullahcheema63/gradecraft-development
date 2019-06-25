@@ -125,18 +125,25 @@ class LearningObjective < ApplicationRecord
       attributes: attributes,
       associations: [:levels],
       options: { lookups: [:course, :category, :assignments],
-                 overrides: [-> (copy) { copy_category(copy, lookup_store) }] }
+                 overrides: [-> (copy) { copy_category(copy, lookup_store) }, 
+                             -> (copy) { copy_assignment_links(copy, lookup_store) }] }
     )
   end
 
   def copy_category(copy, lookup_store)
-    puts "Learning Objective parent: #{self.inspect}"
-    puts "Learning Objective Category copying: #{copy.inspect}"
-    puts "Lookups: #{lookup_store.inspect}"
-
     if copy.category.present?
       equivalent_category_id_in_copied_course = lookup_store.lookup(:learning_objective_categories, self.category.id)
       copy.category = copy.course.learning_objective_categories.find(equivalent_category_id_in_copied_course)
+    end
+  end
+
+  def copy_assignment_links(copy, lookup_store)
+    copy.save
+
+    self.assignments.each do |assignment|
+      equivalent_assignment_id_in_copied_course = lookup_store.lookup(:assignments, assignment.id)
+      puts "Assignment: #{equivalent_assignment_id_in_copied_course}"
+      copy.assignments.push(copy.course.assignments.find(equivalent_assignment_id_in_copied_course))
     end
   end
 
