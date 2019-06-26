@@ -5,6 +5,7 @@ json.data @instructors.includes(:course_memberships) do |instructor|
     json.id instructor.id.to_s
     json.first_name instructor.first_name
     json.last_name instructor.last_name
+    json.created_at instructor.created_at
     json.email instructor.email
     if instructor.current_course
       json.url staff_path(instructor)

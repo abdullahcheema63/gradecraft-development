@@ -539,6 +539,7 @@ const store = new Vuex.Store({
             id: instructor.id,
             firstName: instructor.first_name,
             lastName: instructor.last_name,
+            createdAt: instructor.created_at,
             email: instructor.email,
             url: instructor.url,
             licenseExpires: instructor.license_expires,

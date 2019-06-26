@@ -7,6 +7,8 @@
         <p>As an Awesome Admin, you probably don’t need much guidance from me. Nevertheless, I’m here to help orient you, and you can see what I say to instructors and students. </p>
       </guideMessage>
 
+      <newActivity></newActivity>
+
       <h2>New Activity</h2>
       <p>In the past 10 days: </p>
       <div class="flex-3">
@@ -208,9 +210,10 @@ module.exports = {
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
-    tabContainer: () => VComponents.get('vue/components/tabContainer'),
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
+    newActivity: () => VComponents.get('vue/components/admin/newActivity'),
+    tabContainer: () => VComponents.get('vue/components/tabContainer'),
     allCourseTable: () => VComponents.get('vue/components/admin/allCourseTable'),
     allUserTable: () => VComponents.get('vue/components/admin/allUserTable'),
     allInstructorTable: () => VComponents.get('vue/components/admin/allInstructorTable'),
