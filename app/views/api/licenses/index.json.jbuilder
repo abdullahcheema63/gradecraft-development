@@ -3,7 +3,7 @@ json.data do
 end
 
 json.included do
-  json.array! @courses do |course|
+  json.array! @license.courses.each do |course|
     json.type                                 "courses"
     json.id                                   course.id.to_s
 

@@ -498,7 +498,7 @@ const store = new Vuex.Store({
             submissionsURL: course.submissions_path,
             awardedBadgesURL: course.export_earned_badges_path,
             created: course.created_at,
-            licensed: course.has_paid,
+            licensed: course.licensed,
             active: course.active,
             published: course.published,
             term: course.semester,
