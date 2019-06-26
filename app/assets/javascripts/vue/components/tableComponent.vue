@@ -89,7 +89,8 @@
                   </ul>
                 </template>
               </buttonDropdown>
-
+            </td>
+            <td>
               <buttonDropdown>
                 <template slot="button_text">Options</template>
                 <template slot="content">
