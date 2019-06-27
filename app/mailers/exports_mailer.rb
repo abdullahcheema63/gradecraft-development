@@ -23,12 +23,6 @@ class ExportsMailer < ApplicationMailer
     mail_submissions_export("failed to build", professor, assignment)
   end
 
-  def team_submissions_export_success(professor, assignment, team,
-                                      submissions_export, secure_token)
-    cache_success_mailer_attrs(submissions_export, secure_token)
-    mail_team_submissions_export("is ready", professor, assignment, team)
-  end
-
   def grade_export(course, user, csv_data)
     set_export_ivars(course, user)
     attachments["#{ course.name } Grades - #{ Date.today }.csv"] = csv_attachment(csv_data)
