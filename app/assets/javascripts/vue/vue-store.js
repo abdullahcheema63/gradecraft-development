@@ -69,157 +69,38 @@ const store = new Vuex.Store({
       hasPaid: null,
       hasSeenCourseOnboarding: null,
       courseMembership: [{
-        id: 1,
-        name: "GradeCraft101",
-        number: "GC101",
-        role: "Instructor",
-        instructor: "Cait Holman",
+        id: null,
+        name: "",
+        number: "",
+        role: "",
+        instructor: "",
         url: "",
         gradingStatus: {
           url: "",
-          ungraded: 25,
-          ready: 2,
-          resubmissions: 10
+          ungraded: null,
+          ready: null,
+          resubmissions: null
         },
-        eventCount: 7,
-        announcementCount: 5,
+        eventCount: null,
+        announcementCount: null,
         assignments: [{
-          name: "Assignment 1",
-          dueDate: "2019-07-12T00:00:00",
-          planned: 12,
-          submitted: 14,
-          graded: 0,
-          url: ""},
-          {
-          name: "Assignment 2",
-          dueDate: "2019-07-17T00:00:00",
-          planned: 5,
-          submitted: 0,
-          graded: 0,
-          url: ""}],
-        term: {
-          name: "Fall",
-          year: "2018",
-          start: "2019-01-01T00:00:00",
-          end: "2019-09-01T00:00:00"
-        },
-        licensed: true,
-        published: true },
-      {
-        id: 2,
-        name: "Basket Weaving",
-        number: "BW101",
-        role: "Instructor",
-        instructor: "Steve Irwin",
-        url: "",
-        gradingStatus: {
-          url: "",
-          ungraded: 19,
-          ready: 5,
-          resubmissions: 3
-        },
-        eventCount: 2,
-        announcementCount: 8,
-        assignments: [{
-          name: "Weaving Theory 1",
-          dueDate: "2018-07-12T00:00:00",
-          planned: 25,
-          submitted: 10,
-          graded: 0,
-          url: ""},
-          {
-          name: "Weaving Theory 2",
-          dueDate: "2018-07-17T00:00:00",
-          planned: 15,
-          submitted: 0,
-          graded: 0,
-          url: ""}],
-        term: {
-          name: "Winter",
-          year: "2018",
-          start: "2018-01-01T00:00:00",
-          end: "2018-09-01T00:00:00"
-        },
-        licensed: true,
-        published: true },
-      {
-        id: 3,
-        name: "Tai-Chi",
-        number: "TC100",
-        role: "Student",
-        instructor: "Sensei Karla",
-        url: "",
-        gradingStatus: {
-          url: "",
-          ungraded: 0,
-          ready: 0,
-          resubmissions: 0
-        },
-        eventCount: 2,
-        announcementCount: 8,
-        assignments: [{
-          name: "Rooting",
+          name: "",
           dueDate: "",
-          planned: 1,
-          submitted: 0,
-          graded: 0,
-          url: ""},
-          {
-          name: "Balance",
-          dueDate: "",
-          planned: 0,
-          submitted: 0,
-          graded: 1,
-          url: ""}],
+          planned: null,
+          submitted: null,
+          graded: null,
+          url: ""
+        }],
         term: {
-          name: "Winter",
-          year: "2019",
-          start: "2019-01-01T00:00:00",
-          end: "2019-09-02T00:00:00"
+          name: "",
+          year: "",
+          start: "",
+          end: ""
         },
-        licensed: true,
-        published: true
-      },
-      {
-        id: 4,
-        name: "Broom Ball",
-        number: "BB100",
-        role: "Instructor",
-        instructor: "Erik Barroso",
-        url: "",
-        gradingStatus: {},
-        eventCount: 0,
-        announcementCount: 0,
-        assignments: [{}],
-        term: {
-          name: "Winter",
-          year: "2019",
-          start: "2019-01-01T00:00:00",
-          end: "2019-09-02T00:00:00"
-        },
-        licensed: false,
-        published: false
-      },
-      {
-        id: 5,
-        name: "Advanced Basket Weaving",
-        number: "BW200",
-        role: "Instructor",
-        instructor: "Steve Irwin",
-        url: "",
-        gradingStatus: {},
-        eventCount: 2,
-        announcementCount: 8,
-        assignments: [{}],
-        term: {
-          name: "Spring",
-          year: "2016",
-          start: "2016-01-01T00:00:00",
-          end: "2016-09-01T00:00:00"
-        },
-        licensed: false,
-        published: true
-      }]
+        licensed: null,
+        published: null,
+        active: null
+       }]
     }},
     actions: {
       getCourseMemberships: async function({ commit }){
