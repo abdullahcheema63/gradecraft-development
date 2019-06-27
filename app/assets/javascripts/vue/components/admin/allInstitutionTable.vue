@@ -2,7 +2,12 @@
   <div>
     <h2>All Institutions</h2>
     <p>Need to add button to add Institution</p>
-    <p>Need to add search text bar</p>
+    <form>
+      <div class="form_elem">
+        <input type="text" id="name_contains" v-model="searchName" placeholder="Name contains..." />
+        <label for="name_contains">Name contains</label>
+      </div>
+    </form>
     <div class="table_container">
       <table>
         <thead>
@@ -14,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="institution in allInstitutions" :key="institution.id">
+          <tr v-for="institution in currentPageAllInstitutions" :key="institution.id">
             <td>{{institution.name}}</td>
             <td><span :class="{checked: institution.hasSiteLicense}"></span> </td>
             <td>{{institution.institutionType}}</td>
@@ -32,7 +37,7 @@
         </tbody>
       </table>
     </div>
-    <tablePagination :items="allInstitutions" @paginate="paginateItems"></tablePagination>
+    <tablePagination :items="filteredAllInstitutions" @paginate="paginateItems"></tablePagination>
   </div>
 </template>
 
@@ -45,6 +50,7 @@ module.exports = {
   },
   data() {
     return {
+      searchName: "",
       currentPageItemMin: 0,
       currentPageItemMax: 10,
     }
@@ -53,8 +59,24 @@ module.exports = {
     allInstitutions(){
       return this.$store.state.allInstitutions;
     },
+    filteredAllInstitutions(){
+      var allInstitutions = this.allInstitutions;
+      return allInstitutions.filter(this.filterAllInstitutions)
+    },
+    currentPageAllInstitutions(){
+      return this.filteredAllInstitutions.slice(this.currentPageItemMin, this.currentPageItemMax)
+    }
   },
   methods: {
+    filterAllInstitutions(institution){
+      if(this.searchName){
+        var name = institution.name
+        name = name.toLowerCase();
+
+        if(!(name.includes(this.searchName.toLowerCase()))) {return false}
+      }
+      return institution
+    },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;
       this.currentPageItemMax = itemRange.max;
