@@ -67,7 +67,7 @@
             <th>Semester </th>
             <th>Year </th>
             <th>Created </th>
-            <th>Action </th>
+            <th>Exports </th>
             <th>Options </th>
           </tr>
         </thead>
@@ -87,7 +87,7 @@
             <td>{{course.created}}</td>
             <td>
               <buttonDropdown>
-                <template slot="button_text">?Action</template>
+                <template slot="button_text">Export</template>
                 <template slot="content">
                   <ul>
                     <li><a :href="course.earnedBadgesURL">Export Earned Badges</a> </li>
@@ -121,7 +121,7 @@
       </table>
     </div>
     <tablePagination :items="filteredAllCourses" :paginateBy="currentPageItemMax" @paginate="paginateItems"></tablePagination>
-    <button type="button" class="action">Export this table view</button>Not done 
+    <button type="button" class="action">Export this table view</button>Not done
   </div>
 </template>
 
