@@ -23,6 +23,14 @@
             <input id="inactive" type="checkbox" value="inactive" v-model="showInactive" />
             <label for="inactive">Inactive</label>
           </span>
+          <span>
+            <input id="licensed" type="checkbox" value="licensed" v-model="showLicensed" />
+            <label for="licensed">Licensed</label>
+          </span>
+          <span>
+            <input id="unlicensed" type="checkbox" value="unlicensed" v-model="showUnlicensed" />
+            <label for="unlicensed">Unlicensed</label>
+          </span>
         </div>
         <div>
           <span v-for="year in courseTermYear" :key="year">
@@ -39,8 +47,8 @@
       </div>
       <div class="search_box">
         <div class="form_elem">
-          <input type="search" id="search_courses" placeholder="Search all courses" />
-          <label for="search_courses">Search courses</label>
+          <input type="search" id="searchCourseName" v-model="searchCourseName" placeholder="Search all courses" />
+          <label for="searchCourseName">Search courses</label>
         </div>
       </div>
     </div>
@@ -64,7 +72,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="course in allCourses">
+          <tr v-for="course in currentPageAllCourses">
             <td>{{course.id}}</td>
             <td>{{course.name}}</td>
             <td><span :class="{checked: course.licensed}">&nbsp;</span></td>
@@ -112,7 +120,7 @@
         </tbody>
       </table>
     </div>
-
+    <tablePagination :items="filteredAllCourses" @paginate="paginateItems"></tablePagination>
     <button type="button" class="action">Export this table view</button>
   </div>
 </template>
@@ -128,6 +136,9 @@ module.exports = {
     return {
       currentPageItemMin: 0,
       currentPageItemMax: 10,
+      searchCourseName: '',
+      showLicensed: '',
+      showUnlicensed: '',
       showPublished: '',
       showUnpublished: '',
       showActive: '',
@@ -143,9 +154,42 @@ module.exports = {
   computed: {
     allCourses(){
       return this.$store.state.allCourses;
+    },
+    filteredAllCourses(){
+      var allCourses = this.allCourses;
+      return allCourses.filter(this.filterAllCourses)
+    },
+    currentPageAllCourses(){
+      return this.filteredAllCourses.slice(this.currentPageItemMin, this.currentPageItemMax)
     }
   },
   methods: {
+    filterAllCourses(course){
+      if (this.searchCourseName){
+        var name = course.name
+        name = name.toLowerCase()
+        if(!(name.includes(this.searchCourseName.toLowerCase()))){return false}
+      }
+      if(this.showLicensed){
+        if(course.licensed === false){return false}
+      }
+      if(this.showUnlicensed){
+        if(course.licensed === true){return false}
+      }
+      if(this.showActive){
+        if(course.active === false){return false}
+      }
+      if(this.showInactive){
+        if(course.active === true){return false}
+      }
+      if(this.showPublished){
+        if(course.published === false){return false}
+      }
+      if(this.showUnpublished){
+        if(course.published === true){return false}
+      }
+      return course
+    },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;
       this.currentPageItemMax = itemRange.max;
