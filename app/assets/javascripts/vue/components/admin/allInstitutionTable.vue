@@ -1,7 +1,6 @@
 <template>
   <div>
     <h2>All Institutions</h2>
-    <p>Need to add button to add Institution</p>
     <form>
       <div class="form_elem">
         <input type="text" id="name_contains" v-model="searchName" placeholder="Name contains..." />
@@ -38,6 +37,7 @@
       </table>
     </div>
     <tablePagination :items="filteredAllInstitutions" @paginate="paginateItems"></tablePagination>
+    <a class="button action next" href="institutions/new">Add a new institution</a>
   </div>
 </template>
 
