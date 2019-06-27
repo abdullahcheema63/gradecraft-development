@@ -2,6 +2,12 @@
   <div>
     <h2>All Instructor Users</h2>
     <p>Manage instructor users and their licensed accounts.</p>
+    <form>
+      <div class="form_elem">
+        <input type="text" id="name_contains" v-model="searchName" placeholder="Name contains..." />
+        <label for="name_contains">Name contains</label>
+      </div>
+    </form>
     <div class="table_functions">
       <div class="filter_box">
         <p>Select which filters you want to apply to the table below: </p>
@@ -33,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="instructor in filteredAllInstructors" :key="instructor.id">
+          <tr v-for="instructor in currentPageAllInstructors" :key="instructor.id">
             <td><a href="#">{{instructor.firstName}}</a> </td>
             <td><a href="#">{{instructor.lastName}}</a> </td>
             <td>{{instructor.licenseExpires}} </td>
@@ -91,6 +97,7 @@ module.exports = {
     return {
       currentPageItemMin: 0,
       currentPageItemMax: 10,
+      searchName: "",
       showLicensedAccounts: "",
       showFreeAccounts: "",
     }
@@ -100,16 +107,21 @@ module.exports = {
       return this.$store.state.allInstructors;
     },
     filteredAllInstructors(){
-      return this.filterAllInstructors(this.allInstructors)
+      var allInstructors = this.allInstructors
+      return allInstructors.filter(this.filterAllInstructors)
+    },
+    currentPageAllInstructors(){
+      return this.filteredAllInstructors.slice(this.currentPageItemMin, this.currentPageItemMax);
     }
   },
   methods: {
-    filterAllInstructors(allInstructors){
-      return allInstructors.filter( instructor => {
-        if( this.showFreeAccounts && instructor.accountType != "the best"){return false}
-        if( this.showLicensedAccounts && instructor.accountType != "the best"){return false}
-        return instructor
-      })
+    filterAllInstructors(instructor){
+      if(this.searchName){
+        var name = instructor.firstName + " " + instructor.lastName
+        name = name.toLowerCase();
+        if(!(name.includes(this.searchName.toLowerCase()))) {return false}
+      }
+      return instructor
     },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;
