@@ -141,9 +141,9 @@
 module.exports = {
   name: 'new-activity',
   components: {
-    tablePagination: () => VComponents.get('vue/components/tablePagination'),
-    buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
-    accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
+    tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
+    buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
+    accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
   },
   data() {
     return {

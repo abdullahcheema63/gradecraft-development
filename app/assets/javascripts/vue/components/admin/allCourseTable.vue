@@ -129,8 +129,8 @@
 module.exports = {
   name: 'all-course-table',
   components: {
-    tablePagination: () => VComponents.get('vue/components/tablePagination'),
-    buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
+    tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
+    buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
   },
   data() {
     return {

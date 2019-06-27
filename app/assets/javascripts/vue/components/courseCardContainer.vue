@@ -253,8 +253,8 @@ module.exports = {
     courseCard: () => VComponents.get('vue/components/courseCard'),
     pastCourse: () => VComponents.get('vue/components/pastCourse'),
     guideMessage: () => VComponents.get('vue/components/guideMessage'),
-    buttonModal: () => VComponents.get('vue/components/buttonModal'),
-    accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
+    buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
+    accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     formContainer: () => VComponents.get('vue/components/formContainer'),
     VueFlatpickr
   },

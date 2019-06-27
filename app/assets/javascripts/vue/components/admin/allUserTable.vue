@@ -74,7 +74,7 @@
 module.exports = {
   name: 'all-user-table',
   components: {
-    tablePagination: () => VComponents.get('vue/components/tablePagination'),
+    tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
   },
   data() {
     return {

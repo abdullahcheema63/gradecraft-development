@@ -166,7 +166,7 @@ module.exports = {
   name: 'course-card',
   props: ['course', 'status'],
   components: {
-    modalComponent: () => VComponents.get('vue/components/modalComponent')
+    modalComponent: () => VComponents.get('vue/components/structure/modalComponent')
   },
   data() {
     return {

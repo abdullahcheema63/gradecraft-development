@@ -61,7 +61,7 @@ module.exports = {
     "licenses-renew-form": () => VComponents.get("vue/components/licenses/renewForm"),
     "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),
     "licenses-details": () => VComponents.get("vue/components/licenses/details"),
-    buttonModal: () => VComponents.get('vue/components/buttonModal'),
+    buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
   },
   data: function() { return data; },
   props: {

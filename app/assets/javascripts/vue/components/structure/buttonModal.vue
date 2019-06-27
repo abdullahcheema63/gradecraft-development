@@ -23,7 +23,7 @@ module.exports = {
   name: 'button-modal-pair',
   props: ['button_class'],
   components: {
-    modalComponent: () => VComponents.get('vue/components/modalComponent')
+    modalComponent: () => VComponents.get('vue/components/structure/modalComponent')
   },
   data() {
     return {
