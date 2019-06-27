@@ -1,4 +1,4 @@
-describe Course, :focus => true do
+describe Course do
   subject { build(:course) }
   let(:staff_membership) { create :course_membership, :staff, course: subject,
                                   instructor_of_record: true }
