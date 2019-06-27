@@ -76,9 +76,6 @@ module.exports = {
   components: {
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
   },
-  created: function(){
-    this.$store.dispatch("getAllUsers");
-  },
   data() {
     return {
       searchName: "",

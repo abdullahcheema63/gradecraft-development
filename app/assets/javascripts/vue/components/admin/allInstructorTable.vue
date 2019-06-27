@@ -87,9 +87,6 @@ module.exports = {
     tablePagination: () => VComponents.get('vue/components/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
   },
-  created: function(){
-    this.$store.dispatch("getAllInstructors");
-  },
   data() {
     return {
       currentPageItemMin: 0,

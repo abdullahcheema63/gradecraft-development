@@ -88,6 +88,9 @@ module.exports = {
   },
   created: function() {
     this.$store.dispatch("getCourseMemberships");
+    this.$store.dispatch("getAllInstructors");
+    this.$store.dispatch("getAllUsers");
+    this.$store.dispatch("getAllInstitutions");
   },
   computed: {
     getUserFirstName(){

@@ -145,9 +145,6 @@ module.exports = {
     buttonDropdown: () => VComponents.get('vue/components/buttonDropdown'),
     accordionComponent: () => VComponents.get('vue/components/accordionComponent'),
   },
-  created: function(){
-    this.$store.dispatch("getAllInstructors");
-  },
   data() {
     return {
       currentPageItemMin: 0,
