@@ -120,8 +120,8 @@
         </tbody>
       </table>
     </div>
-    <tablePagination :items="filteredAllCourses" @paginate="paginateItems"></tablePagination>
-    <button type="button" class="action">Export this table view</button>
+    <tablePagination :items="filteredAllCourses" :paginateBy="currentPageItemMax" @paginate="paginateItems"></tablePagination>
+    <button type="button" class="action">Export this table view</button>Not done 
   </div>
 </template>
 
@@ -146,9 +146,9 @@ module.exports = {
       showLicensedAccounts: '',
       showFreeAccounts: '',
       courseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
-      termYear: [],
       courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
       termName: [],
+      termYear: [],
     }
   },
   computed: {
@@ -187,6 +187,12 @@ module.exports = {
       }
       if(this.showUnpublished){
         if(course.published === true){return false}
+      }
+      if(this.termName.length){
+        if (!(this.termName.includes(course.term))) {return false}
+      }
+      if(this.termYear.length){
+        if (!(this.termYear.includes(course.year))) {return false}
       }
       return course
     },
