@@ -6,8 +6,8 @@
     </h4>
 
     <div class="course_status">
-      <p>{{ course.role }}</p>
-      <div v-if="course.role === 'Instructor'">
+      <p>{{ user_card_class }}</p>
+      <div v-if="course.role === 'professor'">
         <p :class="'licensed'" v-if="is_licensed" @click="toggleModalState">
           Licensed
         </p>
@@ -107,7 +107,7 @@
     </h4>
 
     <div class="course_status">
-      <p>{{course.role}}</p>
+      <p>{{user_card_class}}</p>
       <div>
         <p>Unpublished Course</p>
         <p :class="'licensed'" v-if="is_licensed" @click="toggleModalState">
@@ -163,7 +163,7 @@
 
 <script lang='coffee'>`
 module.exports = {
-  name: 'course-card',
+  name: 'courseCard',
   props: ['course', 'status'],
   components: {
     modalComponent: () => VComponents.get('vue/components/structure/modalComponent')
@@ -176,7 +176,7 @@ module.exports = {
   },
   computed: {
     is_staff() {
-      return this.course.role === 'Instructor' || this.course.role === 'gsi';
+      return this.course.role === 'professor' || this.course.role === 'gsi';
     },
     user_card_class() {
       if( this.is_staff ){ return 'instructor' }

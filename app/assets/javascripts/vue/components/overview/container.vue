@@ -250,7 +250,7 @@
 module.exports = {
   name: 'container',
   components: {
-    courseCard: () => VComponents.get('vue/components/structure/courseCard'),
+    courseCard: () => VComponents.get('vue/components/overview/courseCard'),
     pastCourse: () => VComponents.get('vue/components/pastCourse'),
     guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
