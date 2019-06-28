@@ -231,7 +231,6 @@ const store = new Vuex.Store({
       },
       deleteCourse: async function({commit}, courseId ){
         var api = "/api/courses/" + courseId
-        console.log("api:", api)
         const resp = await fetch(api, {
           method: 'DELETE',
           headers: {
@@ -393,7 +392,6 @@ const store = new Vuex.Store({
             name: course.name,
             url: course.change_course_path,
             editURL: course.edit_course_path,
-            copyURL: course.copy_courses_path,
             copyStudentsURL: course.copy_courses_with_students_path,
             finalGradesURL: course.final_grades_path,
             gradebookURL: course.gradebook_file_path,
