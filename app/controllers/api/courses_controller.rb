@@ -69,12 +69,16 @@ class API::CoursesController < ApplicationController
   # POST /api/courses
   def create
     course_params = format_course_params(params)
-
     @course = Course.new(course_params)
+
     if @course.save
-      puts("saved created course")
+      if (course_params["has_paid"])
+        @license = current_user.license
+        @license.courses << @course
+
+        @license.save
+      end
       if !current_user_is_admin?
-        puts("current_user.id", current_user.id)
         @course.course_memberships.create(user_id: current_user.id,
                                           role: current_user.role(current_course))
       end
