@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>How do you want add a course?</h2>
+    <slot name="header"></slot>
     <div class="tab_container">
       <slot name="question"></slot>
       <div class="tab_contents">

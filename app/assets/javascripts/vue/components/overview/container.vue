@@ -101,6 +101,9 @@
         <template slot="content">
           <form>
             <formContainer>
+              <template slot="header">
+                <h2>How do you want add a course?</h2>
+              </template>
               <template slot="question">
                 <div class="tab_toggle">
                   <span v-for="question in formQuestion">
@@ -186,6 +189,91 @@
                 <div v-else>
                   <p>You currently have a <b>free trial account</b> and cannot convert trial courses into licensed ones right now. </p>
                   <p>Try creating a new course instead! </p>
+                </div>
+              </template>
+            </formContainer>
+          </form>
+        </template>
+        <template slot="submit-button">
+          <slot name="submit-button">
+            <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
+          </slot>
+        </template>
+      </buttonModal>
+
+      (reduced)
+      <buttonModal button_class="action" ref="buttonModal_add">
+        <template slot="button-text">Add a course</template>
+        <template slot="heading">Add a new course</template>
+        <template slot="content">
+          <form>
+            <formContainer>
+              <template slot="form-response">
+                <div>
+                  <p>Use this form to create a new course from scratch:</p>
+
+                  <h3>Essential Course Info</h3>
+                  <div v-if="newCourseErrors.length" class="inline_alert_msg">
+                    <p>
+                      Please fill out the <b>required fields</b> below if you want to create a new course.
+                    </p>
+                  </div>
+                  <div class="flex-2 form_pair">
+                    <div class="form_elem">
+                      <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
+                      <label for="course_number">Course #</label>
+                    </div>
+                    <div class="form_elem">
+                      <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
+                      <label for="course_name">Course name</label>
+                    </div>
+                    <div class="form_elem">
+                      <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar"></flat-pickr>
+                      <label for="course_start">Course start date</label>
+                    </div>
+                    <div class="form_elem">
+                      <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar"></flat-pickr>
+                      <label for="course_end">Course end date</label>
+                    </div>
+
+                    <div class="form_elem">
+                      <select id="course_semester" v-model="newCourse.term.name">
+                        <option value="" selected="selected" disabled="disabled">Semester</option>
+                        <option :value="'Fall'">Fall</option>
+                        <option :value="'Winter'">Winter</option>
+                        <option :value="'Spring'">Spring</option>
+                        <option :value="'Summer'">Summer</option>
+                      </select>
+                      <label for="course_semester">Semester</label>
+                    </div>
+                    <div class="form_elem">
+                      <select id="course_year" v-model="newCourse.term.year">
+                        <option value="" selected="selected" disabled="disabled">Year</option>
+                        <option :value="2020">2020</option>
+                        <option :value="2019">2019</option>
+                        <option :value="2018">2018</option>
+                        <option :value="2017">2017</option>
+                      </select>
+                      <label for="course_year">Year</label>
+                    </div>
+                  </div>
+
+                  <h3>Course Type</h3>
+                  <p v-if="userHasPaid === false">
+                    You currently have a <b>free trial account</b> and can only add trial courses right now.
+                  </p>
+                  <div class="form_options">
+                    <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" :value=false />
+                    <label for="newTrialCourse">Trial Course</label>
+                  </div>
+                  <div class="form_options" v-if="userHasPaid">
+                    <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" :value=true />
+                    <label for="newLicensedCourse">Licensed Course</label>
+                  </div>
+                  <div class="form_options" v-else>
+                    <input type="radio" id="licensedCourse_disabled" name="courseType" disabled="disabled" />
+                    <label for="licensedCourse_disabled">Licensed Course</label>
+                  </div>
                 </div>
               </template>
             </formContainer>
