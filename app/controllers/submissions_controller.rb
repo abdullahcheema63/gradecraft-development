@@ -127,8 +127,21 @@ class SubmissionsController < ApplicationController
   def send_notification(submission_id, submission_was_draft)
     if submission_was_draft
       NotificationMailer.successful_submission(submission_id).deliver_now
+
+      if @assignment.course.assignment_submitted_notification?
+        @assignment.course.staff.each do |professor|
+          NotificationMailer.new_submission(submission_id, professor).deliver_now
+        end
+      end
+
     else
       NotificationMailer.updated_submission(submission_id).deliver_now
+
+      if @assignment.course.assignment_revised_notification?
+        @assignment.course.staff.each do |professor|
+          NotificationMailer.revised_submission(submission_id, professor).deliver_now
+        end
+      end
     end
   end
 
