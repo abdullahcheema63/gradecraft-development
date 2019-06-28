@@ -1,0 +1,11 @@
+%section.form-section
+  %h2.form-title Email Settings
+  .form-item
+    = f.check_box :assignment_submitted_notification
+    = f.label :assignment_submitted_notification, "Assignment Submitted Notification", {"aria-describedby" => "assignmentSubmittedNotification"}
+    .form-hint{id: "assignmentSubmittedNotification"} Send an email notification to instructors when an assignment is submitted by a student
+
+  .form-item
+    = f.check_box :assignment_revised_notification
+    = f.label :assignment_revised_notification, "Assignment Revised Notification", {"aria-describedby" => "assignmentRevisedNotification"}
+    .form-hint{id: "assignmentRevisedNotification"} Send an email notification to instructors when an assignment is revised by a student
