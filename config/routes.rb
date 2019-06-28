@@ -469,12 +469,13 @@ Rails.application.routes.draw do
 
     resources :challenges, only: :index
 
-    resources :courses, only: [:index, :show, :create, :copy] do
+    resources :courses, only: [:index, :show, :create, :copy, :destroy] do
       resource :copy_log, only: [:show]
       resources :students, only: :index, module: :courses
       collection do
         get :search
         post :copy
+        post :destroy
         get "analytics"
         get "one_week_analytics", to: "courses#one_week_analytics"
         resources :importers, only: [], module: :courses, param: :provider_id do

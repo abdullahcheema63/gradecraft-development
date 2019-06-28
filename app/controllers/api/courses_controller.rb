@@ -2,6 +2,7 @@
 class API::CoursesController < ApplicationController
   before_action :ensure_staff?, only: [:show, :copy]
   before_action :use_current_course, only: [:analytics, :one_week_analytics]
+  before_action :ensure_admin?, only: [:destroy]
 
   # skip_before_action :verify_authenticity_token, only: :create
 
@@ -86,6 +87,14 @@ class API::CoursesController < ApplicationController
     else
       puts("Course was not saved")
     end
+  end
+
+  # DELETE /api/courses/:id
+  def destroy
+    course_id = params[:id]
+    @course = Course.find(course_id)
+    authorize! :destroy, @course
+    @course.destroy
   end
 
   # GET api/courses/analytics

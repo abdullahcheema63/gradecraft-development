@@ -111,7 +111,7 @@
                     <li><a :href="course.editURL">Edit</a> </li>
                     <li><a :href="course.copyURL">Copy</a> </li>
                     <li><a :href="course.copyStudentsURL">Copy + Students(remove for course / LO )</a> </li>
-                    <li><a>Delete (ADD TO API)</a> </li>
+                    <li><a @click.prevent="deleteCourse(course.id)">Delete</a></li>
                   </ul>
                 </template>
               </buttonDropdown>
@@ -195,6 +195,9 @@ module.exports = {
         if (!(this.termYear.includes(course.year))) {return false}
       }
       return course
+    },
+    deleteCourse(courseId){
+      this.$store.dispatch("deleteCourse", courseId);
     },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;

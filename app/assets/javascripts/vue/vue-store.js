@@ -229,6 +229,24 @@ const store = new Vuex.Store({
         console.log("inside copyCourse action", resp)
 
       },
+      deleteCourse: async function({commit}, courseId ){
+        var api = "/api/courses/" + courseId
+        console.log("api:", api)
+        const resp = await fetch(api, {
+          method: 'DELETE',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(courseId)
+        }).then((response) => {
+          console.log("inside deleteCourse action", response)
+        })
+        console.log("inside deleteCourse action", resp)
+      },
       newLicensePayment: async function({ commit }, payment){
         const resp = await fetch("/api/licenses", {
           method: 'POST',
