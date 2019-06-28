@@ -510,6 +510,10 @@ const store = new Vuex.Store({
       userOnboardingStatus: state => {
         return state.user.hasSeenCourseOnboarding
       },
+      userLicenseInfo: state =>{
+        if(state.user.license) return state.user.license
+        return null
+      },
       userGuideStatus: state => {
         return state.user.showGuide;
       },

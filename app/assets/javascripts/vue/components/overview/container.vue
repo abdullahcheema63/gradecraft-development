@@ -259,14 +259,14 @@
                   </div>
 
                   <h3>Course Type</h3>
-                  <p v-if="userHasPaid === false">
-                    You currently have a <b>free trial account</b> and can only add trial courses right now.
+                  <p v-if="licenseInfo === null">
+                    You currently do not have a license and can only add trial courses right now.
                   </p>
                   <div class="form_options">
                     <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" :value=false />
                     <label for="newTrialCourse">Trial Course</label>
                   </div>
-                  <div class="form_options" v-if="userHasPaid">
+                  <div class="form_options" v-if="canLicenseCourse">
                     <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" :value=true />
                     <label for="newLicensedCourse">Licensed Course</label>
                   </div>
@@ -307,7 +307,6 @@
                 <br>
                 <p>
                   <b>Please note that your copy will be a trial course by default.</b>
-                  You will need to add more licensed courses to your account in order to convert it to a licensed course.
                 </p>
                 <button class='action' type="button" @click.prevent="courseCopyRequest()">Submit request</button>
               </form>
@@ -450,6 +449,15 @@ module.exports = {
         return course.role
       })
       return courseRoles.includes('professor')
+    },
+    licenseInfo(){
+      return this.$store.getters.userLicenseInfo
+    },
+    canLicenseCourse(){
+      var max = this.licenseInfo.maxCourses
+      var currentCourses = this.licenseInfo.currentCourses
+
+      return (currentCourses < max) ? true : false
     }
   },
   methods: {
