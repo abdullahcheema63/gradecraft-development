@@ -248,9 +248,9 @@
 <!-- adding back ticks ` escapes coffeescript to js -->
 <script lang='coffee'>`
 module.exports = {
-  name: 'course-card-container',
+  name: 'container',
   components: {
-    courseCard: () => VComponents.get('vue/components/courseCard'),
+    courseCard: () => VComponents.get('vue/components/structure/courseCard'),
     pastCourse: () => VComponents.get('vue/components/pastCourse'),
     guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
