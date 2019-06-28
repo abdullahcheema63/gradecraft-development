@@ -419,7 +419,7 @@ module.exports = {
     },
     unpublishedCourses(){
       return this.$store.state.user.courseMembership.filter( membership => {
-        if(membership.licensed){return false;}
+        if(membership.published){return false;}
         return membership
       })
     },
