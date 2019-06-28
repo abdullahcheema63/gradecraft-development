@@ -200,16 +200,16 @@
 
       <div v-if="allCourses.length">
         <h3>Copy an existing course</h3>
-        <p>If you like your setup from a previous course and would like to
-          duplicate it instead of starting from scratch, we can also
-          help you copy an existing course:
+        <p>
+          If you like your setup from a previous course and would like to
+          duplicate it instead of starting from scratch, you can copy an existing course:
         </p>
         <buttonModal button_class="action secondary" ref="buttonModal_copy">
-          <template slot="button-text">Request a copy</template>
+          <template slot="button-text">Copy a course</template>
           <template slot="heading">Copy a past course</template>
           <template slot="content">
             <div>
-              <h2>Request a copy of an existing course</h2>
+              <h2>Copy an existing course</h2>
               <p>Which existing course would you like to copy?</p>
               <form>
                 <div class="form_options" v-for="course in currentAndPastCourses" :key="course.id" >
@@ -252,7 +252,7 @@ module.exports = {
   components: {
     courseCard: () => VComponents.get('vue/components/courseCard'),
     pastCourse: () => VComponents.get('vue/components/pastCourse'),
-    guideMessage: () => VComponents.get('vue/components/guideMessage'),
+    guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     formContainer: () => VComponents.get('vue/components/formContainer'),

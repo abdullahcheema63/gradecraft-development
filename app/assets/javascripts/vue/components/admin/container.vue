@@ -53,7 +53,7 @@
 module.exports = {
   name: 'container',
   components: {
-    guideMessage: () => VComponents.get('vue/components/guideMessage'),
+    guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
