@@ -122,12 +122,17 @@ class Course < ApplicationRecord
     result = CopyValidator.new.validate self, associations: assoc
     raise CopyValidationError.new(result.details, "Failed to copy #{self.name} due to validation errors") if result.has_errors
 
+    license_id = nil
+    if (Rails.env.production?)
+      license_id = self.license_id
+    end
+
     if copy_type != "with_students"
-      copy_with_associations(attributes.merge(lti_uid: nil, status: true), assoc)
+      copy_with_associations(attributes.merge(lti_uid: nil, license_id: license_id, status: true), assoc)
     else
       begin
         Course.skip_callback(:create, :after, :create_admin_memberships)
-        copy_with_associations(attributes.merge(lti_uid: nil, status: true), assoc)
+        copy_with_associations(attributes.merge(lti_uid: nil, license_id: license_id, status: true), assoc)
       ensure
         Course.set_callback(:create, :after, :create_admin_memberships)
       end
@@ -265,7 +270,7 @@ class Course < ApplicationRecord
   def mark_umich_as_paid
     self.has_paid = true if Rails.env.production?
   end
-  
+
   def copy_with_associations(attributes, associations)
     ModelCopier.new(self).copy(attributes: attributes,
                                associations: [
