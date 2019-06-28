@@ -13,3 +13,15 @@
     store.dispatch("setCurrentUser", thisUser);
   </script>
 <% end %>
+
+<% if @current_user.license %>
+  <% content_for :scripts do %>
+    <script type="text/javascript">
+      var userLicense = {
+        maxCourses: <%= @current_user.license.max_courses %>,
+        currentCourses: <%= @current_user.license.courses.length %>
+      }
+      store.dispatch("addUserLicenseInfo", userLicense)
+    </script>
+  <% end %>
+<% end %>
