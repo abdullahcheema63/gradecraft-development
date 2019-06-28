@@ -11,6 +11,7 @@ class LicensesController < ApplicationController
   # root
   # GET /
   def index
+    @title = "Licenses"
     @user = current_user
     @stripePk = Rails.configuration.stripe[:publishable_key]
   end
