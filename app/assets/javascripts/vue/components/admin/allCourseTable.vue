@@ -110,7 +110,7 @@
                   <ul>
                     <li><a :href="course.editURL">Edit</a> </li>
                     <li><a @click.prevent="copyCourse(course.id)">Copy</a> </li>
-                    <li><a :href="course.copyStudentsURL">Copy + Students(remove for course / LO )</a> </li>
+                    <li><a :href="course.copyStudentsURL">Copy + Students(remove for course / LO (need API))</a> </li>
                     <li><a @click.prevent="deleteCourse(course.id)">Delete</a></li>
                   </ul>
                 </template>
