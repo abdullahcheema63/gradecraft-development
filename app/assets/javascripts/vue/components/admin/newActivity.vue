@@ -84,10 +84,7 @@
                     <template slot="button_text">Options</template>
                     <template slot="content">
                       <ul>
-                        <li><a :href="course.editURL">Edit</a> </li>
-                        <li><a :href="course.copyURL">Copy</a> </li>
-                        <li><a :href="course.copyStudentsURL">Copy + Students</a> </li>
-                        <li><a>Delete (needs API link made)</a> </li>
+                        <li><a :href="course.editURL">Edit</a></li>
                       </ul>
                     </template>
                   </buttonDropdown>
