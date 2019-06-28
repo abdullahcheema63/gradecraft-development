@@ -68,6 +68,7 @@ const store = new Vuex.Store({
       showGuide: null,
       hasPaid: null,
       hasSeenCourseOnboarding: null,
+      license: {},
       courseMembership: [{
         id: null,
         name: "",
@@ -318,6 +319,9 @@ const store = new Vuex.Store({
       },
       setCurrentUser({ commit }, user){
         commit('setCurrentUser', user)
+      },
+      addUserLicenseInfo({ commit }, licenseInfo){
+        commit('addUserLicenseInfo', licenseInfo)
       }
     },
     mutations: {
@@ -491,6 +495,9 @@ const store = new Vuex.Store({
       },
       updateUserLicense (state, license){
         state.userLicense = license;
+      },
+      addUserLicenseInfo (state, licenseInfo){
+        state.user.license = {...licenseInfo}
       }
     },
     getters: {
