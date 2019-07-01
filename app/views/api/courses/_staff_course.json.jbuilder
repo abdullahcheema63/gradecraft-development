@@ -14,6 +14,8 @@ json.attributes do
   json.semester course.semester
   json.year course.year
   json.course_number course.course_number
+  json.start_date course.start_date
+  json.end_date course.end_date
 
   course.created_at.in_time_zone(current_user.time_zone).tap do |created_at|
     json.created_at created_at

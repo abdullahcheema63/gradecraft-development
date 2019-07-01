@@ -369,8 +369,8 @@ const store = new Vuex.Store({
             term: {
               name: course.semester,
               year: course.year,
-              start: "2019-01-01T00:00:00",
-              end: "2019-09-01T00:00:00"
+              start: course.start_date,
+              end: course.end_date
             },
             licensed: course.licensed,
             published: course.published
