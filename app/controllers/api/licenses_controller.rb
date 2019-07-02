@@ -7,7 +7,6 @@ class API::LicensesController < ApplicationController
     if !@license
       return render json: { data: nil, errors: [ "License not found" ] }, status: 404
     end
-    @license_types = LicenseType.all
     @courses = get_courses_where_professor
     @payments = @license.payments.all
   end
