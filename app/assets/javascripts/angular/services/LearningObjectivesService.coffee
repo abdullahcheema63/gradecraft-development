@@ -283,6 +283,10 @@
       (response) ->
         angular.copy(response.data.data.attributes, article)
         lastUpdated(article.updated_at || new Date())
+        if type == "objectives" || type == "learning_objective"
+          _levels = []          
+          for included_level_value in response.data.included
+            _levels.push(included_level_value.attributes)
         article.isCreating = false
         window.location.href = redirectUrl if redirectUrl?
         GradeCraftAPI.logResponse(response)
