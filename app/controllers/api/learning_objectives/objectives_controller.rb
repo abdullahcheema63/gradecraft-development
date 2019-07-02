@@ -25,8 +25,8 @@ class API::LearningObjectives::ObjectivesController < ApplicationController
   # POST /api/learning_objectives/objectives
   def create
     @objective = current_course.learning_objectives.new learning_objective_params
-
     if @objective.save
+      @objective.create_default_levels
       render "api/learning_objectives/objectives/show", status: 201
     else
       render json: {
