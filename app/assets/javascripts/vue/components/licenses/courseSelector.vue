@@ -1,11 +1,7 @@
 <template>
-  <div>
-    <h2>My Current Courses</h2>
-    <p v-if="!courses.length">You don't have any courses!</p>
-    <p v-if="courses && license.max_courses !== null">
-      You have used
-      <strong>{{licensedCourses.length}} of your {{license.max_courses}} course licenses.</strong>
-    </p>
+  <div class="content_block">
+    <h2 class="unspace-top">My Current Courses</h2>
+    
     <div class="course_box">
       <div class="course_card" v-for="c of courses" :key="c.id">
         <h4>
