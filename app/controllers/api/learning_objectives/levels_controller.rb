@@ -36,6 +36,13 @@ class API::LearningObjectives::LevelsController < ApplicationController
   # DELETE /api/learning_objectives/:objective_id/levels/:id
   def destroy
     @level = @objective.levels.find params[:id]
+
+    if @level.default_level?
+      render json: { message: "Failed to delete #{@level.name}", success: false },
+        status: 500
+      return
+    end
+    
     @level.destroy
 
     if @level.destroyed?

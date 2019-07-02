@@ -126,13 +126,15 @@ class LearningObjective < ApplicationRecord
     minimum_proficiency.description = "Level with minimum proficiency"
     minimum_proficiency.course_id = course_id
     minimum_proficiency.objective_id = id
+    minimum_proficiency.default_level = true
 
     maximum_proficiency = LearningObjectiveLevel.new
     maximum_proficiency.flagged_value = LearningObjectiveLevel.flagged_values.key(0)
     maximum_proficiency.name = "Maximum Proficiency Level"
     maximum_proficiency.description = "Level with maximum proficiency"
     maximum_proficiency.course_id = course_id
-
+    maximum_proficiency.default_level = true
+    
     levels.push(minimum_proficiency)
     levels.push(maximum_proficiency)
   end
