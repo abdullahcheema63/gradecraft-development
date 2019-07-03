@@ -49,7 +49,7 @@ const apiResponseToData = (responseJson) =>
   loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "licenses", "license_types"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
-  dataItem(responseJson.data, responseJson, { include: ["courses", "payments"] });
+  dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user"] });
 
 const store = new Vuex.Store({
   state: {
@@ -64,10 +64,12 @@ const store = new Vuex.Store({
       firstName: "",
       lastName: "",
       email: "",
-      admin: null,
+      username: "",
       showGuide: null,
-      hasPaid: null,
-      hasSeenCourseOnboarding: null,
+      accountURL: null,
+      lastLogin: null,
+      lastLogout: null,
+      createdAt: null,
       license: {},
       courseMembership: [{
         id: null,
@@ -104,6 +106,19 @@ const store = new Vuex.Store({
        }]
     }},
     actions: {
+      getUser: async function({commit}, userId ){
+        var api = "/api/users/" + userId
+        const resp = await fetch(api);
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        const final = apiResponseToDataDataItem(json);
+        commit('setCurrentUser', final)
+      },
       getCourseMemberships: async function({ commit }){
         const resp = await fetch("api/courses");
         if (resp.status === 404){
@@ -334,9 +349,6 @@ const store = new Vuex.Store({
       toggleGuideControl({ commit }){
         commit('toggleGuide')
       },
-      setCurrentUser({ commit }, user){
-        commit('setCurrentUser', user)
-      },
       addUserLicenseInfo({ commit }, licenseInfo){
         commit('addUserLicenseInfo', licenseInfo)
       }
@@ -501,13 +513,17 @@ const store = new Vuex.Store({
       setCurrentUser (state, user){
         state.user.id = user.id
         state.user.username = user.username
-        state.user.firstName = user.firstName
-        state.user.lastName = user.lastName
+        state.user.firstName = user.first_name
+        state.user.lastName = user.last_name
         state.user.email = user.email
         state.user.admin = user.admin
+        state.user.showGuide = user.show_guide
+        state.user.accountURL = user.account_url
+        state.user.lastLogin = user.last_login
+        state.user.lastLogout = user.last_logout
+        state.user.createdAt = user.created_at
         state.user.showGuide = user.showGuide
-        state.user.hasPaid = user.hasPaid
-        state.user.account_url = user.account_url
+
       },
       updateUserLicense (state, license){
         state.userLicense = license;
@@ -521,7 +537,7 @@ const store = new Vuex.Store({
         return state.user.firstName + ' ' + state.user.lastName
       },
       userAccountURL: state => {
-        return state.user.account_url
+        return state.user.accountURL
       },
       userOnboardingStatus: state => {
         return state.user.hasSeenCourseOnboarding

@@ -592,9 +592,10 @@ Rails.application.routes.draw do
     end
     get "courses/:id/unlock_conditions", to: "unlock_conditions#for_course"
 
-    resources :users, only: [:index, :instructors] do
+    resources :users, only: [:index, :instructors, :show] do
       collection do
         get :instructors
+        get :show
         resources :importers, only: [], module: :users, param: :provider_id do
           get "/course/:id/users", action: :index, as: :users
         end

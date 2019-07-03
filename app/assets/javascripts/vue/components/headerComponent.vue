@@ -42,7 +42,9 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'header-component',
-  props: ['username_class', 'freetrial_msg_class'],
+  props: {
+    userId: String,
+  },
   data() {
     return {
       prevScrollPos: null,
@@ -74,6 +76,7 @@ module.exports = {
     }
   },
   created: function() {
+    this.$store.dispatch("getUser", this.userId)
     this.prevScrollPos = window.pageYOffset;
     window.addEventListener('scroll', this.fancyScroll);
   },

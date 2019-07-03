@@ -11,4 +11,10 @@ class API::UsersController < ApplicationController
   def instructors
     @instructors = CourseMembership.instructors
   end
+
+  # GET api/users/:id
+  def show
+    user_id = params[:id]
+    @user = User.find(user_id)
+  end
 end
