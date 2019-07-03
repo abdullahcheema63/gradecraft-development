@@ -5,11 +5,11 @@
       <img class="small-show" src="/assets/logo-monogram.svg" width="110" height="100" alt="Return to your GradeCraft dashboard" />
     </a>
     <div class="header-actions" ref="clickAway">
-      <p id="free_trial_user" v-if="userHasPaid == false" :class="{open:activeFreetrialMsg}" @click="toggleFreetrialMsg">
+      <p id="free_trial_user" v-if="user.license.length" :class="{open:activeFreetrialMsg}" @click="toggleFreetrialMsg">
         <a class="small-hide">Free Trial Account</a>
         <a class="small-show">Free Trial</a>
       </p>
-      <div v-if="userHasPaid == false" :class="freetrialMsgClass" id="trial_msg">
+      <div v-if="user.license.length == false" :class="freetrialMsgClass" id="trial_msg">
         <p>
           With your
           <b>free trial account,</b>
@@ -26,10 +26,10 @@
         </p>
       </div>
 
-      <a id="header_user" :class="{open:activeUsername}" @click="toggleUsername">{{ getUserName }}</a>
+      <a id="header_user" :class="{open:activeUsername}" @click="toggleUsername">{{ user.firstName + " " + user.lastName }}</a>
       <div :class="usernameClass">
         <ul>
-          <li><a :href="getAccountURL">My Account</a></li>
+          <li><a :href="user.accountURL">My Account</a></li>
           <li><a href="dashboard/#">View Tour</a></li>
           <li><a href="licenses">Manage Licenses</a></li>
           <li><a href="logout">Log Out</a></li>
@@ -53,8 +53,8 @@ module.exports = {
     }
   },
   computed: {
-    userHasPaid(){
-      return this.$store.getters.userHasPaid;
+    user(){
+      return this.$store.getters.user
     },
     usernameClass() {
       if (this.activeUsername) {
@@ -68,12 +68,6 @@ module.exports = {
       }
       return 'is-closed';
     },
-    getUserName(){
-      return this.$store.getters.userName;
-    },
-    getAccountURL(){
-      return this.$store.getters.userAccountURL;
-    }
   },
   created: function() {
     this.$store.dispatch("getUser", this.userId)

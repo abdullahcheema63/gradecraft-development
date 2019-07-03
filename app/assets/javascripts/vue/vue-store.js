@@ -522,8 +522,7 @@ const store = new Vuex.Store({
         state.user.lastLogin = user.last_login
         state.user.lastLogout = user.last_logout
         state.user.createdAt = user.created_at
-        state.user.showGuide = user.showGuide
-
+        state.user.showGuide = user.show_guide
       },
       updateUserLicense (state, license){
         state.userLicense = license;
@@ -533,11 +532,8 @@ const store = new Vuex.Store({
       }
     },
     getters: {
-      userName: state => {
-        return state.user.firstName + ' ' + state.user.lastName
-      },
-      userAccountURL: state => {
-        return state.user.accountURL
+      user: state => {
+        return state.user
       },
       userOnboardingStatus: state => {
         return state.user.hasSeenCourseOnboarding

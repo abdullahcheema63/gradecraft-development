@@ -70,9 +70,9 @@
     <div class="content_block bg-green_mint" v-if="userIsInstructor">
       <h2>Add a New Course</h2>
 
-      <p v-if="userHasPaid">
+      <p v-if="licenseInfo">
         With your
-        <b>licensed account,</b>
+        <b>license,</b>
         you can explore all GradeCraft has to offer and <b>create licensed courses.</b> <br />
         Licensed courses have the ability to:
       </p>
@@ -88,8 +88,8 @@
         <li>Import or add other users (such as assistants and students)</li>
       </ul>
 
-      <p v-if="userHasPaid">
-        Your account license allows you <b>___2___ licensed courses,</b> active until ___May 14, 2019___.
+      <p v-if="licenseInfo">
+        Your account license allows you <b>{{ licenseInfo.maxCourses }}licensed courses,</b> active until {{ licenseInfo.expires }} [Move licenseInfo into user API call for header].
       </p>
       <p v-else>
         Feel free to create as many trial courses as you need to discover what our tool can do for you and your students:
@@ -163,14 +163,14 @@
                   </div>
 
                   <h3>Course Type</h3>
-                  <p v-if="userHasPaid === false">
-                    You currently have a <b>free trial account</b> and can only add trial courses right now.
+                  <p v-if="!licenseInfo">
+                    You currently do not have a <b>license</b> and can only add trial courses right now.
                   </p>
                   <div class="form_options">
                     <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" :value=false />
                     <label for="newTrialCourse">Trial Course</label>
                   </div>
-                  <div class="form_options" v-if="userHasPaid">
+                  <div class="form_options" v-if="licenseInfo">
                     <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" :value=true />
                     <label for="newLicensedCourse">Licensed Course</label>
                   </div>
@@ -179,7 +179,7 @@
                     <label for="licensedCourse_disabled">Licensed Course</label>
                   </div>
                 </div>
-                <div v-else-if="formResponse[0]==='Convert a trial course' && userHasPaid">
+                <div v-else-if="formResponse[0]==='Convert a trial course' && licenseInfo">
                   <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
                   <div class="form_options" v-for="course in unLicensedCourses" :key="course.id" >
                     <input type="radio" :id="'convert-license-' + course.id" v-model="courseToLicense" :value="course.id">
@@ -259,7 +259,7 @@
                   </div>
 
                   <h3>Course Type</h3>
-                  <p v-if="licenseInfo === null">
+                  <p v-if="!licenseInfo">
                     You currently do not have a license and can only add trial courses right now.
                   </p>
                   <div class="form_options">
@@ -315,7 +315,7 @@
         </buttonModal>
       </div>
 
-      <div v-if="userHasPaid == false">
+      <div v-if="!licenseInfo">
         <h3>Upgrade your account</h3>
         <p>
           If you like what you see, you can
@@ -434,9 +434,6 @@ module.exports = {
     },
     courseTermName(){
       return this.pastCourses.map(courseMembership => courseMembership.term.name)
-    },
-    userHasPaid(){
-      return this.$store.state.user.hasPaid;
     },
     getUserFirstName(){
       return this.$store.state.user.firstName;
