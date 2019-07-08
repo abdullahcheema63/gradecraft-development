@@ -44,6 +44,7 @@ class License < ApplicationRecord
     # Force save immediately to ensure that a failed save invalidates the charge.
     begin
       save!
+      NotificationMailer.payment_received(payment).deliver_now
     rescue => e
       payment.refund!
       raise

@@ -61,7 +61,7 @@ class NotificationMailer < ApplicationMailer
     @group = group
 
     @course = @group.course
-    
+
     mail(to: @student.email, subject: "#{@course.course_number} - Group #{@group.approved}") do |format|
       format.text
       format.html
@@ -74,7 +74,7 @@ class NotificationMailer < ApplicationMailer
     @group = group
 
     @course = @group.course
-    
+
     mail(to: @student.email, subject: "#{@course.course_number} - New Group") do |format|
       format.text
       format.html
@@ -86,6 +86,16 @@ class NotificationMailer < ApplicationMailer
     @course = course
     @student = student
     send_student_email "#{@course.course_number} - You've unlocked #{@unlocked_item.name}!"
+  end
+
+  def payment_received(payment)
+    @payment = payment
+    @license = payment.license
+    @user = payment.license.user
+    mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
+      format.text
+      format.html
+    end
   end
 
   private
