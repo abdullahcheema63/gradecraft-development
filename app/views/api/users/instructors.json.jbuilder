@@ -37,7 +37,7 @@ json.included do
       json.attributes do
         json.id course.id.to_s
         json.course_name course.name
-        json.licensed course.has_paid
+        json.licensed course.license.present? 
         json.student_count course.student_count
         json.change_course_path change_course_path(course)
       end

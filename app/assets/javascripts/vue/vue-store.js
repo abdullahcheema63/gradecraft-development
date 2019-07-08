@@ -129,13 +129,20 @@ const store = new Vuex.Store({
         }
         const json = await resp.json();
         const final = apiResponseToData(json);
-        //console.log(final);
-        if (store.state.user.admin === "true"){
-          commit('addAdminCourses', final);
+        commit('addCourses', final);
+      },
+      getAllCourses: async function({ commit }){
+        const resp = await fetch("api/courses");
+        if (resp.status === 404){
+          console.log(resp.status);
         }
-        else {
-          commit('addCourses', final);
+        else if (!resp.ok){
+          throw resp;
         }
+        const json = await resp.json();
+        const final = apiResponseToData(json);
+        console.log(final);
+        commit('addAdminCourses', final);
       },
       getAllUsers: async function({ commit }){
         //console.log("getAllUsers action dispatched")
@@ -371,13 +378,7 @@ const store = new Vuex.Store({
             },
             eventCount: course.events_this_week,
             announcementCount: course.unread_announcements,
-            assignments: course.assignments.map(assignment => ({
-              name: assignment.name,
-              dueDate: assignment.due_at,
-              planned: assignment.planned,
-              submitted: assignment.submitted,
-              graded: assignment.graded,
-            })),
+            assignments: {...course.assignments},
             term: {
               name: course.semester,
               year: course.year,
@@ -391,14 +392,8 @@ const store = new Vuex.Store({
       },
       addAdminCourses(state, courses){
         //console.log("inside addAdminCourses mutation")
+        console.log("course:", courses)
         state.allCourses = courses.map(course => {
-          var instructors = []
-          if(course.staff){
-            instructors = course.staff.map(staff => ({
-              text: staff.name,
-              url: staff.url
-            }))
-          }
           return {
             id: course.id,
             name: course.name,
@@ -421,7 +416,7 @@ const store = new Vuex.Store({
             term: course.semester,
             year: course.year,
             studentNumber: course.student_count,
-            instructors: instructors
+            instructors: {...course.staff}
           }
         })
       },

@@ -87,7 +87,7 @@ module.exports = {
     }
   },
   created: function() {
-    this.$store.dispatch("getCourseMemberships");
+    this.$store.dispatch("getAllCourses");
     this.$store.dispatch("getAllInstructors");
     this.$store.dispatch("getAllUsers");
     this.$store.dispatch("getAllInstitutions");
