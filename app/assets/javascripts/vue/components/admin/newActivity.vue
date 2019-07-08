@@ -1,45 +1,44 @@
 <template>
   <div>
-    <h2>New Activity</h2>
-    <p>In the past 10 days: </p>
-    <div class="flex-3">
-      <div class="bg-blue_2">
-        <h4>New Instructor Accounts</h4>
-        <p class="summary_data">
-          <span class="lining_figures">{{allNewInstructors.length}}</span>
-          total
-        </p>
+    <div class="content_block bg-blue_2 flex-4" id="admin_new_activity">
+      <div>
+        <h2>New Activity</h2>
+        <p>In the past 10 days: </p>
       </div>
-      <div class="bg-blue_2">
-        <h4>New Courses</h4>
-        <p class="summary_data column-2">
-          <span class="lining_figures">{{allNewCourses.length}}</span>
-        </p>
-        <p class="summary_data column-2">
-          <span class="lining_figures">{{this.newTrialCoursesCount}}</span>
-          free trial courses
-        </p>
-        <p class="summary_data column-2">
-          <span class="lining_figures">{{this.newPublishedCoursesCount}}</span>
-          published courses
-        </p>
+      <div>
+        <h3 class="lining_figures">{{allNewInstructors.length}}</h3>
+        <div>
+          <h4>New Instructor Accounts</h4>
+        </div>
       </div>
-      <div class="bg-blue_2">
-        <h4>Course Licenses</h4>
-        <p class="summary_data">
-          <span class="lining_figures">??</span>
-          total
-        </p>
-        <p class="summary_data">
-          <span class="lining_figures">??</span>
-          renewed
-        </p>
-        <p class="summary_data">
-          <span class="lining_figures">??</span>
-          new
-        </p>
+      <div>
+        <h3 class="lining_figures">{{allNewCourses.length}}</h3>
+        <div>
+          <h4>New Courses</h4>
+          <p><strong>{{this.newPublishedCoursesCount}}</strong>
+            published
+          </p>
+          <p><strong>{{this.newTrialCoursesCount}}</strong>
+            trial <span>courses</span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <h3 class="lining_figures app_licenses">16?</h3>
+        <div>
+          <h4>Course Licenses</h4>
+          <p>
+            <strong>10?</strong>
+            renewed
+          </p>
+          <p>
+            <strong>6?</strong>
+            new
+          </p>
+        </div>
       </div>
     </div>
+
     <accordionComponent>
       <template slot="heading">New courses</template>
       <template slot="content">

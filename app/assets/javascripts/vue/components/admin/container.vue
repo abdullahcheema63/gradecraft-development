@@ -3,12 +3,12 @@
     <div class="content_block intro">
       <h1>My Dashboard</h1>
       <guideMessage>
-        <p>Welcome back, {{ getUserFirstName }}!</p>
+        <p>Welcome back, {{ user.firstName }}!</p>
         <p>As an Awesome Admin, you probably don’t need much guidance from me. Nevertheless, I’m here to help orient you, and you can see what I say to instructors and students. </p>
       </guideMessage>
-
-      <newActivity></newActivity>
     </div>
+
+    <newActivity></newActivity>
 
     <tabContainer>
       <template slot="tabBarNav">
@@ -93,8 +93,8 @@ module.exports = {
     this.$store.dispatch("getAllInstitutions");
   },
   computed: {
-    getUserFirstName(){
-      return this.$store.getters.userFirstName;
+    user(){
+      return this.$store.getters.user
     },
   },
 
