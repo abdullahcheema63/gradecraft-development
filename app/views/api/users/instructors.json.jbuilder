@@ -10,6 +10,7 @@ json.data @instructors.includes(:course_memberships) do |instructor|
     if instructor.current_course
       json.url staff_path(instructor)
     end
+    json.licensed instructor.license.present?
     if instructor.license
       json.license_expires instructor.license.expires
       json.payment_method instructor.license.payments.last.source
@@ -37,9 +38,10 @@ json.included do
       json.attributes do
         json.id course.id.to_s
         json.course_name course.name
-        json.licensed course.license.present? 
+        json.licensed course.license.present?
         json.student_count course.student_count
         json.change_course_path change_course_path(course)
+        json.active course.active?
       end
     end
   end
