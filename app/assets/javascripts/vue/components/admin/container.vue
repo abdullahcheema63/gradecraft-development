@@ -26,7 +26,7 @@
           <allInstructorTable></allInstructorTable>
         </div>
 
-        <div v-if="tabSection[0]==='Users'">
+        <div v-if="tabSection[0]==='All Users'">
           <allUserTable></allUserTable>
         </div>
 
@@ -67,7 +67,7 @@ module.exports = {
   },
   data() {
     return {
-      tabBarOption: ["Courses", "Instructors", "Users", "Institutions", "Utilities"],
+      tabBarOption: ["Courses", "Instructors", "All Users", "Institutions", "Utilities"],
       tabSection: ["Courses"],
       courseToLicense: "",
       newCourse: {
