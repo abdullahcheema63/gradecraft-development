@@ -21,4 +21,4 @@
                            "required"=>""}
       %option{"value"=>""} Select a competency level
 
-  %button.delete{"type"=>"button", "ng-click"=>"loRubricLevelCtrl.delete()"} X
+  %button.delete{"type"=>"button", "ng-if"=> "!loRubricLevelCtrl.level.default_level", "ng-click"=>"loRubricLevelCtrl.delete()"} X
