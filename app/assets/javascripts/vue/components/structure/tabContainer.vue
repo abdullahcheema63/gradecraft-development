@@ -1,7 +1,9 @@
 <template>
   <div class="tab_block">
-    <div class="tab_bar">
-      <slot name="tabBarNav"></slot>
+    <div class="tabs">
+      <div class="tab_bar">
+        <slot name="tabBarNav"></slot>
+      </div>
     </div>
     <div class="tab_sections content_block">
       <slot name="tabSections"></slot>
