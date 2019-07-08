@@ -1,45 +1,48 @@
 <template>
   <div>
-    <h2>New Activity</h2>
-    <p>In the past 10 days: </p>
-    <div class="flex-3">
-      <div class="bg-blue_2">
-        <h4>New Instructor Accounts</h4>
-        <p class="summary_data">
-          <span class="lining_figures">{{allNewInstructors.length}}</span>
-          total
-        </p>
-      </div>
-      <div class="bg-blue_2">
-        <h4>New Courses</h4>
-        <p class="summary_data column-2">
-          <span class="lining_figures">{{allNewCourses.length}}</span>
-        </p>
-        <p class="summary_data column-2">
-          <span class="lining_figures">{{this.newTrialCoursesCount}}</span>
-          free trial courses
-        </p>
-        <p class="summary_data column-2">
-          <span class="lining_figures">{{this.newPublishedCoursesCount}}</span>
-          published courses
-        </p>
-      </div>
-      <div class="bg-blue_2">
-        <h4>Course Licenses</h4>
-        <p class="summary_data">
-          <span class="lining_figures">??</span>
-          total
-        </p>
-        <p class="summary_data">
-          <span class="lining_figures">??</span>
-          renewed
-        </p>
-        <p class="summary_data">
-          <span class="lining_figures">??</span>
-          new
-        </p>
+    <div class="content_block">
+      <h2 class="unspace-top">New Activity</h2>
+      <p>In the past 10 days: </p>
+      <div class="flex-3">
+        <div class="bg-blue_2">
+          <h4>New Instructor Accounts</h4>
+          <p class="summary_data">
+            <span class="lining_figures">{{allNewInstructors.length}}</span>
+            total
+          </p>
+        </div>
+        <div class="bg-blue_2">
+          <h4>New Courses</h4>
+          <p class="summary_data column-2">
+            <span class="lining_figures">{{allNewCourses.length}}</span>
+          </p>
+          <p class="summary_data column-2">
+            <span class="lining_figures">{{this.newTrialCoursesCount}}</span>
+            free trial courses
+          </p>
+          <p class="summary_data column-2">
+            <span class="lining_figures">{{this.newPublishedCoursesCount}}</span>
+            published courses
+          </p>
+        </div>
+        <div class="bg-blue_2">
+          <h4>Course Licenses</h4>
+          <p class="summary_data">
+            <span class="lining_figures">??</span>
+            total
+          </p>
+          <p class="summary_data">
+            <span class="lining_figures">??</span>
+            renewed
+          </p>
+          <p class="summary_data">
+            <span class="lining_figures">??</span>
+            new
+          </p>
+        </div>
       </div>
     </div>
+
     <accordionComponent>
       <template slot="heading">New courses</template>
       <template slot="content">
