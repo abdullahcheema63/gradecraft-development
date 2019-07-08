@@ -13,12 +13,16 @@
         <p>Select which filters you want to apply to the table below: </p>
         <div>
           <span>
-            <input id="licensed_acccounts" type="checkbox" value="licensed" v-model="showLicensedAccounts" />
+            <input id="licensed_acccounts" type="checkbox" value="licensed" v-model="showLicensed" />
             <label for="licensed_acccounts">Licensed Accounts</label>
           </span>
           <span>
-            <input id="free_trial_accounts" type="checkbox" value="free" v-model="showFreeAccounts" />
-            <label for="free_trial_accounts">Free trial accounts</label>
+            <input id="unlicensed_accounts" type="checkbox" value="unlicensed" v-model="showUnlicensed" />
+            <label for="unlicensed_accounts">Unlicensed accounts</label>
+          </span>
+          <span>
+            <input id="active_accounts" type="checkbox" value="active" v-model="showInActiveCourse" />
+            <label for="active_accounts">In Active Course</label>
           </span>
         </div>
       </div>
@@ -98,8 +102,9 @@ module.exports = {
       currentPageItemMin: 0,
       currentPageItemMax: 10,
       searchName: "",
-      showLicensedAccounts: "",
-      showFreeAccounts: "",
+      showLicensed: "",
+      showUnlicensed: "",
+      showInActiveCourse: "",
     }
   },
   computed: {
@@ -121,11 +126,27 @@ module.exports = {
         name = name.toLowerCase();
         if(!(name.includes(this.searchName.toLowerCase()))) {return false}
       }
+      if (this.showLicensed){
+        if(instructor.licensed === false){return false}
+      }
+      if(this.showUnlicensed){
+        if(instructor.licensed === true){return false}
+      }
+      if(this.showInActiveCourse){
+        if(this.hasActiveCourse(instructor.courses) != true){return false}
+      }
       return instructor
     },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;
       this.currentPageItemMax = itemRange.max;
+    },
+    hasActiveCourse(courses){
+      var isActive = false
+      courses.forEach(function (course) {
+        if(course.active === true){isActive = true}
+      });
+      return isActive
     }
   }
 }

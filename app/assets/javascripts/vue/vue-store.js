@@ -454,6 +454,7 @@ const store = new Vuex.Store({
             createdAt: instructor.created_at,
             email: instructor.email,
             url: instructor.url,
+            licensed: instructor.licensed,
             licenseExpires: instructor.license_expires,
             paymentMethod: instructor.payment_method,
             accountType: instructor.account_type,
@@ -463,7 +464,8 @@ const store = new Vuex.Store({
               name: course.course_name,
               studentCount: course.student_count,
               changeCoursePath: course.change_course_path,
-              licensed: course.licensed
+              licensed: course.licensed,
+              active: course.active
             }))
           }
         })
