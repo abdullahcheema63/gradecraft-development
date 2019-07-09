@@ -69,5 +69,5 @@ RUN RAILS_ENV=beta bundle exec rake db:migrate
 RUN ls /gradecraft/tmp
 RUN chmod -R 777 /gradecraft/tmp
 RUN chgrp -R 1000 /gradecraft/log
-RUN chmod -R g+rwx /gradecraft/log/app.log
+RUN chmod -R g+rwx /gradecraft/log
 ENTRYPOINT /gradecraft/start.sh
