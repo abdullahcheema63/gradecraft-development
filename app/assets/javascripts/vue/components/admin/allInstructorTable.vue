@@ -126,11 +126,8 @@ module.exports = {
         name = name.toLowerCase();
         if(!(name.includes(this.searchName.toLowerCase()))) {return false}
       }
-      if (this.showLicensed){
-        if(instructor.licensed === false){return false}
-      }
-      if(this.showUnlicensed){
-        if(instructor.licensed === true){return false}
+      if (this.showLicensed != this.showUnlicensed){
+        if(this.showLicensed != instructor.licensed){return false}
       }
       if(this.showInActiveCourse){
         if(this.hasActiveCourse(instructor.courses) != true){return false}
