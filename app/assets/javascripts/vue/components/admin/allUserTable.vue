@@ -21,7 +21,7 @@
       <table>
         <thead>
           <tr>
-            <th>ID # </th>
+            <th>User ID </th>
             <th>First Name </th>
             <th>Last Name </th>
             <th>Email </th>
@@ -35,24 +35,28 @@
         <tbody>
           <tr v-for="user in currentPageAllUsers" :key="user.id">
             <td>{{user.id}}</td>
-            <td><a :href="user.url">{{user.firstName}}</a> </td>
-            <td><a :href="user.url">{{user.lastName}}</a> </td>
-            <td>{{user.email}}</td>
+            <td class="no_wrap"><a :href="user.url">{{user.firstName}}</a> </td>
+            <td class="no_wrap"><a :href="user.url">{{user.lastName}}</a> </td>
+            <td class="no_wrap">{{user.email}}</td>
             <template v-if="user.courses.length">
               <td>
-                <ul><li v-for="course in user.courses" :key="course.id"><a :href="course.url">{{course.name}}</a> </li></ul>
+                <ul>
+                  <li v-for="course in user.courses" :key="course.id">
+                    <a :href="course.url" class="table_truncate">{{course.name}}</a>
+                  </li>
+                </ul>
               </td>
               <td>
-                <ul><li v-for="course in user.courses" :key="course.id">{{course.role}} </li></ul>
+                <ul><li v-for="course in user.courses" :key="course.id">{{course.role}}&nbsp;</li></ul>
               </td>
               <td>
-                <ul><li  v-for="course in user.courses" :key="course.id">{{course.semester}}</li></ul>
+                <ul><li  v-for="course in user.courses" :key="course.id">{{course.semester}}&nbsp;</li></ul>
               </td>
               <td>
-                <ul><li v-for="course in user.courses" :key="course.id">{{course.year}}</li></ul>
+                <ul><li v-for="course in user.courses" :key="course.id">{{course.year}}&nbsp;</li></ul>
               </td>
               <td>
-                <ul><li v-for="course in user.courses" :key="course.id">{{course.score}}</li></ul>
+                <ul><li v-for="course in user.courses" :key="course.id">{{course.score}}&nbsp;</li></ul>
               </td>
             </template>
             <template v-else>

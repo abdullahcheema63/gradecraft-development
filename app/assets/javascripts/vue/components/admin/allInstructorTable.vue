@@ -45,7 +45,7 @@
         <tbody>
           <tr v-for="instructor in currentPageAllInstructors" :key="instructor.id">
             <td><a href="#">{{instructor.firstName}}</a> </td>
-            <td><a href="#">{{instructor.lastName}}</a> </td>
+            <td class="no_wrap"><a href="#">{{instructor.lastName}}</a> </td>
             <td>{{instructor.licenseExpires}} </td>
             <td>{{instructor.paymentMethod}} </td>
             <td style="width: 100px;">{{instructor.accountType}} </td>
@@ -58,14 +58,14 @@
                 </ul>
               </td>
               <td>
-                <ul class="checked_list">
+                <ul>
                   <li v-for="course in instructor.courses" :key="course.id">
                     <span :class="{checked: course.licensed}">&nbsp;</span>
                   </li>
                 </ul>
               </td>
               <td>
-                <ul class="student_list">
+                <ul>
                   <li v-for="course in instructor.courses" :key="course.id">
                     {{course.studentCount}}
                   </li>
