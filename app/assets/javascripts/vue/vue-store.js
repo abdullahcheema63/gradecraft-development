@@ -368,6 +368,7 @@ const store = new Vuex.Store({
             name: course.name,
             number: course.course_number,
             role: course.role,
+            active: course.active,
             instructor: "Cait Holman",
             url: course.change_course_path,
             gradingStatus: {

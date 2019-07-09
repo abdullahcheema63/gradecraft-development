@@ -99,7 +99,7 @@
     <accordionComponent>
       <template slot="heading">License expiration</template>
       <template slot="content">
-        <p>User accounts that will expire within 30 days from today</p>
+        <p>Licenses that will expire within 30 days from today</p>
         <div class="table_container" v-if="expiringLicenseInstructors.length">
           <table>
             <thead>

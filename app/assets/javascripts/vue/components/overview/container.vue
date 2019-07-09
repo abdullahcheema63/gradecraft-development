@@ -381,24 +381,13 @@ module.exports = {
   },
   computed: {
     currentCourses(){
-      return this.$store.state.user.courseMembership.filter( membership => {
-        var today = new Date();
-        var start = new Date(membership.term.start);
-        var end = new Date(membership.term.end);
-
-        if (today < start){return false;}
-        if (today > end){return false;}
-
-        return membership.published
+      return this.$store.state.user.courseMembership.filter( course => {
+        return course.active
       });
     },
     pastCourses(){
-      return this.$store.state.user.courseMembership.filter( membership => {
-        var today = new Date();
-        var end = new Date(membership.term.end);
-        if(today < end){return false;}
-
-        return membership.published
+      return this.$store.state.user.courseMembership.filter( course => {
+        return !(course.active)
       })
     },
     currentAndPastCourses(){
@@ -418,15 +407,15 @@ module.exports = {
       return courses
     },
     unpublishedCourses(){
-      return this.$store.state.user.courseMembership.filter( membership => {
-        if(membership.published){return false;}
-        return membership
+      return this.$store.state.user.courseMembership.filter( course => {
+        if(course.published){return false;}
+        return course
       })
     },
     unLicensedCourses(){
-      return this.$store.state.user.courseMembership.filter( membership => {
-        if(membership.licensed){return false;}
-        return membership
+      return this.$store.state.user.courseMembership.filter( course => {
+        if(course.licensed){return false;}
+        return course
       })
     },
     courseTermYear(){
