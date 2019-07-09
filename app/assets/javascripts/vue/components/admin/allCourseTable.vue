@@ -137,14 +137,14 @@ module.exports = {
       currentPageItemMin: 0,
       currentPageItemMax: 10,
       searchCourseName: '',
-      showLicensed: '',
-      showUnlicensed: '',
-      showPublished: '',
-      showUnpublished: '',
-      showActive: '',
-      showInactive: '',
-      showLicensedAccounts: '',
-      showFreeAccounts: '',
+      showLicensed: false,
+      showUnlicensed: false,
+      showPublished: false,
+      showUnpublished: false,
+      showActive: false,
+      showInactive: false,
+      showLicensedAccounts: false,
+      showFreeAccounts: false,
       courseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
       courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
       termName: [],
@@ -170,23 +170,29 @@ module.exports = {
         name = name.toLowerCase()
         if(!(name.includes(this.searchCourseName.toLowerCase()))){return false}
       }
-      if(this.showLicensed){
-        if(course.licensed === false){return false}
+      if(this.showLicensed != this.showUnlicensed){
+        if(this.showLicensed){
+          if(course.licensed === false){return false}
+        }
+        if(this.showUnlicensed){
+          if(course.licensed === true){return false}
+        }
       }
-      if(this.showUnlicensed){
-        if(course.licensed === true){return false}
+      if(this.showActive != this.showUnlicensed){
+        if(this.showActive){
+          if(course.active === false){return false}
+        }
+        if(this.showInactive){
+          if(course.active === true){return false}
+        }
       }
-      if(this.showActive){
-        if(course.active === false){return false}
-      }
-      if(this.showInactive){
-        if(course.active === true){return false}
-      }
-      if(this.showPublished){
-        if(course.published === false){return false}
-      }
-      if(this.showUnpublished){
-        if(course.published === true){return false}
+      if(this.showUnpublished != this.showPublished){
+        if(this.showPublished){
+          if(course.published === false){return false}
+        }
+        if(this.showUnpublished){
+          if(course.published === true){return false}
+        }
       }
       if(this.termName.length){
         if (!(this.termName.includes(course.term))) {return false}
