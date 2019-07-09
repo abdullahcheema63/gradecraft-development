@@ -430,10 +430,10 @@ module.exports = {
       })
     },
     courseTermYear(){
-      return this.pastCourses.map(courseMembership => courseMembership.term.year)
+      return new Set(this.pastCourses.map(courseMembership => courseMembership.term.year))
     },
     courseTermName(){
-      return this.pastCourses.map(courseMembership => courseMembership.term.name)
+      return new Set(this.pastCourses.map(courseMembership => courseMembership.term.name))
     },
     getUserFirstName(){
       return this.$store.state.user.firstName;
