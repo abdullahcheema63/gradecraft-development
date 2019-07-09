@@ -74,7 +74,7 @@
         <tbody>
           <tr v-for="course in currentPageAllCourses">
             <td>{{course.id}}</td>
-            <td>{{course.name}}</td>
+            <td><a class="table_truncate" :href="course.url">{{course.name}}</a></td>
             <td><span :class="{checked: course.licensed}">&nbsp;</span></td>
             <td><span :class="{checked: course.active}">&nbsp;</span></td>
             <td><span :class="{checked: course.published}">&nbsp;</span></td>

@@ -136,12 +136,7 @@ i.missing_grade
     th.draggable, td.draggable
       display: none
 
-@media (max-width: $media-1200)
-  table
-    th, td
-      padding: 0.25em
-
-@media (max-width: 800px)
+@include tablet
   tbody ul.button-bar li
     margin-left: 0px
 
@@ -217,7 +212,7 @@ i.missing_grade
     border-bottom: 0px solid transparent
 
   td
-    a.table_truncate
+    .table_truncate
       width: 280px
       text-overflow: ellipsis
       white-space: nowrap
@@ -313,6 +308,10 @@ i.missing_grade
       display: inline-block
       position: relative
 
+    a
+      line-height: 1em
+      margin-bottom: -1px
+
     button, .button
       min-width: fit-content
       display: inline-block
@@ -379,6 +378,7 @@ i.missing_grade
 
   th
     border-right: 1px solid white
+    white-space: nowrap
 
     &:last-child
       border-right: 0px solid transparent
@@ -394,11 +394,11 @@ i.missing_grade
       &:last-child
         margin-bottom: 0
 
-      &.checked_list
-        li
-          margin-bottom: 0.4em
-
-      &.student_list
-        line-height: 1.25em
     li
       margin-bottom: 0.25em
+      line-height: 1em
+
+    &.fixed-100
+      width: 100px
+    &.no_wrap
+      white-space: nowrap
