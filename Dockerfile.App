@@ -25,9 +25,9 @@ RUN chmod -R g+rwx /s3mnt
 RUN useradd -l -u 1000170000 -s /bin/bash ocapp
 
 # ~~~~ Add cron jobs ~~~~
-ADD cron/crontab /etc/cron.d/trim-cron
-RUN chmod 0644 /etc/cron.d/trim-cron
-RUN touch /var/log/cron.log
+#ADD cron/crontab /etc/cron.d/trim-cron
+#RUN chmod 0644 /etc/cron.d/trim-cron
+#RUN touch /var/log/cron.log
 
 # ~~~~~ Opening Ports ~~~~~
 EXPOSE 8080
