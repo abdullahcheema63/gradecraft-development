@@ -4,7 +4,7 @@ class Assignments::GradesController < ApplicationController
   before_action :ensure_staff?, except: [:self_log, :delete_self_logged]
   before_action :ensure_student?, only: [:self_log, :delete_self_logged]
   before_action :find_assignment, only: [:mass_edit, :mass_update, :self_log, :delete_self_logged, :delete_all]
-  before_action :use_current_course, only: [:mass_edit, :mass_update]
+  before_action :use_current_course, only: [:mass_edit, :mass_update, :delete_self_logged]
 
   # GET /assignments/:assignment_id/grades/export
   # Sends a CSV file to the user with the current grades for all students
@@ -133,6 +133,11 @@ class Assignments::GradesController < ApplicationController
   end
 
   def delete_self_logged
+    if !current_course.delete_student_logged_grade
+      redirect_to assignments_path,
+        notice: "Ask an instructor in this course to allow you to delete student logged grades."
+    end
+
     if !@assignment.open? || !@assignment.student_logged?
       redirect_to assignments_path,
           notice: "You cannot edit the grade for this assignment as it is no longer open / is not student logged."
