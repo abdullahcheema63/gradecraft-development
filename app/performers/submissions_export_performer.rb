@@ -402,7 +402,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def deliver_archive_success_mailer
-      deliver_export_successful_mailer
+    deliver_export_successful_mailer
   end
 
   def deliver_archive_failed_mailer
