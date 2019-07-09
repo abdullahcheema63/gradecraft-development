@@ -1,9 +1,9 @@
 require_relative "../../services/creates_many_grades"
 
 class Assignments::GradesController < ApplicationController
-  before_action :ensure_staff?, except: :self_log
-  before_action :ensure_student?, only: :self_log
-  before_action :find_assignment, only: [:mass_edit, :mass_update, :self_log, :delete_all]
+  before_action :ensure_staff?, except: [:self_log, :delete_self_logged]
+  before_action :ensure_student?, only: [:self_log, :delete_self_logged]
+  before_action :find_assignment, only: [:mass_edit, :mass_update, :self_log, :delete_self_logged, :delete_all]
   before_action :use_current_course, only: [:mass_edit, :mass_update]
 
   # GET /assignments/:assignment_id/grades/export
@@ -130,6 +130,28 @@ class Assignments::GradesController < ApplicationController
       redirect_to dashboard_path,
         notice: "This assignment is not open for self grading."
     end
+  end
+
+  def delete_self_logged
+    if !@assignment.open? || !@assignment.student_logged?
+      redirect_to assignments_path,
+          notice: "You cannot edit the grade for this assignment as it is no longer open / is not student logged."
+    end
+
+    @grade = Grade.find_by(assignment_id: @assignment.id, student_id: current_student.id)
+
+    if @grade.nil?
+      redirect_to assignments_path,
+        notice: "No self logged grade found."
+    end
+
+    @grade.destroy
+
+    ScoreRecalculatorJob.new(user_id: current_student.id,
+                             course_id: current_course.id).enqueue
+
+    redirect_to assignments_path,
+          notice: "Your grade for this assignment has been deleted."
   end
 
   private

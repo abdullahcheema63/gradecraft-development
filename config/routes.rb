@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get :mass_edit
         put :mass_update
         post :self_log
+        delete :delete_self_logged
         delete :delete_all
       end
     end
