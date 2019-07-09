@@ -48,6 +48,8 @@ module.exports = {
     itemDisplayRange(){
       if (this.currentPageItemMin === this.totalPaginatedItems){
         return this.totalPaginatedItems
+      } else if (this.totalPaginatedItems < this.currentPageItemMax) {
+        return this.currentPageItemMin + "–" + this.totalPaginatedItems
       }
       return this.currentPageItemMin + "–" + this.currentPageItemMax
     }

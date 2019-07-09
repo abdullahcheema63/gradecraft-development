@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content_block intro">
-      <h1>My Dashboard</h1>
+      <h1>My __App/U-M__ Dashboard</h1>
       <guideMessage>
         <p>Welcome back, {{ user.firstName }}!</p>
         <p>As an Awesome Admin, you probably don’t need much guidance from me. Nevertheless, I’m here to help orient you, and you can see what I say to instructors and students. </p>
