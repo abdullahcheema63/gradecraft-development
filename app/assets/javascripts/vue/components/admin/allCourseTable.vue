@@ -171,28 +171,13 @@ module.exports = {
         if(!(name.includes(this.searchCourseName.toLowerCase()))){return false}
       }
       if(this.showLicensed != this.showUnlicensed){
-        if(this.showLicensed){
-          if(course.licensed === false){return false}
-        }
-        if(this.showUnlicensed){
-          if(course.licensed === true){return false}
-        }
+        if(this.showLicensed != course.licensed){return false}
       }
-      if(this.showActive != this.showUnlicensed){
-        if(this.showActive){
-          if(course.active === false){return false}
-        }
-        if(this.showInactive){
-          if(course.active === true){return false}
-        }
+      if(this.showActive != this.showInactive){
+        if (this.showActive != course.active){return false}
       }
-      if(this.showUnpublished != this.showPublished){
-        if(this.showPublished){
-          if(course.published === false){return false}
-        }
-        if(this.showUnpublished){
-          if(course.published === true){return false}
-        }
+      if(this.showPublished != this.showUnpublished){
+        if(this.showPublished != course.published){return false}
       }
       if(this.termName.length){
         if (!(this.termName.includes(course.term))) {return false}
