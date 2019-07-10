@@ -214,6 +214,7 @@
           GradeCraftAPI.logResponse(response)
         , (response) ->
           GradeCraftAPI.logResponse(response)
+          alert(response.data.message)
       )
 
   updateOrder = (levels, objectiveId) ->

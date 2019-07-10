@@ -35,6 +35,12 @@ class API::LearningObjectives::LevelsController < ApplicationController
 
   # DELETE /api/learning_objectives/:objective_id/levels/:id
   def destroy
+    if LearningObjectiveObservedOutcome.where(objective_level_id: params[:id]).exists?
+      render json: { message: "Failed to delete level as it has already been used to assess students. Reassess these students using a different level to delete this level. ", success: false },
+        status: 500
+      return
+    end
+
     @level = @objective.levels.find params[:id]
     @level.destroy
 
