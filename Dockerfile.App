@@ -54,7 +54,8 @@ RUN cp ./secrets/puma.rb /gradecraft/config/puma.rb
 RUN cp ./secrets/Procfile /gradecraft/Procfile
 RUN cp ./secrets/default /etc/nginx/sites-available/default
 
-RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=beta  bundle exec rake resque:scheduler &\n/mounts3.sh\nservice nginx stop\ncertbot-auto certonly --verbose --noninteractive  --standalone --agree-tos --email=\"ai-devops@umich.edu\" -d \"beta.gradecraft.com\" --force-renew\nservice nginx start\ncrontab -r\ncrontab -l | { cat; echo \"30 2 * * * certbot-auto renew \"; } | crontab - \npuma\nelse \n RAILS_ENV=beta bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
+#RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=beta  bundle exec rake resque:scheduler &\n/mounts3.sh\nservice nginx stop\ncertbot-auto certonly --verbose --noninteractive  --standalone --agree-tos --email=\"ai-devops@umich.edu\" -d \"beta.gradecraft.com\" --force-renew\nservice nginx start\ncrontab -r\ncrontab -l | { cat; echo \"30 2 * * * certbot-auto renew \"; } | crontab - \npuma\nelse \n RAILS_ENV=beta bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
+RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=beta bundle exec rake resque:scheduler &\nservice nginx start\npuma\nelse \n RAILS_ENV=beta bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
 #RUN crontab /etc/cron.d/trim-cron
 #CMD cron && tail -f /var/log/cron.log
