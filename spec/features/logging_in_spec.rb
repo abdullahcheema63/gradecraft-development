@@ -1,4 +1,4 @@
-feature "logging in" do
+feature "logging in"  do
   let(:password) { "p@ssword" }
 
   context "as a student" do
@@ -10,10 +10,7 @@ feature "logging in" do
     scenario "with a password successfully" do
       LoginPage.new(user).submit({ password: password })
 
-      expect(current_path).to eq dashboard_path
-      within("header") do
-        expect(page).to have_content user.first_name
-      end
+      expect(current_path).to eq overview_path
     end
 
     scenario "with an invalid email and password combination" do

@@ -2,7 +2,7 @@ require "mongoid"
 
 # rubocop:disable AndOr
 class HomeController < ApplicationController
-  skip_before_action :require_login
+  skip_before_action :require_login, except: [:overview]
   skip_before_action :require_course_membership
   before_action :ensure_admin?, only: :health_check
   before_action :redirect_if_logged_in!, only: [:index, :login]
@@ -45,6 +45,6 @@ class HomeController < ApplicationController
   private
 
   def redirect_if_logged_in!
-    redirect_to dashboard_path and return if logged_in?
+    redirect_to overview_path and return if logged_in?
   end
 end

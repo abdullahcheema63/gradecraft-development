@@ -10,7 +10,7 @@ describe PasswordsController do
     it "sends the user an email with password reset instructions" do
       expect { post :create, params: { email: user.email.upcase }}.to \
         change { ActionMailer::Base.deliveries.count }.by 1
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to edit_profile_users_path
     end
   end
 
@@ -24,13 +24,13 @@ describe PasswordsController do
 
     it "redirects to the password reset url if the token is not correct" do
       get :edit, params: { id: "blech" }
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to edit_profile_users_path
     end
 
     it "redirects to the password reset url if the token has expired" do
       user.update_attribute :reset_password_token_expires_at, 1.hour.ago
       get :edit, params: { id: user.reset_password_token }
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to edit_profile_users_path
     end
   end
 
@@ -57,7 +57,7 @@ describe PasswordsController do
         put :update, params: { id: user.reset_password_token,
           token: user.reset_password_token,
           user: { password: "blah", password_confirmation: "blah" }}
-        expect(response).to redirect_to dashboard_path
+        expect(response).to redirect_to edit_profile_users_path
       end
     end
 
@@ -73,7 +73,7 @@ describe PasswordsController do
       end
 
       it "redirects to the password reset url" do
-        expect(response).to redirect_to root_path
+        expect(response).to redirect_to edit_profile_users_path
       end
     end
 

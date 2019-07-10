@@ -21,7 +21,7 @@ class SamlController < ApplicationController
         @user.update_login_at
         @user.update_course_login_at(current_course.id)
         session[:course_id] = current_course
-        redirect_back_or_to dashboard_path
+        redirect_back_or_to overview_path
       else
         # This needs to be updated to create a new course and log the user in to it
         redirect_to instructors_user_sessions_path

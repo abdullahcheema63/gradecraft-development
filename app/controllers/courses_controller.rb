@@ -166,12 +166,12 @@ class CoursesController < ApplicationController
   # Switch between enrolled courses
   def change
     change_current_course params[:id]
-    redirect_to root_url
+    redirect_to dashboard_path
   end
 
   def recalculate_student_scores
     @course.recalculate_student_scores
-    redirect_to root_path, notice: "Recalculated student scores for #{@course.name}"
+    redirect_to dashboard_path, notice: "Recalculated student scores for #{@course.name}"
   end
 
   def edit_dashboard_message
@@ -189,7 +189,7 @@ class CoursesController < ApplicationController
     if @course.has_public_badges?
       @badges = @course.badges
     else
-      redirect_to root_path, alert: "Whoops, nothing to see here! That data is not available."
+      redirect_to dashboard_path, alert: "Whoops, nothing to see here! That data is not available."
     end
   end
 

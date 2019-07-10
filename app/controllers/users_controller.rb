@@ -186,7 +186,7 @@ class UsersController < ApplicationController
     @user.activate!
 
     respond_to do |format|
-      format.html { redirect_to session[:return_to] || dashboard_path, notice: "#{@user.first_name} #{@user.last_name} has been activated!" }
+      format.html { redirect_to session[:return_to] || overview_path, notice: "#{@user.first_name} #{@user.last_name} has been activated!" }
       format.json { head :ok }
     end
   end
@@ -201,7 +201,7 @@ class UsersController < ApplicationController
       @user.activate!
       auto_login @user
       @user.update_login_at
-      redirect_to dashboard_path, notice: "Welcome to GradeCraft!" and return
+      redirect_to overview_path, notice: "Welcome to GradeCraft!" and return
     end
     render :activate, alert: @user.errors.full_messages.first
   end
@@ -253,7 +253,7 @@ class UsersController < ApplicationController
     end
 
     if @user.update_attributes(up)
-      redirect_to dashboard_path,
+      redirect_to overview_path,
         notice: "Your profile was successfully updated!"
     else
       @course_membership =
@@ -291,7 +291,7 @@ class UsersController < ApplicationController
     @user.setup_activation
     @user.save
     UserMailer.activation_needed_email(@user).deliver_now
-    redirect_to session[:return_to] || dashboard_path, notice: "An Activation Email has been sent to #{@user.name}!"
+    redirect_to session[:return_to] || overview_path, notice: "An Activation Email has been sent to #{@user.name}!"
   end
 
   def search

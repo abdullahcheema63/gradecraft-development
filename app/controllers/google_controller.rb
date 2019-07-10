@@ -14,6 +14,6 @@ class GoogleController < ApplicationController
     redirect_if_auth_not_present(current_user)
     current_user.activate!
     current_user.update_login_at
-    auto_login current_user and redirect_to dashboard_path
+    auto_login current_user and redirect_to overview_path
   end
 end

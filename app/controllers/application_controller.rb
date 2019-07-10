@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
       if @user
         auto_login(@user)
         @user.update_login_at
-        redirect_to dashboard_path
+        redirect_to overview_path
       else
         redirect_to root_url, alert: "Please login first."
         # TODO: We ultimately need to handle Cosign approved users who don't

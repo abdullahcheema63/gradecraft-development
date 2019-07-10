@@ -66,7 +66,7 @@ describe CoursesController do
 
       it "redirects to root on success with a notice" do
         post :recalculate_student_scores, params: { id: course.id.to_s }
-        expect(response).to redirect_to root_path
+        expect(response).to redirect_to dashboard_path
         expect(flash[:notice]).to_not be_nil
       end
     end
@@ -309,7 +309,7 @@ describe CoursesController do
 
       it "switches the course context" do
         get :change, params: { id: another_course.id }
-        expect(response).to redirect_to(root_url)
+        expect(response).to redirect_to(dashboard_path)
         expect(session[:course_id]).to eq(another_course.id)
       end
 
@@ -373,7 +373,7 @@ describe CoursesController do
         course.has_public_badges = false
         course.save
         get :badges, params: { id: course.id }
-        expect(response).to redirect_to root_path
+        expect(response).to redirect_to dashboard_path
       end
     end
   end
