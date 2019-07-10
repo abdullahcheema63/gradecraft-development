@@ -6,7 +6,7 @@
       var userLicense = {
         maxCourses: <%= @current_user.license.max_courses %>,
         currentCourses: <%= @current_user.license.courses.length %>,
-        expires: <%= @current_user.license.expires %>
+        expires: "<%= @current_user.license.expires %>"
       }
       store.dispatch("addUserLicenseInfo", userLicense)
     </script>

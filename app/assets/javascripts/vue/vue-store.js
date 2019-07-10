@@ -53,6 +53,8 @@ const apiResponseToDataDataItem = (responseJson) =>
 
 const store = new Vuex.Store({
   state: {
+    courseDashboardURL: "/dashboard",
+    courseCopyError: "",
     allUsers: [],
     allCourses: [],
     allInstructors: [],
@@ -234,7 +236,7 @@ const store = new Vuex.Store({
         })
         console.log("inside addNewCourse action" , resp)
       },
-      copyCourse: async function({commit}, course ){
+      copyCourse: async function({commit, state}, course ){
         const resp = await fetch("/api/courses/copy", {
           method: 'POST',
           headers: {
@@ -246,8 +248,9 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(course)
         }).then((response) => {
-          console.log("inside copyCourse action", response)
+          window.location.replace(state.courseDashboardURL)
         })
+        state.copyError = resp
         console.log("inside copyCourse action", resp)
 
       },

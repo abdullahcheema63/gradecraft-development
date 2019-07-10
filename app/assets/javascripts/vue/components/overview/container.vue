@@ -308,8 +308,14 @@
                 <p>
                   <b>Please note that your copy will be a trial course by default.</b>
                 </p>
-                <button class='action' type="button" @click.prevent="courseCopyRequest()">Submit request</button>
+                <button class='action' type="button" @click.prevent="courseCopyRequest()">Copy Course</button>
               </form>
+              <div v-if="copyingCourse">
+                <p> Currently copying your course! </p>
+                <div v-if="copyError">
+                  <p>there was a problem copying your course Error: {{copyError}}</p>
+                </div>
+              </div>
             </div>
           </template>
         </buttonModal>
@@ -353,6 +359,7 @@ module.exports = {
         dateFormat: "D, M d, Y at h:i K",
         static: true,
       },
+      copyingCourse: false,
       newCourseStartDate: null,
       newCourseEndDate: null,
       termYear: [],
@@ -444,6 +451,9 @@ module.exports = {
       var currentCourses = this.licenseInfo.currentCourses
 
       return (currentCourses < max) ? true : false
+    },
+    copyError(){
+      return this.$store.state.courseCopyError
     }
   },
   methods: {
@@ -477,7 +487,7 @@ module.exports = {
       return this.newCourseErrors
     },
     courseCopyRequest(){
-      this.$refs.buttonModal_copy.toggleModalState()
+      this.copyingCourse = true
       this.$store.dispatch('copyCourse', this.copyCourseID)
     }
   }
