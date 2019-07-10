@@ -46,8 +46,10 @@ COPY . /gradecraft
 RUN cp ./secrets/gradecraft_saml_idp.pem /gradecraft/gradecraft_saml_idp.pem
 RUN cp ./secrets/gcsha256.key /gradecraft/gcsha256.key
 RUN cp ./secrets/gcsha256.crt /gradecraft/gcsha256.crt
-RUN cp ./secrets/www.gradecraft.com.key /gradecraft/www.gradecraft.com.key
-RUN cp ./secrets/www.gradecraft.com.crt /gradecraft/www.gradecraft.com.crt
+#RUN cp ./secrets/www.gradecraft.com.key /gradecraft/www.gradecraft.com.key
+#RUN cp ./secrets/www.gradecraft.com.crt /gradecraft/www.gradecraft.com.crt
+RUN cp ./secrets/app.gradecraft.com.key /gradecraft/app.gradecraft.com.key
+RUN cp ./secrets/app.gradecraft.com.crt /gradecraft/app.gradecraft.com.crt
 RUN cp ./secrets/database.yml /gradecraft/config/database.yml
 RUN cp ./secrets/mongoid.yml /gradecraft/config/mongoid.yml
 RUN cp ./secrets/puma.rb /gradecraft/config/puma.rb
