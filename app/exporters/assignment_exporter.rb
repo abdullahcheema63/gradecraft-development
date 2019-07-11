@@ -52,7 +52,7 @@ class AssignmentExporter
   end
 
   def visibility(assignment)
-    if assignment.unlock_conditions.length > 0
+    if assignment.unlock_conditions.exists?
       if !assignment.visible_when_locked
         return "If Unlocked"
       end
