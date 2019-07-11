@@ -54,6 +54,7 @@ const apiResponseToDataDataItem = (responseJson) =>
 const store = new Vuex.Store({
   state: {
     courseDashboardURL: "/dashboard",
+    overviewURL: "/overview",
     courseCopyError: "",
     allUsers: [],
     allCourses: [],
@@ -232,6 +233,7 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(course)
         }).then((response) => {
+          //window.location.replace(`/courses/${course.id}/edit`)
           console.log("inside add resp action" , response)
         })
         console.log("inside addNewCourse action" , resp)
@@ -254,7 +256,7 @@ const store = new Vuex.Store({
         console.log("inside copyCourse action", resp)
 
       },
-      deleteCourse: async function({commit}, courseId ){
+      deleteCourse: async function({commit, state}, courseId ){
         var api = "/api/courses/" + courseId
         const resp = await fetch(api, {
           method: 'DELETE',
@@ -267,6 +269,7 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(courseId)
         }).then((response) => {
+          window.location.replace(state.overviewURL)
           console.log("inside deleteCourse action", response)
         })
         console.log("inside deleteCourse action", resp)

@@ -1,6 +1,6 @@
 # rubocop:disable AndOr
 class API::CoursesController < ApplicationController
-  before_action :ensure_staff?, only: [:show, :copy]
+  before_action :ensure_staff?, only: [:show, :copy, :create]
   before_action :use_current_course, only: [:analytics, :one_week_analytics]
   before_action :ensure_admin?, only: [:destroy]
 
@@ -58,14 +58,6 @@ class API::CoursesController < ApplicationController
       end
     end
   end
-      #   redirect_to edit_course_path(duplicated.id), flash: {
-      #     notice: "#{@course.name} successfully copied"
-      #   }
-      # else
-      #   redirect_to courses_path, flash: {
-      #     alert: "#{@course.name} was not successfully copied"
-      #   }
-      # end
 
   # POST /api/courses
   def create

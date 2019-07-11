@@ -254,7 +254,7 @@ class CoursesController < ApplicationController
   end
 
   def ensure_can_create_courses?
-    can_create_courses = current_user_is_admin?
+    can_create_courses = (current_user_is_admin? || current_user_is_staff?)
     redirect_to action: :index and return unless can_create_courses
   end
 end
