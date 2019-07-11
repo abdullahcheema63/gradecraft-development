@@ -35,7 +35,7 @@ EXPOSE 8443
 
 ENV DOCKER_FIX random
 RUN gem install -v 1.17.3 bundler
-RUN mkdir /home/ocapp && chown -R ocapp: /home/ocumich
+RUN mkdir /home/ocumich && chown -R ocumich: /home/ocumich
 RUN mkdir /gradecraft
 WORKDIR /gradecraft/
 ADD Gemfile /gradecraft/Gemfile
