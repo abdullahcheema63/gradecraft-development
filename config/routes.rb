@@ -475,6 +475,7 @@ Rails.application.routes.draw do
       collection do
         get :search
         post :copy
+        post :create
         post :destroy
         get "analytics"
         get "one_week_analytics", to: "courses#one_week_analytics"
