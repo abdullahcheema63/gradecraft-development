@@ -22,6 +22,8 @@ RUN apt-get install -y nodejs yarn
 RUN mkdir /s3mnt
 RUN chgrp -R 1000 /s3mnt
 RUN chmod -R g+rwx /s3mnt
+
+# ~~~~ Add user for OpenShift sandbox ~~~~
 RUN useradd -l -u 1000170000 -s /bin/bash ocapp
 
 # ~~~~ Add cron jobs ~~~~
