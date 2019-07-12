@@ -94,7 +94,14 @@
       <p v-else>
         Feel free to create as many trial courses as you need to discover what our tool can do for you and your students:
       </p>
-
+      <div v-if="allCourses.length">
+        <h3>Copy an existing course</h3>
+        <p>
+          If you like your setup from a previous course and would like to
+          duplicate it instead of starting from scratch, you can copy an existing course:
+        </p>
+      </div>
+      (FULL)
       <buttonModal button_class="action" ref="buttonModal_add">
         <template slot="button-text">Add a course</template>
         <template slot="heading">Add a new course</template>
@@ -178,6 +185,27 @@
                     <input type="radio" id="licensedCourse_disabled" name="courseType" disabled="disabled" />
                     <label for="licensedCourse_disabled">Licensed Course</label>
                   </div>
+                  <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
+                </div>
+                <div v-else-if="formResponse[0]==='Copy an existing course'">
+                  <p>Which existing course would you like to copy?</p>
+                  <form>
+                    <div class="form_options" v-for="course in currentAndPastCourses" :key="course.id" >
+                      <input type="radio" :id="'copy-' + course.id" v-model="copyCourseID" :value="course.id"></input>
+                      <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                    </div>
+                    <br>
+                    <p>
+                      <b>Please note that your copy will be a trial course by default.</b>
+                    </p>
+                    <button class='action' type="button" @click.prevent="copyCourse()">Copy Course</button>
+                  </form>
+                  <div v-if="copyingCourse">
+                    <p> Currently copying your course! </p>
+                    <div v-if="copyError">
+                      <p>there was a problem copying your course Error: {{copyError}}</p>
+                    </div>
+                  </div>
                 </div>
                 <div v-else-if="formResponse[0]==='Convert a trial course' && licenseInfo">
                   <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
@@ -185,6 +213,7 @@
                     <input type="radio" :id="'convert-license-' + course.id" v-model="courseToLicense" :value="course.id">
                     <label :for="'convert-license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
                   </div>
+                  <button class="action" type="button" @click.prevent="convertCourse()">Convert course</button>
                 </div>
                 <div v-else>
                   <p>You currently have a <b>free trial account</b> and cannot convert trial courses into licensed ones right now. </p>
@@ -194,139 +223,7 @@
             </formContainer>
           </form>
         </template>
-        <template slot="submit-button">
-          <slot name="submit-button">
-            <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
-          </slot>
-        </template>
       </buttonModal>
-
-      (reduced)
-      <buttonModal button_class="action" ref="buttonModal_add">
-        <template slot="button-text">Add a course</template>
-        <template slot="heading">Add a new course</template>
-        <template slot="content">
-          <form>
-            <formContainer>
-              <template slot="form-response">
-                <div>
-                  <p>Use this form to create a new course from scratch:</p>
-
-                  <h3>Essential Course Info</h3>
-                  <div v-if="newCourseErrors.length" class="inline_alert_msg">
-                    <p>
-                      Please fill out the <b>required fields</b> below if you want to create a new course.
-                    </p>
-                  </div>
-                  <div class="flex-2 form_pair">
-                    <div class="form_elem">
-                      <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
-                      <label for="course_number">Course #</label>
-                    </div>
-                    <div class="form_elem">
-                      <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
-                      <label for="course_name">Course name</label>
-                    </div>
-                    <div class="form_elem">
-                      <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar"></flat-pickr>
-                      <label for="course_start">Course start date</label>
-                    </div>
-                    <div class="form_elem">
-                      <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar"></flat-pickr>
-                      <label for="course_end">Course end date</label>
-                    </div>
-
-                    <div class="form_elem">
-                      <select id="course_semester" v-model="newCourse.term.name">
-                        <option value="" selected="selected" disabled="disabled">Semester</option>
-                        <option :value="'Fall'">Fall</option>
-                        <option :value="'Winter'">Winter</option>
-                        <option :value="'Spring'">Spring</option>
-                        <option :value="'Summer'">Summer</option>
-                      </select>
-                      <label for="course_semester">Semester</label>
-                    </div>
-                    <div class="form_elem">
-                      <select id="course_year" v-model="newCourse.term.year">
-                        <option value="" selected="selected" disabled="disabled">Year</option>
-                        <option :value="2020">2020</option>
-                        <option :value="2019">2019</option>
-                        <option :value="2018">2018</option>
-                        <option :value="2017">2017</option>
-                      </select>
-                      <label for="course_year">Year</label>
-                    </div>
-                  </div>
-
-                  <h3>Course Type</h3>
-                  <p v-if="!licenseInfo">
-                    You currently do not have a license and can only add trial courses right now.
-                  </p>
-                  <div class="form_options">
-                    <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" :value=false />
-                    <label for="newTrialCourse">Trial Course</label>
-                  </div>
-                  <div class="form_options" v-if="canLicenseCourse">
-                    <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" :value=true />
-                    <label for="newLicensedCourse">Licensed Course</label>
-                  </div>
-                  <div class="form_options" v-else>
-                    <input type="radio" id="licensedCourse_disabled" name="courseType" disabled="disabled" />
-                    <label for="licensedCourse_disabled">Licensed Course</label>
-                  </div>
-                </div>
-              </template>
-            </formContainer>
-          </form>
-          <div v-if="creatingCourse">
-            <p> Your course is being created!</p>
-            <p> Loader goes here!</p>
-            <div v-if="courseCreationError">
-              <p>There were errors: {{courseCreationError}} </p>
-            </div>
-          </div>
-        </template>
-        <template slot="submit-button">
-          <slot name="submit-button">
-            <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
-          </slot>
-        </template>
-      </buttonModal>
-
-      <div v-if="allCourses.length">
-        <h3>Copy an existing course</h3>
-        <p>
-          If you like your setup from a previous course and would like to
-          duplicate it instead of starting from scratch, you can copy an existing course:
-        </p>
-        <buttonModal button_class="action secondary" ref="buttonModal_copy">
-          <template slot="button-text">Copy a course</template>
-          <template slot="heading">Copy a past course</template>
-          <template slot="content">
-            <div>
-              <h2>Copy an existing course</h2>
-              <p>Which existing course would you like to copy?</p>
-              <form>
-                <div class="form_options" v-for="course in currentAndPastCourses" :key="course.id" >
-                  <input type="radio" :id="'copy-' + course.id" v-model="copyCourseID" :value="course.id"></input>
-                  <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
-                </div>
-                <br>
-                <p>
-                  <b>Please note that your copy will be a trial course by default.</b>
-                </p>
-                <button class='action' type="button" @click.prevent="copyCourse()">Copy Course</button>
-              </form>
-              <div v-if="copyingCourse">
-                <p> Currently copying your course! </p>
-                <div v-if="copyError">
-                  <p>there was a problem copying your course Error: {{copyError}}</p>
-                </div>
-              </div>
-            </div>
-          </template>
-        </buttonModal>
-      </div>
 
       <div v-if="!licenseInfo">
         <h3>Upgrade your account</h3>
@@ -372,7 +269,7 @@ module.exports = {
       newCourseEndDate: null,
       termYear: [],
       termName: [],
-      formQuestion: ["Create a new course", "Convert a trial course"],
+      formQuestion: ["Create a new course", "Copy an existing course", "Convert a trial course"],
       formResponse: ["Create a new course"],
       courseToLicense: "",
       newCourse: {
@@ -475,19 +372,15 @@ module.exports = {
       this.newCourse.term.end = date;
     },
     addCourse(){
-      var response = this.formResponse[0];
-      if( response == "Create a new course"){
-        var errors = this.checkAddCourseForm()
+      var errors = this.checkAddCourseForm()
 
-        if(!errors.length){
-          this.creatingCourse = true
-          this.$store.dispatch('addNewCourse', this.newCourse)
-        }
+      if(!errors.length){
+        this.creatingCourse = true
+        this.$store.dispatch('addNewCourse', this.newCourse)
       }
-      else{
-        this.$store.dispatch('licenseCourse', this.courseToLicense)
-        this.$refs.buttonModal_add.toggleModalState()
-      }
+    },
+    convertCourse(){
+      this.$store.dispatch('licenseCourse', this.courseToLicense)
     },
     checkAddCourseForm(){
       this.newCourseErrors = []
