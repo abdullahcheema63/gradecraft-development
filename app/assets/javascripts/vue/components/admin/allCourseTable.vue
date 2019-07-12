@@ -53,75 +53,80 @@
       </div>
     </div>
 
-    <div class="table_container">
-      <table>
-        <thead>
-          <tr>
-            <th>Course ID </th>
-            <th>Course Name </th>
-            <th>Licensed </th>
-            <th>Active </th>
-            <th>Published</th>
-            <th>Instructor(s)</th>
-            <th># Students </th>
-            <th>Semester </th>
-            <th>Year </th>
-            <th>Created </th>
-            <th>Exports </th>
-            <th>Options </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="course in currentPageAllCourses">
-            <td>{{course.id}}</td>
-            <td><a class="table_truncate" :href="course.url">{{course.name}}</a></td>
-            <td><span :class="{checked: course.licensed}">&nbsp;</span></td>
-            <td><span :class="{checked: course.active}">&nbsp;</span></td>
-            <td><span :class="{checked: course.published}">&nbsp;</span></td>
-            <td>
-              <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
-            </td>
-            <td>{{course.studentNumber}}</td>
-            <td>{{course.term}}</td>
-            <td>{{course.year}}</td>
-            <td>{{course.created}}</td>
-            <td>
-              <buttonDropdown>
-                <template slot="button_text">Export</template>
-                <template slot="content">
-                  <ul>
-                    <li><a :href="course.earnedBadgesURL">Export Earned Badges</a> </li>
-                    <li><a :href="course.researchGradesURL">Research Grades</a> </li>
-                    <li><a :href="course.finalGradesURL">Final Grades</a> </li>
-                    <li><a :href="course.submissionsURL">Assignment Submissions</a> </li>
-                    <li><a :href="course.assignmentStructureURL">Assignment Structure</a> </li>
-                    <li><a :href="course.assignmentTypeSummaryURL">Assignment Type Summaries</a> </li>
-                    <li><a :href="course.gradebookURL">Full Gradebook</a> </li>
-                    <li><a :href="course.badgeStructureURL">Export Badges Structure</a> </li>
-                    <li><a :href="course.gradeSchemeStructureURL">Grading Scheme</a> </li>
-                  </ul>
-                </template>
-              </buttonDropdown>
-            </td>
-            <td>
-              <buttonDropdown>
-                <template slot="button_text">Options</template>
-                <template slot="content">
-                  <ul>
-                    <li><a :href="course.editURL">Edit</a> </li>
-                    <li><a @click.prevent="copyCourse(course.id)">Copy</a> </li>
-                    <li><a :href="course.copyStudentsURL">Copy + Students(remove for course / LO (need API))</a> </li>
-                    <li><a @click.prevent="deleteCourse(course.id)">Delete</a></li>
-                  </ul>
-                </template>
-              </buttonDropdown>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-if="currentPageAllCourses.length">
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>Course ID </th>
+              <th>Course Name </th>
+              <th>Licensed </th>
+              <th>Active </th>
+              <th>Published</th>
+              <th>Instructor(s)</th>
+              <th># Students </th>
+              <th>Semester </th>
+              <th>Year </th>
+              <th>Created </th>
+              <th>Exports </th>
+              <th>Options </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="course in currentPageAllCourses">
+              <td>{{course.id}}</td>
+              <td><a class="table_truncate" :href="course.url">{{course.name}}</a></td>
+              <td><span :class="{checked: course.licensed}">&nbsp;</span></td>
+              <td><span :class="{checked: course.active}">&nbsp;</span></td>
+              <td><span :class="{checked: course.published}">&nbsp;</span></td>
+              <td>
+                <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
+              </td>
+              <td>{{course.studentNumber}}</td>
+              <td>{{course.term}}</td>
+              <td>{{course.year}}</td>
+              <td>{{course.created}}</td>
+              <td>
+                <buttonDropdown>
+                  <template slot="button_text">Export</template>
+                  <template slot="content">
+                    <ul>
+                      <li><a :href="course.earnedBadgesURL">Export Earned Badges</a> </li>
+                      <li><a :href="course.researchGradesURL">Research Grades</a> </li>
+                      <li><a :href="course.finalGradesURL">Final Grades</a> </li>
+                      <li><a :href="course.submissionsURL">Assignment Submissions</a> </li>
+                      <li><a :href="course.assignmentStructureURL">Assignment Structure</a> </li>
+                      <li><a :href="course.assignmentTypeSummaryURL">Assignment Type Summaries</a> </li>
+                      <li><a :href="course.gradebookURL">Full Gradebook</a> </li>
+                      <li><a :href="course.badgeStructureURL">Export Badges Structure</a> </li>
+                      <li><a :href="course.gradeSchemeStructureURL">Grading Scheme</a> </li>
+                    </ul>
+                  </template>
+                </buttonDropdown>
+              </td>
+              <td>
+                <buttonDropdown>
+                  <template slot="button_text">Options</template>
+                  <template slot="content">
+                    <ul>
+                      <li><a :href="course.editURL">Edit</a> </li>
+                      <li><a @click.prevent="copyCourse(course.id)">Copy</a> </li>
+                      <li><a :href="course.copyStudentsURL">Copy + Students(remove for course / LO (need API))</a> </li>
+                      <li><a @click.prevent="deleteCourse(course.id)">Delete</a></li>
+                    </ul>
+                  </template>
+                </buttonDropdown>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <tablePagination :items="filteredAllCourses" :paginateBy="currentPageItemMax" @paginate="paginateItems"></tablePagination>
+      <button type="button" class="action">Export this table view</button>Not done
     </div>
-    <tablePagination :items="filteredAllCourses" :paginateBy="currentPageItemMax" @paginate="paginateItems"></tablePagination>
-    <button type="button" class="action">Export this table view</button>Not done
+    <div v-else>
+      <h3>No courses found with the filters applied </h3>
+    </div>
   </div>
 </template>
 

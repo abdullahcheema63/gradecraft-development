@@ -17,60 +17,65 @@
       </div>
     </form>
     <h3>Search Results:</h3>
-    <div class="table_container">
-      <table>
-        <thead>
-          <tr>
-            <th>User ID </th>
-            <th>First Name </th>
-            <th>Last Name </th>
-            <th>Email </th>
-            <th>Courses </th>
-            <th>Course User Type</th>
-            <th>Semester </th>
-            <th>Year </th>
-            <th>Student Score </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in currentPageAllUsers" :key="user.id">
-            <td>{{user.id}}</td>
-            <td class="no_wrap"><a :href="user.url">{{user.firstName}}</a> </td>
-            <td class="no_wrap"><a :href="user.url">{{user.lastName}}</a> </td>
-            <td class="no_wrap">{{user.email}}</td>
-            <template v-if="user.courses.length">
-              <td>
-                <ul>
-                  <li v-for="course in user.courses" :key="course.id">
-                    <a :href="course.url" class="table_truncate">{{course.name}}</a>
-                  </li>
-                </ul>
-              </td>
-              <td>
-                <ul><li v-for="course in user.courses" :key="course.id">{{course.role}}&nbsp;</li></ul>
-              </td>
-              <td>
-                <ul><li  v-for="course in user.courses" :key="course.id">{{course.semester}}&nbsp;</li></ul>
-              </td>
-              <td>
-                <ul><li v-for="course in user.courses" :key="course.id">{{course.year}}&nbsp;</li></ul>
-              </td>
-              <td>
-                <ul><li v-for="course in user.courses" :key="course.id">{{course.score}}&nbsp;</li></ul>
-              </td>
-            </template>
-            <template v-else>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            </template>
-          </tr>
-        </tbody>
-      </table>
+    <div v-if="currentPageAllUsers.length">
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>User ID </th>
+              <th>First Name </th>
+              <th>Last Name </th>
+              <th>Email </th>
+              <th>Courses </th>
+              <th>Course User Type</th>
+              <th>Semester </th>
+              <th>Year </th>
+              <th>Student Score </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="user in currentPageAllUsers" :key="user.id">
+              <td>{{user.id}}</td>
+              <td class="no_wrap"><a :href="user.url">{{user.firstName}}</a> </td>
+              <td class="no_wrap"><a :href="user.url">{{user.lastName}}</a> </td>
+              <td class="no_wrap">{{user.email}}</td>
+              <template v-if="user.courses.length">
+                <td>
+                  <ul>
+                    <li v-for="course in user.courses" :key="course.id">
+                      <a :href="course.url" class="table_truncate">{{course.name}}</a>
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <ul><li v-for="course in user.courses" :key="course.id">{{course.role}}&nbsp;</li></ul>
+                </td>
+                <td>
+                  <ul><li  v-for="course in user.courses" :key="course.id">{{course.semester}}&nbsp;</li></ul>
+                </td>
+                <td>
+                  <ul><li v-for="course in user.courses" :key="course.id">{{course.year}}&nbsp;</li></ul>
+                </td>
+                <td>
+                  <ul><li v-for="course in user.courses" :key="course.id">{{course.score}}&nbsp;</li></ul>
+                </td>
+              </template>
+              <template v-else>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              </template>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
     </div>
-    <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
+    <div v-else>
+      <h3>No users found with the filters applied </h3>
+    </div>
   </div>
 </template>
 

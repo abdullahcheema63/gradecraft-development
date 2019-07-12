@@ -27,66 +27,71 @@
         </div>
       </div>
     </div>
-    <div class="table_container">
-      <table>
-        <thead>
-          <tr>
-            <th>First Name </th>
-            <th>Last Name </th>
-            <th>License Expiration </th>
-            <th>Payment Method </th>
-            <th>Account Type</th>
-            <th>Active Courses </th>
-            <th>Licensed Course </th>
-            <th># Students in Course </th>
-            <th>Actions </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="instructor in currentPageAllInstructors" :key="instructor.id">
-            <td><a href="#">{{instructor.firstName}}</a> </td>
-            <td class="no_wrap"><a href="#">{{instructor.lastName}}</a> </td>
-            <td>{{instructor.licenseExpires}} </td>
-            <td>{{instructor.paymentMethod}} </td>
-            <td style="width: 100px;">{{instructor.accountType}} </td>
-            <template v-if="instructor.courses.length">
-              <td>
-                <ul>
-                  <li v-for="course in instructor.courses" :key="course.id">
-                    <a :href="course.changeCoursePath" class="table_truncate">{{course.name}}</a>
-                  </li>
-                </ul>
-              </td>
-              <td>
-                <ul>
-                  <li v-for="course in instructor.courses" :key="course.id">
-                    <span :class="{checked: course.licensed}">&nbsp;</span>
-                  </li>
-                </ul>
-              </td>
-              <td>
-                <ul>
-                  <li v-for="course in instructor.courses" :key="course.id">
-                    {{course.studentCount}}
-                  </li>
-                </ul>
-              </td>
-            </template>
-            <td>
-              <buttonDropdown>
-                <template slot="button_text">Options</template>
-                <template slot="content">
+    <div v-if="currentPageAllInstructors.length">
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>First Name </th>
+              <th>Last Name </th>
+              <th>License Expiration </th>
+              <th>Payment Method </th>
+              <th>Account Type</th>
+              <th>Active Courses </th>
+              <th>Licensed Course </th>
+              <th># Students in Course </th>
+              <th>Actions </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="instructor in currentPageAllInstructors" :key="instructor.id">
+              <td><a href="#">{{instructor.firstName}}</a> </td>
+              <td class="no_wrap"><a href="#">{{instructor.lastName}}</a> </td>
+              <td>{{instructor.licenseExpires}} </td>
+              <td>{{instructor.paymentMethod}} </td>
+              <td style="width: 100px;">{{instructor.accountType}} </td>
+              <template v-if="instructor.courses.length">
+                <td>
                   <ul>
-                    <li>What options go in here? </li>
+                    <li v-for="course in instructor.courses" :key="course.id">
+                      <a :href="course.changeCoursePath" class="table_truncate">{{course.name}}</a>
+                    </li>
                   </ul>
-                </template>
-              </buttonDropdown>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                </td>
+                <td>
+                  <ul>
+                    <li v-for="course in instructor.courses" :key="course.id">
+                      <span :class="{checked: course.licensed}">&nbsp;</span>
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li v-for="course in instructor.courses" :key="course.id">
+                      {{course.studentCount}}
+                    </li>
+                  </ul>
+                </td>
+              </template>
+              <td>
+                <buttonDropdown>
+                  <template slot="button_text">Options</template>
+                  <template slot="content">
+                    <ul>
+                      <li>What options go in here? </li>
+                    </ul>
+                  </template>
+                </buttonDropdown>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <tablePagination :items="filteredAllInstructors" @paginate="paginateItems"></tablePagination>
     </div>
-    <tablePagination :items="filteredAllInstructors" @paginate="paginateItems"></tablePagination>
+    <div v-else>
+      <h3>No instructors found with the filters applied </h3>
+    </div>
   </div>
 </template>
 

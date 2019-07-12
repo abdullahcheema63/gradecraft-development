@@ -7,36 +7,41 @@
         <label for="name_contains">Name contains</label>
       </div>
     </form>
-    <div class="table_container">
-      <table>
-        <thead>
-          <tr>
-            <th>Name </th>
-            <th>Has Site License?</th>
-            <th>Type</th>
-            <th>Options</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="institution in currentPageAllInstitutions" :key="institution.id">
-            <td>{{institution.name}}</td>
-            <td><span :class="{checked: institution.hasSiteLicense}"></span> </td>
-            <td>{{institution.institutionType}}</td>
-            <td>
-              <buttonDropdown>
-                <template slot="button_text">Options</template>
-                <template slot="content">
-                  <ul>
-                    <li><a :href="institution.editURL">Edit</a> </li>
-                  </ul>
-                </template>
-              </buttonDropdown>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-if="currentPageAllInstitutions.length">
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>Name </th>
+              <th>Has Site License?</th>
+              <th>Type</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="institution in currentPageAllInstitutions" :key="institution.id">
+              <td>{{institution.name}}</td>
+              <td><span :class="{checked: institution.hasSiteLicense}"></span> </td>
+              <td>{{institution.institutionType}}</td>
+              <td>
+                <buttonDropdown>
+                  <template slot="button_text">Options</template>
+                  <template slot="content">
+                    <ul>
+                      <li><a :href="institution.editURL">Edit</a> </li>
+                    </ul>
+                  </template>
+                </buttonDropdown>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <tablePagination :items="filteredAllInstitutions" @paginate="paginateItems"></tablePagination>
     </div>
-    <tablePagination :items="filteredAllInstitutions" @paginate="paginateItems"></tablePagination>
+    <div v-else>
+      <h3>No institutions found with the filters applied</h3>
+    </div>
     <a class="button action next" href="institutions/new">Add a new institution</a>
   </div>
 </template>
