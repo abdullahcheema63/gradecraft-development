@@ -56,6 +56,7 @@ const store = new Vuex.Store({
     courseDashboardURL: "/dashboard",
     overviewURL: "/overview",
     courseCopyError: "",
+    courseCreationError: "",
     allUsers: [],
     allCourses: [],
     allInstructors: [],
@@ -233,9 +234,10 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(course)
         }).then((response) => {
-          //window.location.replace(`/courses/${course.id}/edit`)
+          window.location.replace(state.courseDashboardURL)
           console.log("inside add resp action" , response)
         })
+        state.courseCreationError = resp
         console.log("inside addNewCourse action" , resp)
       },
       copyCourse: async function({commit, state}, course ){
@@ -270,7 +272,6 @@ const store = new Vuex.Store({
           body: JSON.stringify(courseId)
         }).then((response) => {
           window.location.replace(state.overviewURL)
-          console.log("inside deleteCourse action", response)
         })
         console.log("inside deleteCourse action", resp)
       },

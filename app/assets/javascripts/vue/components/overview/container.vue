@@ -278,6 +278,13 @@
               </template>
             </formContainer>
           </form>
+          <div v-if="creatingCourse">
+            <p> Your course is being created!</p>
+            <p> Loader goes here!</p>
+            <div v-if="courseCreationError">
+              <p>There were errors: {{courseCreationError}} </p>
+            </div>
+          </div>
         </template>
         <template slot="submit-button">
           <slot name="submit-button">
@@ -308,7 +315,7 @@
                 <p>
                   <b>Please note that your copy will be a trial course by default.</b>
                 </p>
-                <button class='action' type="button" @click.prevent="courseCopyRequest()">Copy Course</button>
+                <button class='action' type="button" @click.prevent="copyCourse()">Copy Course</button>
               </form>
               <div v-if="copyingCourse">
                 <p> Currently copying your course! </p>
@@ -360,6 +367,7 @@ module.exports = {
         static: true,
       },
       copyingCourse: false,
+      creatingCourse: false,
       newCourseStartDate: null,
       newCourseEndDate: null,
       termYear: [],
@@ -454,6 +462,9 @@ module.exports = {
     },
     copyError(){
       return this.$store.state.courseCopyError
+    },
+    courseCreationError(){
+      return this.$store.state.courseCreationError
     }
   },
   methods: {
@@ -469,8 +480,8 @@ module.exports = {
         var errors = this.checkAddCourseForm()
 
         if(!errors.length){
+          this.creatingCourse = true
           this.$store.dispatch('addNewCourse', this.newCourse)
-          this.$refs.buttonModal_add.toggleModalState()
         }
       }
       else{
@@ -486,7 +497,7 @@ module.exports = {
       }
       return this.newCourseErrors
     },
-    courseCopyRequest(){
+    copyCourse(){
       this.copyingCourse = true
       this.$store.dispatch('copyCourse', this.copyCourseID)
     }
