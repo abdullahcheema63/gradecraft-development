@@ -38,5 +38,6 @@ end
 require "carrierwave/storage/fog"
 
 CarrierWave.configure do |config|
-  config.storage = :fog
+  config.root = "/s3mnt/"
+  config.storage = :file
 end
