@@ -57,10 +57,6 @@ class CourseMembershipsController < ApplicationController
   end
 
   def remove_leaders_from_teams(course_membership)
-    if !course_membership.user.is_staff?(course_membership.course)
-      return false
-    end
-
     staff_member = course_membership.user
 
     course = course_membership.course
@@ -70,14 +66,14 @@ class CourseMembershipsController < ApplicationController
       team.leaders = team.leaders.reject {|member| member["id"] == staff_member.id}
       team.save
     end
-
-    return true
   end
 
   def destroy
     course_membership = current_course.course_memberships.find(params[:id])
     
-    remove_leaders_from_teams(course_membership)
+    if course_membership.user.is_staff?(course_membership.course)
+      remove_leaders_from_teams(course_membership)
+    end
 
     Services::CancelsCourseMembership.call course_membership
    
