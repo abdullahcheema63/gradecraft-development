@@ -3,7 +3,10 @@ CarrierWave.configure do |config|
   # Use local storage if in development or test
   if Rails.env.development? || Rails.env.test?
     CarrierWave.configure do |config|
+      config.permissions = 0600
+      config.directory_permissions = 0700
       config.storage = :file
+      config.root = Rails.root
     end
   end
 
