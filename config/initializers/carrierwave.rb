@@ -6,13 +6,14 @@ CarrierWave.configure do |config|
       config.permissions = 0600
       config.directory_permissions = 0700
       config.storage = :file
-      config.root = Rails.root
+      config.root = "#{Rails.root}/files"
     end
   end
 
   # Use AWS storage if in production
   if Rails.env.production?
    CarrierWave.configure do |config|
+     config.root = "#{Rails.root}/files/"
      config.storage = :file
    end
   end

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   mount Resque::Server, at: "/jobs", constraints: AdminConstraint.new
   mount JasmineRails::Engine, at: '/specs', constraints: AdminConstraint.new if defined?(JasmineRails)
 
-  get "/uploads/*all", to: "redocuments#download"
+  get "/files/*all", to: "redocuments#download"
   
   # 1. Analytics & Charts
   # 2. Announcements
