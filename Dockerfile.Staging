@@ -54,7 +54,7 @@ RUN cp ./secrets/puma.rb /gradecraft/config/puma.rb
 RUN cp ./secrets/Procfile /gradecraft/Procfile
 RUN cp ./secrets/default /etc/nginx/sites-available/default
 
-RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=staging bundle exec rake resque:scheduler &\n/ln -s /s3mnt/uploads ./uploads\nservice nginx start\npuma\nelse \n RAILS_ENV=staging bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
+RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=staging bundle exec rake resque:scheduler &\nln -s /s3mnt ./files\nservice nginx start\npuma\nelse \n RAILS_ENV=staging bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
 RUN crontab /etc/cron.d/trim-cron
 CMD cron && tail -f /var/log/cron.log
