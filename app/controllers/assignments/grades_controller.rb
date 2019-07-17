@@ -107,7 +107,7 @@ class Assignments::GradesController < ApplicationController
         redirect_back fallback_location: assignments_path,
           notice: "We're sorry, there was an error saving your grade."
 
-          return
+        return
       end
 
       @grade.assign_attributes(
