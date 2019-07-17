@@ -36,8 +36,9 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   def store_dir_prefix
-    return unless Rails.env == "development"
-    ENV["AWS_S3_DEVELOPER_TAG"]
+    return Rails.root
+    #return unless Rails.env == "development"
+    #ENV["AWS_S3_DEVELOPER_TAG"]
   end
 
   def course
