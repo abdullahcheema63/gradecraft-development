@@ -1,4 +1,6 @@
 class LearningObjectiveLevel < ApplicationRecord
+  include Copyable
+  
   enum flagged_value: [:exceeds_proficiency, :proficient, :nearing_proficiency, :not_proficient]
 
   belongs_to :objective, class_name: "LearningObjective", foreign_key: :objective_id
@@ -7,6 +9,13 @@ class LearningObjectiveLevel < ApplicationRecord
   validates_presence_of :name, :objective, :flagged_value
 
   scope :ordered, -> { order :order }
+
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
+      attributes: attributes,
+      options: { lookups: [:objective, :course] }
+    )
+  end
 
   class << self
     def flagged_values_to_h
