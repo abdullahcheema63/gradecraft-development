@@ -38,6 +38,6 @@ end
 require "carrierwave/storage/fog"
 
 CarrierWave.configure do |config|
-  config.root = "#{Rails.root}/files/"
+  config.root = Rails.root
   config.storage = :file
 end
