@@ -1,1 +1,5 @@
-%assignment-show-group-table{"data-assignment-id"=>"#{assignment_id}", "data-links-visible"=>"#{current_user_is_admin? || current_course.active?}"}
+- if !has_groups
+    %p Add groups for this assignment to see grades.
+
+- if has_groups
+    %assignment-show-group-table{"data-assignment-id"=>"#{assignment_id}", "data-links-visible"=>"#{current_user_is_admin? || current_course.active?}"}
