@@ -147,6 +147,63 @@ describe Course do
     end
   end
 
+  describe "#copy with learning_objectives" do
+    let(:course) { build :course }
+    let(:learning_objective) { build :learning_objective}
+    let(:learning_objective_category) { build :learning_objective_category }
+
+    it "copies the learning objectives without a category" do
+      course.has_learning_objectives = true
+      course.learning_objectives.push(learning_objective)
+      course.save
+      expect(course.learning_objectives[0].course_id).to eq course.id
+      duplicated = course.copy nil
+      duplicated.save
+      expect(duplicated.learning_objectives.length).to eq 1
+      expect(duplicated.learning_objectives[0].name).to eq course.learning_objectives[0].name
+      expect(duplicated.learning_objectives[0].course_id).to eq duplicated.id
+    end
+
+    it "copies the learning objectives in a learning objective category" do
+      course.has_learning_objectives = true
+      course.learning_objective_categories.push(learning_objective_category)
+      course.learning_objectives.push(learning_objective)
+      course.learning_objectives[0].category = course.learning_objective_categories[0]
+      course.save
+      expect(course.learning_objectives[0].course_id).to eq course.id
+      expect(course.learning_objectives[0].category).to eq course.learning_objective_categories[0]
+      expect(course.learning_objectives[0].category.course.id).to eq course.id
+      duplicated = course.copy nil
+      duplicated.save
+      expect(duplicated.learning_objective_categories.length).to eq 1
+      expect(duplicated.learning_objective_categories[0].name).to eq course.learning_objective_categories[0].name
+      expect(duplicated.learning_objective_categories[0].course_id).to eq duplicated.id
+      expect(duplicated.learning_objectives.length).to eq 1
+      expect(duplicated.learning_objectives[0].course_id).to eq duplicated.id
+      expect(duplicated.learning_objectives[0].category).to eq duplicated.learning_objective_categories[0]
+      expect(duplicated.learning_objectives[0].category.course.id).to eq duplicated.id
+    end
+
+    it "copies the learning objectives with linked assignments" do
+      course.has_learning_objectives = true
+      assignment_type = create :assignment_type, course: course
+      assignment = create :assignment, assignment_type: assignment_type, course: course
+      course.learning_objectives.push(learning_objective)
+      course.learning_objectives[0].assignments.push(course.assignments.last)
+      course.save
+      expect(course.learning_objectives[0].course_id).to eq course.id
+      expect(course.learning_objectives[0].assignments[0]).to eq course.assignments.last
+      expect(course.learning_objectives[0].assignments[0].course_id).to eq course.id
+      duplicated = course.copy nil
+      duplicated.save
+      expect(duplicated.learning_objectives.length).to eq 1
+      expect(duplicated.learning_objectives[0].course_id).to eq duplicated.id
+      expect(duplicated.learning_objectives[0].assignments.length).to eq 1
+      expect(duplicated.learning_objectives[0].assignments[0].name).to eq course.assignments.last.name
+      expect(duplicated.learning_objectives[0].assignments[0].course_id).to eq duplicated.id
+    end
+  end
+
   describe "#grade_scheme_elements" do
     let!(:high) { create(:grade_scheme_element, lowest_points: 2001, course: subject) }
     let!(:low) { create(:grade_scheme_element, lowest_points: 100, course: subject) }

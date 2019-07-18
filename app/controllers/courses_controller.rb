@@ -98,6 +98,8 @@ class CoursesController < ApplicationController
     authorize! :read, @course
 
     begin
+      params[:copy_type] = "" if @course.has_learning_objectives?
+      
       duplicated = @course.copy(params[:copy_type])
 
       if duplicated.save
