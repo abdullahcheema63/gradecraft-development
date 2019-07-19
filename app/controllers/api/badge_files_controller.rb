@@ -25,14 +25,11 @@ class API::BadgeFilesController < ApplicationController
   def destroy
     file = BadgeFile.where(id: params[:id]).first
     if file.present?
-      file.delete_from_s3
+      #file.delete_from_s3
       file.destroy
 
-      if !file.exists_on_s3? && file.destroyed?
+      if file.destroyed?
         render json: { message: "Badge file successfully deleted", success: true },
-        status: 200
-      elsif file.destroyed?
-        render json: {message: "Badge file deleted, error removing remote file", success: true},
         status: 200
       else
         render json: {message: "Badge file failed to delete", success: false},
