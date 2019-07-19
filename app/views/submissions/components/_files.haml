@@ -4,8 +4,8 @@
     -# give us a link to download existing files from the file dump
     - presenter.present_submission_files.each_with_index do |submission_file, index|
       %li
-        = link_to submission_file.instructor_filename(index), submission_file.file.to_s
-        -#= external_link_to submission_file.instructor_filename(index),
+        -#= link_to submission_file.instructor_filename(index), submission_file.file.to_s
+        = external_link_to submission_file.instructor_filename(index),
           submission_file_download_path(submission_file, index: index)
         .span
           = "Updated at: #{submission_file.updated_at}"
