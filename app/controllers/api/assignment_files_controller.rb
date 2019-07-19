@@ -25,14 +25,10 @@ class API::AssignmentFilesController < ApplicationController
   def destroy
     file = AssignmentFile.where(id: params[:id]).first
     if file.present?
-      file.delete_from_s3
       file.destroy
 
-      if !file.exists_on_s3? && file.destroyed?
+      if file.destroyed?
         render json: { message: "Assignment file successfully deleted", success: true },
-        status: 200
-      elsif file.destroyed?
-        render json: {message: "Assignment file deleted, error removing remote file", success: true},
         status: 200
       else
         render json: {message: "Assignment file failed to delete", success: false},
