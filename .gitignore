@@ -18,5 +18,5 @@ node_modules/*
 authorized_keys
 line-count.txt
 .byebug*
-public/firstname-lastname/*
+files/*
 
