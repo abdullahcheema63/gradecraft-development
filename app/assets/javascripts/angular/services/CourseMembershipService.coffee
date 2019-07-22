@@ -4,8 +4,10 @@
     $http.delete("/course_memberships/#{id}").then(
       (response) ->
         GradeCraftAPI.logResponse(response.data)
+        Promise.resolve(response)
       , (response) ->
         GradeCraftAPI.logResponse(response.data)
+        Promise.reject(response)
     )
 
   toggleActivation = (id, student, notify=true) ->
