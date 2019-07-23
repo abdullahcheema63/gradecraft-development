@@ -7,8 +7,8 @@ class SubmissionFilesController < ApplicationController
     # let's use the object_stream here because there's no reason to hit S3 twice
     #if presenter.submission_file_streamable?
       # rubocop:disable AndOr
-    file_path = "#{Rails.root}#{presenter.submission_file.file.to_s}"
-    send_file URI.decode(file_path), x_sendfile: true
+    file_path = URI.decode(presenter.submission_file.file.path)
+    send_file file_path, x_sendfile: true
 
     #send_data(*presenter.send_data_options) and return
     #else
