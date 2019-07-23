@@ -5,7 +5,7 @@ class RedocumentsController < ApplicationController
       if file_is_submission? || !File.exist?(file_url)
         not_found
       end
-      send_file file_url, :x_sendfile=>true
+      send_file URI.decode(file_url), :x_sendfile=>true
     end
 
     def file_is_submission?
