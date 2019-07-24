@@ -367,7 +367,7 @@ class Assignment < ApplicationRecord
     assignment_files.each do |af|
       next unless exists_remotely?(af, "file")
       assignment_file = copy.assignment_files.create filename: af[:filename]
-      remote_upload(assignment_file, af, "file", af.url)
+      remote_upload(assignment_file, af, "file", af.file.to_s)
     end
   end
 end

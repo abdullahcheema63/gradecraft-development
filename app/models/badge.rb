@@ -75,7 +75,7 @@ class Badge < ApplicationRecord
     badge_files.each do |bf|
       next unless exists_remotely?(bf, "file")
       badge_file = copy.badge_files.create filename: bf[:filename]
-      remote_upload(badge_file, bf, "file", bf.url)
+      remote_upload(badge_file, bf, "file", bf.file.to_s)
     end
   end
 end

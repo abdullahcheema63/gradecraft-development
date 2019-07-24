@@ -83,7 +83,7 @@ class Challenge < ApplicationRecord
     challenge_files.each do |cf|
       next unless exists_remotely?(cf, "file")
       challenge_file = copy.challenge_files.create filename: cf[:filename]
-      remote_upload(challenge_file, cf, "file", cf.url)
+      remote_upload(challenge_file, cf, "file", cf.file.to_s)
     end
   end
 end
