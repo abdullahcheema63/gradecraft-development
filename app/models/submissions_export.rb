@@ -35,7 +35,7 @@ class SubmissionsExport < ApplicationRecord
 
   # tell s3 which directory structure to use for exports
   def s3_object_key_prefix
-    "exports/courses/#{course_id}/assignments/#{assignment_id}/" \
+    "files/exports/courses/#{course_id}/assignments/#{assignment_id}/" \
       "#{object_key_date}/#{object_key_microseconds}"
   end
 
