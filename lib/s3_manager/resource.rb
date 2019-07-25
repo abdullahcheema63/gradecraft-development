@@ -23,10 +23,7 @@ module S3Manager
          # needing to save the resource twice just to get the creation timestamp
          #
          before_save :rebuild_s3_object_key, if: :export_filename_changed?
-
-         # if we destroy the export successfully clean the data off of S3
-         #
-         after_destroy :delete_object_from_s3
+         
         end
       end
     end
@@ -59,11 +56,6 @@ module S3Manager
       s3_object = fetch_object_from_s3
       return unless s3_object && s3_object.body
       s3_object.body.read
-    end
-
-    def delete_object_from_s3
-      return false unless s3_object_exists?
-      s3_manager.delete_object s3_object_key
     end
 
     def s3_object_exists?

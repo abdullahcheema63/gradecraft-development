@@ -16,8 +16,7 @@ class SubmissionsExportsController < ApplicationController
   end
 
   def destroy
-    if submissions_export.delete_object_from_s3
-      submissions_export.destroy
+    if submissions_export.destroy
       flash[:success] = "Assignment export successfully deleted from server"
     else
       flash[:alert] = "Unable to delete the submissions export from the server"
