@@ -75,15 +75,14 @@ class Challenge < ApplicationRecord
 
   # Copy assignment media
   def copy_media(copy)
-    remote_upload(copy, self, "media", media.url)
+    CopyCarrierwaveFile::CopyFileService.new(self, copy, :media).set_file
   end
 
   # Copy assignment files
   def copy_challenge_files(copy)
     challenge_files.each do |cf|
-      next unless exists_remotely?(cf, "file")
       challenge_file = copy.challenge_files.create filename: cf[:filename]
-      remote_upload(challenge_file, cf, "file", cf.file.to_s)
+      CopyCarrierwaveFile::CopyFileService.new(cf, challenge_file, :file).set_file
     end
   end
 end

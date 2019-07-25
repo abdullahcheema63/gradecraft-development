@@ -359,15 +359,14 @@ class Assignment < ApplicationRecord
 
   # Copy assignment media
   def copy_media(copy)
-    remote_upload(copy, self, "media", media.url)
+    CopyCarrierwaveFile::CopyFileService.new(self, copy, :media).set_file
   end
 
   # Copy assignment files
   def copy_assignment_files(copy)
     assignment_files.each do |af|
-      next unless exists_remotely?(af, "file")
       assignment_file = copy.assignment_files.create filename: af[:filename]
-      remote_upload(assignment_file, af, "file", af.file.to_s)
+      CopyCarrierwaveFile::CopyFileService.new(af, assignment_file, :file).set_file
     end
   end
 end

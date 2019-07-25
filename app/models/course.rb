@@ -282,6 +282,6 @@ class Course < ApplicationRecord
   # Copy course syllabus
   def copy_syllabus(copy)
     copy.save unless copy.persisted?
-    remote_upload(copy, self, "syllabus", syllabus.file.to_s)
+    CopyCarrierwaveFile::CopyFileService.new(self, copy, :syllabus).set_file
   end
 end
