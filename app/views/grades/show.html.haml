@@ -29,3 +29,9 @@
       %section
         %h2 Grading Rubric
         = render partial: "rubrics/components/rubric_table", locals: { rubric: presenter.rubric, presenter: presenter, student: @grade.student, include_grade_info: false }
+
+    - if presenter.course.has_learning_objectives?
+      %section
+        %h2
+          = term_for :learning_objectives
+        = render partial: "grades/learning_objectives", locals: { presenter: presenter, current_student: @grade.student }
