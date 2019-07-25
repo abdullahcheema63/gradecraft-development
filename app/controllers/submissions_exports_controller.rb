@@ -27,7 +27,11 @@ class SubmissionsExportsController < ApplicationController
   end
 
   def download
-    stream_file_from_s3
+    #stream_file_from_s3
+    #locally
+    file_path = ["#{Rails.root}", "#{submissions_export.s3_object_key}"]
+    file_path = file_path.join "/"
+    send_file file_path, filename: submissions_export.export_filename
   end
 
   def secure_download
