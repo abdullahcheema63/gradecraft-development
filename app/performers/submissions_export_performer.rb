@@ -384,10 +384,12 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def upload_archive_to_s3
-    puts("inside upload_archive_to_s3")
     #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
-    #@submission_export.upload_file "#{expanded_archive_base_path}.zip"
-    FileUtils.cp("#{expanded_archive_base_path}.zip", "/Users/ebarroso/workspace/gradecraft/gradecraft-development/files/uploads/#{expanded_archive_base_path}.zip")
+
+    destination_path = ["#{Rails.root}", "#{@submissions_export.s3_object_key}"]
+    destination_path = destination_path.join "/"
+    FileUtils.mkdir_p(destination_path)
+    FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
   end
 
   def check_s3_upload_success
