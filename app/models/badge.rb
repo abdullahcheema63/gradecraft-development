@@ -3,7 +3,6 @@ class Badge < ApplicationRecord
   include UnlockableCondition
   include MultipleFileAttributes
   include Analytics::BadgeAnalytics
-  include S3Manager::Copying
   require 'fileutils'
 
   acts_as_list scope: :course

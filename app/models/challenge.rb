@@ -3,7 +3,6 @@ class Challenge < ApplicationRecord
   include ScoreLevelable
   include UploadsMedia
   include MultipleFileAttributes
-  include S3Manager::Copying
 
   # grade points available to the predictor from the assignment controller
   attr_accessor :prediction, :grade

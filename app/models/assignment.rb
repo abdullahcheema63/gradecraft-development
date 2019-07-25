@@ -7,7 +7,6 @@ class Assignment < ApplicationRecord
   include UploadsMedia
   include UnlockableCondition
   include Analytics::AssignmentAnalytics
-  include S3Manager::Copying
 
   belongs_to :course
   belongs_to :assignment_type, -> { order("position ASC") }
