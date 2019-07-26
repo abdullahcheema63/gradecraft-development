@@ -335,7 +335,6 @@ class Assignment < ApplicationRecord
   end
 
   private
-
   def students_with_submissions_on_team_conditions
     ["id in (#{student_with_submissions_query})",
      "id in (select distinct(student_id) from team_memberships where team_id = ?)"]
@@ -359,13 +358,19 @@ class Assignment < ApplicationRecord
   # Copy assignment media
   def copy_media(copy)
     CopyCarrierwaveFile::CopyFileService.new(self, copy, :media).set_file
+    copy.save unless copy.persisted?
   end
 
   # Copy assignment files
   def copy_assignment_files(copy)
+    copy.save unless copy.persisted?
+
     assignment_files.each do |af|
       assignment_file = copy.assignment_files.create filename: af[:filename]
+      #assignment_file.file = File.open(af.file.path)
+      #assignment_file.send(:"file=", File.open(af.file.path))
       CopyCarrierwaveFile::CopyFileService.new(af, assignment_file, :file).set_file
+      assignment_file.save unless assignment_file.persisted?
     end
   end
 end

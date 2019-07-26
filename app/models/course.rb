@@ -282,5 +282,6 @@ class Course < ApplicationRecord
   def copy_syllabus(copy)
     copy.save unless copy.persisted?
     CopyCarrierwaveFile::CopyFileService.new(self, copy, :syllabus).set_file
+    copy.save unless copy.persisted?
   end
 end
