@@ -26,7 +26,7 @@ class SubmissionsExportsController < ApplicationController
   end
 
   def download
-    file_path = ["#{Rails.root}", "#{submissions_export.s3_object_key}"]
+    file_path = ["#{Rails.root}", "#{submissions_export.local_file_path}"]
     file_path = file_path.join "/"
     send_file file_path, filename: submissions_export.export_filename
   end
