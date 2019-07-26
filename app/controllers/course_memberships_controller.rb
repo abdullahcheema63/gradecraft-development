@@ -76,7 +76,7 @@ class CourseMembershipsController < ApplicationController
 
     group_membership_conditions = check_group_membership(course_membership)
 
-    if !group_membership_conditions[:deletable]
+    if !group_membership_conditions[:deletable] && !current_user.is_admin?(current_course)
       message = "#{course_membership.user.name} could not be removed as their group #{group_membership_conditions[:group].name} is in the assignment #{group_membership_conditions[:assignment].name} which has a minimum group size of #{group_membership_conditions[:assignment].min_group_size}"
       
       render json: { errors:  message },
