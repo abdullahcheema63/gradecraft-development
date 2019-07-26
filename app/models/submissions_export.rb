@@ -6,8 +6,6 @@ class SubmissionsExport < ApplicationRecord
   # Note that if this record is an ActiveRecord::Base descendant then a
   # callback for :rebuild_file_path is added for on: :save
   #
-  #include S3Manager::Resource
-
   include FileManager::PathFinder
 
   # give this resource additional methods that aren't s3-specific but that
