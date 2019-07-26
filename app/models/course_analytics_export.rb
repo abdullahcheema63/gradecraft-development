@@ -60,7 +60,7 @@ class CourseAnalyticsExport < ApplicationRecord
   # tell s3 which directory structure to use for exports. the object_key
   # methods here are included from Export::Model
   #
-  def s3_object_key_prefix
+  def local_file_path_prefix
     "files/exports/courses/#{course_id}/course_analytics_exports/" \
       "#{object_key_date}/#{object_key_microseconds}"
   end

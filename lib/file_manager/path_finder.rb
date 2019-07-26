@@ -29,28 +29,28 @@ module FileManager
 
     def upload_file(file_path)
       puts("made it into resource#upload_file")
-      return false unless s3_object_key
+      return false unless local_file_path
       puts("made it into resource#upload_file after return false")
-      FileUtils.cp(file_path, s3_object_key)
+      FileUtils.cp(file_path, local_file_path)
     end
 
     def s3_object_exists?
-      return false unless s3_object_key
+      return false unless local_file_path
       s3_object_summary.exists?
     end
 
     def presigned_s3_url
-      return unless s3_object_key
-      s3_manager.bucket.object(s3_object_key)
+      return unless local_file_path
+      s3_manager.bucket.object(local_file_path)
         .presigned_url(:get, expires_in: 604800).to_s
     end
 
     def rebuild_file_path
-      self.s3_object_key = build_file_path export_filename
+      self.local_file_path = build_file_path export_filename
     end
 
     def build_file_path(object_filename)
-      key_pieces = [ s3_object_key_prefix, object_filename ]
+      key_pieces = [ local_file_path_prefix, object_filename ]
       key_pieces.join "/"
     end
 

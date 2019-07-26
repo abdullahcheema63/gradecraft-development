@@ -23,7 +23,7 @@ module S3Manager
          # needing to save the resource twice just to get the creation timestamp
          #
          before_save :rebuild_s3_object_key, if: :export_filename_changed?
-         
+
         end
       end
     end
@@ -79,7 +79,7 @@ module S3Manager
     end
 
     def build_s3_object_key(object_filename)
-      key_pieces = [ s3_object_key_prefix, object_filename ]
+      key_pieces = [ local_file_path_prefix, object_filename ]
       key_pieces.join "/"
     end
 

@@ -4,7 +4,7 @@ require "formatter"
 class SubmissionsExport < ApplicationRecord
   # treat this resource as if it's responsible for managing an object on s3
   # Note that if this record is an ActiveRecord::Base descendant then a
-  # callback for :rebuild_s3_object_key is added for on: :save
+  # callback for :rebuild_file_path is added for on: :save
   #
   #include S3Manager::Resource
 
@@ -35,7 +35,7 @@ class SubmissionsExport < ApplicationRecord
   end
 
   # tell s3 which directory structure to use for exports
-  def s3_object_key_prefix
+  def local_file_path_prefix
     "files/exports/courses/#{course_id}/assignments/#{assignment_id}/" \
       "#{object_key_date}/#{object_key_microseconds}"
   end

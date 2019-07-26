@@ -4,9 +4,9 @@ RSpec.describe S3Manager::Carrierwave do
   let(:submission_file) { build(:submission_file) }
   let(:s3_manager) { S3Manager::Manager.new }
   let(:source_object) { Tempfile.new("walter-srsly") }
-  let(:s3_object_key) { "lets-see-what-happens.txt" }
+  let(:local_file_path) { "lets-see-what-happens.txt" }
   let(:object_exists?) { submission_file.exists_on_s3? }
-  let(:put_object_to_s3) { s3_manager.put_object(s3_object_key, source_object) }
+  let(:put_object_to_s3) { s3_manager.put_object(local_file_path, source_object) }
 
   describe "inclusion of S3Manager::Basics" do
     it "responds to S3Manager::Basics methods" do
