@@ -3,7 +3,6 @@ class Badge < ApplicationRecord
   include UnlockableCondition
   include MultipleFileAttributes
   include Analytics::BadgeAnalytics
-  include S3Manager::Copying
   require 'fileutils'
 
   acts_as_list scope: :course
@@ -74,13 +73,19 @@ class Badge < ApplicationRecord
   # Copy badge icon
   def copy_icon(copy)
     CopyCarrierwaveFile::CopyFileService.new(self, copy, :icon).set_file
+    copy.save unless copy.persisted?
   end
 
   # Copy badge files
   def copy_badge_files(copy)
+    copy.save unless copy.persisted?
+
     badge_files.each do |bf|
       badge_file = copy.badge_files.create filename: bf[:filename]
+      #badge_file.file = File.open(bf.file.path)
+      #badge_file.send(:"file=", File.open(bf.file.path))
       CopyCarrierwaveFile::CopyFileService.new(bf, badge_file, :file).set_file
+      badge_file.save unless badge_file.persisted?
     end
   end
 end
