@@ -1,8 +1,7 @@
-require_relative "manager"
 require "fileutils"
 
-module S3Manager
-  module Resource
+module FileManager
+  module PathFinder
 
     def self.included(base)
       base.class_eval do
@@ -22,19 +21,10 @@ module S3Manager
          # created_at timestamp from the creation itself, this prevents us from
          # needing to save the resource twice just to get the creation timestamp
          #
-         before_save :rebuild_s3_object_key, if: :export_filename_changed?
-         
+         before_save :rebuild_file_path, if: :export_filename_changed?
+
         end
       end
-    end
-
-    def s3_manager
-      @s3_manager ||= ::S3Manager::Manager.new
-    end
-
-    def upload_file_to_s3(file_path)
-      return false unless s3_object_key
-      s3_manager.put_encrypted_object(s3_object_key, file_path)
     end
 
     def upload_file(file_path)
@@ -44,28 +34,9 @@ module S3Manager
       FileUtils.cp(file_path, s3_object_key)
     end
 
-    def fetch_object_from_s3
-      s3_manager.get_encrypted_object(s3_object_key)
-    end
-
-    def write_s3_object_to_file(target_file_path)
-      s3_manager.write_encrypted_object_to_file(s3_object_key, target_file_path)
-    end
-
-    def stream_s3_object_body
-      s3_object = fetch_object_from_s3
-      return unless s3_object && s3_object.body
-      s3_object.body.read
-    end
-
     def s3_object_exists?
       return false unless s3_object_key
       s3_object_summary.exists?
-    end
-
-    def s3_object_summary
-      @s3_object_summary ||= ::S3Manager::Manager::ObjectSummary
-        .new(s3_object_key, s3_manager)
     end
 
     def presigned_s3_url
@@ -74,11 +45,11 @@ module S3Manager
         .presigned_url(:get, expires_in: 604800).to_s
     end
 
-    def rebuild_s3_object_key
-      self.s3_object_key = build_s3_object_key export_filename
+    def rebuild_file_path
+      self.s3_object_key = build_file_path export_filename
     end
 
-    def build_s3_object_key(object_filename)
+    def build_file_path(object_filename)
       key_pieces = [ s3_object_key_prefix, object_filename ]
       key_pieces.join "/"
     end

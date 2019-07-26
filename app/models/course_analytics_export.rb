@@ -1,4 +1,3 @@
-require "s3_manager"
 require "export"
 require "formatter"
 require "analytics/export"
@@ -8,7 +7,8 @@ class CourseAnalyticsExport < ApplicationRecord
   # treat this resource as if it's responsible for managing an object on s3.
   # If this is an active_record descendent than add some callbacks.
   #
-  include S3Manager::Resource
+  #include S3Manager::Resource
+  include FileManager::PathFinder
 
   # give this resource additional methods that aren't s3-specific but that
   # assist in the export process

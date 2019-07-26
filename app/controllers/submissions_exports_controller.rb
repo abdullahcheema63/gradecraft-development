@@ -16,8 +16,7 @@ class SubmissionsExportsController < ApplicationController
   end
 
   def destroy
-    if submissions_export.delete_object_from_s3
-      submissions_export.destroy
+    if submissions_export.destroy
       flash[:success] = "Assignment export successfully deleted from server"
     else
       flash[:alert] = "Unable to delete the submissions export from the server"
@@ -27,8 +26,6 @@ class SubmissionsExportsController < ApplicationController
   end
 
   def download
-    #stream_file_from_s3
-    #locally
     file_path = ["#{Rails.root}", "#{submissions_export.s3_object_key}"]
     file_path = file_path.join "/"
     send_file file_path, filename: submissions_export.export_filename
@@ -36,7 +33,7 @@ class SubmissionsExportsController < ApplicationController
 
   def secure_download
     if secure_download_authenticator.authenticates?
-      stream_file_from_s3
+      #stream_file_from_s3
     else
       if secure_download_authenticator.valid_token_expired?
         flash[:alert] = "The email link you used has expired."
@@ -60,10 +57,6 @@ class SubmissionsExportsController < ApplicationController
     )
   end
 
-  def stream_file_from_s3
-    send_data submissions_export.stream_s3_object_body, \
-      filename: submissions_export.export_filename
-  end
 
   def submissions_export
     @submissions_export ||= SubmissionsExport.find params[:id]
