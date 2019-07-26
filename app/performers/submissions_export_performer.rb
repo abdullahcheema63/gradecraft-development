@@ -395,7 +395,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
   def check_s3_upload_success
     return true
-    @check_s3_upload_success ||= submissions_export.s3_object_exists?
+    @check_s3_upload_success ||= submissions_export.local_file_exists?
   end
 
   private

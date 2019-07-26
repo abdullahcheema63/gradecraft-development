@@ -34,17 +34,11 @@ module FileManager
       FileUtils.cp(file_path, local_file_path)
     end
 
-    def s3_object_exists?
+    def local_file_exists?
       return false unless local_file_path
-      s3_object_summary.exists?
+      File.exists?(local_file_path)
     end
-
-    def presigned_s3_url
-      return unless local_file_path
-      s3_manager.bucket.object(local_file_path)
-        .presigned_url(:get, expires_in: 604800).to_s
-    end
-
+    
     def rebuild_file_path
       self.local_file_path = build_file_path export_filename
     end
