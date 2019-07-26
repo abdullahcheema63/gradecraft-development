@@ -1,4 +1,3 @@
-require "s3_manager"
 require "export"
 require "formatter"
 
@@ -7,7 +6,9 @@ class SubmissionsExport < ApplicationRecord
   # Note that if this record is an ActiveRecord::Base descendant then a
   # callback for :rebuild_s3_object_key is added for on: :save
   #
-  include S3Manager::Resource
+  #include S3Manager::Resource
+
+  include FileManager::PathFinder
 
   # give this resource additional methods that aren't s3-specific but that
   # assist in the export process
