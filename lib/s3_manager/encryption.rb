@@ -21,9 +21,9 @@ module S3Manager
       })
     end
 
-    def write_encrypted_object_to_file(object_key, local_file_path)
+    def write_encrypted_object_to_file(object_key, file_path)
       encrypted_client.get_object({
-        response_target: local_file_path,
+        response_target: file_path,
         bucket: bucket_name,
         key: object_key
       })
