@@ -16,11 +16,12 @@
 
     vm.levelSelected = (objectiveId, levelId) ->
       outcome = vm.observedOutcomeFor(objectiveId)
+      console.log("learning objective outcome", outcome)
       return false if !outcome?
       outcome.objective_level_id == levelId
 
     vm.observedOutcomeFor = (objectiveId) ->
-      cumulativeOutcome = LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
+      cumulativeOutcome = LearningObjectivesService.cumulativeOutcomeForStudent(objectiveId, @studentId)
       return null if !cumulativeOutcome?
       LearningObjectivesService.observedOutcomesFor(cumulativeOutcome.id, "Grade", @gradeId)
 
@@ -47,6 +48,7 @@
     scope:
       assignmentId: '@'
       gradeId: '@'
+      studentId: '@'
     bindToController: true
     controller: LearningObjectivesGradeOverviewCtrl
     controllerAs: 'loGradeOverviewCtrl'
