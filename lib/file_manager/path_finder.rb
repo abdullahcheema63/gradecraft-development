@@ -28,9 +28,7 @@ module FileManager
     end
 
     def upload_file(file_path)
-      puts("made it into resource#upload_file")
       return false unless local_file_path
-      puts("made it into resource#upload_file after return false")
       FileUtils.cp(file_path, local_file_path)
     end
 
@@ -38,7 +36,7 @@ module FileManager
       return false unless local_file_path
       File.exists?(local_file_path)
     end
-    
+
     def rebuild_file_path
       self.local_file_path = build_file_path export_filename
     end
