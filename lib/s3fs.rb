@@ -27,7 +27,7 @@ module S3fs
     # be defined in an s3fs initializer.
     #
     def tmpdir_prefix
-      available? ? "/files/exports" : nil
+      available? ? "/tmp" : nil
       #available? ? "/s3mnt/tmp/#{rails_env}" : nil
 
     end

@@ -394,6 +394,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     puts("destination_path:", destination_path)
     directory_path = File.dirname(destination_path)
     puts("directory_path:", directory_path)
+    puts("copy location (expanded_archive_base_path): #{expanded_archive_base_path}.zip")
     FileUtils.mkdir_p(directory_path)
     FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
   end
