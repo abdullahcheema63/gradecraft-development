@@ -385,10 +385,15 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
   def upload_archive_to_s3
     #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
-
+    puts("made it into Submissions export performer # upload_archive_to_s3")
+    puts("submission_export.local_file_path: #{@submissions_export.local_file_path}")
+    puts("rails root: #{Rails.root}")
     destination_path = ["#{Rails.root}", "#{@submissions_export.local_file_path}"]
+
     destination_path = destination_path.join "/"
+    puts("destination_path:", destination_path)
     directory_path = File.dirname(destination_path)
+    puts("directory_path:", directory_path)
     FileUtils.mkdir_p(directory_path)
     FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
   end
