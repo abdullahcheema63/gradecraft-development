@@ -42,8 +42,17 @@ module FileManager
     end
 
     def build_file_path(object_filename)
-      key_pieces = [ local_file_path_prefix, object_filename ]
-      key_pieces.join "/"
+      local_file_path = [ local_file_path_prefix, object_filename ]
+      local_file_path = local_file_path.join "/"
+      make_local_directory(local_file_path)
+      local_file_path
+    end
+
+    def make_local_directory(relative_path)
+      full_path = ["#{Rails.root}", relative_path]
+      full_path = full_path.join "/"
+      directory_path = File.dirname(full_path)
+      FileUtils.mkdir_p(directory_path) if !(File.directory?(directory_path))
     end
 
     def cache_export_filename
