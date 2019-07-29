@@ -1,9 +1,9 @@
 class S3ResourceTest
   include S3Manager::Resource
-  attr_accessor :s3_object_key
+  attr_accessor :local_file_path
 
   def initialize(options={})
-    @s3_object_key = options[:s3_object_key]
+    @local_file_path = options[:local_file_path]
   end
 
   def export_filename

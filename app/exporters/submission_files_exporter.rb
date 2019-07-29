@@ -19,7 +19,7 @@ class SubmissionFilesExporter
   # master attachment format for the archiver
   def serialized_submission_files
     submission.submission_files.collect do |submission_file|
-      { path: submission_file.url, content_type: submission_file.content_type }
+      { path: submission_file.file.to_s, content_type: submission_file.content_type }
     end
   end
 

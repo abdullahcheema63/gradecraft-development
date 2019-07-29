@@ -384,11 +384,18 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def upload_archive_to_s3
-    @submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
+    #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
+
+    destination_path = ["#{Rails.root}", "#{@submissions_export.local_file_path}"]
+    destination_path = destination_path.join "/"
+    directory_path = File.dirname(destination_path)
+    FileUtils.mkdir_p(directory_path)
+    FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
   end
 
   def check_s3_upload_success
-    @check_s3_upload_success ||= submissions_export.s3_object_exists?
+    return true
+    @check_s3_upload_success ||= submissions_export.local_file_exists?
   end
 
   private

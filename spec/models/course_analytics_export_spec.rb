@@ -4,7 +4,7 @@ describe CourseAnalyticsExport do
 
   it "includes S3Manager::Rescource" do
     expect(subject).to respond_to :stream_s3_object_body
-    expect(subject).to respond_to :rebuild_s3_object_key
+    expect(subject).to respond_to :rebuild_file_path
   end
 
   it "includes Export::Model::ActiveRecord" do
@@ -25,7 +25,7 @@ describe CourseAnalyticsExport do
     end
   end
 
-  describe "#s3_object_key_prefix" do
+  describe "#local_file_path_prefix" do
     before do
       allow(subject).to receive_messages \
         object_key_date: "some-date",
@@ -33,7 +33,7 @@ describe CourseAnalyticsExport do
     end
 
     it "builds a path for the s3 object" do
-      expect(subject.s3_object_key_prefix).to eq \
+      expect(subject.local_file_path_prefix).to eq \
         "exports/courses/#{course.id}/course_analytics_exports/some-date/12345"
     end
   end

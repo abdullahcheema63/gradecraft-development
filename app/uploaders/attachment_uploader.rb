@@ -7,6 +7,8 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # badge_file: uploads/<course-name_id>/badge_files/<timestamp_file-name.ext>
   # challenge_file: uploads/<course-name_id>/challenge_files/<timestamp_file-name.ext>
 
+  attr_accessor :course, :assignment
+
   def store_dir
     store_dir_pieces.join "/"
   end
@@ -41,7 +43,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   def course
     # rubocop:disable AndOr
-    "#{model.course.course_number}-#{model.course.id}" if model and model.class.method_defined? :course
+    "#{model.course.course_number}-#{model.course.id}" if model and model.class.method_defined? :course and model.course
   end
 
   def assignment

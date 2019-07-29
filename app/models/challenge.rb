@@ -3,7 +3,6 @@ class Challenge < ApplicationRecord
   include ScoreLevelable
   include UploadsMedia
   include MultipleFileAttributes
-  include S3Manager::Copying
 
   # grade points available to the predictor from the assignment controller
   attr_accessor :prediction, :grade
@@ -66,7 +65,6 @@ class Challenge < ApplicationRecord
   end
 
   private
-
   def copy_files(copy)
     copy.save unless copy.persisted?
     copy_media(copy) if media.present?
@@ -75,15 +73,20 @@ class Challenge < ApplicationRecord
 
   # Copy assignment media
   def copy_media(copy)
-    remote_upload(copy, self, "media", media.url)
+    CopyCarrierwaveFile::CopyFileService.new(self, copy, :media).set_file
+    copy.save unless copy.persisted?
   end
 
   # Copy assignment files
   def copy_challenge_files(copy)
+    copy.save unless copy.persisted?
+
     challenge_files.each do |cf|
-      next unless exists_remotely?(cf, "file")
       challenge_file = copy.challenge_files.create filename: cf[:filename]
-      remote_upload(challenge_file, cf, "file", cf.url)
+      #challenge_file.file = File.open(cf.file.path)
+      #challenge_file.send(:"file=", File.open(cf.file.path))
+      CopyCarrierwaveFile::CopyFileService.new(cf, challenge_file, :file).set_file
+      challenge_file.save unless challenge_file.persisted?
     end
   end
 end

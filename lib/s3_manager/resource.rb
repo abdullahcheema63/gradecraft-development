@@ -1,4 +1,5 @@
 require_relative "manager"
+require "fileutils"
 
 module S3Manager
   module Resource
@@ -23,9 +24,6 @@ module S3Manager
          #
          before_save :rebuild_s3_object_key, if: :export_filename_changed?
 
-         # if we destroy the export successfully clean the data off of S3
-         #
-         after_destroy :delete_object_from_s3
         end
       end
     end
@@ -37,6 +35,13 @@ module S3Manager
     def upload_file_to_s3(file_path)
       return false unless s3_object_key
       s3_manager.put_encrypted_object(s3_object_key, file_path)
+    end
+
+    def upload_file(file_path)
+      puts("made it into resource#upload_file")
+      return false unless s3_object_key
+      puts("made it into resource#upload_file after return false")
+      FileUtils.cp(file_path, s3_object_key)
     end
 
     def fetch_object_from_s3
@@ -51,11 +56,6 @@ module S3Manager
       s3_object = fetch_object_from_s3
       return unless s3_object && s3_object.body
       s3_object.body.read
-    end
-
-    def delete_object_from_s3
-      return false unless s3_object_exists?
-      s3_manager.delete_object s3_object_key
     end
 
     def s3_object_exists?
@@ -79,8 +79,7 @@ module S3Manager
     end
 
     def build_s3_object_key(object_filename)
-      key_pieces = [ s3_object_key_prefix, object_filename ]
-      key_pieces.unshift ENV["AWS_S3_DEVELOPER_TAG"] if Rails.env == "development"
+      key_pieces = [ local_file_path_prefix, object_filename ]
       key_pieces.join "/"
     end
 

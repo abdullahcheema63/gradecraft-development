@@ -33,7 +33,7 @@ module TimelineHelper
       content_tag(:ul, class: "attachments") do
         files.collect do |f|
           link_content = content_tag(:i, nil, class: "fa fa-file-o fa-fw")
-          link_content.concat content_tag(:a, f.filename, href: f.url)
+          link_content.concat content_tag(:a, f.filename, href: f.file.to_s)
           concat content_tag(:li, link_content, class: "document")
         end
       end

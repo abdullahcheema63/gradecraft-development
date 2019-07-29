@@ -18,7 +18,7 @@ class CourseAnalyticsExportPerformer < ResqueJob::Performer
   end
 
   def deliver_mailer
-    mailer = export.s3_object_exists? ? success_mailer : failure_mailer
+    mailer = export.local_file_exists? ? success_mailer : failure_mailer
     mailer.deliver_now
 
     export.update_attributes last_completed_step: "deliver_mailer"

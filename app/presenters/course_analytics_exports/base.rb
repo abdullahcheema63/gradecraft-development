@@ -41,10 +41,6 @@ module Presenters
         properties[:current_user]
       end
 
-      def stream_export
-        export.stream_s3_object_body
-      end
-
       def export_filename
         export.export_filename
       end

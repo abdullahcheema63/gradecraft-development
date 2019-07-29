@@ -33,7 +33,7 @@ class SubmissionFile < ApplicationRecord
   end
 
   def exists_on_storage?
-    S3Manager::Manager::ObjectSummary.new(s3_object_file_key, s3_manager).exists?
+    self.file.present?
   end
 
   def course
