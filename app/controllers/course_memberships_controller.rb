@@ -56,7 +56,6 @@ class CourseMembershipsController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
   def remove_leaders_from_teams(course_membership)
     if !course_membership.user.is_staff?(course_membership.course)
       return false
@@ -73,7 +72,9 @@ class CourseMembershipsController < ApplicationController
     end
 
     return true
-=======
+
+  end
+  
   def check_group_membership(course_membership)
     user = course_membership.user
     groups = user.groups
@@ -87,7 +88,6 @@ class CourseMembershipsController < ApplicationController
     end
 
     return { deletable: true }
->>>>>>> delete-students-as-instructor
   end
 
   def destroy
@@ -103,7 +103,7 @@ class CourseMembershipsController < ApplicationController
       render json: { errors:  message },
         status: 500
 
-      return
+      return 
     end
 
     Services::CancelsCourseMembership.call course_membership
