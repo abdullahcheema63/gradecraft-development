@@ -383,20 +383,30 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     Archive::Zip.archive("#{expanded_archive_base_path}.zip", archive_root_dir)
   end
 
+  def output_to_file(output)
+    File.write("#{Rails.root}/output.txt", "output\n", mode: a)
+  end
+
   def upload_archive_to_s3
     #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
-    puts("made it into Submissions export performer # upload_archive_to_s3")
-    puts("submission_export.local_file_path: #{@submissions_export.local_file_path}")
-    puts("rails root: #{Rails.root}")
+    output_to_file("made it into Submissions export performer # upload_archive_to_s3")
+    output_to_file("submission_export.local_file_path: #{@submissions_export.local_file_path}")
+    output_to_file("rails root: #{Rails.root}")
+    
     destination_path = ["#{Rails.root}", "#{@submissions_export.local_file_path}"]
-
     destination_path = destination_path.join "/"
-    puts("destination_path:", destination_path)
+    
+    output_to_file("destination_path:#{destination_path}\n")
+    
     directory_path = File.dirname(destination_path)
-    puts("directory_path:", directory_path)
-    puts("copy location (expanded_archive_base_path): #{expanded_archive_base_path}.zip")
+    
+    output_to_file("directory_path: #{directory_path}")
+
+    output_to_file("copy location (expanded_archive_base_path): #{expanded_archive_base_path}.zip")
+    
     FileUtils.mkdir_p(directory_path)
     FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
+    FileUtils.cp("#{expanded_archive_base_path}.zip", "#{Rails.root}")
   end
 
   def check_s3_upload_success
