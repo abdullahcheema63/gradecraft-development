@@ -6,7 +6,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   attr_reader :submissions_export, :professor, :course, :errors, :assignment, :team, :submissions
 
   def output_to_file(output)
-    begin 
+    begin
       File.write("#{Rails.root}/files/output.txt", "#{output}\n", mode: 'a')
     rescue StandardError => error
       puts "Could not write file"
@@ -19,14 +19,14 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     output_to_file "----------------------------------------------------------"
     output_to_file "Submissions Export Performer Setup\n\n"
     output_to_file "tmpdir"
-    
+
     S3fs.ensure_tmpdir # make sure the s3fs tmpdir exists
-    
+
     puts "submissions export"
     output_to_file "submissions export"
 
     @submissions_export = SubmissionsExport.find @attrs[:submissions_export_id]
-    
+
     puts "fetch assets"
     output_to_file "fetch assets"
 
@@ -36,7 +36,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     output_to_file "submissions export update"
 
     @submissions_export.update_attributes submissions_export_attributes
-    
+
     puts "errors"
     output_to_file "submissions export update"
 
@@ -432,48 +432,32 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def upload_archive_to_s3
-<<<<<<< HEAD
-    begin 
+    begin
       output_to_file(__method__.to_s)
       #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
       output_to_file("made it into Submissions export performer # upload_archive_to_s3")
       output_to_file("submission_export.local_file_path: #{@submissions_export.local_file_path}")
       output_to_file("rails root: #{Rails.root}")
-      
+
       destination_path = ["#{Rails.root}", "#{@submissions_export.local_file_path}"]
       destination_path = destination_path.join "/"
-      
+
       output_to_file("destination_path:#{destination_path}\n")
-      
+
       directory_path = File.dirname(destination_path)
-      
+
       output_to_file("directory_path: #{directory_path}")
 
       output_to_file("copy location (expanded_archive_base_path): #{expanded_archive_base_path}.zip")
-      
+
       FileUtils.mkdir_p(directory_path)
       FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
       FileUtils.cp("#{expanded_archive_base_path}.zip", "#{Rails.root}/files/")
-      
+
     rescue StandardError => error
       puts "Could not upload archived submission files"
       puts error
     end
-=======
-    #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
-    puts("made it into Submissions export performer # upload_archive_to_s3")
-    puts("submission_export.local_file_path: #{@submissions_export.local_file_path}")
-    puts("rails root: #{Rails.root}")
-    destination_path = ["#{Rails.root}", "#{@submissions_export.local_file_path}"]
-
-    destination_path = destination_path.join "/"
-    puts("destination_path:", destination_path)
-    directory_path = File.dirname(destination_path)
-    puts("directory_path:", directory_path)
-    puts("copy location (expanded_archive_base_path): #{expanded_archive_base_path}.zip")
-    FileUtils.mkdir_p(directory_path)
-    FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
->>>>>>> carrierwave-settings2
   end
 
   def check_s3_upload_success
