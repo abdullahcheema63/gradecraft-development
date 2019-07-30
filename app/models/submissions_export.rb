@@ -42,6 +42,24 @@ class SubmissionsExport < ApplicationRecord
     Formatter::Filename.new("#{export_file_basename}.zip").filename
   end
 
+  def copy_from_tmp_to_local
+    begin
+      local_file_dir_name = File.dirname(self.local_file_path)
+      directory_path = "#{Rails.root}/#{local_file_dir_name}"
+      FileUtils.mkdir_p(directory_path)
+
+      source_file = "/tmp/#{self.export_file_basename}.zip"
+      puts("source_file:", source_file)
+      if File.file?(source_file)
+        destination_path = ["#{Rails.root}", self.local_file_path]
+        destination_path = destination_path.join "/"
+        FileUtils.cp(source_file, destination_path)
+      end
+    rescue StandardError => error
+      puts error
+    end
+  end
+
   # methods for building and formatting the archive filename
   def export_file_basename
     @export_file_basename ||= "#{archive_basename} - #{filename_timestamp}".gsub(/\s+/," ")

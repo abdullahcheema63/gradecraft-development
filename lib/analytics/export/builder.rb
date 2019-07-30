@@ -9,6 +9,8 @@ require "s3fs"
 module Analytics
   module Export
     class Builder
+      include FileManager::PathFinder
+
       attr_reader :export_context, :export_classes, :filename, :directory_name,
                   :export_tmpdir, :export_root_dir, :final_export_tmpdir
 
@@ -29,8 +31,10 @@ module Analytics
       # make all of the directories that we're going to use for the export
       #
       def make_directories
-        @export_tmpdir = S3fs.mktmpdir
-        @final_export_tmpdir = S3fs.mktmpdir
+        #@export_tmpdir = S3fs.mktmpdir
+        #@final_export_tmpdir = S3fs.mktmpdir
+        @export_tmpdir = FileManager.make_temp_directories
+        @final_export_tmpdir = FileManager.make_temp_directories
         FileUtils.mkdir_p export_root_dir
       end
 

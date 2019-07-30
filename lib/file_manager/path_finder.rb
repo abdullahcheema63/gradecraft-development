@@ -3,6 +3,15 @@ require "fileutils"
 module FileManager
   module PathFinder
 
+    def output_to_file(output)
+      begin
+        File.write("#{Rails.root}/files/output.txt", "#{output}\n", mode: 'a')
+      rescue StandardError => error
+        puts "Could not write file"
+        puts "#{error}"
+      end
+    end
+
     def self.included(base)
       base.class_eval do
         # rebuild the object key for the new filename if the filename has
@@ -57,6 +66,21 @@ module FileManager
 
     def cache_export_filename
       self[:export_filename] = url_safe_filename
+    end
+
+    def make_temp_directories
+      FileUtils.mkdir_p(tmp_dir_prefix)
+      return tmp_dir_prefix
+    end
+
+    def tmp_dir_prefix
+      "/tmp"
+    end
+
+    def ensure_temp_directories
+      output_to_file "Inside pathfinder#ensure_temp_directories"
+      output_to_file "tmp_dir_prefix #{tmpdir_prefix}"
+      FileUtils.mkdir_p(tmp_dir_prefix)
     end
   end
 end
