@@ -26,7 +26,9 @@ module Presenters
       end
 
       def export
-        @export ||= ::CourseAnalyticsExport.find params[:id]
+        if CourseAnalyticsExport.where(id: params[:id]).exists?
+          @export ||= ::CourseAnalyticsExport.find params[:id]
+        end
       end
 
       def destroy_export
