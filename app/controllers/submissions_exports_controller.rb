@@ -6,6 +6,7 @@ class SubmissionsExportsController < ApplicationController
   skip_before_action :increment_page_views, only: :secure_download
 
   def create
+    Rails.logger.debug "Submission Export Download Beginning"
     if create_submissions_export && submissions_export_job.enqueue
       flash[:success] = "Your submissions export is being prepared. You'll receive an email when it's complete."
     else
@@ -25,10 +26,25 @@ class SubmissionsExportsController < ApplicationController
     redirect_to downloads_path
   end
 
+  def output_to_file(output)
+    begin 
+      File.write("#{Rails.root}/files/output.txt", "#{output}\n", mode: 'a')
+    rescue StandardError => error
+      puts "Could not write file"
+      puts "#{error}"
+    end
+  end
+
   def download
-    file_path = ["#{Rails.root}", "#{submissions_export.local_file_path}"]
-    file_path = file_path.join "/"
-    send_file file_path, filename: submissions_export.export_filename
+    begin
+      file_path = ["#{Rails.root}", "#{submissions_export.local_file_path}"]
+      file_path = file_path.join "/"
+      send_file file_path, filename: submissions_export.export_filename
+    rescue StandardError => error
+      puts "Submission Export Download Error: #{error}"
+      output_to_file error
+      Rails.logger.error "Submission Export Download Error: #{error}"
+    end
   end
 
   def secure_download
