@@ -16,6 +16,7 @@ module.exports = {
   created: function() {
     this.prevScrollPos = window.pageYOffset;
     window.addEventListener('scroll', this.scrollGuide);
+    this.debouncedGuide = _.debounce(this.persistGuideState, 2500)
   },
   destroyed: function() {
     window.removeEventListener('scroll', this.scrollGuide);
@@ -23,6 +24,12 @@ module.exports = {
   methods: {
     toggleGuide(){
       this.$store.dispatch('toggleGuideControl')
+      this.debouncedGuide()
+    },
+    persistGuideState(){
+      console.log("persisteGuideState called")
+      console.log("showGuide:", this.showGuide)
+      this.$store.dispatch('changeGuide')
     },
     scrollGuide(e) {
       var currentScrollPos = window.pageYOffset;

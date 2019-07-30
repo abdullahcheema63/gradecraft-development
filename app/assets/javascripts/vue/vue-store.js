@@ -361,7 +361,11 @@ const store = new Vuex.Store({
         commit('updateLicense', {course_id: course_id, status: false})
       },
       toggleGuideControl({ commit }){
+        console.log("toggled guide control action")
         commit('toggleGuide')
+      },
+      changeGuide({ commit }){
+        console.log("make api request")
       },
       addUserLicenseInfo({ commit }, licenseInfo){
         commit('addUserLicenseInfo', licenseInfo)
