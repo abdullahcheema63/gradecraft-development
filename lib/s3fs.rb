@@ -34,7 +34,7 @@ module S3fs
 
     # create a separate tmp dir for storing the final generated archive
     def ensure_tmpdir
-      return FileUtils.mkdir_p(tmpdir_prefix)
+      FileUtils.mkdir_p(tmpdir_prefix)
     end
 
     def rails_env

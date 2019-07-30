@@ -432,6 +432,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def upload_archive_to_s3
+<<<<<<< HEAD
     begin 
       output_to_file(__method__.to_s)
       #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
@@ -458,6 +459,21 @@ class SubmissionsExportPerformer < ResqueJob::Performer
       puts "Could not upload archived submission files"
       puts error
     end
+=======
+    #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
+    puts("made it into Submissions export performer # upload_archive_to_s3")
+    puts("submission_export.local_file_path: #{@submissions_export.local_file_path}")
+    puts("rails root: #{Rails.root}")
+    destination_path = ["#{Rails.root}", "#{@submissions_export.local_file_path}"]
+
+    destination_path = destination_path.join "/"
+    puts("destination_path:", destination_path)
+    directory_path = File.dirname(destination_path)
+    puts("directory_path:", directory_path)
+    puts("copy location (expanded_archive_base_path): #{expanded_archive_base_path}.zip")
+    FileUtils.mkdir_p(directory_path)
+    FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
+>>>>>>> carrierwave-settings2
   end
 
   def check_s3_upload_success
