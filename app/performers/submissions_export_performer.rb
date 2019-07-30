@@ -5,13 +5,47 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
   attr_reader :submissions_export, :professor, :course, :errors, :assignment, :team, :submissions
 
-  def setup
-    S3fs.ensure_tmpdir # make sure the s3fs tmpdir exists
-    @submissions_export = SubmissionsExport.find @attrs[:submissions_export_id]
-    fetch_assets
-    @submissions_export.update_attributes submissions_export_attributes
-    @errors = []
+  def output_to_file(output)
+    begin 
+      File.write("#{Rails.root}/files/output.txt", "#{output}\n", mode: 'a')
+    rescue StandardError => error
+      puts "Could not write file"
+      puts "#{error}"
+    end
   end
+
+  def setup
+    puts "tmpdir"
+    output_to_file "----------------------------------------------------------"
+    output_to_file "Submissions Export Performer Setup\n\n"
+    output_to_file "tmpdir"
+    
+    S3fs.ensure_tmpdir # make sure the s3fs tmpdir exists
+    
+    puts "submissions export"
+    output_to_file "submissions export"
+
+    @submissions_export = SubmissionsExport.find @attrs[:submissions_export_id]
+    
+    puts "fetch assets"
+    output_to_file "fetch assets"
+
+    fetch_assets
+
+    puts "submissions export update"
+    output_to_file "submissions export update"
+
+    @submissions_export.update_attributes submissions_export_attributes
+    
+    puts "errors"
+    output_to_file "submissions export update"
+
+    @errors = []
+
+    output_to_file "----------------------------------------------------------"
+  end
+
+
 
   # perform() attributes assigned to @attrs in the ResqueJob::Base class
   def do_the_work
@@ -45,6 +79,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
       :check_s3_upload_success
     ]
   end
+
+
 
   def run_performer_steps
     performer_steps.each {|step_name| run_step(step_name) }
@@ -181,6 +217,9 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def generate_export_csv
+    output_to_file("========================================================")
+    output_to_file("Submissions Export Performer\n\n")
+    output_to_file(__method__.to_s)
     open(csv_file_path, "w") do |f|
       if submissions_export.use_groups
         export_data = GradeExporter.new
@@ -193,6 +232,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def confirm_export_csv_integrity
+    output_to_file(__method__.to_s)
     @confirm_export_csv_integrity ||= File.exist?(csv_file_path)
   end
 
@@ -209,6 +249,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   ## creating submitter directories
 
   def submitter_directories_created_successfully
+    output_to_file(__method__.to_s)
     missing_submitter_directories.empty?
   end
 
@@ -237,6 +278,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def create_submitter_directories
+    output_to_file(__method__.to_s)
     @submitters.each do |submitter|
       dir_path = submitter_directory_path(submitter)
       FileUtils.mkdir_p(dir_path) # unless Dir.exist?(dir_path) # create directory with parents
@@ -245,6 +287,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
   # removing submitter directories
   def remove_empty_submitter_directories
+    output_to_file(__method__.to_s)
     @submitters.each do |submitter|
       if submitter_directory_empty?(submitter)
         Dir.delete submitter_directory_path(submitter)
@@ -261,6 +304,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def create_submission_text_files
+    output_to_file(__method__.to_s)
     submissions.each do |submission|
       # write the text file for the submission into the student export directory
       if submission.text_comment.present? || submission.link.present?
@@ -307,6 +351,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def create_submission_binary_files
+    output_to_file(__method__.to_s)
     @submissions.each do |submission|
       if submission.submission_files.present?
         submission.process_unconfirmed_files if submission.submission_files.unconfirmed.count > 0
@@ -328,6 +373,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def write_note_for_missing_binary_files
+    output_to_file(__method__.to_s)
     unless submitters_with_missing_binaries.empty?
       open(missing_binaries_file_path, "wt") do |file|
         write_missing_binary_text(file)
@@ -370,6 +416,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def generate_error_log
+    output_to_file(__method__.to_s)
     return if errors.empty?
     open(error_log_path, "w") {|file| file.puts errors }
   end
@@ -380,41 +427,45 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
   # archive export directory
   def archive_exported_files
+    output_to_file(__method__.to_s)
     Archive::Zip.archive("#{expanded_archive_base_path}.zip", archive_root_dir)
   end
 
-  def output_to_file(output)
-    File.write("#{Rails.root}/output.txt", "output\n", mode: a)
-  end
-
   def upload_archive_to_s3
-    #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
-    output_to_file("made it into Submissions export performer # upload_archive_to_s3")
-    output_to_file("submission_export.local_file_path: #{@submissions_export.local_file_path}")
-    output_to_file("rails root: #{Rails.root}")
-    
-    destination_path = ["#{Rails.root}", "#{@submissions_export.local_file_path}"]
-    destination_path = destination_path.join "/"
-    
-    output_to_file("destination_path:#{destination_path}\n")
-    
-    directory_path = File.dirname(destination_path)
-    
-    output_to_file("directory_path: #{directory_path}")
+    begin 
+      output_to_file(__method__.to_s)
+      #@submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
+      output_to_file("made it into Submissions export performer # upload_archive_to_s3")
+      output_to_file("submission_export.local_file_path: #{@submissions_export.local_file_path}")
+      output_to_file("rails root: #{Rails.root}")
+      
+      destination_path = ["#{Rails.root}", "#{@submissions_export.local_file_path}"]
+      destination_path = destination_path.join "/"
+      
+      output_to_file("destination_path:#{destination_path}\n")
+      
+      directory_path = File.dirname(destination_path)
+      
+      output_to_file("directory_path: #{directory_path}")
 
-    output_to_file("copy location (expanded_archive_base_path): #{expanded_archive_base_path}.zip")
-    
-    FileUtils.mkdir_p(directory_path)
-    FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
-    FileUtils.cp("#{expanded_archive_base_path}.zip", "#{Rails.root}")
+      output_to_file("copy location (expanded_archive_base_path): #{expanded_archive_base_path}.zip")
+      
+      FileUtils.mkdir_p(directory_path)
+      FileUtils.cp("#{expanded_archive_base_path}.zip", destination_path)
+      FileUtils.cp("#{expanded_archive_base_path}.zip", "#{Rails.root}/files/")
+      
+    rescue StandardError => error
+      puts "Could not upload archived submission files"
+      puts error
+    end
   end
 
   def check_s3_upload_success
+    output_to_file(__method__.to_s)
+    output_to_file("========================================================")
     return true
     @check_s3_upload_success ||= submissions_export.local_file_exists?
   end
-
-  private
 
   def deliver_outcome_mailer
     if check_s3_upload_success
