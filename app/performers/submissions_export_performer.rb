@@ -467,6 +467,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     @check_s3_upload_success ||= submissions_export.local_file_exists?
   end
 
+  private
+
   def deliver_outcome_mailer
     if check_s3_upload_success
       deliver_archive_success_mailer
