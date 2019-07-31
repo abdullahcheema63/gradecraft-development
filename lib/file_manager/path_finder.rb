@@ -69,18 +69,15 @@ module FileManager
     end
 
     def make_temp_directories
+      #check if this function is actually used
+      output_to_file(__method__.to_s)
+      output_to_file("In FileManager::PathFinder#make_temp_directories")
       FileUtils.mkdir_p(tmp_dir_prefix)
       return tmp_dir_prefix
     end
 
     def tmp_dir_prefix
       "/tmp"
-    end
-
-    def ensure_temp_directories
-      output_to_file "Inside pathfinder#ensure_temp_directories"
-      output_to_file "tmp_dir_prefix #{tmpdir_prefix}"
-      FileUtils.mkdir_p(tmp_dir_prefix)
     end
   end
 end
