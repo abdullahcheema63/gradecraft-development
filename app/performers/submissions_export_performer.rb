@@ -30,10 +30,15 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   # perform() attributes assigned to @attrs in the ResqueJob::Base class
   def do_the_work
     if work_resources_present?
-      run_performer_steps
-      deliver_outcome_mailer
+      begin
+        run_performer_steps
+        deliver_outcome_mailer
 
-      submissions_export.update_export_completed_time
+        submissions_export.update_export_completed_time
+        puts "Export finished"
+      rescue StandardError => error
+        puts "Submission Export: #{error}"
+      end
     else
       if logger
         log_error_with_attributes "@assignment.present? and/or" \
@@ -428,7 +433,9 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   private
 
   def deliver_outcome_mailer
-    if check_s3_upload_success
+    destination_path = ["#{Rails.root}", @submissions_export.local_file_path]
+    destination_path = destination_path.join "/"
+    if File.file?(destination_path)
       deliver_archive_success_mailer
     else
       deliver_archive_failed_mailer
