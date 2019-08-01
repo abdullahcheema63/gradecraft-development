@@ -58,16 +58,6 @@ module S3Manager
       s3_object.body.read
     end
 
-    def s3_object_exists?
-      return false unless s3_object_key
-      s3_object_summary.exists?
-    end
-
-    def s3_object_summary
-      @s3_object_summary ||= ::S3Manager::Manager::ObjectSummary
-        .new(s3_object_key, s3_manager)
-    end
-
     def presigned_s3_url
       return unless s3_object_key
       s3_manager.bucket.object(s3_object_key)
