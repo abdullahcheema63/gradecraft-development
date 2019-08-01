@@ -8,15 +8,6 @@ module S3Manager
       })
     end
 
-    def resource
-      @resource ||= Aws::S3::Resource.new
-    end
-
-    def bucket
-      client
-      @bucket ||= resource.bucket(bucket_name)
-    end
-
     def bucket_name
       ENV["AWS_S3_BUCKET"]
     end
