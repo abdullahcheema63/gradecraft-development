@@ -159,7 +159,7 @@ describe InfoController do
     describe "GET submission export" do
       it "retrieves the submission export" do
         expect(SubmissionExportJob).to \
-          receive(:new).with(user_id: professor.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv")
+          receive(:new).with(user_id: professor.id, end_date: Date.today, field: "created_at", course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv", start_date: Date.new(1955, 5, 11))
             .and_call_original
         expect_any_instance_of(SubmissionExportJob).to receive(:enqueue)
         get :submissions, params: { id: course.id }

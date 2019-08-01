@@ -1,18 +1,27 @@
-%h2{:align => "center"}
-  %strong Dear #{@owner.first_name},
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%h3{:align => "center"} Your requested analytics export for course #{@course.course_number} - #{@course.name} was successfully created.
+%td
+  %h1
+    Good news, #{@owner.first_name}!
 
-%p
-%p{:align => "center"}
-  You can download the completed ZIP archive
-  = succeed ". This link will expire after one week." do
-    %a{ :href => secure_download_url(@secure_token) } here
+  %p
+    Your requested analytics export for course
+    %strong
+      #{@course.course_number} #{@course.name}
+    was successfully created.
 
-%p{:align => "center"}
-  Alternatively the analytics export can be download from the downloads page
-  = succeed "." do
-    %a{:href => "#{ downloads_url }"} here
+  %p
+    You can
+    = succeed ". This link will expire after one week." do
+      %a{ :href => secure_download_url(@secure_token) } download your completed ZIP archive here
 
-%p{:align => "center"} Sincerely,
-%p The GradeCraft Team
+  %p{:align => "center"}
+    You can also
+    = succeed "." do
+      %a{:href => "#{ downloads_url }"} download the analytics export from the downloads page
+
+  %p
+    Thanks for being gameful!
+    %br
+    GradeCraft

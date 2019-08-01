@@ -96,7 +96,7 @@ class Course < ApplicationRecord
   validates_presence_of :name, :course_number, :student_term, :team_term, :group_term,
     :team_leader_term, :group_term, :weight_term, :badge_term, :assignment_term, :challenge_term, :grade_predictor_term
 
-  validates_numericality_of :total_weights, :max_weights_per_assignment_type,
+  validates_numericality_of :total_weights, :max_weights_per_assignment_type, :full_points,
     :max_assignment_types_weighted, less_than_or_equal_to: 999999999, greater_than: 0, if: lambda { self.has_multipliers? }, message: "must be set to greater than 0 for the Multipliers feature to work properly."
 
   validates_format_of :twitter_hashtag, with: /\A[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*\z/, allow_blank: true, length: { within: 3..20 }
@@ -261,21 +261,28 @@ class Course < ApplicationRecord
   end
 
   def copy_with_associations(attributes, associations)
-    ModelCopier.new(self).copy(attributes: attributes,
-                               associations: [
-                                 :badges,
-                                 { assignment_types: { course_id: :id }},
-                                 :rubrics,
-                                 :challenges,
-                                 :grade_scheme_elements
-                               ] + associations,
-                               cross_references: [
-                                 :unlock_conditions
-                               ],
-                               options: {
-                                 prepend: { name: "Copy of " },
-                                 overrides: [-> (copy) { copy_syllabus copy }]
-                               })
+    @lookups = ModelCopierLookups.new
+
+    course_associations = [
+      :badges,
+      { assignment_types: { course_id: :id }},
+      :rubrics,
+      :challenges,
+      :grade_scheme_elements,
+    ] + associations
+
+    course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
+    course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
+    
+    ModelCopier.new(self, @lookups).copy(attributes: attributes,
+                                         associations: course_associations,
+                                         cross_references: [
+                                           :unlock_conditions
+                                         ],
+                                         options: {
+                                           prepend: { name: "Copy of " },
+                                           overrides: [-> (copy) { copy_syllabus copy }]
+                                         })
   end
 
   # Copy course syllabus

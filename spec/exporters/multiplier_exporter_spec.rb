@@ -1,5 +1,5 @@
 describe MultipliersExporter do
-  let(:course) {create :course_with_weighting}
+  let(:course) {create :course_with_weighting, full_points: 1}
   let!(:student_1) {create :user, courses: [course], role: :student, first_name: "Yirmiyahu", last_name: "Valentin", email: "yirmiyahu.valentin@gmail.com"}
   let!(:student_2) {create :user, courses: [course], role: :student, first_name: "Loretta", last_name: "Nhung", email: "loretta.nhung@gmail.com"}
   let!(:assignment_type_1) {create :assignment_type, course: course, name: "Charms", student_weightable: true, position: 1}

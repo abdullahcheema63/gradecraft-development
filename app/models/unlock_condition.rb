@@ -29,6 +29,11 @@ class UnlockCondition < ApplicationRecord
     check_condition_for_each_student(group)
   end
 
+  def check_assignment_condition_visible
+    assignment = Assignment.find(self.condition_id)
+    return assignment.visible
+  end
+
   # Human readable sentence to describe what students need to do to unlock this
   def requirements_description_sentence(condition_date_timezone=nil)
     if condition_type == "Course"
@@ -42,7 +47,7 @@ class UnlockCondition < ApplicationRecord
     elsif condition_type == "LearningObjective"
       description = "#{ condition_state_do } the #{ condition.name } #{unlockable.course.learning_objective_term.singularize}"
     else
-      description = "#{ condition_state_do } the #{ condition.name } #{ condition_type }"
+      description = "#{ condition_state_do } the #{ condition.name } #{ condition_type }" 
     end
     description += condition_date_sentence(condition_date_timezone) if condition_date.present?
     description

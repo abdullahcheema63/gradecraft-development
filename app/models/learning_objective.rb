@@ -1,6 +1,7 @@
 class LearningObjective < ApplicationRecord
   include UnlockableCondition
   include AutoAwardOnUnlock
+  include Copyable
 
   NOT_STARTED_STATUS = "Not Started".freeze
   IN_PROGRESS_STATUS = "In Progress".freeze
@@ -119,6 +120,52 @@ class LearningObjective < ApplicationRecord
     end
   end
 
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
+      attributes: attributes,
+      associations: [:levels],
+      options: { lookups: [:course, :category, :assignments],
+                 overrides: [-> (copy) { copy_category(copy, lookup_store) }, 
+                             -> (copy) { copy_assignment_links(copy, lookup_store) }] }
+    )
+  end
+
+  def copy_category(learning_objective_copy, lookup_store)
+    if learning_objective_copy.category.present?
+      equivalent_category_id_in_copied_course = lookup_store.lookup(:learning_objective_categories, self.category.id)
+      learning_objective_copy.category = learning_objective_copy.course.learning_objective_categories.find(equivalent_category_id_in_copied_course)
+    end
+  end
+
+  def copy_assignment_links(learning_objective_copy, lookup_store)
+    learning_objective_copy.save
+
+    self.assignments.each do |assignment|
+      equivalent_assignment_id_in_copied_course = lookup_store.lookup(:assignments, assignment.id)
+      learning_objective_copy.assignments.push(learning_objective_copy.course.assignments.find(equivalent_assignment_id_in_copied_course))
+    end
+  end
+  
+  def create_default_levels
+    minimum_proficiency = LearningObjectiveLevel.new
+    minimum_proficiency.flagged_value = LearningObjectiveLevel.flagged_values.key(3)
+    minimum_proficiency.name = "Minimum Proficiency Level"
+    minimum_proficiency.description = "Level with minimum proficiency"
+    minimum_proficiency.course_id = course_id
+    minimum_proficiency.objective_id = id
+    minimum_proficiency.default_level = true
+
+    maximum_proficiency = LearningObjectiveLevel.new
+    maximum_proficiency.flagged_value = LearningObjectiveLevel.flagged_values.key(0)
+    maximum_proficiency.name = "Maximum Proficiency Level"
+    maximum_proficiency.description = "Level with maximum proficiency"
+    maximum_proficiency.course_id = course_id
+    maximum_proficiency.default_level = true
+    
+    levels.push(minimum_proficiency)
+    levels.push(maximum_proficiency)
+  end
+
   private
 
   def earned_assignment_points(cumulative_outcome)
@@ -150,4 +197,6 @@ class LearningObjective < ApplicationRecord
   def send_email_on_unlock(unlockable, student)
     NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
   end
+
+ 
 end

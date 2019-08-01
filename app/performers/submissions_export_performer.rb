@@ -18,12 +18,22 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     output_to_file "Submissions Export Performer#Setup\n\n"
     output_to_file "making tmp directories"
     #S3fs.ensure_tmpdir # make sure the s3fs tmpdir exists
-
     @submissions_export = SubmissionsExport.find @attrs[:submissions_export_id]
+    puts "fetch assets"
+    output_to_file "fetch assets"
     fetch_assets
+
+    puts "submissions export update"
+    output_to_file "submissions export update"
     @submissions_export.update_attributes submissions_export_attributes
+
+    puts "errors"
+    output_to_file "submissions export update"
     @errors = []
+    output_to_file "----------------------------------------------------------"
   end
+
+
 
   # perform() attributes assigned to @attrs in the ResqueJob::Base class
   def do_the_work
@@ -424,6 +434,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   def upload_archive_to_s3
     output_to_file("-----THE FINISH LINE-----")
     output_to_file(__method__.to_s)
+    #add more checks here to see if copy is successful ? 
     @submissions_export.copy_from_tmp_to_local
     return true
   end

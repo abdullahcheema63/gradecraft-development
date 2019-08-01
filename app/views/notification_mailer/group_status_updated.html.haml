@@ -1,8 +1,28 @@
-%h2{:align => "center"}
-  %strong #{ @student.first_name },
+%td.hero_img
+  - if @group.approved == "Approved"
+    = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+  - if @group.approved == "Rejected"
+    = image_tag "email-hero_Sad.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%p{:align => "center"}
-  Your group, "#{ @group.name }" has been #{ @group.approved } in course #{ @course.name }.
+%td
+  - if @group.approved == "Approved"
+    %h1
+      Good news, #{ @student.first_name }!
+  - if @group.approved == "Rejected"
+    %h1
+      Uh oh, #{ @student.first_name }
 
-%p{:align => "center"}
-  Log in to GradeCraft to read your feedback.
+  %p
+    Your group
+    %strong
+      #{ @group.name }
+    has been #{ @group.approved.downcase } in course #{ @course.name }.
+
+  %p
+    Log in to GradeCraft to read your feedback.
+
+  - if @group.approved == "Approved"
+    %p
+      Play on!
+      %br
+      GradeCraft

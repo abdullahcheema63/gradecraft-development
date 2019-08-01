@@ -5,10 +5,17 @@
     .form-item
       = cm.label :role, "Select Role"
       = cm.select :role, available_roles(current_course)
+
     - if current_course.has_in_team_leaderboards?
       .form-item
         = cm.label :pseudonym, "Pseudonym"
         = cm.text_field :pseudonym
+
+    - if !edit_user && current_course.has_teams
+      .form-item
+        = cm.label :team_in_course, "Select #{term_for(:teams).singularize}"
+        = cm.select :team_in_course, available_teams(current_course), selected: 1, include_blank: true
+
     - if current_course.has_team_roles?
       .form-item
         = cm.label :team_role, "Team Role"

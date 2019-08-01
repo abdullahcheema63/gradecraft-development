@@ -103,7 +103,9 @@ class API::AssignmentsController < ApplicationController
         course_id: @assignment.course_id
     end unless assignment_params[:linked_objective_ids].nil?
 
-    @assignment.learning_objective_links.where.not(id: links.pluck(:id)).destroy_all if @assignment.learning_objective_links.any?
+    if !links.nil?
+      @assignment.learning_objective_links.where.not(id: links.pluck(:id)).destroy_all if @assignment.learning_objective_links.any?
+    end
   end
 
   def assignment_params

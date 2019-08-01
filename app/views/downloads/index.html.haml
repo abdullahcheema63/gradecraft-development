@@ -16,10 +16,12 @@
         %tr
           %td= link_to glyph("file-excel-o") + "Full Gradebook", gradebook_file_path(id: current_course.id, format: "csv")
           %td First Name, Last Name, Email, Username, #{ term_for :team }, Final grades for all #{ term_for :assignments }
+
         - if current_course.student_weighted?
           %tr
             %td= link_to glyph("file-excel-o") + "#{ (term_for :weight).titleize } Gradebook",  multiplied_gradebook_path(id: current_course.id, format: "csv")
             %td First Name, Last Name, Email, Username, #{ term_for :team }, Raw and #{ (term_for :weight).titleize }-weighted grades for all #{ term_for :assignments }
+
         - if current_course.learning_objectives.present?
           %tr
             %td= link_to glyph("file-excel-o") + "Learning Objectives Outcomes", learning_objectives_outcomes_file_path(id: current_course.id, format: "csv")
@@ -32,8 +34,34 @@
           %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Structure", export_structure_assignments_path(id: current_course.id, format: "csv")
           %td= (AssignmentExporter::FORMAT + AssignmentExporter::ADDITIONAL_HEADERS).join(", ")
         %tr
-          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Submissions", submissions_path(id: current_course.id, format: "csv")
-          %td= "Submission ID, #{term_for(:assignment_type)}, #{term_for(:assignment)} ID, #{term_for(:assignment)} Name, #{term_for(:student)} Email, #{term_for(:student)} ID, #{term_for(:team)} Name, #{term_for(:group)} Name, #{term_for(:student)} Comment, Created At, Updated At, Score, Graded By, Grader Feedback, Grade Last Updated"
+          %td= link_to glyph("file-excel-o") + "#{term_for :assignment} Submissions", submissions_path(id: current_course.id, format: "csv"), class: "assignment_submissions_link"
+          %td
+            %p
+              Submission ID, #{term_for(:assignment_type)}, #{term_for(:assignment)} ID, #{term_for(:assignment)} Name, #{term_for(:student)} Email, #{term_for(:student)} ID, #{term_for(:team)} Name, #{term_for(:group)} Name, #{term_for(:student)} Comment, Created At, Updated At, Score, Graded By, Grader Feedback, Grade Last Updated.
+              - if allow_assignment_submissions_export(current_course)
+                %br
+                %br
+                Choose your export date range
+                %br
+                %em
+                  Start:
+                %span{:class => "calendar_indicator"}
+                  = glyph(:calendar)
+                %input{:type => "date", :name => "start_date", :class => "datetimepicker start_date_input", :value => get_course_submissions_earliest_date(current_course)}
+
+
+                %em{:style => "margin-left: 14px"}
+                  End:
+                %span{:class => "calendar_indicator"}
+                  = glyph(:calendar)
+                %input{:type => "date", :name => "end_date", :class => "datetimepicker end_date_input", :value => get_course_submissions_latest_date(current_course)}
+                %br
+                Choose which column the date range is applicable to:
+
+                %select.for_assignment_submissions{:style => "display: inline-block"}
+                  - SubmissionExporter.fields_for_export.each do |field|
+                    %option{:value => field} #{present_dropdown_option(field)}
+
         - if current_course.has_badges?
           %tr
             %td
@@ -42,6 +70,7 @@
           %tr
             %td= link_to glyph("file-excel-o") + "#{term_for :badges}", export_structure_badges_path(id: current_course.id, format: "csv")
             %td Badge ID, Name, Point Total, Description, Times Earned
+
         %tr
           %td= link_to glyph("file-excel-o") + "Grading Scheme", export_structure_grade_scheme_elements_path(id: current_course.id, format: "csv")
           %td Level ID, Letter Grade, Level Name, Lowest Points, Highest Points
@@ -67,6 +96,8 @@
             %tr
               %td= link_to glyph("file-excel-o") + "#{assignment_type.name}", export_scores_assignment_type_path(assignment_type.id, course_id: current_course.id, format: "csv")
 
+  = javascript_include_tag "application", "downloads" => true
+  = yield(:scripts)
 
   = render partial: "downloads/submissions_exports/table",
       locals: { presenter: presenter }

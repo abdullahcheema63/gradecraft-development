@@ -1,6 +1,6 @@
 describe MultipliersController do
   let(:course_1) { create :course }
-  let(:course_2) { create :course_with_weighting }
+  let(:course_2) { create :course_with_weighting, full_points: 1 }
 
   before(:each) do
     login_user current_user

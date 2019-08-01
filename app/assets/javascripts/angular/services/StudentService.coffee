@@ -119,7 +119,8 @@
         (success) ->
           students.splice(students.indexOf(student) , 1)
           alert("Successfully deleted #{student.name} from the course")
-        , (failure) -> alert("Failed to delete #{student.name} from course")
+        , (failure) -> 
+            alert("Failed to delete #{student.name} from course. #{failure.data.errors}")
       )
 
     recalculateRanks = (students) ->
