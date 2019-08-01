@@ -2,7 +2,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   require "fileutils" # need this for mkdir_p
   require "open-uri" # need this for getting the S3 file over http
   include ModelAddons::ImprovedLogging # log errors with attributes
-  include FileManager::PathFinder
 
   attr_reader :submissions_export, :professor, :course, :errors, :assignment, :team, :submissions
 
@@ -18,7 +17,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   def setup
     output_to_file "Submissions Export Performer#Setup\n\n"
     output_to_file "making tmp directories"
-    #PathFinder.ensure_temp_directories
     #S3fs.ensure_tmpdir # make sure the s3fs tmpdir exists
 
     @submissions_export = SubmissionsExport.find @attrs[:submissions_export_id]
