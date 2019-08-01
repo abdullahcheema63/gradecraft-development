@@ -58,7 +58,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
       :remove_empty_submitter_directories,
       :generate_error_log, # write error log for errors that may have occurred during file generation
       :archive_exported_files,
-      :upload_archive_to_s3
+      :upload_archive_to_s3,
+      :check_local_file_copy_success
     ]
   end
 
@@ -426,6 +427,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     output_to_file(__method__.to_s)
     @submissions_export.copy_from_tmp_to_local
     return true
+  end
+
+  def check_local_file_copy_success
+    File.file?("#{Rails.root}/#{@submissions_export.local_file_path}")
   end
 
   private
