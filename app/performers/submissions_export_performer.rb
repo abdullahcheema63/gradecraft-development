@@ -58,7 +58,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
       :remove_empty_submitter_directories,
       :generate_error_log, # write error log for errors that may have occurred during file generation
       :archive_exported_files,
-      :upload_archive_to_s3
+      :upload_archive_to_s3,
+      :check_local_file_copy_success
     ]
   end
 
@@ -428,6 +429,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     return true
   end
 
+  def check_local_file_copy_success
+    File.file?("#{Rails.root}/#{@submissions_export.local_file_path}")
+  end
+
   private
 
   def deliver_outcome_mailer
@@ -567,10 +572,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     })
   end
 
-  def check_s3_upload_success_messages
+  def check_local_file_copy_success_messages
     expand_messages ({
-      success: "Successfully confirmed that the exported archive was uploaded to S3",
-      failure: "Failed to confirm that the exported archive was uploaded to S3. ObjectSummary#exists? failed on the object instance."
+      success: "Successfully confirmed that the exported archive was copied within the exports directory",
+      failure: "Failed to confirm that the exported archive was copied within the exports directory"
     })
   end
 
