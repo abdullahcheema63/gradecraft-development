@@ -33,7 +33,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
         deliver_outcome_mailer
 
         submissions_export.update_export_completed_time
-        puts "Export finished"
       rescue StandardError => error
         puts "Submission Export: #{error}"
       end
