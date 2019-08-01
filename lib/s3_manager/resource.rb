@@ -34,7 +34,7 @@ module S3Manager
 
     def upload_file_to_s3(file_path)
       return false unless s3_object_key
-      s3_manager.put_encrypted_object(s3_object_key, file_path)
+      #s3_manager.put_encrypted_object(s3_object_key, file_path)
     end
 
     def upload_file(file_path)
@@ -45,11 +45,11 @@ module S3Manager
     end
 
     def fetch_object_from_s3
-      s3_manager.get_encrypted_object(s3_object_key)
+      #s3_manager.get_encrypted_object(s3_object_key)
     end
 
     def write_s3_object_to_file(target_file_path)
-      s3_manager.write_encrypted_object_to_file(s3_object_key, target_file_path)
+      #s3_manager.write_encrypted_object_to_file(s3_object_key, target_file_path)
     end
 
     def stream_s3_object_body
