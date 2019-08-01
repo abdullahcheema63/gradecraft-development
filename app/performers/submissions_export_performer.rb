@@ -572,10 +572,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     })
   end
 
-  def check_s3_upload_success_messages
+  def check_local_file_copy_success_messages
     expand_messages ({
-      success: "Successfully confirmed that the exported archive was uploaded to S3",
-      failure: "Failed to confirm that the exported archive was uploaded to S3. ObjectSummary#exists? failed on the object instance."
+      success: "Successfully confirmed that the exported archive was copied within the exports directory",
+      failure: "Failed to confirm that the exported archive was copied within the exports directory"
     })
   end
 
