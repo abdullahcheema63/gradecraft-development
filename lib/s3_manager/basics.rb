@@ -52,7 +52,7 @@ module S3Manager
     end
 
     def put_object(object_key, file_path)
-      put_object_with_client(client, object_key, file_path)
+      #put_object_with_client(client, object_key, file_path)
     end
   end
 end

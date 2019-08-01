@@ -11,7 +11,7 @@ module S3Manager
     end
 
     def put_encrypted_object(object_key, file_path)
-      put_object_with_client(encrypted_client, object_key, file_path)
+      #put_object_with_client(encrypted_client, object_key, file_path)
     end
 
     def get_encrypted_object(object_key)
