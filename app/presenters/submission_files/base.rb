@@ -15,12 +15,12 @@ module Presenters
 
       def submission_file_streamable?
         return false unless submission_file
-        submission_file.object_stream.exists?
+        #submission_file.object_stream.exists?
       end
 
       def stream_submission_file
         return false unless submission_file_streamable?
-        submission_file.object_stream.stream!
+        #submission_file.object_stream.stream!
       end
 
       def filename

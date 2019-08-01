@@ -1,6 +1,5 @@
 class SubmissionFile < ApplicationRecord
   include S3Manager::Carrierwave
-  include S3Manager::Streaming
   include Historical
 
   belongs_to :submission, inverse_of: :submission_files
