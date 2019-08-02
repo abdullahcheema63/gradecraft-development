@@ -101,12 +101,9 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
   def write_submission_binary_file(submitter, submission_file, index)
     output_to_file(__method__.to_s)
-    output_to_file("performer, inside write_submission_binary_file")
-    file_path = submission_binary_file_path(submitter, submission_file, index)
-    output_to_file("submitter: #{submitter}")
-    output_to_file("submission_file: #{submission_file}")
-    output_to_file("index: #{index}")
-    output_to_file("file_path: #{file_path}")
+    destination_file_path = submission_binary_file_path(submitter, submission_file, index)
+    source_file_path = "#{Rails.root}/#{submission_file.file.to_s}"
+    FileUtils.cp(source_file_path, destination_file_path)
   end
 
   def create_binary_files_for_submission(submission)
