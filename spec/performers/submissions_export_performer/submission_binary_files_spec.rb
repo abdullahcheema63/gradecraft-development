@@ -100,13 +100,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
             .with(submitter, submission_file1, 5)
           result
         end
-
-        it "streams the s3 file to the disk via the submission file" do
-          allow(performer).to receive(:submission_binary_file_path) { "/xyz" }
-          expect(performer).to receive(:stream_s3_file_to_disk)
-            .with(submission_file1, "/xyz")
-          result
-        end
       end
 
 
