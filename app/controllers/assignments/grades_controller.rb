@@ -103,6 +103,8 @@ class Assignments::GradesController < ApplicationController
         @grade.raw_points = params[:grade][:raw_points]
       elsif params[:grade].present? && params[:grade][:pass_fail_status].present?
         @grade.pass_fail_status = params[:grade][:pass_fail_status]
+      elsif !@assignment.assignment_score_levels.exists?
+        @grade.raw_points = @assignment.full_points
       else
         redirect_back fallback_location: assignments_path,
           notice: "We're sorry, there was an error saving your grade."
