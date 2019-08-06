@@ -140,7 +140,7 @@ class Assignments::GradesController < ApplicationController
 
     if !@assignment.open? || !@assignment.student_logged?
       redirect_to assignments_path,
-          notice: "You cannot edit the grade for this assignment as it is no longer open or is not student logged."
+          notice: "You cannot edit the grade for this assignment because it is not open or not student logged."
     end
 
     @grade = Grade.find_by(assignment_id: @assignment.id, student_id: current_student.id)
