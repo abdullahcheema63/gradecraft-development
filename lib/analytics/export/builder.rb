@@ -8,7 +8,6 @@
 module Analytics
   module Export
     class Builder
-      include FileManager::PathFinder
 
       attr_reader :export_context, :export_classes, :filename, :directory_name,
                   :export_tmpdir, :export_root_dir, :final_export_tmpdir
