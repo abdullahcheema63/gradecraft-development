@@ -97,7 +97,7 @@ class Course < ApplicationRecord
   validates_presence_of :name, :course_number, :student_term, :team_term, :group_term,
     :team_leader_term, :group_term, :weight_term, :badge_term, :assignment_term, :challenge_term, :grade_predictor_term
 
-  validates_numericality_of :total_weights, :max_weights_per_assignment_type,
+  validates_numericality_of :total_weights, :max_weights_per_assignment_type, :full_points,
     :max_assignment_types_weighted, less_than_or_equal_to: 999999999, greater_than: 0, if: lambda { self.has_multipliers? }, message: "must be set to greater than 0 for the Multipliers feature to work properly."
 
   validates_format_of :twitter_hashtag, with: /\A[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*\z/, allow_blank: true, length: { within: 3..20 }
