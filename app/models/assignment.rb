@@ -349,6 +349,10 @@ class Assignment < ApplicationRecord
     self.threshold_points = 0 if self.threshold_points.nil?
   end
 
+  def file_attachment_is_valid?(attachment_file)
+    !attachment_file.file.nil? && !attachment_file.file.path.nil? && File.file?(attachment_file.file.path)
+  end
+
   def copy_files(copy)
     copy.save unless copy.persisted?
     copy_media(copy) if media.present?
@@ -366,7 +370,7 @@ class Assignment < ApplicationRecord
     copy.save unless copy.persisted?
 
     assignment_files.each do |af|
-      if File.file?(af.file.path)
+      if file_attachment_is_valid?(af)
         assignment_file = copy.assignment_files.create filename: af[:filename]
         CopyCarrierwaveFile::CopyFileService.new(af, assignment_file, :file).set_file
         assignment_file.save unless assignment_file.persisted?

@@ -58,6 +58,10 @@ class Badge < ApplicationRecord
 
   private
 
+  def file_attachment_is_valid?(attachment_file)
+    !attachment_file.file.nil? && !attachment_file.file.path.nil? && File.file?(attachment_file.file.path)
+  end
+
   # Copy files that are stored on S3 via Carrierwave
   def copy_files(copy)
     copy.save unless copy.persisted?
@@ -81,7 +85,7 @@ class Badge < ApplicationRecord
     copy.save unless copy.persisted?
 
     badge_files.each do |bf|
-      if File.file?(bf.file.path)
+      if file_attachment_is_valid?(bf)
         badge_file = copy.badge_files.create filename: bf[:filename]
         CopyCarrierwaveFile::CopyFileService.new(bf, badge_file, :file).set_file
         badge_file.save unless badge_file.persisted?
