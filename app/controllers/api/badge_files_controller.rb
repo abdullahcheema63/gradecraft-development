@@ -25,7 +25,6 @@ class API::BadgeFilesController < ApplicationController
   def destroy
     file = BadgeFile.where(id: params[:id]).first
     if file.present?
-      #file.delete_from_s3
       file.destroy
 
       if file.destroyed?

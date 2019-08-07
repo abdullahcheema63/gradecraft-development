@@ -3,15 +3,6 @@ class UploadsController < ApplicationController
 
   def remove
     destroy_upload_with_flash
-    
-    #@upload.delete_from_s3
-
-    #if @upload.exists_on_s3?
-    #  flash[:alert] = "File failed to delete from the server."
-    #else
-    #  destroy_upload_with_flash
-    #end
-
     redirect_back(fallback_location: root_path)
   end
 

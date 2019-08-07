@@ -49,7 +49,6 @@ class SubmissionsExport < ApplicationRecord
       FileUtils.mkdir_p(directory_path)
 
       source_file = "/tmp/#{self.export_file_basename}.zip"
-      puts("source_file:", source_file)
       if File.file?(source_file)
         destination_path = ["#{Rails.root}", self.local_file_path]
         destination_path = destination_path.join "/"

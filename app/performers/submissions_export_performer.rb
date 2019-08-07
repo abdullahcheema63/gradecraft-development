@@ -43,7 +43,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
         deliver_outcome_mailer
 
         submissions_export.update_export_completed_time
-        puts "Export finished"
       rescue StandardError => error
         puts "Submission Export: #{error}"
       end
@@ -68,7 +67,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
       :remove_empty_submitter_directories,
       :generate_error_log, # write error log for errors that may have occurred during file generation
       :archive_exported_files,
-      :upload_archive_to_s3
+      :upload_archive_to_s3,
+      :check_local_file_copy_success
     ]
   end
 
@@ -111,15 +111,9 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
   def write_submission_binary_file(submitter, submission_file, index)
     output_to_file(__method__.to_s)
-    output_to_file("performer, inside write_submission_binary_file")
-    file_path = submission_binary_file_path(submitter, submission_file, index)
-    output_to_file("submitter: #{submitter}")
-    output_to_file("submission_file: #{submission_file}")
-    output_to_file("index: #{index}")
-    output_to_file("file_path: #{file_path}")
-    #copy theses locally somewhere ?
-
-    #stream_s3_file_to_disk(submission_file, file_path)
+    destination_file_path = submission_binary_file_path(submitter, submission_file, index)
+    source_file_path = "#{Rails.root}/#{submission_file.file.to_s}"
+    FileUtils.cp(source_file_path, destination_file_path)
   end
 
   def create_binary_files_for_submission(submission)
@@ -143,10 +137,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     @submitters = fetch_submitters
     @submitters_for_csv = fetch_submitters_for_csv
     @submissions = fetch_submissions
-  end
-
-  def s3_manager
-    @s3_manager ||= @submissions_export.s3_manager || S3Manager::Manager.new
   end
 
   def tmp_dir
@@ -403,14 +393,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     File.expand_path filename, submitter_directory_path(student)
   end
 
-  def stream_s3_file_to_disk(submission_file, target_file_path)
-    begin
-      s3_manager.write_s3_object_to_disk(submission_file.s3_object_file_key, target_file_path)
-    rescue Aws::S3::Errors::NoSuchKey
-      submission_file.mark_file_missing
-    end
-  end
-
   def remove_if_exists(file_path)
     File.delete file_path if File.exist? file_path
   end
@@ -437,6 +419,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     #add more checks here to see if copy is successful ? 
     @submissions_export.copy_from_tmp_to_local
     return true
+  end
+
+  def check_local_file_copy_success
+    File.file?("#{Rails.root}/#{@submissions_export.local_file_path}")
   end
 
   private
@@ -578,10 +564,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     })
   end
 
-  def check_s3_upload_success_messages
+  def check_local_file_copy_success_messages
     expand_messages ({
-      success: "Successfully confirmed that the exported archive was uploaded to S3",
-      failure: "Failed to confirm that the exported archive was uploaded to S3. ObjectSummary#exists? failed on the object instance."
+      success: "Successfully confirmed that the exported archive was copied within the exports directory",
+      failure: "Failed to confirm that the exported archive was copied within the exports directory"
     })
   end
 
