@@ -82,11 +82,11 @@ class Challenge < ApplicationRecord
     copy.save unless copy.persisted?
 
     challenge_files.each do |cf|
-      challenge_file = copy.challenge_files.create filename: cf[:filename]
-      #challenge_file.file = File.open(cf.file.path)
-      #challenge_file.send(:"file=", File.open(cf.file.path))
-      CopyCarrierwaveFile::CopyFileService.new(cf, challenge_file, :file).set_file
-      challenge_file.save unless challenge_file.persisted?
+      if File.file?(cf.file.path)
+        challenge_file = copy.challenge_files.create filename: cf[:filename]
+        CopyCarrierwaveFile::CopyFileService.new(cf, challenge_file, :file).set_file
+        challenge_file.save unless challenge_file.persisted?
+      end
     end
   end
 end
