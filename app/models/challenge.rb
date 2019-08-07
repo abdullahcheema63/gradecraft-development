@@ -65,6 +65,11 @@ class Challenge < ApplicationRecord
   end
 
   private
+
+  def file_attachment_is_valid?(attachment_file)
+    !attachment_file.file.nil? && !attachment_file.file.path.nil? && File.file?(attachment_file.file.path)
+  end
+
   def copy_files(copy)
     copy.save unless copy.persisted?
     copy_media(copy) if media.present?
@@ -82,7 +87,7 @@ class Challenge < ApplicationRecord
     copy.save unless copy.persisted?
 
     challenge_files.each do |cf|
-      if File.file?(cf.file.path)
+      if file_attachment_is_valid?(cf)
         challenge_file = copy.challenge_files.create filename: cf[:filename]
         CopyCarrierwaveFile::CopyFileService.new(cf, challenge_file, :file).set_file
         challenge_file.save unless challenge_file.persisted?
