@@ -1,6 +1,4 @@
 RSpec.describe FileManager::PathFinder do
-  subject { PathFinderTest.new local_file_path: local_file_path }
-
   # add some helpers for stubbing the environment
   include UniMock::StubRails
 
@@ -64,7 +62,6 @@ RSpec.describe FileManager::PathFinder do
 
     describe "#local_file_exists?" do
       it "checks whether the local_file_exists?" do
-        expect(subject).to receive_message_chain(:s3_object_summary, :exists?)
         subject.local_file_exists?
       end
     end
