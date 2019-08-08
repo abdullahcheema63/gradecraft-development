@@ -99,9 +99,9 @@ class UsersController < ApplicationController
     elsif role == "staff"
       team.leaders.push(@user)
     end
-      
+
     team.save
-      
+
     return true
   end
 
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
       if result.success?
         team_name = user_params["course_memberships_attributes"]["0"]["team_in_course"]
         added_to_team_message = ""
-        
+
         if @user.is_student?(current_course)
           if add_to_team(current_course, team_name, "student")
             added_to_team_message = "The #{(term_for :student).downcase} #{@user.name} has also been added to the #{(term_for :team).downcase} #{team_name}"
@@ -123,7 +123,7 @@ class UsersController < ApplicationController
             notice: "#{term_for :student} #{@user.name} was successfully created!" + " #{added_to_team_message}" and return
         elsif @user.is_staff?(current_course)
           Services::SendsResourceEmail.call @user
- 
+
           if add_to_team(current_course, team_name, "staff")
             added_to_team_message = "The staff member #{@user.name} has also been added to the #{(term_for :team).downcase} #{team_name}"
           end
@@ -355,7 +355,7 @@ class UsersController < ApplicationController
     params.require(:user).permit :username, :email, :password, :time_zone, :password_confirmation, :activation_token_expires_at, :activation_token,
       :activation_state, :avatar_file_name, :first_name, :last_name, :user_id,
       :kerberos_uid, :display_name, :current_course_id, :last_activity_at, :reset_password_email_sent_at, :reset_password_token_expires_at, :reset_password_token,
-      :last_login_at, :last_logout_at, :team_ids, :course_ids, :remember_me_token_expires_at,
+      :remove_avatar_file_name, :last_login_at, :last_logout_at, :team_ids, :course_ids, :remember_me_token_expires_at,
       :remember_me_token, :team_role, :team_id, :lti_uid, :course_team_ids, :internal,
       earned_badges_attributes: [:points, :feedback, :student_id, :badge_id,
         :submission_id, :course_id, :assignment_id, :level_id, :criterion_id, :grade_id,
