@@ -1,6 +1,6 @@
 module DownloadsHelper
-  def allow_assignment_submissions_export(course)
-    return Rails.env.development? || course.id == 110 && (Rails.env.production? || Rails.env.staging?)
+  def allow_assignment_submissions_export(course, current_user)
+    return current_user.is_admin?(course) && (Rails.env.development? || course.id == 110 && (Rails.env.production? || Rails.env.staging?))
   end
 
   def get_course_submissions_earliest_date(course)
