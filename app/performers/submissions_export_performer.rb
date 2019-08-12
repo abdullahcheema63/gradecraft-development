@@ -67,8 +67,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
       :remove_empty_submitter_directories,
       :generate_error_log, # write error log for errors that may have occurred during file generation
       :archive_exported_files,
-      :upload_archive_to_s3,
-      :check_local_file_copy_success
+      :copy_local_submissions_archive,
+      :check_local_submissions_archive_copy_success
     ]
   end
 
@@ -413,7 +413,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     Archive::Zip.archive("#{expanded_archive_base_path}.zip", archive_root_dir)
   end
 
-  def upload_archive_to_s3
+  def copy_local_submissions_archive
     output_to_file("-----THE FINISH LINE-----")
     output_to_file(__method__.to_s)
     #add more checks here to see if copy is successful ? 
@@ -421,7 +421,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     return true
   end
 
-  def check_local_file_copy_success
+  def check_local_submissions_archive_copy_success
     File.file?("#{Rails.root}/#{@submissions_export.local_file_path}")
   end
 
@@ -430,7 +430,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   def deliver_outcome_mailer
     destination_path = ["#{Rails.root}", @submissions_export.local_file_path]
     destination_path = destination_path.join "/"
-    if File.file?(destination_path)
+    if check_local_submissions_archive_copy_success
       deliver_archive_success_mailer
     else
       deliver_archive_failed_mailer
@@ -550,10 +550,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     })
   end
 
-  def upload_archive_to_s3_messages
+  def copy_local_submissions_archive_messages
     expand_messages ({
-      success: "Successfully uploaded the submissions archive to S3",
-      failure: "Failed to upload the submissions archive to S3"
+      success: "Successfully copied local submissions archive",
+      failure: "Failed to copy local submissions archive"
     })
   end
 
@@ -564,7 +564,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     })
   end
 
-  def check_local_file_copy_success_messages
+  def check_local_submissions_archive_copy_success_messages
     expand_messages ({
       success: "Successfully confirmed that the exported archive was copied within the exports directory",
       failure: "Failed to confirm that the exported archive was copied within the exports directory"
