@@ -77,9 +77,9 @@ namespace :export_filepaths do
         submissionFileAudit.puts("================================================================")
         submissionFileAudit.puts("Deleting because: There is no file associated with the submissionFile id: #{sf.id}")
         submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
-        submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment_id} \n Course id: #{sf.submission.course.id}")
+        submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
         submissionFileAudit.puts("\n\n\n\n")
-        submissionFileAudit.puts("#{p sf}")
+        submissionFileAudit.puts("#{sf.inspect}")
         submissionFileAudit.puts("\n\n\n\n")
         if args[:delete_submission_file] == "true" 
           sf_id = sf.id
@@ -97,9 +97,9 @@ namespace :export_filepaths do
           submissionFileAudit.puts("================================================================")
           submissionFileAudit.puts("Deleting because: Could not find file at this location: #{sf.file.path} \n")
           submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
-          submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment_id} \n Course id: #{sf.submission.course.id}")
+          submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
           submissionFileAudit.puts("\n\n\n\n")
-          submissionFileAudit.puts("#{p sf}")
+          submissionFileAudit.puts("#{sf.inspect}")
           submissionFileAudit.puts("\n\n\n\n")
           if args[:delete_submission_file] == "true" 
             sf_id = sf.id
@@ -115,9 +115,9 @@ namespace :export_filepaths do
         submissionFileAudit.puts("================================================================")
         submissionFileAudit.puts("Deleting because: There was no path associated with the file for submissionFile id: #{sf.id}\n")
         submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
-        submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment_id} \n Course id: #{sf.submission.course.id}")
+        submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
         submissionFileAudit.puts("\n\n\n\n")
-        submissionFileAudit.puts("#{p sf}")
+        submissionFileAudit.puts("#{sf.inspect}")
         submissionFileAudit.puts("\n\n\n\n")
         if args[:delete_submission_file] == "true" 
           sf_id = sf.id
@@ -153,7 +153,7 @@ namespace :export_filepaths do
         challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
         challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
         challengeFileAudit.puts("\n\n\n\n")
-        challengeFileAudit.puts("#{p cf}")
+        challengeFileAudit.puts("#{cf.inspect}")
         challengeFileAudit.puts("\n\n\n\n")
         if args[:delete_challenge_file] == "true" 
           cf_id = cf.id
@@ -173,7 +173,7 @@ namespace :export_filepaths do
           challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
           challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
           challengeFileAudit.puts("\n\n\n\n")
-          challengeFileAudit.puts("#{p cf}")
+          challengeFileAudit.puts("#{cf.inspect}")
           challengeFileAudit.puts("\n\n\n\n")
           if args[:delete_challenge_file] == "true" 
             cf_id = cf.id
@@ -191,7 +191,7 @@ namespace :export_filepaths do
         challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
         challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
         challengeFileAudit.puts("\n\n\n\n")
-        challengeFileAudit.puts("#{p cf}")
+        challengeFileAudit.puts("#{cf.inspect}")
         challengeFileAudit.puts("\n\n\n\n")
         if args[:delete_challenge_file] == "true" 
           cf_id = cf.id
@@ -228,7 +228,7 @@ namespace :export_filepaths do
         badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
         badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
         badgeFileAudit.puts("\n\n\n\n")
-        badgeFileAudit.puts("#{p bf}")
+        badgeFileAudit.puts("#{bf.inspect}")
         badgeFileAudit.puts("\n\n\n\n")
         if args[:delete_badge_file] == "true" 
           bf_id = bf.id
@@ -248,7 +248,7 @@ namespace :export_filepaths do
           badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
           badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
           badgeFileAudit.puts("\n\n\n\n")
-          badgeFileAudit.puts("#{p bf}")
+          badgeFileAudit.puts("#{bf.inspect}")
           badgeFileAudit.puts("\n\n\n\n")
           if args[:delete_badge_file] == "true" 
             bf_id = bf.id
@@ -266,7 +266,7 @@ namespace :export_filepaths do
         badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
         badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
         badgeFileAudit.puts("\n\n\n\n")
-        badgeFileAudit.puts("#{p bf}")
+        badgeFileAudit.puts("#{bf.inspect}")
         badgeFileAudit.puts("\n\n\n\n")
         if args[:delete_badge_file] == "true" 
           bf_id = bf.id
@@ -300,9 +300,9 @@ namespace :export_filepaths do
         assignmentFileAudit.puts("================================================================")
         assignmentFileAudit.puts("Deleting because: There is no file associated with the assignmentFile id: #{af.id}")
         assignmentFileAudit.puts("Destroying assignment files is marked as #{args[:delete_assignment_file]}")
-        assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment.id} \n Assignment id: #{af.assignment_id} \n Course id: #{af.assignment.course.id}")
+        assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment.id} \n Assignment id: #{af.assignment.id} \n Course id: #{af.assignment.course.id}")
         assignmentFileAudit.puts("\n\n\n\n")
-        assignmentFileAudit.puts("#{p af}")
+        assignmentFileAudit.puts("#{af.inspect}")
         assignmentFileAudit.puts("\n\n\n\n")
         if args[:delete_assignment_file] == "true" 
           af_id = af.id
@@ -320,9 +320,9 @@ namespace :export_filepaths do
           assignmentFileAudit.puts("================================================================")
           assignmentFileAudit.puts("Deleting because: Could not find file at this location: #{af.file.path} \n")
           assignmentFileAudit.puts("Destroying assignment files is marked as #{args[:delete_assignment_file]}")
-          assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment.id} \n Assignment id: #{af.assignment_id} \n Course id: #{af.assignment.course.id}")
+          assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment.id} \n Assignment id: #{af.assignment.id} \n Course id: #{af.assignment.course.id}")
           assignmentFileAudit.puts("\n\n\n\n")
-          assignmentFileAudit.puts("#{p af}")
+          assignmentFileAudit.puts("#{af.inspect}")
           assignmentFileAudit.puts("\n\n\n\n")
           if args[:delete_assignment_file] == "true" 
             af_id = af.id
@@ -338,9 +338,9 @@ namespace :export_filepaths do
         assignmentFileAudit.puts("================================================================")
         assignmentFileAudit.puts("Deleting because: There was no path associated with the file for assignmentFile id: #{af.id}\n")
         assignmentFileAudit.puts("Destroying assignment files is marked as #{args[:delete_assignment_file]}")
-        assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment.id} \n Assignment id: #{af.assignment_id} \n Course id: #{af.assignment.course.id}")
+        assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment_id}} \n Course id: #{af.assignment.course.id}")
         assignmentFileAudit.puts("\n\n\n\n")
-        assignmentFileAudit.puts("#{p af}")
+        assignmentFileAudit.puts("#{af.inspect}")
         assignmentFileAudit.puts("\n\n\n\n")
         if args[:delete_assignment_file] == "true" 
           af_id = af.id
@@ -377,7 +377,7 @@ namespace :export_filepaths do
         fileUploadAudit.puts("Destroying file upload files is marked as #{args[:delete_file_upload_file]}")
         fileUploadAudit.puts("file upload file id: #{fu.id} \n Grade id: #{fu.grade_id} \n Assignment id: #{Grade.find(fu.grade_id).assignment.id} \n Course id: #{Grade.find(fu.grade_id).course.id}")
         fileUploadAudit.puts("\n\n\n\n")
-        fileUploadAudit.puts("#{p fu}")
+        fileUploadAudit.puts("#{fu.inspect}")
         fileUploadAudit.puts("\n\n\n\n")
         if args[:delete_file_upload_file] == "true" 
           fu_id = fu.id
@@ -397,7 +397,7 @@ namespace :export_filepaths do
           fileUploadAudit.puts("Destroying file upload files is marked as #{args[:delete_file_upload_file]}")
           fileUploadAudit.puts("file upload file id: #{fu.id} \n Grade id: #{fu.grade_id} \n Assignment id: #{Grade.find(fu.grade_id).assignment.id} \n Course id: #{Grade.find(fu.grade_id).course.id}")
           fileUploadAudit.puts("\n\n\n\n")
-          fileUploadAudit.puts("#{p fu}")
+          fileUploadAudit.puts("#{fu.inspect}")
           fileUploadAudit.puts("\n\n\n\n")
           if args[:delete_file_upload_file] == "true" 
             fu_id = fu.id
@@ -415,7 +415,7 @@ namespace :export_filepaths do
         fileUploadAudit.puts("Destroying file upload files is marked as #{args[:delete_file_upload_file]}")
         fileUploadAudit.puts("file upload file id: #{fu.id} \n Grade id: #{fu.grade_id} \n Assignment id: #{Grade.find(fu.grade_id).assignment.id} \n Course id: #{Grade.find(fu.grade_id).course.id}")
         fileUploadAudit.puts("\n\n\n\n")
-        fileUploadAudit.puts("#{p fu}")
+        fileUploadAudit.puts("#{fu.inspect}")
         fileUploadAudit.puts("\n\n\n\n")
         if args[:delete_file_upload_file] == "true" 
           fu_id = fu.id
