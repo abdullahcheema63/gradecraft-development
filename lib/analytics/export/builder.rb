@@ -29,7 +29,6 @@ module Analytics
       # make all of the directories that we're going to use for the export
       #
       def make_directories
-        #Need to make sure these directories are correct and that it calls the fileManager method
         @export_tmpdir = FileManager.make_temp_directories
         @final_export_tmpdir = FileManager.make_temp_directories
         FileUtils.mkdir_p export_root_dir

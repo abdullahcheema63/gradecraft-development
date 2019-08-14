@@ -75,11 +75,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
   describe "archive_tmp_dir" do
     subject { performer.instance_eval { archive_tmp_dir }}
 
-    it "builds a temporary directory for the archive" do
-      expect(S3fs).to receive(:mktmpdir)
-      subject
-    end
-
     it "caches the temporary directory" do
       original_tmp_dir = subject
       expect(subject).to eq(original_tmp_dir)

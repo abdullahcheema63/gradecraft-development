@@ -17,7 +17,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   def setup
     output_to_file "Submissions Export Performer#Setup\n\n"
     output_to_file "making tmp directories"
-    #S3fs.ensure_tmpdir # make sure the s3fs tmpdir exists
 
     @submissions_export = SubmissionsExport.find @attrs[:submissions_export_id]
     fetch_assets
@@ -215,10 +214,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     @confirm_export_csv_integrity ||= File.exist?(csv_file_path)
   end
 
-  # final archive concerns
-
   def archive_tmp_dir
-    #@archive_tmp_dir ||= S3fs.mktmpdir
     @archive_tmp_dir ||= FileUtils.mkdir_p("/tmp").first
   end
 
