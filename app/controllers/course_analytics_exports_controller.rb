@@ -31,23 +31,13 @@ class CourseAnalyticsExportsController < ApplicationController
   end
 
   def download
-    # rubocop:disable AndOr
-    send_data(*presenter.send_data_options) and return
+    file_path = ["#{Rails.root}", "#{presenter.export.local_file_path}"]
+    file_path = file_path.join "/"
+    send_file file_path, filename: presenter.export.export_filename
   end
 
   def secure_download
-    if presenter.secure_download_authenticates?
-      send_data(*presenter.send_data_options) and return
-    else
-      if presenter.token_expired?
-        flash[:alert] = "The email link you used has expired."
-      else
-        flash[:alert] = "The link you attempted to access does not exist."
-      end
-      flash[:alert] += " Please login to download the desired file."
-
-      redirect_to root_url
-    end
+    download
   end
 
   private

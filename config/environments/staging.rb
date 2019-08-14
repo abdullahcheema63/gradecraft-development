@@ -34,9 +34,3 @@ Rails.application.configure do
   config.public_file_server.enabled = ["1", "yes", "true", "on"].include?(ENV["GC_SERVE_STATIC_FILES"] || "0" )
   config.session_store :active_record_store, :expire_after => 60.minutes
 end
-
-require "carrierwave/storage/fog"
-
-CarrierWave.configure do |config|
-  config.storage = :fog
-end

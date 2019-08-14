@@ -136,6 +136,8 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
+    copy_carrierwave_file (1.3.0)
+      carrierwave (>= 0.9)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.4)
@@ -655,6 +657,7 @@ DEPENDENCIES
   carrierwave
   codeclimate-test-reporter
   coffee-rails
+  copy_carrierwave_file
   croutons
   d3-rails
   dalli

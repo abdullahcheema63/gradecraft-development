@@ -1,4 +1,3 @@
-require "s3_manager"
 require "export"
 require "formatter"
 require "analytics/export"
@@ -8,7 +7,7 @@ class CourseAnalyticsExport < ApplicationRecord
   # treat this resource as if it's responsible for managing an object on s3.
   # If this is an active_record descendent than add some callbacks.
   #
-  include S3Manager::Resource
+  include FileManager::PathFinder
 
   # give this resource additional methods that aren't s3-specific but that
   # assist in the export process
@@ -60,8 +59,8 @@ class CourseAnalyticsExport < ApplicationRecord
   # tell s3 which directory structure to use for exports. the object_key
   # methods here are included from Export::Model
   #
-  def s3_object_key_prefix
-    "exports/courses/#{course_id}/course_analytics_exports/" \
+  def local_file_path_prefix
+    "files/exports/courses/#{course_id}/course_analytics_exports/" \
       "#{object_key_date}/#{object_key_microseconds}"
   end
 
