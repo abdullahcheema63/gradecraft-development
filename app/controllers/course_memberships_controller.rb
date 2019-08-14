@@ -57,57 +57,37 @@ class CourseMembershipsController < ApplicationController
   end
 
   def remove_leaders_from_teams(course_membership)
-    if !course_membership.user.is_staff?(course_membership.course)
-      return false
-    end
-
     staff_member = course_membership.user
 
     course = course_membership.course
 
     staff_member.team_leaderships_for_course(course).each do |team_leadership|
-      team = team_leadership.team 
+      team = team_leadership.team
       team.leaders = team.leaders.reject {|member| member["id"] == staff_member.id}
       team.save
     end
-
-    return true
-
-  end
-  
-  def check_group_membership(course_membership)
-    user = course_membership.user
-    groups = user.groups
-
-    groups.where(course_id: course_membership.course_id).each do |group|
-      deleted_group_size = group.students.length - 1
-
-      if group.assignments.pluck("min_group_size").max > deleted_group_size
-        return { deletable: false, group: group, assignment: group.assignments.where("min_group_size > ?", deleted_group_size).first }
-      end
-    end
-
-    return { deletable: true }
   end
 
   def destroy
     course_membership = current_course.course_memberships.find(params[:id])
-    
-    remove_leaders_from_teams(course_membership)
+
+    if course_membership.user.is_staff?(course_membership.course)
+      remove_leaders_from_teams(course_membership)
+    end
 
     group_membership_conditions = check_group_membership(course_membership)
 
     if !group_membership_conditions[:deletable] && !current_user.is_admin?(current_course)
       message = "#{course_membership.user.name} could not be removed as their group #{group_membership_conditions[:group].name} is in the assignment #{group_membership_conditions[:assignment].name} which has a minimum group size of #{group_membership_conditions[:assignment].min_group_size}"
-      
+
       render json: { errors:  message },
         status: 500
 
-      return 
+      return
     end
 
     Services::CancelsCourseMembership.call course_membership
-   
+
     respond_to do |format|
       format.html { redirect_to session[:return_to], notice: "#{course_membership.user.name} was successfully removed from course." }
       format.json {  head :ok }

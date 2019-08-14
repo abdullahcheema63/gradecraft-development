@@ -19,8 +19,7 @@ module CoursesHelper
   end
 
   def available_teams(course)
-    teams = course.teams.pluck("name")
-    return teams
+    course.teams.pluck("name")
   end
 
   def bust_course_list_cache(user)
