@@ -1,4 +1,4 @@
-describe Analytics::Export::Buildable do
+describe Analytics::Export::Buildable, :focus => true do
   # since this is a module intended for inclusion, let's test a class that's
   # actually using these behaviors
   #
