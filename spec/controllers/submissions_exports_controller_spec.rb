@@ -70,31 +70,11 @@ RSpec.describe SubmissionsExportsController, type: :controller do
           expect(flash[:success]).to match(/Assignment export successfully deleted/)
         end
       end
-
-      context "the submissions export is not destroyed and the s3 object fails to delete" do
-        before do
-          allow(submissions_export).to receive(:delete_object_from_s3) { false }
-        end
-
-        it "notifies the user of the failure" do
-          subject
-          expect(flash[:alert]).to match(/Unable to delete the submissions export/)
-        end
-      end
     end
 
     it "redirects to the exports path" do
       subject
       expect(response).to redirect_to(downloads_path)
-    end
-  end
-
-  describe "GET #download" do
-    let(:result) { get :download, params: { id: submissions_export.id }}
-
-    it "streams the s3 object to the client" do
-      expect(controller).to receive(:stream_file_from_s3)
-      result
     end
   end
 
@@ -125,17 +105,6 @@ RSpec.describe SubmissionsExportsController, type: :controller do
           .and_return authenticator
       end
 
-      context "the SecureDownloadAuthenticator authenticates" do
-        before do
-          allow(authenticator).to receive(:authenticates?) { true }
-        end
-
-        it "streams the s3 object to the client" do
-          expect(controller).to receive(:stream_file_from_s3)
-          result
-        end
-      end
-
       context "the SecureDownloadAuthenticator doesn't authenticate" do
         before do
           allow(authenticator).to receive(:authenticates?) { false }
@@ -161,35 +130,6 @@ RSpec.describe SubmissionsExportsController, type: :controller do
           result
           expect(flash[:alert]).to match /Please login/
           expect(response).to redirect_to root_path
-        end
-      end
-
-      describe "skipped filters" do
-        let(:result) { get :secure_download, params: secure_download_params }
-
-        before do
-          # since we just want to test filter skipping let's disregard the
-          # secure token authenticator here
-          allow(controller).to receive(:secure_download_authenticator)
-            .and_return double(SecureTokenAuthenticator).as_null_object
-
-          # let's disregard s3 file streaming as well
-          allow(controller).to receive(:stream_file_from_s3) { false }
-        end
-
-        # make the GET secure_download call after each expectation
-        after(:each) { result }
-
-        it "doesn't require login" do
-          expect(controller).not_to receive(:require_login)
-        end
-
-        it "doesn't increment the page views" do
-          expect(controller).not_to receive(:increment_page_views)
-        end
-
-        it "doesn't get course scores" do
-          expect(controller).not_to receive(:course_scores)
         end
       end
     end
@@ -231,27 +171,6 @@ RSpec.describe SubmissionsExportsController, type: :controller do
         expect(controller.instance_variable_get(:@secure_download_authenticator))
           .to eq(authenticator)
       end
-    end
-  end
-
-  describe "#stream_file_from_s3" do
-    let(:result) do
-      controller.instance_eval { stream_file_from_s3 }
-    end
-    let(:temp_file) { Tempfile.new("s3_object") }
-
-    before do
-      allow(controller).to receive(:submissions_export) { submissions_export }
-      allow(submissions_export).to receive_messages(
-        export_filename: "some_filename.txt",
-        stream_s3_object_body: temp_file
-      )
-    end
-
-    it "renders the s3 object data with the submissions export filename" do
-      expect(controller).to receive(:send_data).with(temp_file,
-        filename: "some_filename.txt")
-      result
     end
   end
 

@@ -32,7 +32,18 @@ class SubmissionsExportsController < ApplicationController
   end
 
   def secure_download
-    download
+    if secure_download_authenticator.authenticates?
+      download
+    else
+      if secure_download_authenticator.valid_token_expired?
+        flash[:alert] = "The email link you used has expired."
+      else
+        flash[:alert] = "The link you attempted to access does not exist."
+      end
+      flash[:alert] += " Please login to download the desired file."
+
+      redirect_to root_url
+    end
   end
 
   protected
