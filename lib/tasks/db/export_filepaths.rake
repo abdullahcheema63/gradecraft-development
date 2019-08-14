@@ -103,7 +103,6 @@ namespace :export_filepaths do
           sf.destroy
           submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
         end
-        submissionFileAudit.p
         next
       end
 
@@ -121,7 +120,6 @@ namespace :export_filepaths do
             sf.destroy
             submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
           end
-          submissionFileAudit.p
           next
         end
       else
@@ -137,7 +135,6 @@ namespace :export_filepaths do
           sf.destroy
           submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
         end
-        submissionFileAudit.p
         next
       end
       submissionFileAudit.puts("Submission File with id: #{sf.id} valid")
@@ -169,7 +166,6 @@ namespace :export_filepaths do
           cf.destroy
           challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
         end
-        challengeFileAudit.p
         next
       end
 
