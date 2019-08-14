@@ -4,9 +4,6 @@ class SubmissionFilesController < ApplicationController
   def download
     authorize! :download, presenter.submission_file
 
-    # let's use the object_stream here because there's no reason to hit S3 twice
-    #if presenter.submission_file_streamable?
-      # rubocop:disable AndOr
     file_path = URI.decode(presenter.submission_file.file.path)
     send_file file_path, x_sendfile: true
 
