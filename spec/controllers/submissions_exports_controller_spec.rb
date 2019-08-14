@@ -1,4 +1,4 @@
-RSpec.describe SubmissionsExportsController, type: :controller, :focus => true do
+RSpec.describe SubmissionsExportsController, type: :controller do
 
   let(:teams) { create_list(:team, 2) }
   let(:team) { teams.first }
