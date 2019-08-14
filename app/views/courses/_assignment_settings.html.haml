@@ -1,0 +1,6 @@
+%section.form-section
+  %h2.form-title Assignment Settings
+  .form-item
+    = f.check_box :delete_student_logged_grade, {"aria-describedby" => "txtAssignmentDeleteStudentLoggedGrades"}
+    = f.label :delete_student_logged_grade, "Delete Student Logged Grades"
+    .form-hint{id: "txtAssignmentDeleteStudentLoggedGrades"} Are students allowed to delete grades that they log in a student-logged assignment?
