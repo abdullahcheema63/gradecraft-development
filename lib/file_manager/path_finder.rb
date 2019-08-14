@@ -3,15 +3,6 @@ require "fileutils"
 module FileManager
   module PathFinder
 
-    def output_to_file(output)
-      begin
-        File.write("#{Rails.root}/files/output.txt", "#{output}\n", mode: 'a')
-      rescue StandardError => error
-        puts "Could not write file"
-        puts "#{error}"
-      end
-    end
-
     def self.included(base)
       base.class_eval do
         # rebuild the object key for the new filename if the filename has
@@ -69,9 +60,6 @@ module FileManager
     end
 
     def make_temp_directories
-      #check if this function is actually used
-      output_to_file(__method__.to_s)
-      output_to_file("In FileManager::PathFinder#make_temp_directories")
       FileUtils.mkdir_p(tmp_dir_prefix)
       return tmp_dir_prefix
     end

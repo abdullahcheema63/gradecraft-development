@@ -41,8 +41,7 @@ class CourseAnalyticsExportPerformer < ResqueJob::Performer
 
     ensure
       begin
-        # once we've successfully built the export on s3fs, let's upload it
-        #change to local upload
+        #local file upload
         export.upload_file(export.local_file_path)
 
       ensure
