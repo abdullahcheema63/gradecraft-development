@@ -2,17 +2,8 @@ describe CourseAnalyticsExport do
   subject { create :course_analytics_export, course_id: course.id }
   let(:course) { create :course }
 
-  it "includes S3Manager::Rescource" do
-    expect(subject).to respond_to :stream_s3_object_body
-    expect(subject).to respond_to :rebuild_file_path
-  end
-
   it "includes Export::Model::ActiveRecord" do
     expect(subject).to respond_to :object_key_microseconds
-  end
-
-  it "includes Analytics::Export::Buildable" do
-    expect(subject).to respond_to :upload_builder_archive_to_s3
   end
 
   describe "#generate_secure_token" do
@@ -32,9 +23,9 @@ describe CourseAnalyticsExport do
         object_key_microseconds: "12345"
     end
 
-    it "builds a path for the s3 object" do
+    it "builds a path for the local file" do
       expect(subject.local_file_path_prefix).to eq \
-        "exports/courses/#{course.id}/course_analytics_exports/some-date/12345"
+        "files/exports/courses/#{course.id}/course_analytics_exports/some-date/12345"
     end
   end
 

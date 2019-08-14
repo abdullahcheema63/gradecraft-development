@@ -24,7 +24,3 @@ GradeCraft::Application.configure do
   config.public_file_server.enabled = false
   config.session_store :active_record_store, :expire_after => 60.minutes
 end
-
-CarrierWave.configure do |config|
-  config.storage = :file
-end

@@ -11,7 +11,7 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
 
     let(:submission_files) { [ submission_file1, submission_file2 ] }
     let(:submission_file1) { build(:submission_file, filename: "gary_ate_ants.ralph", file_missing: false) }
-    let(:submission_file2) { build(:submission_file, file_missing: false) }
+    let(:submission_file2) { build(:submission_file, file: "gary_ate_ants.ralph", file_missing: false) }
 
     let(:submitter) { build(:user, first_name: "Edwina", last_name: "Georgebot") }
 
@@ -89,19 +89,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
           expect(result).to eq "the/path"
         end
       end
-
-      describe "#write_submission_binary_file" do
-        let(:result) do
-          subject.write_submission_binary_file(submitter, submission_file1, 5)
-        end
-
-        it "gets the binary submission file path" do
-          expect(performer).to receive(:submission_binary_file_path)
-            .with(submitter, submission_file1, 5)
-          result
-        end
-      end
-
 
       describe "remove_if_exists" do
         let(:horses_path) { File.expand_path("horses.png", "spec/support/binary_files") }

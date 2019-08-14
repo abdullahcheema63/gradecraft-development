@@ -98,11 +98,4 @@ describe Presenters::SubmissionFiles::Base do
     end
   end
 
-  describe "#send_data_options" do
-    it "returns a splattable array with the options for send_data" do
-      allow(subject).to receive_messages \
-        stream_submission_file: "filez", filename: "stuff.txt"
-      expect(subject.send_data_options).to eq ["filez", filename: "stuff.txt"]
-    end
-  end
 end

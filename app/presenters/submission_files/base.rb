@@ -13,16 +13,6 @@ module Presenters
         submission_file.try(:submission)
       end
 
-      def submission_file_streamable?
-        return false unless submission_file
-        #submission_file.object_stream.exists?
-      end
-
-      def stream_submission_file
-        return false unless submission_file_streamable?
-        #submission_file.object_stream.stream!
-      end
-
       def filename
         submission_file.instructor_filename params[:index].to_i
       end
@@ -30,10 +20,6 @@ module Presenters
       def mark_submission_file_missing
         return false unless submission_file
         submission_file.mark_file_missing
-      end
-
-      def send_data_options
-        [stream_submission_file, { filename: filename }]
       end
     end
   end

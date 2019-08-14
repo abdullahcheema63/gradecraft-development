@@ -22,6 +22,7 @@ module Presenters
       end
 
       def export_job
+        #should there be a check here if the @expor t is not existed yet? or use params[:id] ? 
         @export_job ||= ::CourseAnalyticsExportJob.new export_id: @export.id
       end
 
