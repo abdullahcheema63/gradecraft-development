@@ -5,10 +5,10 @@ angular.module('froala', []).
 		key: 'RD4H4B12B7iB6E5C3A4I2I3C8B6B5A4C-11NGNe1IODMGYNSFKV==',
     inlineMode: false,
     heightMin: 200,
-    toolbarButtons: [ 'bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align', 'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html' ],
+    toolbarButtons: [ 'bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align', 'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'image', 'insertVideo', 'html' ],
 		toolbarButtonsSM: ['bold', 'italic', 'underline', 'paragraphFormat'],
 	  toolbarButtonsXS: ['bold', 'italic', 'underline'],
-	  toolbarButtonsMD: ['bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align', 'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html'],
+	  toolbarButtonsMD: ['bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align', 'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'image', 'insertVideo', 'html'],
     placeholderText: 'Enter text here...'
 	}).
 	directive('froala', ['froalaConfig', '$timeout', function(froalaConfig, $timeout) {
