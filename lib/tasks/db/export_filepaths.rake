@@ -342,7 +342,7 @@ namespace :export_filepaths do
     fileName = "#{Rails.root}/files/RemovedfileUploads.txt"
     fileUploadAudit = File.open(fileName, 'w')
 
-    file_number = args[:number].nil? ? FileUploads.all.length : args[:number].to_i
+    file_number = args[:number].nil? ? FileUpload.all.length : args[:number].to_i
     fileUploads = FileUpload.first(file_number)
 
     fileUploads.each do |fu|
