@@ -57,7 +57,7 @@ namespace :export_filepaths do
     course_analytics_exports.each do |course_analytics_export|
       current_file_path =  course_analytics_export.local_file_path
       if !(current_file_path =~ outdated_file_path_regexp)
-        courseAnalyticsExportAudit.puts("updating file path for course_analytics_export: \n #{course_analytics_export.inspect} \n"}
+        courseAnalyticsExportAudit.puts("updating file path for course_analytics_export: \n #{course_analytics_export.inspect} \n")
         updated_course_analytics_export_file_paths.push(course_analytics_export.id)
         course_analytics_export.local_file_path = "files/#{current_file_path}"
         course_analytics_export.save
