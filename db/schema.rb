@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2019_07_26_154838) do
 
   # These are extensions that must be enabled in order to support this database
@@ -366,6 +367,7 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
     t.boolean "always_show_objectives", default: false, null: false
     t.boolean "allows_learning_objectives", default: false, null: false
     t.boolean "disable_grade_emails", default: false
+    t.boolean "delete_student_logged_grade", default: true
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 

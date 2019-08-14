@@ -3,14 +3,14 @@
 
   = render partial: "analytics/in_page_nav"
 
-  - if @assignment_types.length == 0
+  - if @assignment_types.length == 0 || @course.assignments.length == 0
     %p
-      There are currently no assignment types for this course, add an assignment type and then create assignments to see analytics.
+      There are currently no assignments in this course; add an assignment to see analytics.
 
-  - if @assignment_types.length > 0 && @course.assignments.length == 0
+  - if @course.assignments.length > 0 && !any_one_assignment_has_two_submissions?(@assignment_types)
     %p
-      There are currently no assignments for this course, add an assignment to see analytics.
-
+      No assignment currently has more than one graded assignment visible to students; grade and release more assignments to see analytics.
+  
   - @assignment_types.each do |assignment_type|
     - assignments_for_type = assignment_type.assignments
     - if assignments_for_type.select {|a| a.grades.student_visible.length > 1}.present?
