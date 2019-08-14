@@ -27,6 +27,8 @@ RSpec.describe FileManager::PathFinder do
   end
 
   describe "#rebuild_file_path" do
+    subject { create :submissions_export, export_filename: "stuffs_bro.txt" }
+
     before do
       allow(subject).to receive_messages(
         build_file_path: "new-key",
@@ -51,15 +53,8 @@ RSpec.describe FileManager::PathFinder do
     end
   end
 
-  describe "behaviors that don't define s3_manager" do
-    describe "#upload_file_to_s3" do
-      it "puts the encrypted object to s3" do
-        expect(s3_manager).to receive(:put_encrypted_object)
-          .with(s3_object_key, temp_file)
-        subject.upload_file_to_s3(temp_file)
-      end
-    end
-
+  describe "behaviors for local files" do
+    subject { create(:submissions_export) }
     describe "#local_file_exists?" do
       it "checks whether the local_file_exists?" do
         subject.local_file_exists?
