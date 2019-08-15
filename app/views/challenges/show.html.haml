@@ -21,7 +21,7 @@
       %b Documents:
       %ul
       - @challenge.challenge_files.each do |cf|
-        %li= link_to cf.filename, cf.url
+        %li= link_to cf.filename, cf.file.to_s
         - if current_user_is_staff?
           = link_to "(Remove)", remove_uploads_path({ :model => "ChallengeFile", :upload_id => cf.id })
 

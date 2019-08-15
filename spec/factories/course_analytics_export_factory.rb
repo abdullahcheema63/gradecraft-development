@@ -3,6 +3,6 @@ FactoryBot.define do
     association :course
     association :owner, factory: :user
 
-    s3_object_key { "some-object-key" }
+    local_file_path { "some-object-key" }
   end
 end

@@ -24,7 +24,7 @@
           - presenter.submission.submission_files.each do |sf|
             - if sf.id != nil
               %li
-                = link_to sf.filename, sf.url, :target => "_blank"
+                = link_to sf.filename, sf.file.to_s, :target => "_blank"
                 = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", assignment_id: presenter.assignment.id, :upload_id => sf.id } )
 
     - if presenter.assignment.accepts_links

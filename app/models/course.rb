@@ -4,7 +4,6 @@ class Course < ApplicationRecord
   include Copyable
   include UnlockableCondition
   include Analytics::CourseAnalytics
-  include S3Manager::Copying
 
   # Callbacks
   before_validation :reset_weight_fields_if_unused
@@ -288,7 +287,10 @@ class Course < ApplicationRecord
 
   # Copy course syllabus
   def copy_syllabus(copy)
-    copy.save unless copy.persisted?
-    remote_upload(copy, self, "syllabus", syllabus.url)
+    if self.syllabus.file.present?
+      copy.save unless copy.persisted?
+      CopyCarrierwaveFile::CopyFileService.new(self, copy, :syllabus).set_file
+      copy.save unless copy.persisted?
+    end
   end
 end

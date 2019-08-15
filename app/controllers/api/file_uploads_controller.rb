@@ -44,16 +44,12 @@ class API::FileUploadsController < ApplicationController
   def destroy
     file = FileUpload.where(id: params[:id]).first
     if file.present?
-      file.delete_from_s3
       file.destroy
 
       Attachment.where(file_upload_id: file.id).destroy_all
 
-      if !file.exists_on_s3? && file.destroyed?
+      if file.destroyed?
         render json: { message: "Grade file successfully deleted", success: true },
-        status: 200
-      elsif file.destroyed?
-        render json: {message: "Grade file deleted, error removing remote file", success: true},
         status: 200
       else
         render json: {message: "Grade file failed to delete", success: false},

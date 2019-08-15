@@ -71,6 +71,7 @@ gem 'rack-mini-profiler', require: false
 gem 'rails_autolink'
 gem 'rdiscount'
 gem 'redis', '~> 4.0'
+gem 'copy_carrierwave_file'
 
 # retry dsl for resque
 gem 'resque-retry'
