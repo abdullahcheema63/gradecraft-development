@@ -1,16 +1,16 @@
 module DownloadsHelper
   def allow_assignment_submissions_export(course, current_user)
-    return current_user.is_admin?(course) && (Rails.env.development? || course.id == 110 && (Rails.env.production? || Rails.env.staging?))
+    return course.export_date_range_enabled && (Rails.env.development? || course.id == 110 && (Rails.env.production? || Rails.env.staging?))
   end
 
-  def get_course_submissions_earliest_date(course)
-    earliest_date = course.submissions.submitted.minimum("created_at")
+  def get_course_submissions_start_date(course)
+    latest_date = course.submissions.submitted.maximum("created_at")
  
-    if earliest_date.nil? 
-      return Date.today.strftime("%Y-%m-%d")
+    if latest_date.nil? 
+      return (Date.today - 89).strftime("%Y-%m-%d")
     end
 
-    return earliest_date.strftime("%Y-%m-%d")
+    return (latest_date - 89).strftime("%Y-%m-%d")
   end
 
   def get_course_submissions_latest_date(course)

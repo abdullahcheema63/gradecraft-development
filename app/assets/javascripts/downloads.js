@@ -20,6 +20,7 @@ AssignmentSubmissionsDropdowns.forEach(function(_Dropdown){
         _Dropdown.value = SelectedField;
     }
 
+    
     _Dropdown.addEventListener("change", function(){
         localStorage.setItem("selected_field", _Dropdown.value);
         AssignmentSubmissionsDownloadLinks.forEach(function(_Link){
@@ -32,6 +33,11 @@ StartDateInputs.forEach(function(_Input){
     if(SelectedStartDate != null){
         _Input.value = SelectedStartDate;
     }
+
+    var MinimumStartDate = Date.new(EndDateInputs[0].value);
+    MinimumStartDate.setDate(MinimumStartDate.getDate() - 90);
+
+    _Input.setAttribute("min", StartDate.toISOString().split("T")[0])
 
     _Input.addEventListener("change", function(){
         localStorage.setItem("start_date", _Input.value);
@@ -46,10 +52,21 @@ EndDateInputs.forEach(function(_Input){
         _Input.value = SelectedEndDate;
     }
 
+    _Input.setAttribute("max", Date.today().toISOString().split("T")[0])
+
     _Input.addEventListener("change", function(){
         localStorage.setItem("end_date", _Input.value);
         AssignmentSubmissionsDownloadLinks.forEach(function(_Link){
             _Link.href = UpdateParameterInLink(_Link.href, "end_date", _Input.value);
         });
+        var EndDate = _Input.value;
+
+        StartDateInputs.forEach(function(_Input){
+
+            var MinimumStartDate = new Date(EndDate);
+            console.log(MinimumStartDate.toISOString().split("T")[0])
+            MinimumStartDate.setDate(MinimumStartDate.getDate() - 90);
+            _Input.setAttribute("min", MinimumStartDate.toISOString().split("T")[0])
+        })
     });
 });

@@ -1,5 +1,8 @@
 class SubmissionExporter
   def export(course, start_date, end_date, field)
+    puts "Start: #{start_date}"
+    puts "End: #{end_date}"
+    
     CSV.generate do |csv|
       csv << baseline_headers(course)
 

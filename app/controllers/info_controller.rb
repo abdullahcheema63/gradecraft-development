@@ -127,19 +127,32 @@ class InfoController < ApplicationController
   def start_end_dates
     date_range = {}
 
+    previous_days_permitted = 1
+
     begin
-      date_range[:start_date] = params.key?(:start_date) ? Date.strptime(params[:start_date], "%Y-%m-%d") : Date.new(1955, 5, 11)
       date_range[:end_date] =  params.key?(:end_date) ? Date.strptime(params[:end_date], "%Y-%m-%d") : Date.today
+      date_range[:start_date] = params.key?(:start_date) ? Date.strptime(params[:start_date], "%Y-%m-%d") : date_range[:end_date] - previous_days_permitted
     rescue ArgumentError
       puts "Invalid date"
-      date_range[:start_date] = Date.new(1955, 5, 11)
+      date_range[:start_date] = Date.today - previous_days_permitted
       date_range[:end_date] = Date.today
     end
 
+    puts "Start: #{date_range[:start_date]}"
+    puts "End: #{date_range[:end_date]}"
+
     if date_range[:start_date] > date_range[:end_date]
-      date_range[:start_date] = Date.new(1955, 5, 11)
+      date_range[:start_date] = date_range[:end_date] - previous_days_permitted
     end
 
+    if date_range[:end_date] - date_range[:start_date] > previous_days_permitted
+      date_range[:start_date] = date_range[:end_date] - previous_days_permitted
+    end
+
+
+    puts "Start: #{date_range[:start_date]}"
+    puts "End: #{date_range[:end_date]}"
+    
     return date_range
   end
 
