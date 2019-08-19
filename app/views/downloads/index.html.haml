@@ -47,14 +47,13 @@
                   Start:
                 %span{:class => "calendar_indicator"}
                   = glyph(:calendar)
-                %input{:type => "date", :name => "start_date", :class => "datetimepicker start_date_input", :min => get_course_submissions_start_date(current_course), :value => get_course_submissions_start_date(current_course)}
-               
+                %input{:type => "date", :name => "start_date", :class => "dateinput start_date_input", :min => get_course_submissions_start_date(current_course), :value => get_course_submissions_start_date(current_course)}
 
                 %em{:style => "margin-left: 14px"}
                   End:
                 %span{:class => "calendar_indicator"}
                   = glyph(:calendar)
-                %input{:type => "date", :name => "end_date", :class => "datetimepicker end_date_input", :max => get_course_submissions_latest_date(current_course), :value => get_course_submissions_latest_date(current_course)}
+                %input{:type => "date", :name => "end_date", :class => "dateinput end_date_input", :max => get_course_submissions_latest_date(current_course), :value => get_course_submissions_latest_date(current_course)}
                 %br
                 Choose which column the date range is applicable to:
                 

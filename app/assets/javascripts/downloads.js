@@ -34,10 +34,10 @@ StartDateInputs.forEach(function(_Input){
         _Input.value = SelectedStartDate;
     }
 
-    var MinimumStartDate = Date.new(EndDateInputs[0].value);
+    var MinimumStartDate = new Date(EndDateInputs[0].value);
     MinimumStartDate.setDate(MinimumStartDate.getDate() - 90);
 
-    _Input.setAttribute("min", StartDate.toISOString().split("T")[0])
+    _Input.setAttribute("min", MinimumStartDate.toISOString().split("T")[0])
 
     _Input.addEventListener("change", function(){
         localStorage.setItem("start_date", _Input.value);
@@ -59,10 +59,10 @@ EndDateInputs.forEach(function(_Input){
         AssignmentSubmissionsDownloadLinks.forEach(function(_Link){
             _Link.href = UpdateParameterInLink(_Link.href, "end_date", _Input.value);
         });
+
         var EndDate = _Input.value;
 
         StartDateInputs.forEach(function(_Input){
-
             var MinimumStartDate = new Date(EndDate);
             console.log(MinimumStartDate.toISOString().split("T")[0])
             MinimumStartDate.setDate(MinimumStartDate.getDate() - 90);
