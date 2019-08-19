@@ -124,7 +124,7 @@ class InfoController < ApplicationController
     @teams = current_course.teams
   end
 
-  def start_end_dates(Course)
+  def start_end_dates(course)
     date_range = {}
 
     previous_days_permitted = course.export_date_range_days
