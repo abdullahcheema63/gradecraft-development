@@ -64,8 +64,7 @@ EndDateInputs.forEach(function(_Input){
 
         StartDateInputs.forEach(function(_Input){
             var MinimumStartDate = new Date(EndDate);
-            console.log(MinimumStartDate.toISOString().split("T")[0])
-            MinimumStartDate.setDate(MinimumStartDate.getDate() - 90);
+            MinimumStartDate.setDate(MinimumStartDate.getDate() - parseInt(_Input.getAttribute("date_range_days")));
             _Input.setAttribute("min", MinimumStartDate.toISOString().split("T")[0])
         })
     });
