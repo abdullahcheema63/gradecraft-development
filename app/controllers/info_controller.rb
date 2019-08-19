@@ -124,10 +124,10 @@ class InfoController < ApplicationController
     @teams = current_course.teams
   end
 
-  def start_end_dates
+  def start_end_dates(Course)
     date_range = {}
 
-    previous_days_permitted = 1
+    previous_days_permitted = course.export_date_range_days
 
     begin
       date_range[:end_date] =  params.key?(:end_date) ? Date.strptime(params[:end_date], "%Y-%m-%d") : Date.today
@@ -152,15 +152,15 @@ class InfoController < ApplicationController
 
     puts "Start: #{date_range[:start_date]}"
     puts "End: #{date_range[:end_date]}"
-    
+
     return date_range
   end
 
   def submissions
-    date_range = start_end_dates
     field = params.key?(:field) && SubmissionExporter.field_for_export?(params[:field]) ? params[:field] : "created_at"
     course = current_user.courses.find_by(id: params[:id])
-    
+    date_range = start_end_dates(course)
+
     @submission_export_job = SubmissionExportJob.new(user_id: current_user.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv", start_date: date_range[:start_date], end_date: date_range[:end_date], field: field)
     @submission_export_job.enqueue
 

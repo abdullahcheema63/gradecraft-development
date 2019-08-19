@@ -7,10 +7,10 @@ module DownloadsHelper
     latest_date = course.submissions.submitted.maximum("created_at")
  
     if latest_date.nil? 
-      return (Date.today - 89).strftime("%Y-%m-%d")
+      return (Date.today - (course.export_date_range_days - 1).days).strftime("%Y-%m-%d")
     end
 
-    return (latest_date - 89).strftime("%Y-%m-%d")
+    return (latest_date - (course.export_date_range_days - 1).days).strftime("%Y-%m-%d")
   end
 
   def get_course_submissions_latest_date(course)
