@@ -1,11 +1,52 @@
 namespace :export_filepaths do
+  class Status
+    def initialize(task_index, total)
+      @status_file_path = "#{Rails.root}/files/rake_task_#{task_index}_status.txt"
+      @total = total
+      @completed_index = 0
+      read_saved_status
+    end
+
+    def read_saved_status
+      if File.file?(@status_file_path)
+        @completed_index = File.foreach(@status_file_path).first.split(",")[0].to_i
+        @total = File.foreach(@status_file_path).first.split(",")[1].to_i
+      else
+        save_status
+      end
+    end
+
+    def save_status
+      File.write(@status_file_path, "#{@completed_index},#{@total}")
+    end
+
+    def remove_status
+      File.delete(@status_file_path)
+    end
+
+    def increment_progress
+      @completed_index = @completed_index + 1
+      save_status
+      printf("\rCompleted %d/%d", @completed_index, @total)
+    end
+
+    def get_progress
+      return @completed_index
+    end
+  end
+
   desc "Changes any SubmissionsExport with local_file_path as exports/* to files/exports/*"
   task update_submissions_export_filepaths: :environment do
-
     fileName = "#{Rails.root}/files/SubmissionExportAudit.txt"
     submissionExportAudit = File.open(fileName, 'w')
 
     submission_exports = SubmissionsExport.all
+
+    status = Status.new(0, submission_exports.length)
+
+    completed_index = status.get_progress
+    
+    submission_exports = submission_exports.drop(completed_index) if completed_index > 0
 
     outdated_file_path_regexp = Regexp.new("files\/.*")
 
@@ -15,6 +56,7 @@ namespace :export_filepaths do
 
     submission_exports.each do |submissions_export|
       current_file_path = submissions_export.local_file_path
+
       if !(current_file_path =~ outdated_file_path_regexp)
         submissionExportAudit.puts("updating file path for submissions_export:\n #{submissions_export.insepct} \n")
         updated_submissions_export_file_paths.push(submissions_export.id)
@@ -32,6 +74,8 @@ namespace :export_filepaths do
       else
         valid_export_count = valid_export_count + 1
       end
+
+      status.increment_progress
     end
     submissionExportAudit.puts("Existing & valid submission exports: #{valid_export_count}")
 
@@ -40,6 +84,8 @@ namespace :export_filepaths do
     if missing_submissions_export_files.any?
       submissionExportAudit.puts("\nSubmissionsExport ids with missing files: #{missing_submissions_export_files}")
     end
+
+    status.remove_status
   end
 
   desc "Changes any CourseAnalyticsExport with local_file_path as exports/* to files/exports/*"
@@ -48,6 +94,12 @@ namespace :export_filepaths do
     courseAnalyticsExportAudit = File.open(fileName, 'w')
 
     course_analytics_exports = CourseAnalyticsExport.all
+
+    status = Status.new(1, course_analytics_exports.length)
+
+    completed_index = status.get_progress
+ 
+    course_analytics_exports = course_analytics_exports.drop(completed_index) if completed_index > 0
 
     outdated_file_path_regexp = Regexp.new("files\/.*")
 
@@ -77,6 +129,8 @@ namespace :export_filepaths do
     if missing_course_analytics_export_files.any?
       courseAnalyticsExportAudit.puts("\nCourseAnalyticsExport ids with missing files: #{missing_course_analytics_export_files}")
     end
+
+    status.remove_status
   end
 
   desc "Removes SubmissionFile objects if the file does not exist or is corrupted"
@@ -88,6 +142,14 @@ namespace :export_filepaths do
     file_number = args[:number].nil? ? SubmissionFile.all.length : args[:number].to_i
 
     submissionFiles = SubmissionFile.first(file_number)
+
+    if args[:number].nil? && args[:delete_submission_file] == "true"
+      status = Status.new(2, submissionFiles.length)
+
+      completed_index = status.get_progress
+ 
+      submissionFiles = submissionFiles.drop(completed_index) if completed_index > 0
+    end
 
     submissionFiles.each do |sf|
       if !sf.file.present?
@@ -103,6 +165,11 @@ namespace :export_filepaths do
           sf.destroy
           submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_submission_file]
+          status.increment_progress
+        end
+
         next
       end
 
@@ -120,6 +187,11 @@ namespace :export_filepaths do
             sf.destroy
             submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
           end
+
+          if args[:number].nil? && args[:delete_submission_file]
+            status.increment_progress
+          end
+
           next
         end
       else
@@ -135,12 +207,24 @@ namespace :export_filepaths do
           sf.destroy
           submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_submission_file]
+          status.increment_progress
+        end
+
         next
       end
+
       submissionFileAudit.puts("Submission File with id: #{sf.id} valid")
+
+      if args[:number].nil? && args[:delete_submission_file]
+        status.increment_progress
+      end
     end
 
     submissionFileAudit.close
+
+    status.remove_status
   end
 
   desc "Removes challengeFile objects if the file does not exist or is corrupted"
@@ -151,6 +235,15 @@ namespace :export_filepaths do
 
     file_number = args[:number].nil? ? ChallengeFile.all.length : args[:number].to_i
     challengeFiles = ChallengeFile.first(file_number)
+
+
+    if args[:number].nil? && args[:delete_challenge_file] == "true"
+      status = Status.new(3, challengeFiles.length)
+
+      completed_index = status.get_progress
+ 
+      challengeFiles = challengeFiles.drop(completed_index) if completed_index > 0
+    end
 
     challengeFiles.each do |cf|
       if !cf.file.present?
@@ -166,6 +259,11 @@ namespace :export_filepaths do
           cf.destroy
           challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_challenge_file]
+          status.increment_progress
+        end
+
         next
       end
 
@@ -183,6 +281,11 @@ namespace :export_filepaths do
             cf.destroy
             challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
           end
+
+          if args[:number].nil? && args[:delete_challenge_file]
+            status.increment_progress
+          end
+          
           next
         end
       else
@@ -198,12 +301,24 @@ namespace :export_filepaths do
           cf.destroy
           challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
         end
+        
+        if args[:number].nil? && args[:delete_challenge_file]
+          status.increment_progress
+        end
+
         next
       end
+
       challengeFileAudit.puts("challenge File with id: #{cf.id} valid")
+
+      if args[:number].nil? && args[:delete_challenge_file]
+        status.increment_progress
+      end
     end
 
     challengeFileAudit.close
+
+    status.remove_status
   end
 
 
@@ -217,6 +332,14 @@ namespace :export_filepaths do
     file_number = args[:number].nil? ? BadgeFile.all.length : args[:number].to_i
 
     badgeFiles = BadgeFile.first(file_number)
+
+    if args[:number].nil? && args[:delete_badge_file] == "true"
+      status = Status.new(4, badgeFiles.length)
+
+      completed_index = status.get_progress
+ 
+      badgeFiles = badgeFiles.drop(completed_index) if completed_index > 0
+    end
 
     badgeFiles.each do |bf|
       if !bf.file.present?
@@ -232,6 +355,11 @@ namespace :export_filepaths do
           bf.destroy
           badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_badge_file]
+          status.increment_progress
+        end
+
         next
       end
 
@@ -249,6 +377,11 @@ namespace :export_filepaths do
             bf.destroy
             badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
           end
+
+          if args[:number].nil? && args[:delete_badge_file]
+            status.increment_progress
+          end
+          
           next
         end
       else
@@ -264,12 +397,24 @@ namespace :export_filepaths do
           bf.destroy
           badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_badge_file]
+          status.increment_progress
+        end
+
         next
       end
+
+      if args[:number].nil? && args[:delete_badge_file]
+        status.increment_progress
+      end
+
       badgeFileAudit.puts("badge File with id: #{bf.id} valid")
     end
 
     badgeFileAudit.close
+
+    status.remove_status
   end
 
   desc "Removes assignmentFile objects if the file does not exist or is corrupted"
@@ -280,6 +425,14 @@ namespace :export_filepaths do
 
     file_number = args[:number].nil? ? AssignmentFile.all.length : args[:number].to_i
     assignmentFiles = AssignmentFile.first(file_number)
+
+    if args[:number].nil? && args[:delete_assignment_file] == "true"
+      status = Status.new(5, assignmentFiles.length)
+
+      completed_index = status.get_progress
+ 
+      assignmentFiles = assignmentFiles.drop(completed_index) if completed_index > 0
+    end
 
     assignmentFiles.each do |af|
       if !af.file.present?
@@ -295,6 +448,11 @@ namespace :export_filepaths do
           af.destroy
           assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_assignment_file]
+          status.increment_progress
+        end
+
         next
       end
 
@@ -312,6 +470,11 @@ namespace :export_filepaths do
             af.destroy
             assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
           end
+
+          if args[:number].nil? && args[:delete_assignment_file]
+            status.increment_progress
+          end
+          
           next
         end
       else
@@ -327,12 +490,24 @@ namespace :export_filepaths do
           af.destroy
           assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_assignment_file]
+          status.increment_progress
+        end
+
         next
       end
+      
+      if args[:number].nil? && args[:delete_assignment_file]
+        status.increment_progress
+      end
+
       assignmentFileAudit.puts("assignment File with id: #{af.id} valid")
     end
 
     assignmentFileAudit.close
+
+    status.remove_status
   end
 
 
@@ -344,6 +519,14 @@ namespace :export_filepaths do
 
     file_number = args[:number].nil? ? FileUpload.all.length : args[:number].to_i
     fileUploads = FileUpload.first(file_number)
+
+    if args[:number].nil? && args[:delete_file_upload_file] == "true"
+      status = Status.new(6, fileUploads.length)
+
+      completed_index = status.get_progress
+ 
+      fileUploads = fileUploads.drop(completed_index) if completed_index > 0
+    end
 
     fileUploads.each do |fu|
       if !fu.file.present?
@@ -363,6 +546,11 @@ namespace :export_filepaths do
           fu.destroy
           fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_file_upload_file]
+          status.increment_progress
+        end
+
         next
       end
 
@@ -384,6 +572,11 @@ namespace :export_filepaths do
             fu.destroy
             fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
           end
+
+          if args[:number].nil? && args[:delete_file_upload_file]
+            status.increment_progress
+          end
+          
           next
         end
       else
@@ -403,11 +596,23 @@ namespace :export_filepaths do
           fu.destroy
           fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
         end
+
+        if args[:number].nil? && args[:delete_file_upload_file]
+          status.increment_progress
+        end
+
         next
       end
+
+      if args[:number].nil? && args[:delete_file_upload_file]
+        status.increment_progress
+      end
+
       fileUploadAudit.puts("file upload file with id: #{fu.id} valid")
     end
 
     fileUploadAudit.close
+
+    status.remove_status
   end
 end
