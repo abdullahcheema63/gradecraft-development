@@ -84,10 +84,20 @@ rbenv local 2.5.3 (or rbenv global 2.5.3 if preferred)
 
 5. Install databases
 
+* On MacOS use the following:
+
 ```sh
 brew install mongodb
 brew install redis
 brew install postgresql
+```
+
+* On Ubuntu use the following:
+
+```sh
+sudo apt-get install mongodb
+sudo apt-get install redis
+sudo apt-get install postgresql
 ```
 
 6. Ensure access to `/data/db` write directory for MongodDB
