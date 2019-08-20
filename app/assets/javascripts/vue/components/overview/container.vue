@@ -13,7 +13,96 @@
       </guideMessage>
     </div>
 
-    <div class="content_block">
+    <tabContainer>
+      <template slot="tabBarNav">
+        <div>
+          <input type="radio" id="current_courses" name="tab_group_1" value="Current" checked="checked">
+          <label for="current_courses">Current</label>
+        </div>
+        <div>
+          <input type="radio" id="archived_courses" name="tab_group_1" value="Archived">
+          <label for="archived_courses">Archived</label>
+        </div>
+      </template>
+      <template slot="tabSections">
+        <div>
+          <h2>Current Courses</h2>
+          <div class="p_button" v-if="userIsInstructor">
+            <p>
+              This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course at any time. You can also manage your courses to publish or unpublish courses, and apply or remove course licenses.
+            </p>
+            <buttonModal button_class="action" ref="buttonModal_add">
+              <template slot="button-text">Add a course</template>
+              <template slot="heading">Add a course</template>
+              <template slot="content">
+                <h2>Let’s add a new course!</h2>
+                <h4>Essential Course Info</h4>
+                <form>
+                  <div v-if="newCourseErrors.length" class="inline_alert_msg">
+                    <p>
+                      Please fill out the <b>required fields</b> below if you want to create a new course.
+                    </p>
+                  </div>
+                  <div class="flex-2 form_pair">
+                    <div class="form_elem">
+                      <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
+                      <label for="course_number">Course #</label>
+                    </div>
+                    <div class="form_elem">
+                      <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
+                      <label for="course_name">Course name</label>
+                    </div>
+                    <div class="form_elem">
+                      <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar"></flat-pickr>
+                      <label for="course_start">Course start date</label>
+                    </div>
+                    <div class="form_elem">
+                      <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar"></flat-pickr>
+                      <label for="course_end">Course end date</label>
+                    </div>
+
+                    <div class="form_elem">
+                      <select id="course_semester" v-model="newCourse.term.name">
+                        <option value="" selected="selected" disabled="disabled">Semester</option>
+                        <option :value="'Fall'">Fall</option>
+                        <option :value="'Winter'">Winter</option>
+                        <option :value="'Spring'">Spring</option>
+                        <option :value="'Summer'">Summer</option>
+                      </select>
+                      <label for="course_semester">Semester</label>
+                    </div>
+                    <div class="form_elem">
+                      <select id="course_year" v-model="newCourse.term.year">
+                        <option value="" selected="selected" disabled="disabled">Year</option>
+                        <option :value="2020">2020</option>
+                        <option :value="2019">2019</option>
+                        <option :value="2018">2018</option>
+                        <option :value="2017">2017</option>
+                      </select>
+                      <label for="course_year">Year</label>
+                    </div>
+                  </div>
+
+                  <button type="button submit" class="action">Add my course</button>
+                </form>
+              </template>
+            </buttonModal>
+          </div>
+
+          <div class="course_box" v-if="currentCourses.length">
+            <courseCard v-for="course in currentCourses" :key="course.id"  :course="course" status="published"></courseCard>
+          </div>
+          <div class="course_box" v-else>
+            <div class="course_card empty">
+              <p><em>You don't have any published, active courses!</em></p>
+            </div>
+          </div>
+
+        </div>
+      </template>
+    </tabContainer>
+
+    <div class="content_block bg-blue">
       <h2 class="unspace-top">Current Courses</h2>
       <div class="course_box" v-if="currentCourses.length">
         <courseCard v-for="course in currentCourses" :key="course.id"  :course="course" status="published"></courseCard>
@@ -253,6 +342,7 @@ module.exports = {
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     formContainer: () => VComponents.get('vue/components/formContainer'),
+    tabContainer: () => VComponents.get('vue/components/structure/tabContainer'),
     VueFlatpickr
   },
   data() {

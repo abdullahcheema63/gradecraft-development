@@ -1,4 +1,5 @@
 @import "../utilities/variables"
+@import "../utilities/mixins"
 
 /* amalgamation of old and new button styles __=^o.o^= */
 .button, button,
@@ -46,7 +47,7 @@
     background: $pink_1
     border: 2px solid $pink_2
     color: white
-    
+
     &:hover
       background: $pink_2
       border-bottom-color: $pink_2
@@ -107,6 +108,31 @@ a
 
   &.stealth_link
     border-bottom: 0px solid transparent
+
+.p_button
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  margin-bottom: 1em
+
+  @include mobile-xl
+    display: block
+
+  & > p
+    max-width: 800px
+    flex: 1
+
+  & > div
+    margin-left: 2em
+
+    @include mobile-xl
+      margin-left: 0
+
+    button
+      margin-top: 0
+      
+      &:last-of-type
+        margin-right: 0
 
 table,
 .ui-widget table

@@ -8,8 +8,8 @@
     <div class="course_status">
       <p>{{ user_card_class }}</p>
       <div v-if="course.role === 'professor'">
-        <p :class="'licensed'" v-if="is_licensed" @click="toggleModalState">
-          Licensed
+        <p :class="'licensed'" v-if="is_licensed">
+          paid
         </p>
       </div>
     </div>
