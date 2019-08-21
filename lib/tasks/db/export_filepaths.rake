@@ -17,7 +17,7 @@ namespace :export_filepaths do
     end
 
     def save_status
-      File.write(@status_file_path, "#{@completed_index},#{@total}")
+      File.write(@status_file_path, "#{@completed_index},#{@total}\n")
     end
 
     def remove_status
@@ -27,7 +27,7 @@ namespace :export_filepaths do
     def increment_progress
       @completed_index = @completed_index + 1
       save_status
-      printf("\rCompleted %d/%d", @completed_index, @total)
+      printf("\rCompleted %d/%d\n", @completed_index, @total)
     end
 
     def get_progress
@@ -268,6 +268,8 @@ namespace :export_filepaths do
       end
 
       if cf.file.path.present?
+        sleep(4)
+        
         if !(File.file?(cf.file.path))
           challengeFileAudit.puts("====================DELETING challenge FILE====================")
           challengeFileAudit.puts("Deleting because: Could not find file at this location: #{cf.file.path} \n")
@@ -337,7 +339,7 @@ namespace :export_filepaths do
       status = Status.new(4, badgeFiles.length)
 
       completed_index = status.get_progress
- 
+
       badgeFiles = badgeFiles.drop(completed_index) if completed_index > 0
     end
 
