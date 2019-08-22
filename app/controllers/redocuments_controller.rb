@@ -2,7 +2,7 @@ class RedocumentsController < ApplicationController
     def download
       file_url = "#{Rails.root}#{request.original_fullpath}"
 
-      if file_is_submission? || !File.exist?(file_url)
+      if file_is_submission? || !File.exist?(URI.decode(file_url))
         not_found
       end
       send_file URI.decode(file_url), :x_sendfile=>true
