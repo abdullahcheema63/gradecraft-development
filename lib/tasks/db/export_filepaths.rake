@@ -16,7 +16,7 @@ namespace :export_filepaths do
     submission_exports.each do |submissions_export|
       current_file_path = submissions_export.local_file_path
       if !(current_file_path =~ outdated_file_path_regexp)
-        submissionExportAudit.puts("updating file path for submissions_export:\n #{submissions_export.insepct} \n")
+        submissionExportAudit.puts("updating file path for submissions_export:\n #{submissions_export.inspect} \n")
         updated_submissions_export_file_paths.push(submissions_export.id)
         submissions_export.local_file_path = "files/#{current_file_path}"
         submissions_export.save
@@ -408,7 +408,7 @@ namespace :export_filepaths do
           next
         end
         fileUploadAudit.puts("file upload file with id: #{fu.id} valid")
-        
+
       rescue StandardError => StandardError
         puts "Error: #{error.to_s}"
       end
