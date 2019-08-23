@@ -166,7 +166,7 @@ namespace :export_filepaths do
           submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_submission_file]
+        if args[:number].nil? && args[:delete_submission_file] == "true"
           status.increment_progress
         end
 
@@ -188,7 +188,7 @@ namespace :export_filepaths do
             submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
           end
 
-          if args[:number].nil? && args[:delete_submission_file]
+          if args[:number].nil? && args[:delete_submission_file] == "true"
             status.increment_progress
           end
 
@@ -208,7 +208,7 @@ namespace :export_filepaths do
           submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_submission_file]
+        if args[:number].nil? && args[:delete_submission_file] == "true"
           status.increment_progress
         end
 
@@ -217,14 +217,16 @@ namespace :export_filepaths do
 
       submissionFileAudit.puts("Submission File with id: #{sf.id} valid")
 
-      if args[:number].nil? && args[:delete_submission_file]
+      if args[:number].nil? && args[:delete_submission_file] == "true"
         status.increment_progress
       end
     end
 
     submissionFileAudit.close
 
-    status.remove_status
+    if args[:number].nil? && args[:delete_submission_file] == "true"
+      status.remove_status
+    end
   end
 
   desc "Removes challengeFile objects if the file does not exist or is corrupted"
@@ -260,7 +262,7 @@ namespace :export_filepaths do
           challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_challenge_file]
+        if args[:number].nil? && args[:delete_challenge_file] == "true"
           status.increment_progress
         end
 
@@ -284,7 +286,7 @@ namespace :export_filepaths do
             challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
           end
 
-          if args[:number].nil? && args[:delete_challenge_file]
+          if args[:number].nil? && args[:delete_challenge_file] == "true"
             status.increment_progress
           end
           
@@ -304,7 +306,7 @@ namespace :export_filepaths do
           challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
         end
         
-        if args[:number].nil? && args[:delete_challenge_file]
+        if args[:number].nil? && args[:delete_challenge_file] == "true"
           status.increment_progress
         end
 
@@ -313,14 +315,16 @@ namespace :export_filepaths do
 
       challengeFileAudit.puts("challenge File with id: #{cf.id} valid")
 
-      if args[:number].nil? && args[:delete_challenge_file]
+      if args[:number].nil? && args[:delete_challenge_file] == "true"
         status.increment_progress
       end
     end
 
     challengeFileAudit.close
 
-    status.remove_status
+    if args[:number].nil? && args[:delete_submission_file] == "true"
+      status.remove_status
+    end
   end
 
 
@@ -358,7 +362,7 @@ namespace :export_filepaths do
           badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_badge_file]
+        if args[:number].nil? && args[:delete_badge_file] == "true"
           status.increment_progress
         end
 
@@ -380,7 +384,7 @@ namespace :export_filepaths do
             badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
           end
 
-          if args[:number].nil? && args[:delete_badge_file]
+          if args[:number].nil? && args[:delete_badge_file] == "true"
             status.increment_progress
           end
           
@@ -400,14 +404,14 @@ namespace :export_filepaths do
           badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_badge_file]
+        if args[:number].nil? && args[:delete_badge_file] == "true"
           status.increment_progress
         end
 
         next
       end
 
-      if args[:number].nil? && args[:delete_badge_file]
+      if args[:number].nil? && args[:delete_badge_file] == "true"
         status.increment_progress
       end
 
@@ -416,7 +420,9 @@ namespace :export_filepaths do
 
     badgeFileAudit.close
 
-    status.remove_status
+    if args[:number].nil? && args[:delete_submission_file] == "true"
+      status.remove_status
+    end
   end
 
   desc "Removes assignmentFile objects if the file does not exist or is corrupted"
@@ -451,7 +457,7 @@ namespace :export_filepaths do
           assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_assignment_file]
+        if args[:number].nil? && args[:delete_assignment_file] == "true"
           status.increment_progress
         end
 
@@ -473,7 +479,7 @@ namespace :export_filepaths do
             assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
           end
 
-          if args[:number].nil? && args[:delete_assignment_file]
+          if args[:number].nil? && args[:delete_assignment_file] == "true"
             status.increment_progress
           end
           
@@ -493,14 +499,14 @@ namespace :export_filepaths do
           assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_assignment_file]
+        if args[:number].nil? && args[:delete_assignment_file] == "true"
           status.increment_progress
         end
 
         next
       end
       
-      if args[:number].nil? && args[:delete_assignment_file]
+      if args[:number].nil? && args[:delete_assignment_file] == "true"
         status.increment_progress
       end
 
@@ -509,7 +515,9 @@ namespace :export_filepaths do
 
     assignmentFileAudit.close
 
-    status.remove_status
+    if args[:number].nil? && args[:delete_submission_file] == "true"
+      status.remove_status
+    end
   end
 
 
@@ -549,7 +557,7 @@ namespace :export_filepaths do
           fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_file_upload_file]
+        if args[:number].nil? && args[:delete_file_upload_file] == "true"
           status.increment_progress
         end
 
@@ -575,7 +583,7 @@ namespace :export_filepaths do
             fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
           end
 
-          if args[:number].nil? && args[:delete_file_upload_file]
+          if args[:number].nil? && args[:delete_file_upload_file] == "true"
             status.increment_progress
           end
           
@@ -599,14 +607,14 @@ namespace :export_filepaths do
           fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
         end
 
-        if args[:number].nil? && args[:delete_file_upload_file]
+        if args[:number].nil? && args[:delete_file_upload_file] == "true"
           status.increment_progress
         end
 
         next
       end
 
-      if args[:number].nil? && args[:delete_file_upload_file]
+      if args[:number].nil? && args[:delete_file_upload_file] == "true"
         status.increment_progress
       end
 
@@ -615,6 +623,8 @@ namespace :export_filepaths do
 
     fileUploadAudit.close
 
-    status.remove_status
+    if args[:number].nil? && args[:delete_submission_file] == "true"
+      status.remove_status
+    end
   end
 end
