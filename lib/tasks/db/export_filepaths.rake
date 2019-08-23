@@ -1,7 +1,7 @@
 namespace :export_filepaths do
   class Status
     def initialize(task_index, total)
-      @status_file_path = "#{Rails.root}/files/rake_task_#{task_index}_status.txt"
+      @status_file_path = "/dev/shm/rake_task_#{task_index}_status.txt"
       @total = total
       @completed_index = 0
       read_saved_status
@@ -21,13 +21,16 @@ namespace :export_filepaths do
     end
 
     def remove_status
+      @status_file.close unless @status_file.nil?
       File.delete(@status_file_path)
     end
 
     def increment_progress
       @completed_index = @completed_index + 1
       save_status
-      printf("\rCompleted %d/%d", @completed_index, @total)
+      if @completed_index % 100 == 0
+        printf("\rCompleted %d/%d", @completed_index, @total)
+      end
     end
 
     def get_progress
