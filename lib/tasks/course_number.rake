@@ -46,10 +46,13 @@ namespace :move_attachment_directories do
 
     courses = Course.all
     courses.each do |c|
-      if course_has_attchments?(c) && has_source_directory()
+      if course_has_attchments?(c)
         puts(c.inspect)
         old_file_path = "#{Rails.root}/files/uploads/#{c.course_number}-#{c.id}"
+        puts("old_file_path: ", old_file_path)
+
         new_file_path = "#{Rails.root}/files/uploads/#{c.id}"
+        puts("new_file_path: ", new_file_path)
 
         if old_directory_exists(c) && !new_directory_exists(c)
           if args[:run_it] == "true"
@@ -90,6 +93,17 @@ namespace :move_attachment_directories do
           puts("Deleting directory: ", old_dir)
           FileUtils.remove_dir old_file_path
         end
+      elsif(Course.exists?(course_id))
+        if(course_has_attchments?(Course.find(course_id)))
+          puts("Course has attachments, but does not have 'new' directory")
+          puts("Course number was perviously changed")
+          if args[:run_it] == "true"
+            puts("making a copy of directory: ", old_dir)
+            puts("naming it: ", new_dir)
+            FileUtils.cp_r old_dir, new_dir
+          end
+        end
+
       else
         puts("Did not find directory with just an id")
         puts("path: ", old_dir)
