@@ -91,7 +91,7 @@ namespace :move_attachment_directories do
           puts("copying old_dir to new dir")
           FileUtils.cp_r("#{old_dir}/.", "#{new_dir}/.")
           puts("Deleting directory: ", old_dir)
-          FileUtils.remove_dir old_file_path
+          FileUtils.remove_dir old_dir
         end
       elsif(Course.exists?(course_id))
         if(course_has_attchments?(Course.find(course_id)))
@@ -101,6 +101,8 @@ namespace :move_attachment_directories do
             puts("making a copy of directory: ", old_dir)
             puts("naming it: ", new_dir)
             FileUtils.cp_r old_dir, new_dir
+            puts("Deleting directory: ", old_dir)
+            FileUtils.remove_dir old_dir
           end
         end
 
@@ -109,6 +111,7 @@ namespace :move_attachment_directories do
         puts("path: ", old_dir)
         puts("No attachments were found for this course")
       end
+      puts("===========================================")
     end
   end
 end
