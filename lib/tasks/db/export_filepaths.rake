@@ -16,7 +16,7 @@ namespace :export_filepaths do
     submission_exports.each do |submissions_export|
       current_file_path = submissions_export.local_file_path
       if !(current_file_path =~ outdated_file_path_regexp)
-        submissionExportAudit.puts("updating file path for submissions_export:\n #{submissions_export.insepct} \n")
+        submissionExportAudit.puts("updating file path for submissions_export:\n #{submissions_export.inspect} \n")
         updated_submissions_export_file_paths.push(submissions_export.id)
         submissions_export.local_file_path = "files/#{current_file_path}"
         submissions_export.save
@@ -346,30 +346,11 @@ namespace :export_filepaths do
     fileUploads = FileUpload.first(file_number)
 
     fileUploads.each do |fu|
-      if !fu.file.present?
-        fileUploadAudit.puts("====================DELETING file upload FILE====================")
-        fileUploadAudit.puts("Deleting because: There is no file associated with the fileUpload id: #{fu.id}")
-        fileUploadAudit.puts("Destroying file upload files is marked as #{args[:delete_file_upload_file]}")
-        if Grade.exists?(fu.grade_id)
-          fileUploadAudit.puts("file upload file id: #{fu.id} \n Grade id: #{fu.grade_id} \n Assignment id: #{Grade.find(fu.grade_id).assignment.id} \n Course id: #{Grade.find(fu.grade_id).course.id}")
-        else
-          fileUploadAudit.puts("**could not find grade with id: #{fu.grade_id}")
-        end
-        fileUploadAudit.puts("\n\n\n\n")
-        fileUploadAudit.puts("#{fu.inspect}")
-        fileUploadAudit.puts("\n\n\n\n")
-        if args[:delete_file_upload_file] == "true"
-          fu_id = fu.id
-          fu.destroy
-          fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
-        end
-        next
-      end
+      begin
 
-      if fu.file.path.present?
-        if !(File.file?(fu.file.path))
-          fileUploadAudit.puts("====================DELETING file upload file====================")
-          fileUploadAudit.puts("Deleting because: Could not find file at this location: #{fu.file.path} \n")
+        if !fu.file.present?
+          fileUploadAudit.puts("====================DELETING file upload FILE====================")
+          fileUploadAudit.puts("Deleting because: There is no file associated with the fileUpload id: #{fu.id}")
           fileUploadAudit.puts("Destroying file upload files is marked as #{args[:delete_file_upload_file]}")
           if Grade.exists?(fu.grade_id)
             fileUploadAudit.puts("file upload file id: #{fu.id} \n Grade id: #{fu.grade_id} \n Assignment id: #{Grade.find(fu.grade_id).assignment.id} \n Course id: #{Grade.find(fu.grade_id).course.id}")
@@ -386,26 +367,51 @@ namespace :export_filepaths do
           end
           next
         end
-      else
-        fileUploadAudit.puts("====================DELETING file upload file====================")
-        fileUploadAudit.puts("Deleting because: There was no path associated with the file for fileUpload id: #{fu.id}\n")
-        fileUploadAudit.puts("Destroying file upload files is marked as #{args[:delete_file_upload_file]}")
-        if Grade.exists?(fu.grade_id)
-          fileUploadAudit.puts("file upload file id: #{fu.id} \n Grade id: #{fu.grade_id} \n Assignment id: #{Grade.find(fu.grade_id).assignment.id} \n Course id: #{Grade.find(fu.grade_id).course.id}")
+
+        if fu.file.path.present?
+          if !(File.file?(fu.file.path))
+            fileUploadAudit.puts("====================DELETING file upload file====================")
+            fileUploadAudit.puts("Deleting because: Could not find file at this location: #{fu.file.path} \n")
+            fileUploadAudit.puts("Destroying file upload files is marked as #{args[:delete_file_upload_file]}")
+            if Grade.exists?(fu.grade_id)
+              fileUploadAudit.puts("file upload file id: #{fu.id} \n Grade id: #{fu.grade_id} \n Assignment id: #{Grade.find(fu.grade_id).assignment.id} \n Course id: #{Grade.find(fu.grade_id).course.id}")
+            else
+              fileUploadAudit.puts("**could not find grade with id: #{fu.grade_id}")
+            end
+            fileUploadAudit.puts("\n\n\n\n")
+            fileUploadAudit.puts("#{fu.inspect}")
+            fileUploadAudit.puts("\n\n\n\n")
+            if args[:delete_file_upload_file] == "true"
+              fu_id = fu.id
+              fu.destroy
+              fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
+            end
+            next
+          end
         else
-          fileUploadAudit.puts("**could not find grade with id: #{fu.grade_id}")
+          fileUploadAudit.puts("====================DELETING file upload file====================")
+          fileUploadAudit.puts("Deleting because: There was no path associated with the file for fileUpload id: #{fu.id}\n")
+          fileUploadAudit.puts("Destroying file upload files is marked as #{args[:delete_file_upload_file]}")
+          if Grade.exists?(fu.grade_id)
+            fileUploadAudit.puts("file upload file id: #{fu.id} \n Grade id: #{fu.grade_id} \n Assignment id: #{Grade.find(fu.grade_id).assignment.id} \n Course id: #{Grade.find(fu.grade_id).course.id}")
+          else
+            fileUploadAudit.puts("**could not find grade with id: #{fu.grade_id}")
+          end
+          fileUploadAudit.puts("\n\n\n\n")
+          fileUploadAudit.puts("#{fu.inspect}")
+          fileUploadAudit.puts("\n\n\n\n")
+          if args[:delete_file_upload_file] == "true"
+            fu_id = fu.id
+            fu.destroy
+            fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
+          end
+          next
         end
-        fileUploadAudit.puts("\n\n\n\n")
-        fileUploadAudit.puts("#{fu.inspect}")
-        fileUploadAudit.puts("\n\n\n\n")
-        if args[:delete_file_upload_file] == "true"
-          fu_id = fu.id
-          fu.destroy
-          fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
-        end
-        next
+        fileUploadAudit.puts("file upload file with id: #{fu.id} valid")
+
+      rescue StandardError => StandardError
+        puts "Error: #{error.to_s}"
       end
-      fileUploadAudit.puts("file upload file with id: #{fu.id} valid")
     end
 
     fileUploadAudit.close
