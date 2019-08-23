@@ -1,55 +1,11 @@
 namespace :export_filepaths do
-  class Status
-    def initialize(task_index, total)
-      @status_file_path = "/dev/shm/rake_task_#{task_index}_status.txt"
-      @total = total
-      @completed_index = 0
-      read_saved_status
-    end
-
-    def read_saved_status
-      if File.file?(@status_file_path)
-        @completed_index = File.foreach(@status_file_path).first.split(",")[0].to_i
-        @total = File.foreach(@status_file_path).first.split(",")[1].to_i
-      else
-        save_status
-      end
-    end
-
-    def save_status
-      File.write(@status_file_path, "#{@completed_index},#{@total}\n")
-    end
-
-    def remove_status
-      @status_file.close unless @status_file.nil?
-      File.delete(@status_file_path)
-    end
-
-    def increment_progress
-      @completed_index = @completed_index + 1
-      save_status
-      if @completed_index % 100 == 0
-        printf("\rCompleted %d/%d", @completed_index, @total)
-      end
-    end
-
-    def get_progress
-      return @completed_index
-    end
-  end
-
   desc "Changes any SubmissionsExport with local_file_path as exports/* to files/exports/*"
   task update_submissions_export_filepaths: :environment do
+
     fileName = "#{Rails.root}/files/SubmissionExportAudit.txt"
     submissionExportAudit = File.open(fileName, 'w')
 
     submission_exports = SubmissionsExport.all
-
-    status = Status.new(0, submission_exports.length)
-
-    completed_index = status.get_progress
-    
-    submission_exports = submission_exports.drop(completed_index) if completed_index > 0
 
     outdated_file_path_regexp = Regexp.new("files\/.*")
 
@@ -58,35 +14,25 @@ namespace :export_filepaths do
     valid_export_count = 0
 
     submission_exports.each do |submissions_export|
-      begin
+      current_file_path = submissions_export.local_file_path
+      if !(current_file_path =~ outdated_file_path_regexp)
+        submissionExportAudit.puts("updating file path for submissions_export:\n #{submissions_export.insepct} \n")
+        updated_submissions_export_file_paths.push(submissions_export.id)
+        submissions_export.local_file_path = "files/#{current_file_path}"
+        submissions_export.save
+      end
 
-        current_file_path = submissions_export.local_file_path
-
-        if !(current_file_path =~ outdated_file_path_regexp)
-          submissionExportAudit.puts("updating file path for submissions_export:\n #{submissions_export.insepct} \n")
-          updated_submissions_export_file_paths.push(submissions_export.id)
-          submissions_export.local_file_path = "files/#{current_file_path}"
-          submissions_export.save
-        end
-
-        file_path = "#{Rails.root}/#{submissions_export.local_file_path}"
-        if !File.file?(file_path)
-          submissionExportAudit.puts("could not find file for submissions_export:\n #{submissions_export.inspect} \n")
-          submissionExportAudit.puts("File path: #{file_path}")
-          submissionExportAudit.puts("Corse of SE: #{submissions_export.course.id}")
-          missing_submissions_export_files.push(submissions_export.id)
-          submissions_export.destroy
-        else
-          valid_export_count = valid_export_count + 1
-        end
-
-        status.increment_progress
-
-      rescue StandardError => error
-        puts "Error: #{error.to_s}"
+      file_path = "#{Rails.root}/#{submissions_export.local_file_path}"
+      if !File.file?(file_path)
+        submissionExportAudit.puts("could not find file for submissions_export:\n #{submissions_export.inspect} \n")
+        submissionExportAudit.puts("File path: #{file_path}")
+        submissionExportAudit.puts("Corse of SE: #{submissions_export.course.id}")
+        missing_submissions_export_files.push(submissions_export.id)
+        submissions_export.destroy
+      else
+        valid_export_count = valid_export_count + 1
       end
     end
-
     submissionExportAudit.puts("Existing & valid submission exports: #{valid_export_count}")
 
     submissionExportAudit.puts("\nSubmissionsExport ids with updated filepaths: #{updated_submissions_export_file_paths}")
@@ -94,8 +40,6 @@ namespace :export_filepaths do
     if missing_submissions_export_files.any?
       submissionExportAudit.puts("\nSubmissionsExport ids with missing files: #{missing_submissions_export_files}")
     end
-
-    status.remove_status
   end
 
   desc "Changes any CourseAnalyticsExport with local_file_path as exports/* to files/exports/*"
@@ -105,50 +49,34 @@ namespace :export_filepaths do
 
     course_analytics_exports = CourseAnalyticsExport.all
 
-    status = Status.new(1, course_analytics_exports.length)
-
-    completed_index = status.get_progress
- 
-    course_analytics_exports = course_analytics_exports.drop(completed_index) if completed_index > 0
-
     outdated_file_path_regexp = Regexp.new("files\/.*")
 
     updated_course_analytics_export_file_paths = []
     missing_course_analytics_export_files = []
-    
-      course_analytics_exports.each do |course_analytics_export|
-        begin
 
-          current_file_path =  course_analytics_export.local_file_path
-          if !(current_file_path =~ outdated_file_path_regexp)
-            courseAnalyticsExportAudit.puts("updating file path for course_analytics_export: \n #{course_analytics_export.inspect} \n")
-            updated_course_analytics_export_file_paths.push(course_analytics_export.id)
-            course_analytics_export.local_file_path = "files/#{current_file_path}"
-            course_analytics_export.save
-          end
-
-          file_path = "#{Rails.root}/#{course_analytics_export.local_file_path}"
-          if !File.file?(file_path)
-            courseAnalyticsExportAudit.puts("Could not find file for course_analytics_export: \n #{course_analytics_export.inspect}")
-            courseAnalyticsExportAudit.puts("File path: #{file_path}")
-            missing_course_analytics_export_files.push(course_analytics_export.id)
-            course_analytics_export.destroy
-          end
-
-        rescue StandardError => error
-          puts "Error: #{error.to_s}"
-        end
-
+    course_analytics_exports.each do |course_analytics_export|
+      current_file_path =  course_analytics_export.local_file_path
+      if !(current_file_path =~ outdated_file_path_regexp)
+        courseAnalyticsExportAudit.puts("updating file path for course_analytics_export: \n #{course_analytics_export.inspect} \n")
+        updated_course_analytics_export_file_paths.push(course_analytics_export.id)
+        course_analytics_export.local_file_path = "files/#{current_file_path}"
+        course_analytics_export.save
       end
 
+      file_path = "#{Rails.root}/#{course_analytics_export.local_file_path}"
+      if !File.file?(file_path)
+        courseAnalyticsExportAudit.puts("Could not find file for course_analytics_export: \n #{course_analytics_export.inspect}")
+        courseAnalyticsExportAudit.puts("File path: #{file_path}")
+        missing_course_analytics_export_files.push(course_analytics_export.id)
+        course_analytics_export.destroy
+      end
+    end
 
     courseAnalyticsExportAudit.puts("\nCourseAnalyticsExports ids with updated filepaths: #{updated_course_analytics_export_file_paths}")
 
     if missing_course_analytics_export_files.any?
       courseAnalyticsExportAudit.puts("\nCourseAnalyticsExport ids with missing files: #{missing_course_analytics_export_files}")
     end
-
-    status.remove_status
   end
 
   desc "Removes SubmissionFile objects if the file does not exist or is corrupted"
@@ -161,96 +89,58 @@ namespace :export_filepaths do
 
     submissionFiles = SubmissionFile.first(file_number)
 
-    if args[:number].nil? && args[:delete_submission_file] == "true"
-      status = Status.new(2, submissionFiles.length)
-
-      completed_index = status.get_progress
- 
-      submissionFiles = submissionFiles.drop(completed_index) if completed_index > 0
-    end
-
     submissionFiles.each do |sf|
-      begin 
-
-        if !sf.file.present?
-          submissionFileAudit.puts("====================DELETING SUBMISSION FILE====================")
-          submissionFileAudit.puts("Deleting because: There is no file associated with the submissionFile id: #{sf.id}")
-          submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
-          submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
-          submissionFileAudit.puts("\n\n\n\n")
-          submissionFileAudit.puts("#{sf.inspect}")
-          submissionFileAudit.puts("\n\n\n\n")
-          if args[:delete_submission_file] == "true"
-            sf_id = sf.id
-            sf.destroy
-            submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
-          end
-
-          if args[:number].nil? && args[:delete_submission_file] == "true"
-            status.increment_progress
-          end
-
-          next
+      if !sf.file.present?
+        submissionFileAudit.puts("====================DELETING SUBMISSION FILE====================")
+        submissionFileAudit.puts("Deleting because: There is no file associated with the submissionFile id: #{sf.id}")
+        submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
+        submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
+        submissionFileAudit.puts("\n\n\n\n")
+        submissionFileAudit.puts("#{sf.inspect}")
+        submissionFileAudit.puts("\n\n\n\n")
+        if args[:delete_submission_file] == "true"
+          sf_id = sf.id
+          sf.destroy
+          submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
         end
-
-        if sf.file.path.present?
-          if !(File.file?(sf.file.path))
-            submissionFileAudit.puts("====================DELETING SUBMISSION FILE====================")
-            submissionFileAudit.puts("Deleting because: Could not find file at this location: #{sf.file.path} \n")
-            submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
-            submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
-            submissionFileAudit.puts("\n\n\n\n")
-            submissionFileAudit.puts("#{sf.inspect}")
-            submissionFileAudit.puts("\n\n\n\n")
-            if args[:delete_submission_file] == "true"
-              sf_id = sf.id
-              sf.destroy
-              submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
-            end
-
-            if args[:number].nil? && args[:delete_submission_file] == "true"
-              status.increment_progress
-            end
-
-            next
-          end
-        else
-          submissionFileAudit.puts("====================DELETING SUBMISSION FILE====================")
-          submissionFileAudit.puts("Deleting because: There was no path associated with the file for submissionFile id: #{sf.id}\n")
-          submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
-          submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
-          submissionFileAudit.puts("\n\n\n\n")
-          submissionFileAudit.puts("#{sf.inspect}")
-          submissionFileAudit.puts("\n\n\n\n")
-          if args[:delete_submission_file] == "true"
-            sf_id = sf.id
-            sf.destroy
-            submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
-          end
-
-          if args[:number].nil? && args[:delete_submission_file] == "true"
-            status.increment_progress
-          end
-
-          next
-        end
-
-        submissionFileAudit.puts("Submission File with id: #{sf.id} valid")
-
-        if args[:number].nil? && args[:delete_submission_file] == "true"
-          status.increment_progress
-        end
-
-      rescue StandardError => error
-        puts "Error: #{error.to_s}"
+        next
       end
+
+      if sf.file.path.present?
+        if !(File.file?(sf.file.path))
+          submissionFileAudit.puts("====================DELETING SUBMISSION FILE====================")
+          submissionFileAudit.puts("Deleting because: Could not find file at this location: #{sf.file.path} \n")
+          submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
+          submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
+          submissionFileAudit.puts("\n\n\n\n")
+          submissionFileAudit.puts("#{sf.inspect}")
+          submissionFileAudit.puts("\n\n\n\n")
+          if args[:delete_submission_file] == "true"
+            sf_id = sf.id
+            sf.destroy
+            submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
+          end
+          next
+        end
+      else
+        submissionFileAudit.puts("====================DELETING SUBMISSION FILE====================")
+        submissionFileAudit.puts("Deleting because: There was no path associated with the file for submissionFile id: #{sf.id}\n")
+        submissionFileAudit.puts("Destroying submission files is marked as #{args[:delete_submission_file]}")
+        submissionFileAudit.puts("Submission file id: #{sf.id} \n Submission id: #{sf.submission.id} \n Assignment id: #{sf.assignment.id} \n Course id: #{sf.submission.course.id}")
+        submissionFileAudit.puts("\n\n\n\n")
+        submissionFileAudit.puts("#{sf.inspect}")
+        submissionFileAudit.puts("\n\n\n\n")
+        if args[:delete_submission_file] == "true"
+          sf_id = sf.id
+          sf.destroy
+          submissionFileAudit.puts("Submission file (id: #{sf_id}) has been deleted")
+        end
+        next
+      end
+      submissionFileAudit.puts("Submission File with id: #{sf.id} valid")
     end
 
     submissionFileAudit.close
-
-    if args[:number].nil? && args[:delete_submission_file] == "true"
-      status.remove_status
-    end
   end
 
   desc "Removes challengeFile objects if the file does not exist or is corrupted"
@@ -262,97 +152,58 @@ namespace :export_filepaths do
     file_number = args[:number].nil? ? ChallengeFile.all.length : args[:number].to_i
     challengeFiles = ChallengeFile.first(file_number)
 
-
-    if args[:number].nil? && args[:delete_challenge_file] == "true"
-      status = Status.new(3, challengeFiles.length)
-
-      completed_index = status.get_progress
- 
-      challengeFiles = challengeFiles.drop(completed_index) if completed_index > 0
-    end
-
     challengeFiles.each do |cf|
-      begin 
-
-        if !cf.file.present?
-          challengeFileAudit.puts("====================DELETING challenge FILE====================")
-          challengeFileAudit.puts("Deleting because: There is no file associated with the challengeFile id: #{cf.id}")
-          challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
-          challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
-          challengeFileAudit.puts("\n\n\n\n")
-          challengeFileAudit.puts("#{cf.inspect}")
-          challengeFileAudit.puts("\n\n\n\n")
-          if args[:delete_challenge_file] == "true"
-            cf_id = cf.id
-            cf.destroy
-            challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
-          end
-
-          if args[:number].nil? && args[:delete_challenge_file] == "true"
-            status.increment_progress
-          end
-
-          next
+      if !cf.file.present?
+        challengeFileAudit.puts("====================DELETING challenge FILE====================")
+        challengeFileAudit.puts("Deleting because: There is no file associated with the challengeFile id: #{cf.id}")
+        challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
+        challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
+        challengeFileAudit.puts("\n\n\n\n")
+        challengeFileAudit.puts("#{cf.inspect}")
+        challengeFileAudit.puts("\n\n\n\n")
+        if args[:delete_challenge_file] == "true"
+          cf_id = cf.id
+          cf.destroy
+          challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
         end
-
-        if cf.file.path.present?
-          if !(File.file?(cf.file.path))
-            challengeFileAudit.puts("====================DELETING challenge FILE====================")
-            challengeFileAudit.puts("Deleting because: Could not find file at this location: #{cf.file.path} \n")
-            challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
-            challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
-            challengeFileAudit.puts("\n\n\n\n")
-            challengeFileAudit.puts("#{cf.inspect}")
-            challengeFileAudit.puts("\n\n\n\n")
-            if args[:delete_challenge_file] == "true"
-              cf_id = cf.id
-              cf.destroy
-              challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
-            end
-
-            if args[:number].nil? && args[:delete_challenge_file] == "true"
-              status.increment_progress
-            end
-            
-            next
-          end
-        else
-          challengeFileAudit.puts("====================DELETING challenge FILE====================")
-          challengeFileAudit.puts("Deleting because: There was no path associated with the file for challengeFile id: #{cf.id}\n")
-          challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
-          challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
-          challengeFileAudit.puts("\n\n\n\n")
-          challengeFileAudit.puts("#{cf.inspect}")
-          challengeFileAudit.puts("\n\n\n\n")
-          if args[:delete_challenge_file] == "true"
-            cf_id = cf.id
-            cf.destroy
-            challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
-          end
-          
-          if args[:number].nil? && args[:delete_challenge_file] == "true"
-            status.increment_progress
-          end
-
-          next
-        end
-
-        challengeFileAudit.puts("challenge File with id: #{cf.id} valid")
-
-        if args[:number].nil? && args[:delete_challenge_file] == "true"
-          status.increment_progress
-        end
-
-      rescue StandardError => error
-        puts "Error: #{error.to_s}"
+        next
       end
+
+      if cf.file.path.present?
+        if !(File.file?(cf.file.path))
+          challengeFileAudit.puts("====================DELETING challenge FILE====================")
+          challengeFileAudit.puts("Deleting because: Could not find file at this location: #{cf.file.path} \n")
+          challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
+          challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
+          challengeFileAudit.puts("\n\n\n\n")
+          challengeFileAudit.puts("#{cf.inspect}")
+          challengeFileAudit.puts("\n\n\n\n")
+          if args[:delete_challenge_file] == "true"
+            cf_id = cf.id
+            cf.destroy
+            challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
+          end
+          next
+        end
+      else
+        challengeFileAudit.puts("====================DELETING challenge FILE====================")
+        challengeFileAudit.puts("Deleting because: There was no path associated with the file for challengeFile id: #{cf.id}\n")
+        challengeFileAudit.puts("Destroying challenge files is marked as #{args[:delete_challenge_file]}")
+        challengeFileAudit.puts("challenge file id: #{cf.id} \n challenge id: #{cf.challenge.id} \n Course id: #{cf.challenge.course.id}")
+        challengeFileAudit.puts("\n\n\n\n")
+        challengeFileAudit.puts("#{cf.inspect}")
+        challengeFileAudit.puts("\n\n\n\n")
+        if args[:delete_challenge_file] == "true"
+          cf_id = cf.id
+          cf.destroy
+          challengeFileAudit.puts("challenge file (id: #{cf_id}) has been deleted")
+        end
+        next
+      end
+      challengeFileAudit.puts("challenge File with id: #{cf.id} valid")
     end
 
     challengeFileAudit.close
-
-    if args[:number].nil? && args[:delete_submission_file] == "true"
-      status.remove_status
-    end
   end
 
 
@@ -367,96 +218,58 @@ namespace :export_filepaths do
 
     badgeFiles = BadgeFile.first(file_number)
 
-    if args[:number].nil? && args[:delete_badge_file] == "true"
-      status = Status.new(4, badgeFiles.length)
-
-      completed_index = status.get_progress
-
-      badgeFiles = badgeFiles.drop(completed_index) if completed_index > 0
-    end
-
     badgeFiles.each do |bf|
-      begin 
-
-        if !bf.file.present?
-          badgeFileAudit.puts("====================DELETING badge FILE====================")
-          badgeFileAudit.puts("Deleting because: There is no file associated with the badgeFile id: #{bf.id}")
-          badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
-          badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
-          badgeFileAudit.puts("\n\n\n\n")
-          badgeFileAudit.puts("#{bf.inspect}")
-          badgeFileAudit.puts("\n\n\n\n")
-          if args[:delete_badge_file] == "true"
-            bf_id = bf.id
-            bf.destroy
-            badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
-          end
-
-          if args[:number].nil? && args[:delete_badge_file] == "true"
-            status.increment_progress
-          end
-
-          next
+      if !bf.file.present?
+        badgeFileAudit.puts("====================DELETING badge FILE====================")
+        badgeFileAudit.puts("Deleting because: There is no file associated with the badgeFile id: #{bf.id}")
+        badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
+        badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
+        badgeFileAudit.puts("\n\n\n\n")
+        badgeFileAudit.puts("#{bf.inspect}")
+        badgeFileAudit.puts("\n\n\n\n")
+        if args[:delete_badge_file] == "true"
+          bf_id = bf.id
+          bf.destroy
+          badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
         end
-
-        if bf.file.path.present?
-          if !(File.file?(bf.file.path))
-            badgeFileAudit.puts("====================DELETING badge FILE====================")
-            badgeFileAudit.puts("Deleting because: Could not find file at this location: #{bf.file.path} \n")
-            badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
-            badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
-            badgeFileAudit.puts("\n\n\n\n")
-            badgeFileAudit.puts("#{bf.inspect}")
-            badgeFileAudit.puts("\n\n\n\n")
-            if args[:delete_badge_file] == "true"
-              bf_id = bf.id
-              bf.destroy
-              badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
-            end
-
-            if args[:number].nil? && args[:delete_badge_file] == "true"
-              status.increment_progress
-            end
-            
-            next
-          end
-        else
-          badgeFileAudit.puts("====================DELETING badge FILE====================")
-          badgeFileAudit.puts("Deleting because: There was no path associated with the file for badgeFile id: #{bf.id}\n")
-          badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
-          badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
-          badgeFileAudit.puts("\n\n\n\n")
-          badgeFileAudit.puts("#{bf.inspect}")
-          badgeFileAudit.puts("\n\n\n\n")
-          if args[:delete_badge_file] == "true"
-            bf_id = bf.id
-            bf.destroy
-            badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
-          end
-
-          if args[:number].nil? && args[:delete_badge_file] == "true"
-            status.increment_progress
-          end
-
-          next
-        end
-
-        if args[:number].nil? && args[:delete_badge_file] == "true"
-          status.increment_progress
-        end
-
-        badgeFileAudit.puts("badge File with id: #{bf.id} valid")
-    
-      rescue StandardError => error
-        puts "Error: #{error.to_s}"
+        next
       end
+
+      if bf.file.path.present?
+        if !(File.file?(bf.file.path))
+          badgeFileAudit.puts("====================DELETING badge FILE====================")
+          badgeFileAudit.puts("Deleting because: Could not find file at this location: #{bf.file.path} \n")
+          badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
+          badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
+          badgeFileAudit.puts("\n\n\n\n")
+          badgeFileAudit.puts("#{bf.inspect}")
+          badgeFileAudit.puts("\n\n\n\n")
+          if args[:delete_badge_file] == "true"
+            bf_id = bf.id
+            bf.destroy
+            badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
+          end
+          next
+        end
+      else
+        badgeFileAudit.puts("====================DELETING badge FILE====================")
+        badgeFileAudit.puts("Deleting because: There was no path associated with the file for badgeFile id: #{bf.id}\n")
+        badgeFileAudit.puts("Destroying badge files is marked as #{args[:delete_badge_file]}")
+        badgeFileAudit.puts("badge file id: #{bf.id} \n badge id: #{bf.badge.id}  \n Course id: #{bf.badge.course.id}")
+        badgeFileAudit.puts("\n\n\n\n")
+        badgeFileAudit.puts("#{bf.inspect}")
+        badgeFileAudit.puts("\n\n\n\n")
+        if args[:delete_badge_file] == "true"
+          bf_id = bf.id
+          bf.destroy
+          badgeFileAudit.puts("badge file (id: #{bf_id}) has been deleted")
+        end
+        next
+      end
+      badgeFileAudit.puts("badge File with id: #{bf.id} valid")
     end
 
     badgeFileAudit.close
-
-    if args[:number].nil? && args[:delete_submission_file] == "true"
-      status.remove_status
-    end
   end
 
   desc "Removes assignmentFile objects if the file does not exist or is corrupted"
@@ -468,20 +281,27 @@ namespace :export_filepaths do
     file_number = args[:number].nil? ? AssignmentFile.all.length : args[:number].to_i
     assignmentFiles = AssignmentFile.first(file_number)
 
-    if args[:number].nil? && args[:delete_assignment_file] == "true"
-      status = Status.new(5, assignmentFiles.length)
-
-      completed_index = status.get_progress
- 
-      assignmentFiles = assignmentFiles.drop(completed_index) if completed_index > 0
-    end
-
     assignmentFiles.each do |af|
-      begin 
+      if !af.file.present?
+        assignmentFileAudit.puts("====================DELETING assignment FILE====================")
+        assignmentFileAudit.puts("Deleting because: There is no file associated with the assignmentFile id: #{af.id}")
+        assignmentFileAudit.puts("Destroying assignment files is marked as #{args[:delete_assignment_file]}")
+        assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment.id} \n Assignment id: #{af.assignment.id} \n Course id: #{af.assignment.course.id}")
+        assignmentFileAudit.puts("\n\n\n\n")
+        assignmentFileAudit.puts("#{af.inspect}")
+        assignmentFileAudit.puts("\n\n\n\n")
+        if args[:delete_assignment_file] == "true"
+          af_id = af.id
+          af.destroy
+          assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
+        end
+        next
+      end
 
-        if !af.file.present?
+      if af.file.path.present?
+        if !(File.file?(af.file.path))
           assignmentFileAudit.puts("====================DELETING assignment FILE====================")
-          assignmentFileAudit.puts("Deleting because: There is no file associated with the assignmentFile id: #{af.id}")
+          assignmentFileAudit.puts("Deleting because: Could not find file at this location: #{af.file.path} \n")
           assignmentFileAudit.puts("Destroying assignment files is marked as #{args[:delete_assignment_file]}")
           assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment.id} \n Assignment id: #{af.assignment.id} \n Course id: #{af.assignment.course.id}")
           assignmentFileAudit.puts("\n\n\n\n")
@@ -492,72 +312,27 @@ namespace :export_filepaths do
             af.destroy
             assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
           end
-
-          if args[:number].nil? && args[:delete_assignment_file] == "true"
-            status.increment_progress
-          end
-
           next
         end
-
-        if af.file.path.present?
-          if !(File.file?(af.file.path))
-            assignmentFileAudit.puts("====================DELETING assignment FILE====================")
-            assignmentFileAudit.puts("Deleting because: Could not find file at this location: #{af.file.path} \n")
-            assignmentFileAudit.puts("Destroying assignment files is marked as #{args[:delete_assignment_file]}")
-            assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment.id} \n Assignment id: #{af.assignment.id} \n Course id: #{af.assignment.course.id}")
-            assignmentFileAudit.puts("\n\n\n\n")
-            assignmentFileAudit.puts("#{af.inspect}")
-            assignmentFileAudit.puts("\n\n\n\n")
-            if args[:delete_assignment_file] == "true"
-              af_id = af.id
-              af.destroy
-              assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
-            end
-
-            if args[:number].nil? && args[:delete_assignment_file] == "true"
-              status.increment_progress
-            end
-            
-            next
-          end
-        else
-          assignmentFileAudit.puts("====================DELETING assignment FILE====================")
-          assignmentFileAudit.puts("Deleting because: There was no path associated with the file for assignmentFile id: #{af.id}\n")
-          assignmentFileAudit.puts("Destroying assignment files is marked as #{args[:delete_assignment_file]}")
-          assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment_id}} \n Course id: #{af.assignment.course.id}")
-          assignmentFileAudit.puts("\n\n\n\n")
-          assignmentFileAudit.puts("#{af.inspect}")
-          assignmentFileAudit.puts("\n\n\n\n")
-          if args[:delete_assignment_file] == "true"
-            af_id = af.id
-            af.destroy
-            assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
-          end
-
-          if args[:number].nil? && args[:delete_assignment_file] == "true"
-            status.increment_progress
-          end
-
-          next
+      else
+        assignmentFileAudit.puts("====================DELETING assignment FILE====================")
+        assignmentFileAudit.puts("Deleting because: There was no path associated with the file for assignmentFile id: #{af.id}\n")
+        assignmentFileAudit.puts("Destroying assignment files is marked as #{args[:delete_assignment_file]}")
+        assignmentFileAudit.puts("assignment file id: #{af.id} \n assignment id: #{af.assignment_id}} \n Course id: #{af.assignment.course.id}")
+        assignmentFileAudit.puts("\n\n\n\n")
+        assignmentFileAudit.puts("#{af.inspect}")
+        assignmentFileAudit.puts("\n\n\n\n")
+        if args[:delete_assignment_file] == "true"
+          af_id = af.id
+          af.destroy
+          assignmentFileAudit.puts("assignment file (id: #{af_id}) has been deleted")
         end
-        
-        if args[:number].nil? && args[:delete_assignment_file] == "true"
-          status.increment_progress
-        end
-
-        assignmentFileAudit.puts("assignment File with id: #{af.id} valid")
-    
-      rescue StandardError => error
-        puts "Error: #{error.to_s}"
+        next
       end
+      assignmentFileAudit.puts("assignment File with id: #{af.id} valid")
     end
 
     assignmentFileAudit.close
-
-    if args[:number].nil? && args[:delete_submission_file] == "true"
-      status.remove_status
-    end
   end
 
 
@@ -570,16 +345,8 @@ namespace :export_filepaths do
     file_number = args[:number].nil? ? FileUpload.all.length : args[:number].to_i
     fileUploads = FileUpload.first(file_number)
 
-    if args[:number].nil? && args[:delete_file_upload_file] == "true"
-      status = Status.new(6, fileUploads.length)
-
-      completed_index = status.get_progress
- 
-      fileUploads = fileUploads.drop(completed_index) if completed_index > 0
-    end
-
     fileUploads.each do |fu|
-      begin 
+      begin
 
         if !fu.file.present?
           fileUploadAudit.puts("====================DELETING file upload FILE====================")
@@ -598,11 +365,6 @@ namespace :export_filepaths do
             fu.destroy
             fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
           end
-
-          if args[:number].nil? && args[:delete_file_upload_file] == "true"
-            status.increment_progress
-          end
-
           next
         end
 
@@ -624,11 +386,6 @@ namespace :export_filepaths do
               fu.destroy
               fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
             end
-
-            if args[:number].nil? && args[:delete_file_upload_file] == "true"
-              status.increment_progress
-            end
-            
             next
           end
         else
@@ -648,29 +405,15 @@ namespace :export_filepaths do
             fu.destroy
             fileUploadAudit.puts("file upload file (id: #{fu_id}) has been deleted")
           end
-
-          if args[:number].nil? && args[:delete_file_upload_file] == "true"
-            status.increment_progress
-          end
-
           next
         end
-
-        if args[:number].nil? && args[:delete_file_upload_file] == "true"
-          status.increment_progress
-        end
-
         fileUploadAudit.puts("file upload file with id: #{fu.id} valid")
-    
-      rescue StandardError => error
+        
+      rescue StandardError => StandardError
         puts "Error: #{error.to_s}"
       end
     end
 
     fileUploadAudit.close
-
-    if args[:number].nil? && args[:delete_submission_file] == "true"
-      status.remove_status
-    end
   end
 end
