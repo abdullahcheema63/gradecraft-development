@@ -5,7 +5,7 @@
       <slot name="heading"></slot>
     </h3>
     <div :class="accordionClass">
-      <div>
+      <div :class=accordion_content>
         <slot name="content"></slot>
       </div>
     </div>
@@ -16,7 +16,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'accordion-component',
-  props: ['accordion_class'],
+  props: ['accordion_class', 'accordion_content'],
   data() {
     return {
       active: false

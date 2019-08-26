@@ -10,7 +10,7 @@
 
     <newActivity></newActivity>
 
-    <tabContainer>
+    <tabContainer section_class="content_block">
       <template slot="tabBarNav">
         <div v-for="option in tabBarOption">
           <input type="radio" :id="option" :value="option" v-model="tabSection[0]" name="tab_group_1" />

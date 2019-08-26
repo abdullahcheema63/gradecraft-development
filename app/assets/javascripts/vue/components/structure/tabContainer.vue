@@ -5,7 +5,7 @@
         <slot name="tabBarNav"></slot>
       </div>
     </div>
-    <div class="tab_sections content_block">
+    <div class="tab_sections" :class=section_class>
       <slot name="tabSections"></slot>
     </div>
   </div>
@@ -19,6 +19,7 @@ module.exports = {
     return {
       active: false
     }
-  }
+  },
+  props: ['section_class'],
 }
 `</script>
