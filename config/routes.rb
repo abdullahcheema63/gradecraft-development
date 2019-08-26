@@ -7,29 +7,30 @@ Rails.application.routes.draw do
   mount Resque::Server, at: "/jobs", constraints: AdminConstraint.new
   mount JasmineRails::Engine, at: '/specs', constraints: AdminConstraint.new if defined?(JasmineRails)
 
-  #1. Analytics & Charts
-  #2. Announcements
-  #3. Assignments, Submissions, Grades
-  #4. Assignment Types
-  #5. Badges
-  #6. Challenges
-  #7. Integrations
-  #8. Courses
-  #9. Groups
-  #10. Informational Pages
-  #11. Grade Schemes
-  #12. Teams
-  #13. Users
-  #14. User Auth
-  #15. Uploads
-  #16. Events
-  #17. Attendance
-  #18. API Calls
-  #19. Exports
-  #20. Learning Objectives
-  #21. Errors
-  #22. Admin
-  #23. Licenses
+  get "/files/*all", to: "redocuments#download"
+
+  # 1. Analytics & Charts
+  # 2. Announcements
+  # 3. Assignments, Submissions, Grades
+  # 4. Assignment Types
+  # 5. Badges
+  # 6. Challenges
+  # 7. Integrations
+  # 8. Courses
+  # 9. Groups
+  # 10. Informational Pages
+  # 11. Grade Schemes
+  # 12. Teams
+  # 13. Users
+  # 14. User Auth
+  # 15. Uploads
+  # 16. Events
+  # 17. Attendance
+  # 18. API Calls
+  # 19. Exports
+  # 20. Learning Objectives
+  # 21. Errors
+  # 22. Admin
 
   # 1. Analytics & Charts
   namespace :analytics do
@@ -86,6 +87,7 @@ Rails.application.routes.draw do
         get :mass_edit
         put :mass_update
         post :self_log
+        delete :delete_self_logged
         delete :delete_all
       end
     end
@@ -501,7 +503,8 @@ Rails.application.routes.draw do
       get :due_this_week, on: :collection
     end
 
-    resources :earned_badges, only: [:create, :destroy]
+    resources :earned_badges, only: [:create, :update, :destroy]
+
     get "courses/:course_id/badges/:badge_id/earned_badges/:id/confirm_earned", to: "earned_badges#confirm_earned",
       as: :earned_badge_confirm
 

@@ -56,7 +56,7 @@
         - @challenge.challenge_files.each do |cf|
           - next if cf.new_record?
           %li
-            = link_to cf.filename, cf.url, :target => "_blank"
+            = link_to cf.filename, cf.file.to_s, :target => "_blank"
             = link_to "(Remove)", remove_uploads_path({ :model => "ChallengeFile", challenge_id: @challenge.id, :upload_id => cf.id } )
   .main-buttons
     = f.button :submit, "#{@challenge.persisted? ? 'Update' : 'Create'} #{term_for :challenge }", class: "action"

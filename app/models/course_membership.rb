@@ -16,6 +16,8 @@ class CourseMembership < ApplicationRecord
     end
   end
 
+  attr_accessor :team_in_course
+
   scope :auditing, -> { where( role: "student", auditing: true, active: true ) }
   scope :being_graded, -> { where( role: "student", auditing: false, active: true) }
   scope :instructors_of_record, -> { where(instructor_of_record: true) }

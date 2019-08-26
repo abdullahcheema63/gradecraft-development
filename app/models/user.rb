@@ -54,6 +54,8 @@ class User < ApplicationRecord
 
   scope :accounts_not_activated, ->(course_id) { includes(:course_memberships).where(course_memberships: { course_id: course_id }, activation_state: 'pending')}
 
+  scope :active_students, ->(course_id) { includes(:course_memberships).where(course_memberships: {course_id: course_id, active: true }) }
+  
   mount_uploader :avatar_file_name, AvatarUploader
 
   has_many :authorizations, class_name: "UserAuthorization", dependent: :destroy
