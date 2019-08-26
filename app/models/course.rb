@@ -175,6 +175,26 @@ class Course < ApplicationRecord
     status == true
   end
 
+  def has_assignment_attachments?
+    self.assignments.map(&:assignment_files).any?
+  end
+
+  def has_badge_attachments?
+    self.badges.map(&:badge_files).any?
+  end
+
+  def has_challenge_attachments?
+    self.challenges.map(&:challenge_files).any?
+  end
+
+  def has_grade_attachments?
+    self.grades.map(&:attachments).any?
+  end
+
+  def has_attachments?
+    self.has_assignment_attachments? || self.has_badge_attachments? || self.has_challenge_attachments? || self.has_grade_attachments?
+  end
+
   def student_weighted?
     has_multipliers?
   end
@@ -273,7 +293,7 @@ class Course < ApplicationRecord
 
     course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
     course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
-    
+
     ModelCopier.new(self, @lookups).copy(attributes: attributes,
                                          associations: course_associations,
                                          cross_references: [
