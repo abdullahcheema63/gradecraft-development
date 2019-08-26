@@ -15,21 +15,19 @@
 
     <tabContainer>
       <template slot="tabBarNav">
-        <div>
-          <input type="radio" id="current_courses" name="tab_group_1" value="Current" checked="checked">
-          <label for="current_courses">Current</label>
-        </div>
-        <div>
-          <input type="radio" id="archived_courses" name="tab_group_1" value="Archived">
-          <label for="archived_courses">Archived</label>
+        <div v-for="option in tabBarOption">
+          <input type="radio" :id="option" :value="option" v-model="tabSection[0]" name="tab_group_1" />
+          <label :for="option">{{option}}</label>
         </div>
       </template>
       <template slot="tabSections">
-        <div>
+        <div v-if="tabSection[0]==='Current'">
           <h2>Current Courses</h2>
           <div class="p_button" v-if="userIsInstructor">
             <p>
-              This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course at any time. You can also manage your courses to publish or unpublish courses, and apply or remove course licenses.
+              This section has all your current courses, including those that other instructors or course managers
+               may share with you. You can add a new course at any time. You can also manage your courses to publish
+                or unpublish courses, and apply or remove course licenses.
             </p>
             <buttonModal button_class="action" ref="buttonModal_add">
               <template slot="button-text">Add a course</template>
@@ -83,7 +81,7 @@
                     </div>
                   </div>
 
-                  <button type="button submit" class="action">Add my course</button>
+                  <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
                 </form>
               </template>
             </buttonModal>
@@ -98,33 +96,209 @@
             </div>
           </div>
 
+          <div v-if="userIsInstructor && unpublishedCourses.length">
+            <h2 class="unspace-top">Unpublished Courses</h2>
+            <div class="course_box" v-if="unpublishedCourses.length">
+              <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
+            </div>
+            <div class="course_box" v-else>
+              <div class="course_card empty">
+                <p><em>You don't have any unpublished courses</em></p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div v-if="tabSection[0]==='Archived'">
+        </div>
+        <div v-if="tabSection[0]==='Past'">
+        </div>
+        <div v-if="tabSection[0]==='OLD'">
+          <div class="content_block bg-blue">
+            <h2 class="unspace-top">Current Courses</h2>
+            <div class="course_box" v-if="currentCourses.length">
+              <courseCard v-for="course in currentCourses" :key="course.id"  :course="course" status="published"></courseCard>
+            </div>
+            <div class="course_box" v-else>
+              <div class="course_card empty">
+                <p><em>You don't have any published, active courses!</em></p>
+              </div>
+            </div>
+          </div>
+          <div class="content_block bg-green_mint" v-if="userIsInstructor">
+            <h2>Add a New Course</h2>
+
+            <p v-if="licenseInfo">
+              With your
+              <b>license,</b>
+              you can explore all GradeCraft has to offer and <b>create licensed courses.</b> <br />
+              Licensed courses have the ability to:
+            </p>
+            <p v-else>
+              With your
+              <b>free trial account,</b>
+              you can explore GradeCraft as much as you’d like! <br />
+              The only things you can’t do are:
+            </p>
+
+            <ul>
+              <li>Integrate with other tools (like Canvas or Moodle)</li>
+              <li>Import or add other users (such as assistants and students)</li>
+            </ul>
+
+            <p v-if="licenseInfo">
+              Your account license allows you <b>{{ licenseInfo.maxCourses }}licensed courses,</b> active until {{ licenseInfo.expires }} [Move licenseInfo into user API call for header].
+            </p>
+            <p v-else>
+              Feel free to create as many trial courses as you need to discover what our tool can do for you and your students:
+            </p>
+            <div v-if="allCourses.length">
+              <h3>Copy an existing course</h3>
+              <p>
+                If you like your setup from a previous course and would like to
+                duplicate it instead of starting from scratch, you can copy an existing course:
+              </p>
+            </div>
+            (FULL)
+            <buttonModal button_class="action" ref="buttonModal_add">
+              <template slot="button-text">Add a course</template>
+              <template slot="heading">Add a new course</template>
+              <template slot="content">
+                <form>
+                  <formContainer>
+                    <template slot="header">
+                      <h2>How do you want add a course?</h2>
+                    </template>
+                    <template slot="question">
+                      <div class="tab_toggle">
+                        <span v-for="question in formQuestion">
+                          <input type="radio" :id="question" :value="question" v-model="formResponse[0]" name="toggle_group" />
+                          <label :for="question">{{question}}</label>
+                        </span>
+                      </div>
+                    </template>
+                    <template slot="form-response">
+                      <div v-if="formResponse[0]==='Create a new course'">
+                        <p>Use this form to create a new course from scratch:</p>
+
+                        <h3>Essential Course Info</h3>
+                        <div v-if="newCourseErrors.length" class="inline_alert_msg">
+                          <p>
+                            Please fill out the <b>required fields</b> below if you want to create a new course.
+                          </p>
+                        </div>
+                        <div class="flex-2 form_pair">
+                          <div class="form_elem">
+                            <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
+                            <label for="course_number">Course #</label>
+                          </div>
+                          <div class="form_elem">
+                            <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
+                            <label for="course_name">Course name</label>
+                          </div>
+                          <div class="form_elem">
+                            <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar"></flat-pickr>
+                            <label for="course_start">Course start date</label>
+                          </div>
+                          <div class="form_elem">
+                            <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar"></flat-pickr>
+                            <label for="course_end">Course end date</label>
+                          </div>
+
+                          <div class="form_elem">
+                            <select id="course_semester" v-model="newCourse.term.name">
+                              <option value="" selected="selected" disabled="disabled">Semester</option>
+                              <option :value="'Fall'">Fall</option>
+                              <option :value="'Winter'">Winter</option>
+                              <option :value="'Spring'">Spring</option>
+                              <option :value="'Summer'">Summer</option>
+                            </select>
+                            <label for="course_semester">Semester</label>
+                          </div>
+                          <div class="form_elem">
+                            <select id="course_year" v-model="newCourse.term.year">
+                              <option value="" selected="selected" disabled="disabled">Year</option>
+                              <option :value="2020">2020</option>
+                              <option :value="2019">2019</option>
+                              <option :value="2018">2018</option>
+                              <option :value="2017">2017</option>
+                            </select>
+                            <label for="course_year">Year</label>
+                          </div>
+                        </div>
+
+                        <h3>Course Type</h3>
+                        <p v-if="!licenseInfo">
+                          You currently do not have a <b>license</b> and can only add trial courses right now.
+                        </p>
+                        <div class="form_options">
+                          <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" :value=false />
+                          <label for="newTrialCourse">Trial Course</label>
+                        </div>
+                        <div class="form_options" v-if="licenseInfo">
+                          <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" :value=true />
+                          <label for="newLicensedCourse">Licensed Course</label>
+                        </div>
+                        <div class="form_options" v-else>
+                          <input type="radio" id="licensedCourse_disabled" name="courseType" disabled="disabled" />
+                          <label for="licensedCourse_disabled">Licensed Course</label>
+                        </div>
+                        <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
+                      </div>
+                      <div v-else-if="formResponse[0]==='Copy an existing course'">
+                        <p>Which existing course would you like to copy?</p>
+                        <form>
+                          <div class="form_options" v-for="course in currentAndPastCourses" :key="course.id" >
+                            <input type="radio" :id="'copy-' + course.id" v-model="copyCourseID" :value="course.id"></input>
+                            <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                          </div>
+                          <br>
+                          <p>
+                            <b>Please note that your copy will be a trial course by default.</b>
+                          </p>
+                          <button class='action' type="button" @click.prevent="copyCourse()">Copy Course</button>
+                        </form>
+                        <div v-if="copyingCourse">
+                          <p> Currently copying your course! </p>
+                          <div v-if="copyError">
+                            <p>there was a problem copying your course Error: {{copyError}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-else-if="formResponse[0]==='Convert a trial course' && licenseInfo">
+                        <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
+                        <div class="form_options" v-for="course in unLicensedCourses" :key="course.id" >
+                          <input type="radio" :id="'convert-license-' + course.id" v-model="courseToLicense" :value="course.id">
+                          <label :for="'convert-license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
+                        </div>
+                        <button class="action" type="button" @click.prevent="convertCourse()">Convert course</button>
+                      </div>
+                      <div v-else>
+                        <p>You currently have a <b>free trial account</b> and cannot convert trial courses into licensed ones right now. </p>
+                        <p>Try creating a new course instead! </p>
+                      </div>
+                    </template>
+                  </formContainer>
+                </form>
+              </template>
+            </buttonModal>
+
+            <div v-if="!licenseInfo">
+              <h3>Upgrade your account</h3>
+              <p>
+                If you like what you see, you can
+                <b>upgrade your account</b>
+                with a license of your choice! Purchasing a license will allow you to integrate GradeCraft with other tools, and add users to your courses.
+              </p>
+              <p>
+                <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a> to see what’s best for you. We have options for Higher Ed, K–12, and entire schools or districts; but if you need a custom arrangement, we’re more than happy to help!
+              </p>
+              <button class="action secondary next">Upgrade my account</button>
+            </div>
+          </div>
         </div>
       </template>
     </tabContainer>
-
-    <div class="content_block bg-blue">
-      <h2 class="unspace-top">Current Courses</h2>
-      <div class="course_box" v-if="currentCourses.length">
-        <courseCard v-for="course in currentCourses" :key="course.id"  :course="course" status="published"></courseCard>
-      </div>
-      <div class="course_box" v-else>
-        <div class="course_card empty">
-          <p><em>You don't have any published, active courses!</em></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="content_block" v-if="userIsInstructor && unpublishedCourses.length">
-      <h2 class="unspace-top">Unpublished Courses</h2>
-      <div class="course_box" v-if="unpublishedCourses.length">
-        <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
-      </div>
-      <div class="course_box" v-else>
-        <div class="course_card empty">
-          <p><em>You don't have any unpublished courses</em></p>
-        </div>
-      </div>
-    </div>
 
     <div class="content_block" v-if="pastCourses.length">
       <h2 class="unspace-top">Past Courses</h2>
@@ -156,177 +330,6 @@
       </div>
     </div>
 
-    <div class="content_block bg-green_mint" v-if="userIsInstructor">
-      <h2>Add a New Course</h2>
-
-      <p v-if="licenseInfo">
-        With your
-        <b>license,</b>
-        you can explore all GradeCraft has to offer and <b>create licensed courses.</b> <br />
-        Licensed courses have the ability to:
-      </p>
-      <p v-else>
-        With your
-        <b>free trial account,</b>
-        you can explore GradeCraft as much as you’d like! <br />
-        The only things you can’t do are:
-      </p>
-
-      <ul>
-        <li>Integrate with other tools (like Canvas or Moodle)</li>
-        <li>Import or add other users (such as assistants and students)</li>
-      </ul>
-
-      <p v-if="licenseInfo">
-        Your account license allows you <b>{{ licenseInfo.maxCourses }}licensed courses,</b> active until {{ licenseInfo.expires }} [Move licenseInfo into user API call for header].
-      </p>
-      <p v-else>
-        Feel free to create as many trial courses as you need to discover what our tool can do for you and your students:
-      </p>
-      <div v-if="allCourses.length">
-        <h3>Copy an existing course</h3>
-        <p>
-          If you like your setup from a previous course and would like to
-          duplicate it instead of starting from scratch, you can copy an existing course:
-        </p>
-      </div>
-      (FULL)
-      <buttonModal button_class="action" ref="buttonModal_add">
-        <template slot="button-text">Add a course</template>
-        <template slot="heading">Add a new course</template>
-        <template slot="content">
-          <form>
-            <formContainer>
-              <template slot="header">
-                <h2>How do you want add a course?</h2>
-              </template>
-              <template slot="question">
-                <div class="tab_toggle">
-                  <span v-for="question in formQuestion">
-                    <input type="radio" :id="question" :value="question" v-model="formResponse[0]" name="toggle_group" />
-                    <label :for="question">{{question}}</label>
-                  </span>
-                </div>
-              </template>
-              <template slot="form-response">
-                <div v-if="formResponse[0]==='Create a new course'">
-                  <p>Use this form to create a new course from scratch:</p>
-
-                  <h3>Essential Course Info</h3>
-                  <div v-if="newCourseErrors.length" class="inline_alert_msg">
-                    <p>
-                      Please fill out the <b>required fields</b> below if you want to create a new course.
-                    </p>
-                  </div>
-                  <div class="flex-2 form_pair">
-                    <div class="form_elem">
-                      <input type="text" v-model="newCourse.number" id="course_number" required="required" placeholder="Your course number" />
-                      <label for="course_number">Course #</label>
-                    </div>
-                    <div class="form_elem">
-                      <input type="text" v-model="newCourse.name" id="course_name" required="required" placeholder="Your course name" />
-                      <label for="course_name">Course name</label>
-                    </div>
-                    <div class="form_elem">
-                      <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar"></flat-pickr>
-                      <label for="course_start">Course start date</label>
-                    </div>
-                    <div class="form_elem">
-                      <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar"></flat-pickr>
-                      <label for="course_end">Course end date</label>
-                    </div>
-
-                    <div class="form_elem">
-                      <select id="course_semester" v-model="newCourse.term.name">
-                        <option value="" selected="selected" disabled="disabled">Semester</option>
-                        <option :value="'Fall'">Fall</option>
-                        <option :value="'Winter'">Winter</option>
-                        <option :value="'Spring'">Spring</option>
-                        <option :value="'Summer'">Summer</option>
-                      </select>
-                      <label for="course_semester">Semester</label>
-                    </div>
-                    <div class="form_elem">
-                      <select id="course_year" v-model="newCourse.term.year">
-                        <option value="" selected="selected" disabled="disabled">Year</option>
-                        <option :value="2020">2020</option>
-                        <option :value="2019">2019</option>
-                        <option :value="2018">2018</option>
-                        <option :value="2017">2017</option>
-                      </select>
-                      <label for="course_year">Year</label>
-                    </div>
-                  </div>
-
-                  <h3>Course Type</h3>
-                  <p v-if="!licenseInfo">
-                    You currently do not have a <b>license</b> and can only add trial courses right now.
-                  </p>
-                  <div class="form_options">
-                    <input type="radio" id="newTrialCourse" v-model="newCourse.licensed" :value=false />
-                    <label for="newTrialCourse">Trial Course</label>
-                  </div>
-                  <div class="form_options" v-if="licenseInfo">
-                    <input type="radio" id="newLicensedCourse" v-model="newCourse.licensed" :value=true />
-                    <label for="newLicensedCourse">Licensed Course</label>
-                  </div>
-                  <div class="form_options" v-else>
-                    <input type="radio" id="licensedCourse_disabled" name="courseType" disabled="disabled" />
-                    <label for="licensedCourse_disabled">Licensed Course</label>
-                  </div>
-                  <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
-                </div>
-                <div v-else-if="formResponse[0]==='Copy an existing course'">
-                  <p>Which existing course would you like to copy?</p>
-                  <form>
-                    <div class="form_options" v-for="course in currentAndPastCourses" :key="course.id" >
-                      <input type="radio" :id="'copy-' + course.id" v-model="copyCourseID" :value="course.id"></input>
-                      <label :for="'copy-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
-                    </div>
-                    <br>
-                    <p>
-                      <b>Please note that your copy will be a trial course by default.</b>
-                    </p>
-                    <button class='action' type="button" @click.prevent="copyCourse()">Copy Course</button>
-                  </form>
-                  <div v-if="copyingCourse">
-                    <p> Currently copying your course! </p>
-                    <div v-if="copyError">
-                      <p>there was a problem copying your course Error: {{copyError}}</p>
-                    </div>
-                  </div>
-                </div>
-                <div v-else-if="formResponse[0]==='Convert a trial course' && licenseInfo">
-                  <p>It looks like you have some trial courses set up already. Which one do you want to convert into a licensed course?</p>
-                  <div class="form_options" v-for="course in unLicensedCourses" :key="course.id" >
-                    <input type="radio" :id="'convert-license-' + course.id" v-model="courseToLicense" :value="course.id">
-                    <label :for="'convert-license-' + course.id">{{course.name}}, {{course.term.name}} {{course.term.year}}</label>
-                  </div>
-                  <button class="action" type="button" @click.prevent="convertCourse()">Convert course</button>
-                </div>
-                <div v-else>
-                  <p>You currently have a <b>free trial account</b> and cannot convert trial courses into licensed ones right now. </p>
-                  <p>Try creating a new course instead! </p>
-                </div>
-              </template>
-            </formContainer>
-          </form>
-        </template>
-      </buttonModal>
-
-      <div v-if="!licenseInfo">
-        <h3>Upgrade your account</h3>
-        <p>
-          If you like what you see, you can
-          <b>upgrade your account</b>
-          with a license of your choice! Purchasing a license will allow you to integrate GradeCraft with other tools, and add users to your courses.
-        </p>
-        <p>
-          <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a> to see what’s best for you. We have options for Higher Ed, K–12, and entire schools or districts; but if you need a custom arrangement, we’re more than happy to help!
-        </p>
-        <button class="action secondary next">Upgrade my account</button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -347,6 +350,8 @@ module.exports = {
   },
   data() {
     return {
+      tabBarOption: ["Current", "Archived", "Past", "OLD"],
+      tabSection: ["Current"],
       config: {
         allowInput: true,
         enableTime: true,

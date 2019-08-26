@@ -234,7 +234,7 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(course)
         }).then((response) => {
-          window.location.replace(state.courseDashboardURL)
+          window.location.replace(store.state.overviewURL)
           console.log("inside add resp action" , response)
         })
         state.courseCreationError = resp
@@ -252,7 +252,7 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(course)
         }).then((response) => {
-          window.location.replace(state.courseDashboardURL)
+          window.location.replace(store.state.overviewURL)
         })
         state.copyError = resp
         console.log("inside copyCourse action", resp)
