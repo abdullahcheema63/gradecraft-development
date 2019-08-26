@@ -110,8 +110,22 @@
 
         </div>
         <div v-if="tabSection[0]==='Archived'">
+          <h2>Archived Courses</h2>
+          <p>
+            This section has all your archived courses, which used to be published, including those that other instructors or course managers may have shared with you.
+            <b>You can’t make changes to archived courses.</b>
+            If you like how a course was set up, you can copy it.
+            <br />
+            If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>
+          </p>
+          <h4>Select which filters you want to apply:</h4>
         </div>
         <div v-if="tabSection[0]==='Past'">
+          <h2>Past Courses</h2>
+          <p>
+            This section has all your past courses, that you were a student, auditor, observer, or GSI in. You can’t make changes to past courses but you can review them.
+          </p>
+          <h4>Select which filters you want to apply:</h4>
         </div>
         <div v-if="tabSection[0]==='OLD'">
           <div class="content_block bg-blue">
