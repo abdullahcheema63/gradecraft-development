@@ -1,7 +1,10 @@
 <template>
-  <div class="content_block">
-    <h2 class="unspace-top">My Current Courses</h2>
-    
+  <div class="content_block bg-green_mint_2">
+    <h2>My Current Courses</h2>
+    <p>
+      Select courses you want to pay for and choose payment methods. When the course is done, come back here to turn off the payments.
+    </p>
+
     <div class="course_box">
       <div class="course_card" v-for="c of courses" :key="c.id">
         <h4>

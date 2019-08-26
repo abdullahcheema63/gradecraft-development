@@ -2,7 +2,21 @@
   <guide-control data-component></guide-control>
   <% if !(Rails.env.production?) %>
     <div class="content_block intro">
-      <h1>Manage My Course Licenses</h1>
+      <h1>My Subscription</h1>
+      <p>
+        With a GradeCraft subscription, you only pay for what you want&mdash;only the courses you want to publish and the number of months you want to run the course.
+      </p>
+      <p>
+        A paid subscription allows you to:
+      </p>
+      <ul class="pink_dots">
+        <li>
+          <b>Integrate your course with other tools</b> (like Canvas or Moodle)
+        </li>
+        <li>
+          <b>Publish your course,</b> making it visible to your students, auditors, and observers
+        </li>
+      </ul>
     </div>
     <licenses-dash data-component stripe-pk=<%= @stripePk %> ></licenses-dash>
   <% end %>

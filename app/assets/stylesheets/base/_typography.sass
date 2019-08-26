@@ -62,6 +62,25 @@ a
   &.stealth_link
     border-bottom: 0px solid transparent
 
+ul.pink_dots
+  list-style-type: none
+  margin: 1em 0 1em -40px
+
+  li
+    position: relative
+    padding: 0 1.5em
+
+    &:before
+      content: ''
+      display: block
+      border-radius: 50%
+      width: 7px
+      height: 7px
+      background-color: $pink_1
+      position: absolute
+      top: 8px
+      left: 0
+
 h1
   font-family: 'KlinicSlab_medium'
   font-size: 1.5em
@@ -114,9 +133,9 @@ h4
 .pink_text
   color: $pink_2
 
-.new_style
-  ul
-    margin-left: -1.25em
+// .new_style
+//   ul
+//     margin-left: -1.25em
 
 
 // REFACTOR -- may need to refactor below code at some point, TBD __=^o.o^=
