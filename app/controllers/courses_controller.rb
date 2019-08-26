@@ -70,6 +70,7 @@ class CoursesController < ApplicationController
       change_current_course @course.id
       redirect_to action: :edit, id: @course.id and return
     end
+    @attachments = @course.has_attchments?
     authorize! :update, @course
   end
 
@@ -99,7 +100,7 @@ class CoursesController < ApplicationController
 
     begin
       params[:copy_type] = "" if @course.has_learning_objectives?
-      
+
       duplicated = @course.copy(params[:copy_type])
 
       if duplicated.save
