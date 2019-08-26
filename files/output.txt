@@ -1,0 +1,1217 @@
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Accepts Attachment Submissions - 2019-08-02 - 320PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Accepts Attachment Submissions - 2019-08-02 - 320PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_submission_binary_file
+performer, inside write_submission_binary_file
+submitter: #<User:0x00007fe6e57a1358>
+submission_file: #<SubmissionFile:0x00007fe6ed433010>
+destination_file_path: /tmp/Accepts Attachment Submissions - 2019-08-02 - 320PM/Abberlay, Roland/Roland Abberlay - Accepts Attachment Submissions - Submission File 1.pdf
+submission_file_path: /Users/ebarroso/workspace/gradecraft/gradecraft-development//files/uploads/GC101-1/assignments/accepts_attachment_su-197/submission_files/Abberlay-Roland/1564172736_eb_resume_1.pdf
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Eos - Louisiana Buffalo - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Eos - Louisiana Buffalo - 2019-08-06 - 549PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Quo - Georgia Foes - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Quo - Georgia Foes - 2019-08-06 - 549PM
+create_submitter_directories
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Et - New Hampshire Black Cats - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Et - New Hampshire Black Cats - 2019-08-06 - 549PM
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Rerum - Mississippi Lycanthropes - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Rerum - Mississippi Lycanthropes - 2019-08-06 - 549PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Quod - Oregon Whales - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Quod - Oregon Whales - 2019-08-06 - 549PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Quod - Oregon Whales - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Iste - Kentucky Nemesis - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Iste - Kentucky Nemesis - 2019-08-06 - 549PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Rerum - North Carolina Buffalo - 2019-08-06 - 549PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Commodi - Ohio Pigs - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Commodi - Ohio Pigs - 2019-08-06 - 549PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Laborum - Pennsylvania Oxen - 2019-08-06 - 549PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Voluptatem - Illinois Nemesis - 2019-08-06 - 549PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Voluptatem - Illinois Nemesis - 2019-08-06 - 549PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+write_submission_binary_file
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+create_submission_binary_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+create_submission_binary_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+-----THE FINISH LINE-----
+upload_archive_to_s3
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+csv_file_path
+archive_root_dir: /tmp/Doloribus - Oklahoma Kangaroos - 2019-08-06 - 549PM
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+csv_file_path
+archive_root_dir: /some/weird/path/
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+csv_file_path
+archive_root_dir: /tmp/Sed - Missouri Dogs - 2019-08-06 - 549PM
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+confirm_export_csv_integrity
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+confirm_export_csv_integrity
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+confirm_export_csv_integrity
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+confirm_export_csv_integrity
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Soluta - California Crows - 2019-08-06 - 549PM
+csv_file_path
+archive_root_dir: /tmp/Soluta - California Crows - 2019-08-06 - 549PM
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Illo - New Jersey Foxes - Group Submissions - 2019-08-06 - 549PM
+csv_file_path
+archive_root_dir: /tmp/Illo - New Jersey Foxes - Group Submissions - 2019-08-06 - 549PM
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+archive_exported_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+archive_exported_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+create_submission_text_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+create_submission_text_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_error_log
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_error_log
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_error_log
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+write_note_for_missing_binary_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+write_note_for_missing_binary_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+write_note_for_missing_binary_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+write_note_for_missing_binary_files
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+create_submitter_directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+create_submitter_directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+create_submitter_directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+submitter_directories_created_successfully
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+submitter_directories_created_successfully
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+create_submitter_directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+remove_empty_submitter_directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+remove_empty_submitter_directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+remove_empty_submitter_directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+remove_empty_submitter_directories
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+Submissions Export Performer#Setup
+
+
+making tmp directories
+fetching_assets
+generate_export_csv
+csv_file_path
+archive_root_dir: /tmp/Rubric Graded Assignment Grades - 2019-08-06 - 556PM
+confirm_export_csv_integrity
+csv_file_path
+archive_root_dir: /tmp/Rubric Graded Assignment Grades - 2019-08-06 - 556PM
+create_submitter_directories
+submitter_directories_created_successfully
+create_submission_text_files
+create_submission_binary_files
+write_note_for_missing_binary_files
+remove_empty_submitter_directories
+generate_error_log
+archive_exported_files
+-----THE FINISH LINE-----
+upload_archive_to_s3
