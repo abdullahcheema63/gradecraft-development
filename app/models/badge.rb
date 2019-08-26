@@ -3,7 +3,7 @@ class Badge < ApplicationRecord
   include UnlockableCondition
   include MultipleFileAttributes
   include Analytics::BadgeAnalytics
-  include S3Manager::Copying
+  require 'fileutils'
 
   acts_as_list scope: :course
 
@@ -58,24 +58,38 @@ class Badge < ApplicationRecord
 
   private
 
+  def file_attachment_is_valid?(attachment_file)
+    !attachment_file.file.nil? && !attachment_file.file.path.nil? && File.file?(attachment_file.file.path)
+  end
+
   # Copy files that are stored on S3 via Carrierwave
   def copy_files(copy)
     copy.save unless copy.persisted?
-    copy_icon(copy) if icon.present?
-    copy_badge_files(copy) if badge_files.any?
+    if icon.present? 
+      copy_icon(copy)
+    end
+     
+    if badge_files.any? 
+      copy_badge_files(copy)
+    end
   end
 
   # Copy badge icon
   def copy_icon(copy)
-    remote_upload(copy, self, "icon", icon.url)
+    CopyCarrierwaveFile::CopyFileService.new(self, copy, :icon).set_file
+    copy.save unless copy.persisted?
   end
 
   # Copy badge files
   def copy_badge_files(copy)
+    copy.save unless copy.persisted?
+
     badge_files.each do |bf|
-      next unless exists_remotely?(bf, "file")
-      badge_file = copy.badge_files.create filename: bf[:filename]
-      remote_upload(badge_file, bf, "file", bf.url)
+      if file_attachment_is_valid?(bf)
+        badge_file = copy.badge_files.create filename: bf[:filename]
+        CopyCarrierwaveFile::CopyFileService.new(bf, badge_file, :file).set_file
+        badge_file.save unless badge_file.persisted?
+      end
     end
   end
 end

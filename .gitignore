@@ -18,3 +18,5 @@ node_modules/*
 authorized_keys
 line-count.txt
 .byebug*
+files/*
+

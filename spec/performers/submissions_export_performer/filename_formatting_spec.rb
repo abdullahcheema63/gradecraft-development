@@ -62,7 +62,7 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
   describe "tmp_dir" do
     subject { performer.instance_eval { tmp_dir }}
     it "builds a temporary directory" do
-      expect(subject).to match(/\/(tmp|var\/folders)\/[\w\d-]+/) # match the tmp dir hash
+      expect(subject).to match("/tmp") # match the tmp dir hash
     end
 
     it "caches the temporary directory" do
@@ -74,11 +74,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
 
   describe "archive_tmp_dir" do
     subject { performer.instance_eval { archive_tmp_dir }}
-
-    it "builds a temporary directory for the archive" do
-      expect(S3fs).to receive(:mktmpdir)
-      subject
-    end
 
     it "caches the temporary directory" do
       original_tmp_dir = subject

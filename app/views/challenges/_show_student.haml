@@ -5,7 +5,7 @@
     %ul
       - @challenge.challenge_files.each do |cf|
         %li
-          = link_to cf.filename, cf.url
+          = link_to cf.filename, cf.file.to_s
 
 %h2 Scores
 %table.unfancy_dynatable
