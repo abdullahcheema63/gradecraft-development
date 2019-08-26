@@ -175,24 +175,24 @@ class Course < ApplicationRecord
     status == true
   end
 
-  def has_assignment_attchments?
+  def has_assignment_attachments?
     self.assignments.map(&:assignment_files).any?
   end
 
-  def has_badge_attchments?
+  def has_badge_attachments?
     self.badges.map(&:badge_files).any?
   end
 
-  def has_challenge_attchments?
+  def has_challenge_attachments?
     self.challenges.map(&:challenge_files).any?
   end
 
-  def has_grade_attchments?
+  def has_grade_attachments?
     self.grades.map(&:attachments).any?
   end
 
-  def has_attchments?
-    self.has_assignment_attchments? || self.has_badge_attchments? || self.has_challenge_attchments? || self.has_grade_attchments?
+  def has_attachments?
+    self.has_assignment_attachments? || self.has_badge_attachments? || self.has_challenge_attachments? || self.has_grade_attachments?
   end
 
   def student_weighted?
