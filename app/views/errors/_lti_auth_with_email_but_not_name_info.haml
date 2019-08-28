@@ -1,9 +1,10 @@
-%h2 We’re having trouble creating an LTI connection
+%h2 We are having trouble creating an LTI connection
 %p
   - if (request.user_agent.include? "Safari") &&! (request.user_agent.include? "Chrome")
     = "If you are logging in for the first time, please try another browser."
     = "Otherwise, check your LTI configuration"
   - else
-    = "Please check your LTI configuration"
+    = "Please check your LTI configuration or contact us for help at "
+    = link_to "help@gradecraft.com", "mailto:help@gradecraft.com"
 %p
-  %a{href: "#{root_url}", class: "button"} Return home
+  %a{href: "#{root_url}", class: "button"} Take me back to where I was!

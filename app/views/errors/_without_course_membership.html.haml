@@ -1,4 +1,4 @@
-%h2 You currently do not have a GradeCraft course associated with your email.
+%h2 Your GradeCraft account is not associated with this course.
 %p
   %b
     If you're a student,
@@ -10,4 +10,4 @@
   = link_to "help@gradecraft.com", "mailto:help@gradecraft.com"
   and we’ll help you create a GradeCraft course.
 %p
-  = link_to "Log out", logout_url, :class => "button"
+  %a{href: "#{root_url}", class: "button"} Take me back to where I was!
