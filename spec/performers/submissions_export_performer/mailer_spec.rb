@@ -9,11 +9,11 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
       subject { performer.instance_eval { deliver_outcome_mailer } }
 
       before(:each) do
-        performer.instance_variable_set(:@check_s3_upload_success, nil)
+        performer.instance_variable_set(:@check_local_submissions_archive_copy_success, nil)
       end
 
-      context "the s3 upload is successful" do
-        before { allow(performer).to receive(:check_s3_upload_success) { true }}
+      context "the submissions archive copy is successful" do
+        before { allow(performer).to receive(:check_local_submissions_archive_copy_success) { true }}
 
         it "should deliver the success mailer" do
           expect(performer).to receive(:deliver_archive_success_mailer)
@@ -21,9 +21,9 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
         end
       end
 
-      context "the s3 upload failed" do
+      context "the submissions archive copy failed" do
         before do
-          allow(performer).to receive(:check_s3_upload_success) { false }
+          allow(performer).to receive(:check_local_submissions_archive_copy_success) { false }
         end
 
         it "should deliver the failure mailer" do
