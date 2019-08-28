@@ -14,14 +14,9 @@
       #{ @team.name }.
 
   %p
-    You can
-    = succeed ". This link will expire after one week." do
-      %a{ :href => secure_download_url(@secure_token) } download your completed ZIP archive here
-
-  %p
-    You can also
+    You can visit
     = succeed "." do
-      %a{:href => "#{ downloads_url }"} download the submissions archive from the submissions downloads page
+      %a{:href => "#{ downloads_url }"} to download the submissions archive from the submissions downloads page
 
     %p
       Thanks for being gameful!
