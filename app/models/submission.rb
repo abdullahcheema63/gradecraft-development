@@ -38,16 +38,19 @@ class Submission < ApplicationRecord
   scope :ungraded, -> do
     includes(:assignment, :group, :student)
     .where.not(id: with_grade.where(grades: { instructor_modified: true }))
+    .where.not(assignments: {student_logged: true})
   end
 
   scope :resubmitted, -> {
     includes(:grade, :assignment)
     .where("grades.student_visible = true")
     .where("grades.graded_at < submitted_at")
+    .where.not(assignments: {student_logged: true})
     .references(:grade, :assignment)
   }
 
   scope :order_by_submitted, -> { order("submitted_at ASC") }
+  scope :order_by_updated_at_date, -> { order("updated_at ASC") }
   scope :for_course, ->(course) { where(course_id: course.id) }
   scope :for_student, ->(student_ids) { where(student_id: student_ids) }
   scope :for_assignment, -> (assignment_ids) { where(assignment_id: assignment_ids) }

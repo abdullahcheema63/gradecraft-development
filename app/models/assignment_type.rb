@@ -9,7 +9,7 @@ class AssignmentType < ApplicationRecord
   belongs_to :course
   has_many :assignments, -> { order("position ASC") }, dependent: :destroy
   has_many :submissions, through: :assignments
-  has_many :grades
+  has_many :grades, through: :assignments
 
   has_many :learning_objective_links, as: :learning_objective_linkable
 
@@ -156,6 +156,14 @@ class AssignmentType < ApplicationRecord
   # to that student
   def visible_assignments_for_student?(student)
     assignments.any? { |a| a.visible_for_student? student }
+  end
+
+  def has_assignments_with_submissions?
+    assignments.any? { |assignment| assignment.has_submissions? }
+  end
+
+  def has_assignments_with_grades?
+    assignments.any? { |assignment| assignment.has_grades? }
   end
 
   private

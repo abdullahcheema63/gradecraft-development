@@ -53,6 +53,8 @@ class CoursesController < ApplicationController
                                         role: "professor")
       session[:course_id] = @course.id
       auto_login @user
+      @user.update_login_at
+      @user.update_course_login_at(@course.id)
       redirect_to dashboard_path, flash: {
         notice: "Course #{@course.name} successfully created"
       }
@@ -68,6 +70,7 @@ class CoursesController < ApplicationController
       change_current_course @course.id
       redirect_to action: :edit, id: @course.id and return
     end
+    @attachments = @course.has_attachments?
     authorize! :update, @course
   end
 
@@ -80,6 +83,8 @@ class CoursesController < ApplicationController
       end
       session[:course_id] = @course.id
       bust_course_list_cache current_user
+      current_user.update_login_at
+      current_user.update_course_login_at(@course.id)
       redirect_to edit_course_path(@course), flash: {
         notice: "Course #{@course.name} successfully created"
       }
@@ -94,6 +99,8 @@ class CoursesController < ApplicationController
     authorize! :read, @course
 
     begin
+      params[:copy_type] = "" if @course.has_learning_objectives?
+
       duplicated = @course.copy(params[:copy_type])
 
       if duplicated.save
@@ -206,7 +213,7 @@ class CoursesController < ApplicationController
       :course_number, :name, :semester, :year, :has_badges, :has_teams,
       :has_learning_objectives, :learning_objective_term, :objectives_award_points, :always_show_objectives,
       :team_term, :student_term, :section_leader_term, :group_term, :lti_uid,
-      :user_id, :course_id, :course_rules, :dashboard_message, :syllabus, :has_multipliers,
+      :user_id, :course_id, :course_rules, :dashboard_message, :delete_student_logged_grade, :syllabus, :has_multipliers,
       :has_character_names, :has_team_roles, :has_character_profiles, :show_analytics, :show_grade_predictor,
       :total_weights, :weights_close_at, :has_public_badges,
       :assignment_weight_type, :has_submissions, :teams_visible,

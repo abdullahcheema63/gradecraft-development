@@ -41,6 +41,7 @@ class ApplicationController < ActionController::Base
       @user = User.find_by_username(request.env["REMOTE_USER"])
       if @user
         auto_login(@user)
+        @user.update_login_at
         redirect_to dashboard_path
       else
         redirect_to root_url, alert: "Please login first."
@@ -70,7 +71,8 @@ class ApplicationController < ActionController::Base
   def record_course_login_event(event_options = {})
     return unless request.format.html? || request.format.xml?
     event_attrs = event_session.merge event_options
-
+    user = event_options.values_at(:user).first
+    user.update_course_login_at(user.current_course_id) if user && user.current_course_id
     EventLoggers::LoginEvent.new.log_later(event_attrs.merge(request: nil))
   end
 

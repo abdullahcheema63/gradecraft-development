@@ -50,12 +50,6 @@ describe API::FileUploadsController do
         expect { delete :destroy, params: { id: file_upload.id }, format: :json
         }.to change { FileUpload.count }.by(-1)
       end
-
-      it "removes the corresponding file on s3" do
-        allow(FileUpload).to receive(:where) { [file_upload] }
-        expect(file_upload).to receive(:delete_from_s3)
-        delete :destroy, params: { id: file_upload.id }, format: :json
-      end
     end
   end
 

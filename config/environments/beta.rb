@@ -71,7 +71,8 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.default_url_options = { :host => "beta.gradecraft.com" }
+  config.action_mailer.default_url_options = { :host => "app.gradecraft.com" }
+  config.action_mailer.asset_host = "https://app.gradecraft.com"
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :authentication => :plain,
@@ -108,10 +109,4 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   config.session_store :active_record_store, :expire_after => 60.minutes
-end
-
-require 'carrierwave/storage/fog'
-
-CarrierWave.configure do |config|
-  config.storage = :fog
 end

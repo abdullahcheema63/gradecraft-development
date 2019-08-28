@@ -76,6 +76,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.default_url_options = { :host => "umich.gradecraft.com" }
+  config.action_mailer.asset_host = "https://umich.gradecraft.com"
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :authentication => :plain,
@@ -112,10 +113,4 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   config.session_store :active_record_store, :expire_after => 60.minutes
-end
-
-require 'carrierwave/storage/fog'
-
-CarrierWave.configure do |config|
-  config.storage = :fog
 end

@@ -54,6 +54,8 @@ class User < ApplicationRecord
 
   scope :accounts_not_activated, ->(course_id) { includes(:course_memberships).where(course_memberships: { course_id: course_id }, activation_state: 'pending')}
 
+  scope :active_students, ->(course_id) { includes(:course_memberships).where(course_memberships: {course_id: course_id, active: true }) }
+  
   mount_uploader :avatar_file_name, AvatarUploader
 
   has_many :authorizations, class_name: "UserAuthorization", dependent: :destroy
@@ -226,6 +228,15 @@ class User < ApplicationRecord
 
   def is_staff?(course)
     is_professor?(course) || is_gsi?(course) || is_admin?(course)
+  end
+
+  def update_login_at
+    self.update_attribute(:last_login_at, DateTime.current)
+  end
+
+  def update_course_login_at(course_id)
+    membership = self.course_memberships.find_by(course: course_id)
+    membership.update_attribute(:last_login_at, DateTime.current) if membership
   end
 
   ### TEAMS

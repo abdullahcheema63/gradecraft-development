@@ -15,7 +15,7 @@
 
 %li
   = link_to_unless_current decorative_glyph("file-archive-o") + "Course Data Exports", downloads_path
-%li= link_to_unless_current decorative_glyph("bar-chart") + "Analytics", analytics_students_path
+%li= link_to_unless_current decorative_glyph("bar-chart") + "Analytics", per_assign_path
 %li= link_to_unless_current decorative_glyph(:bullhorn) + "Announcements", announcements_path
 %li= link_to_unless_current decorative_glyph(:calendar) + "Calendar Events", events_path
 
@@ -57,6 +57,6 @@
     %li= link_to_unless_current decorative_glyph(:university) + "Manage Courses", overview_courses_path
     %li= link_to_unless_current decorative_glyph(:trash) + "Delete Course Memberships", course_memberships_path
     %li= link_to_unless_current decorative_glyph(:building) + "All Institutions", institutions_path
-    %li= link_to_unless_current decorative_glyph("user-times") + "All Users", users_path
+    %li= link_to_unless_current decorative_glyph("user-times") + "Current Course Users", users_path
     %li= link_to_unless_current decorative_glyph(:search) + "Search Users", search_users_path
     %li= link_to_unless_current decorative_glyph(:wrench) + "Tools", admin_tools_path

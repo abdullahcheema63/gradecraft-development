@@ -29,10 +29,13 @@
 - if grade.feedback.present?
   = render partial: "grades/components/feedback", locals: { grade: grade }
 
+- if current_course.delete_student_logged_grade && grade.assignment.student_logged?
+  = render partial: "grades/components/delete_self_logged", locals: { grade: grade }
+
 - if grade.earned_badges.present?
   = render partial: "grades/components/badges", locals: { grade: grade }
 
-- if grade.assignment.grade_with_rubric?
+- if grade.assignment.grade_with_rubric? && !grade.assignment.student_logged?
   .rubric-container
     = render partial: "rubrics/components/rubric_table", locals: { presenter: Assignments::Presenter.new(assignment: grade.assignment, course: current_course), rubric: grade.assignment.rubric, student: grade.student, include_grade_info: true }
 

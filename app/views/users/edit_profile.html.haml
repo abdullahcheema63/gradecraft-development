@@ -22,7 +22,7 @@
             = f.check_box :remove_avatar_file_name
             Remove Image
 
-      - if ! @user.kerberos_uid.present?
+      - if ! @user.kerberos_uid.present? && ! @user.lti_uid.present? 
         .update-password-wrapper
           %button.button-link.update-button#update-password Change Password
           .update-password-form{"aria-hidden": "true"}

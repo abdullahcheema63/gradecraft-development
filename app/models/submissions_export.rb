@@ -1,13 +1,12 @@
-require "s3_manager"
 require "export"
 require "formatter"
 
 class SubmissionsExport < ApplicationRecord
-  # treat this resource as if it's responsible for managing an object on s3
+  # treat this resource as if it's responsible for managing an object on our local efs
   # Note that if this record is an ActiveRecord::Base descendant then a
-  # callback for :rebuild_s3_object_key is added for on: :save
+  # callback for :rebuild_file_path is added for on: :save
   #
-  include S3Manager::Resource
+  include FileManager::PathFinder
 
   # give this resource additional methods that aren't s3-specific but that
   # assist in the export process
@@ -33,14 +32,30 @@ class SubmissionsExport < ApplicationRecord
     SecureToken.create user_id: professor.id, course_id: course.id, target: self
   end
 
-  # tell s3 which directory structure to use for exports
-  def s3_object_key_prefix
-    "exports/courses/#{course_id}/assignments/#{assignment_id}/" \
+  def local_file_path_prefix
+    "files/exports/courses/#{course_id}/assignments/#{assignment_id}/" \
       "#{object_key_date}/#{object_key_microseconds}"
   end
 
   def url_safe_filename
     Formatter::Filename.new("#{export_file_basename}.zip").filename
+  end
+
+  def copy_from_tmp_to_local
+    begin
+      local_file_dir_name = File.dirname(self.local_file_path)
+      directory_path = "#{Rails.root}/#{local_file_dir_name}"
+      FileUtils.mkdir_p(directory_path)
+
+      source_file = "/tmp/#{self.export_file_basename}.zip"
+      if File.file?(source_file)
+        destination_path = ["#{Rails.root}", self.local_file_path]
+        destination_path = destination_path.join "/"
+        FileUtils.cp(source_file, destination_path)
+      end
+    rescue StandardError => error
+      puts error
+    end
   end
 
   # methods for building and formatting the archive filename

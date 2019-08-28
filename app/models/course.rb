@@ -4,7 +4,6 @@ class Course < ApplicationRecord
   include Copyable
   include UnlockableCondition
   include Analytics::CourseAnalytics
-  include S3Manager::Copying
 
   # Callbacks
   before_validation :reset_weight_fields_if_unused
@@ -97,7 +96,7 @@ class Course < ApplicationRecord
   validates_presence_of :name, :course_number, :student_term, :team_term, :group_term,
     :team_leader_term, :group_term, :weight_term, :badge_term, :assignment_term, :challenge_term, :grade_predictor_term
 
-  validates_numericality_of :total_weights, :max_weights_per_assignment_type,
+  validates_numericality_of :total_weights, :max_weights_per_assignment_type, :full_points,
     :max_assignment_types_weighted, less_than_or_equal_to: 999999999, greater_than: 0, if: lambda { self.has_multipliers? }, message: "must be set to greater than 0 for the Multipliers feature to work properly."
 
   validates_format_of :twitter_hashtag, with: /\A[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*\z/, allow_blank: true, length: { within: 3..20 }
@@ -174,6 +173,26 @@ class Course < ApplicationRecord
 
   def active?
     status == true
+  end
+
+  def has_assignment_attachments?
+    self.assignments.map(&:assignment_files).any?
+  end
+
+  def has_badge_attachments?
+    self.badges.map(&:badge_files).any?
+  end
+
+  def has_challenge_attachments?
+    self.challenges.map(&:challenge_files).any?
+  end
+
+  def has_grade_attachments?
+    self.grades.map(&:attachments).any?
+  end
+
+  def has_attachments?
+    self.has_assignment_attachments? || self.has_badge_attachments? || self.has_challenge_attachments? || self.has_grade_attachments?
   end
 
   def student_weighted?
@@ -262,26 +281,36 @@ class Course < ApplicationRecord
   end
 
   def copy_with_associations(attributes, associations)
-    ModelCopier.new(self).copy(attributes: attributes,
-                               associations: [
-                                 :badges,
-                                 { assignment_types: { course_id: :id }},
-                                 :rubrics,
-                                 :challenges,
-                                 :grade_scheme_elements
-                               ] + associations,
-                               cross_references: [
-                                 :unlock_conditions
-                               ],
-                               options: {
-                                 prepend: { name: "Copy of " },
-                                 overrides: [-> (copy) { copy_syllabus copy }]
-                               })
+    @lookups = ModelCopierLookups.new
+
+    course_associations = [
+      :badges,
+      { assignment_types: { course_id: :id }},
+      :rubrics,
+      :challenges,
+      :grade_scheme_elements,
+    ] + associations
+
+    course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
+    course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
+
+    ModelCopier.new(self, @lookups).copy(attributes: attributes,
+                                         associations: course_associations,
+                                         cross_references: [
+                                           :unlock_conditions
+                                         ],
+                                         options: {
+                                           prepend: { name: "Copy of " },
+                                           overrides: [-> (copy) { copy_syllabus copy }]
+                                         })
   end
 
   # Copy course syllabus
   def copy_syllabus(copy)
-    copy.save unless copy.persisted?
-    remote_upload(copy, self, "syllabus", syllabus.url)
+    if self.syllabus.file.present?
+      copy.save unless copy.persisted?
+      CopyCarrierwaveFile::CopyFileService.new(self, copy, :syllabus).set_file
+      copy.save unless copy.persisted?
+    end
   end
 end

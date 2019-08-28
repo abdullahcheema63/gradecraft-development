@@ -198,14 +198,14 @@ describe Assignments::GradesController do
       context "with a student loggable grade" do
         before(:each) { assignment.update(student_logged: true) }
 
-        it "creates a maximum score by the student if present" do
-          post :self_log, params: { assignment_id: assignment.id }
+        it "creates a maximum score by the student if present only if raw_points are set" do
+          post :self_log, params: { assignment_id: assignment.id, grade: { raw_points: assignment.full_points } } 
           grade = student.grade_for_assignment(assignment)
           expect(grade.raw_points).to eq assignment.full_points
         end
 
         it "updates the attributes on the grade" do
-          post :self_log, params: { assignment_id: assignment.id }
+          post :self_log, params: { assignment_id: assignment.id, grade: { raw_points: assignment.full_points } }
           grade = student.grade_for_assignment(assignment)
           grade.reload
           expect(grade.instructor_modified).to eq true

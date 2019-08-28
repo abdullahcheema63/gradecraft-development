@@ -30,6 +30,7 @@ class PasswordsController < ApplicationController
     if @user.change_password!(params[:user][:password])
       @user.activate! unless @user.activated?
       auto_login @user
+      @user.update_login_at
       redirect_to dashboard_path,
         notice: "Password was successfully updated" and return
     end
