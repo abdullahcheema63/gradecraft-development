@@ -1,5 +1,5 @@
 <template>
-  <div v-if="status=='published'" class="course_card" :class="user_card_class">
+  <div v-if="status=='published'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another]">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
@@ -7,10 +7,8 @@
 
     <div class="course_status">
       <p>{{ user_card_class }}</p>
-      <div v-if="course.role === 'professor'">
-        <p :class="'licensed'" v-if="is_licensed">
-          paid
-        </p>
+      <div v-if="course.role === 'professor' && paid_course_class">
+        <p>Paid</p>
       </div>
     </div>
 
@@ -101,18 +99,15 @@
     </modalComponent>
   </div>
 
-  <div v-else-if="status=='unpublished'" class="course_card unpublished" :class="user_card_class">
+  <div v-else-if="status=='unpublished'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another]">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
     </h4>
 
     <div class="course_status">
       <p>{{user_card_class}}</p>
-      <div>
-        <p>Unpublished Course</p>
-        <p :class="'licensed'" v-if="is_licensed" @click="toggleModalState">
-          Licensed
-        </p>
+      <div v-if="paid_course_class" >
+        <p @click="toggleModalState">Paid</p>
       </div>
     </div>
 
@@ -181,6 +176,12 @@ module.exports = {
     user_card_class() {
       if( this.is_staff ){ return 'instructor' }
       else { return 'student'}
+    },
+    paid_course_class() {
+      if( this.course.licensed ){ return 'paid' }
+    },
+    paid_by_another() {
+      if( this.course.paidByAnother ){ return 'another_user' }
     },
     is_licensed() {
       return this.course.licensed
