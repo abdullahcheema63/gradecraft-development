@@ -1,6 +1,7 @@
 @import "../utilities/variables"
 @import "../utilities/mixins"
 
+
 /* Top Level Dashboard */
 .course_box
   display: flex
@@ -15,7 +16,7 @@
 .course_card
   box-sizing: border-box
   width: 32%
-  padding: 0
+  padding: 0 0 4em 0
   margin-bottom: 1.5em
   border: 1px solid $grey_1
   background-color: white
@@ -84,7 +85,7 @@
 
   .course_assignments
     position: relative
-    margin-bottom: 4em
+    // margin-bottom: 4em
 
     h4
       margin: 0.75em 0
@@ -145,6 +146,8 @@
   .button_box
     position: absolute
     bottom: 0
+    left: 0
+    right: 0
 
   &.instructor
     .overview
@@ -200,13 +203,17 @@
             top: 0
             left: -0.78em
 
-    &.another_user
+    &.another_user_paid
       .course_status
         div
           p
             background-color: $green_lime
             &:before
               border-top-color: $green_lime
+
+  &.another_user_created
+    & > h4
+      background-color: $blue-medium_2
 
   &.student
     .overview

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="status=='published'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another]">
+  <div v-if="status=='published'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
@@ -77,6 +77,24 @@
 
     <div class="button_box">
       <a class="button next" v-bind:href="course.url">View course</a>
+      <dropdownDotsComponent>
+        <template slot="content">
+          <ul>
+            <li>
+              <a>Copy</a>
+            </li>
+            <li>
+              <a>Unpublish</a>
+            </li>
+            <li>
+              <a>Archive</a>
+            </li>
+            <li>
+              <a>Delete</a>
+            </li>
+          </ul>
+        </template>
+      </dropdownDotsComponent>
     </div>
 
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
@@ -99,7 +117,7 @@
     </modalComponent>
   </div>
 
-  <div v-else-if="status=='unpublished'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another]">
+  <div v-else-if="status=='unpublished'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
     </h4>
@@ -111,8 +129,26 @@
       </div>
     </div>
 
-    <div>
+    <div class="button_box">
       <a class="button next" v-bind:href="course.url">View course</a>
+      <dropdownDotsComponent>
+        <template slot="content">
+          <ul>
+            <li>
+              <a>Copy</a>
+            </li>
+            <li>
+              <a>Publish</a>
+            </li>
+            <li>
+              <a>Archive</a>
+            </li>
+            <li>
+              <a>Delete</a>
+            </li>
+          </ul>
+        </template>
+      </dropdownDotsComponent>
     </div>
 
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
@@ -135,7 +171,7 @@
     </modalComponent>
   </div>
 
-  <div v-else-if="status=='past'" class="course_card past" :class="user_card_class">
+  <div v-else-if="status=='past'" class="course_card past" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
@@ -161,12 +197,14 @@ module.exports = {
   name: 'courseCard',
   props: ['course', 'status'],
   components: {
-    modalComponent: () => VComponents.get('vue/components/structure/modalComponent')
+    modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
+    dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },
   data() {
     return {
       modalState: false,
-      licenseStatus: this.course.licensed ? "license" : "trial"
+      licenseStatus: this.course.licensed ? "license" : "trial",
+      dropdownState: false,
     }
   },
   computed: {
@@ -181,7 +219,10 @@ module.exports = {
       if( this.course.licensed ){ return 'paid' }
     },
     paid_by_another() {
-      if( this.course.paidByAnother ){ return 'another_user' }
+      if( this.course.paidByAnotherUser ){ return 'another_user_paid' }
+    },
+    created_by_another() {
+      if( this.course.createdByAnotherUser ){ return 'another_user_created' }
     },
     is_licensed() {
       return this.course.licensed
@@ -191,6 +232,9 @@ module.exports = {
     toggleModalState(){
       this.modalState = !this.modalState
     },
+    toggleDropdownState(){
+      this.dropdownState = !this.dropdownState
+    },
     assignment_status(assignment){
       if (assignment.graded){ return "graded" }
       if (assignment.submitted){ return "submitted" }
@@ -199,7 +243,7 @@ module.exports = {
     toggleCourseLicense(){
       if (this.licenseStatus === "license"){this.$store.dispatch('licenseCourse', this.course.id)}
       if (this.licenseStatus === "trial"){this.$store.dispatch('unLicenseCourse', this.course.id)}
-    }
+    },
   }
 }
 `</script>

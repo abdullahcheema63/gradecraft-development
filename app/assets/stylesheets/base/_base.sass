@@ -283,7 +283,7 @@ body
     &.next
       background: $blue-medium_1 url(asset_path("icon-arrow_next.svg")) no-repeat top 0.7em right 0.6em
       background-size: 1.1em auto
-      padding: 0.6em 2.25em 0.6em 1em
+      padding: 0.5em 2.25em 0.5em 1em
       text-align: left
 
       &:hover
@@ -347,6 +347,54 @@ body
 
   form
     margin: 1em 0
+
+  .dropdown_dots
+    position: absolute
+    right: 0.5em
+    top: 1.5em
+
+    button
+      background: transparent
+      margin: 0
+      padding: 10px 0 10px 30px
+      min-width: auto
+      border: 0px solid transparent
+
+      svg
+        width: 25px
+        height: auto
+        display: block
+
+      &.is-open
+        --dotColor: #215089
+
+    & > div
+      background-color: $blue-medium_2
+      position: absolute
+      right: -2px
+      bottom: 1.25em
+      z-index: 10
+      box-shadow: 0 0 5px rgba(0,0,0,0.2)
+      min-width: 120px
+      border-radius: $radius-popup
+      padding: 0.75em
+
+      &.is-closed
+        display: none
+
+      &.is-open
+        display: block
+
+      ul
+        list-style-type: none
+        hyphens: none
+        margin: 0 0 0 -40px
+
+      a
+        color: white
+        border: 0px solid transparent
+        display: block
+        padding: 2px 0
 
 .button_block
   position: relative
