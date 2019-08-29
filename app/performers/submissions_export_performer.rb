@@ -395,25 +395,16 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def deliver_archive_success_mailer
-    if @team
-      deliver_team_export_successful_mailer
-    else
-      deliver_export_successful_mailer
-    end
+    deliver_export_successful_mailer
   end
 
   def deliver_archive_failed_mailer
-    @team ? deliver_team_export_failure_mailer : deliver_export_failure_mailer
+    deliver_export_failure_mailer
   end
 
   def deliver_export_successful_mailer
     ExportsMailer.submissions_export_success(professor, @assignment, \
       @submissions_export, secure_token).deliver_now
-  end
-
-  def deliver_team_export_successful_mailer
-    ExportsMailer.team_submissions_export_success(professor, @assignment, \
-      @team, @submissions_export, secure_token).deliver_now
   end
 
   def secure_token
@@ -423,11 +414,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   def deliver_export_failure_mailer
     ExportsMailer.submissions_export_failure(@professor, @assignment)
       .deliver_now
-  end
-
-  def deliver_team_export_failure_mailer
-    ExportsMailer.team_submissions_export_failure(@professor, @assignment, \
-      @team).deliver_now
   end
 
   def expand_messages(messages={})

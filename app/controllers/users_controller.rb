@@ -249,6 +249,7 @@ class UsersController < ApplicationController
 
     if @user.save
       @user.activate!
+      UserMailer.app_resources_email(@user).deliver_now
       redirect_to new_external_courses_path(user_id: @user.id), notice: "Welcome to GradeCraft!" and return
     end
     render :activate, alert: @user.errors.full_messages.first
