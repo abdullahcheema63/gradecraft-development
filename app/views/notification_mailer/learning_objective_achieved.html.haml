@@ -1,13 +1,22 @@
-%h2{:align => "center"}
-  %strong Congratulations #{ @student.first_name }!
-%h3{:align => "center"}
-  You've acheived the
-  %strong= @learning_objective.name
-  #{ @course.learning_objective_term.singularize }.
-%p
-%hr/
-%p{:align => "center"}
-  Check out what other #{ @course.learning_objective_term.downcase } you can
-  earn in #{ @course.name }
-  = link_to "here", learning_objectives_objectives_url
-%hr/
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+
+%td
+  %h1
+    Congratulations, #{ @student.first_name }!
+
+  %p
+    You’ve acheived the
+    %strong= @learning_objective.name
+    #{ @course.learning_objective_term.singularize }!
+
+  %p
+    Check out what other #{ @course.learning_objective_term.downcase }" you can earn in #{ @course.name }
+    
+  %center
+    =link_to "See more #{ @course.learning_objective_term.downcase }", learning_objectives_links_url
+
+  %p
+    Play on!
+    %br
+    GradeCraft

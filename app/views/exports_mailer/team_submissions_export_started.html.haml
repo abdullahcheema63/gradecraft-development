@@ -1,12 +1,23 @@
-%h2{:align => "center"}
-  %strong Dear #{ @professor.first_name },
+%td.hero_img
+  = image_tag "email-hero_Neutral.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%h3{:align => "center"}
-  Your requested submissions export of #{ @course.assignment_term.downcase} "#{ @assignment.name }"
-  in course #{ @course.name }
-  for #{ @course.team_term.downcase } #{ @team.name } is being created.
+%td
+  %h1
+    Hello, #{ @professor.first_name }
 
-%p
-%p{:align => "center"}
-  You'll be notified when your ZIP archive is ready to download.
-%hr/
+  %p
+    Your requested submissions export of #{ @course.assignment_term.downcase}
+    %strong
+      #{ @assignment.name }
+    in course #{ @course.name } for #{ @course.team_term.downcase }
+    %strong
+      #{ @team.name }
+    is being created.
+
+  %p
+    You’ll be notified when your ZIP archive is ready to download.
+
+  %p
+    Thanks for being gameful!
+    %br
+    The GradeCraft Team

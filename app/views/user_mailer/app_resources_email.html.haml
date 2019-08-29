@@ -1,22 +1,31 @@
-%h2
-  %strong Hello, #{@user.first_name}
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%h3 Welcome to GradeCraft!
+%td
+  %h1
+    Welcome to GradeCraft, #{@user.first_name}!
 
-%p Thank you for signing up for a free trial! Your trial account will allow you full access to features to build your course.
+  %p
+    Thank you for signing up for a free trial! Your trial account will allow you full access to features to build your course.
 
-%p As you begin to explore and build your course, we wanted to share some resources to help:
+  %div
+    %p
+      As you begin to explore and build your course, we wanted to share some resources to help:
+    %ul
+      %li= link_to "Guide to Getting Started", "http://gamefulpedagogy.com/getting-started/".html_safe
+      %li= link_to "Frequently Asked Questions", "https://gradecraft.zendesk.com/hc/en-us".html_safe
+      %li= link_to "Syllabi Examples", "http://gamefulpedagogy.com/example-syllabi/".html_safe
+      %li= link_to "Your 'Go-To' Resource for All Things Gameful", "http://gamefulpedagogy.com/".html_safe
 
-%ul
-  %li= link_to "Guide to Getting Started", "http://gamefulpedagogy.com/getting-started/".html_safe
-  %li= link_to "Frequently Asked Questions", "https://gradecraft.zendesk.com/hc/en-us".html_safe
-  %li= link_to "Syllabi Examples", "http://gamefulpedagogy.com/example-syllabi/".html_safe
-  %li= link_to "Your 'Go-To' Resource for All Things Gameful", "http://gamefulpedagogy.com/".html_safe
+  %p
+    Once you’ve had some time to look around, please feel free to reach out to us at
+    %a{href: "mailto:help@gradecraft.com"} help@gradecraft.com
+    to let us know if you have questions or need any further information.
 
-%p Once you have had some time to look around, please feel free to reach out to us at help@gradecraft.com to let us know if you have questions or need any further information.
+  %p
+    When your course is complete and you’re ready to add users, there are several #{ link_to "licensing options", "https://gradecraft.com/licenses/".html_safe } available to fit your needs.
 
-%p When your course is complete and you are ready to add users, there are several #{ link_to "license options", "https://gradecraft.com/pricing.html".html_safe } available.
-
-%p Happy Exploring!
-
-%p The GradeCraft Team
+  %p
+    Happy exploring!
+    %br
+    GradeCraft
