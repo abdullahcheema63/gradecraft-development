@@ -1,23 +1,30 @@
-%h2{:align => "center"}
-  %strong Congratulations #{ @student.first_name }!
-%p{:align => "center"}
-  %img{:src => "#{@earned_badge.badge.icon}", :width => "150"}/
-%h3{:align => "center"}
-  You've earned the
-  %strong= @earned_badge.badge.name
-  #{ @course.badge_term }.
-- if @earned_badge.feedback.present?
-  %p{:align => "center"}
-    %br/
-    %em Your instructor said:
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+
+%td
+  %h1
+    Congratulations, #{ @student.first_name }!
+
+  %img{:src => "#{@earned_badge.badge.icon}", :width => "150", :class => "badge", :alt => "badge graphic"}
+
+  %h2
+    You’ve earned the
+    %strong= @earned_badge.badge.name
+    #{ @course.badge_term }
+
+  - if @earned_badge.feedback.present?
     %p
-    %div{:align => "center"}
+      Your instructor said:
+    %div
       = @earned_badge.feedback.html_safe
-%p
-%hr/
-%p{:align => "center"}
-  Check out what other #{ @course.badge_term.pluralize.downcase } you can
-  earn in #{ @course.name }
-  = succeed "." do
-    %a{:href => badges_url} here
-%hr/
+
+  %p
+    Check out what other #{ @course.badge_term.pluralize.downcase } you can
+    earn in
+    = succeed "." do
+      %a{:href => badges_url} #{ @course.name }
+
+  %p
+    Play on!
+    %br
+    GradeCraft

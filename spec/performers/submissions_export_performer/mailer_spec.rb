@@ -36,15 +36,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
     describe "#deliver_archive_success_mailer" do
       subject { performer.instance_eval { deliver_archive_success_mailer } }
 
-      context "a @team is present" do
-        before { performer.instance_variable_set(:@team, true) }
-
-        it "should deliver the team success mailer" do
-          expect(performer).to receive(:deliver_team_export_successful_mailer)
-          subject
-        end
-      end
-
       context "no @team is present" do
         before { performer.instance_variable_set(:@team, false) }
 
@@ -57,15 +48,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
 
     describe "#deliver_archive_failed_mailer" do
       subject { performer.instance_eval { deliver_archive_failed_mailer } }
-
-      context "a @team is present" do
-        before { performer.instance_variable_set(:@team, true) }
-
-        it "should deliver the team failure mailer" do
-          expect(performer).to receive(:deliver_team_export_failure_mailer)
-          subject
-        end
-      end
 
       context "no @team is present" do
         before { performer.instance_variable_set(:@team, false) }
@@ -119,26 +101,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
       end
     end
 
-    describe "#deliver_team_export_successful_mailer" do
-      subject do
-        performer.instance_eval { deliver_team_export_successful_mailer }
-      end
-
-      before(:each) do
-        allow(ExportsMailer).to receive(:team_submissions_export_success)
-          .and_return mailer_double
-      end
-
-      it "delivers a team export success mailer" do
-        expect(ExportsMailer).to receive(:team_submissions_export_success)
-          .with(professor, assignment, team, submissions_export, secure_token)
-      end
-
-      it "delivers the mailer" do
-        expect(mailer_double).to receive(:deliver_now)
-      end
-    end
-
     describe "#deliver_export_failure_mailer" do
       subject { performer.instance_eval { deliver_export_failure_mailer } }
 
@@ -150,24 +112,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
       it "delivers an export failure mailer" do
         expect(ExportsMailer).to receive(:submissions_export_failure)
           .with(professor, assignment)
-      end
-
-      it "delivers the mailer" do
-        expect(mailer_double).to receive(:deliver_now)
-      end
-    end
-
-    describe "#deliver_team_export_failure_mailer" do
-      subject { performer.instance_eval { deliver_team_export_failure_mailer } }
-
-      before(:each) do
-        allow(ExportsMailer).to receive(:team_submissions_export_failure)
-          .and_return mailer_double
-      end
-
-      it "delivers a team export failure mailer" do
-        expect(ExportsMailer).to receive(:team_submissions_export_failure)
-          .with(professor, assignment, team)
       end
 
       it "delivers the mailer" do
