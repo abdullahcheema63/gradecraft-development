@@ -176,23 +176,27 @@ class Course < ApplicationRecord
   end
 
   def has_assignment_attachments?
-    self.assignments.map(&:assignment_files).any?
+    !(self.assignments.map {|assignment| assignment.assignment_files.blank? }.all?)
   end
 
   def has_badge_attachments?
-    self.badges.map(&:badge_files).any?
+    !(self.badges.map {|badge| badge.badge_files.blank? }.all?)
   end
 
   def has_challenge_attachments?
-    self.challenges.map(&:challenge_files).any?
+    !(self.challenges.map {|challenge| challenge.challenge_files.blank? }.all?)
   end
 
   def has_grade_attachments?
-    self.grades.map(&:attachments).any?
+    !(self.grades.map{|grade| grade.file_uploads.blank?}.all?)
+  end
+
+  def has_submission_attachments?
+    !(self.submissions.map{|submission| submission.submission_files.blank?}.all?)
   end
 
   def has_attachments?
-    self.has_assignment_attachments? || self.has_badge_attachments? || self.has_challenge_attachments? || self.has_grade_attachments?
+    self.has_assignment_attachments? || self.has_badge_attachments? || self.has_challenge_attachments? || self.has_grade_attachments? || self.has_submission_attachments?
   end
 
   def student_weighted?

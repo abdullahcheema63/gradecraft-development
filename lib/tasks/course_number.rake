@@ -1,25 +1,5 @@
 namespace :move_attachment_directories do
 
-  def has_assignment_attchments?(course)
-    course.assignments.map(&:assignment_files).any?
-  end
-
-  def has_badge_attchments?(course)
-    course.badges.map(&:badge_files).any?
-  end
-
-  def has_challenge_attchments?(course)
-    course.challenges.map(&:challenge_files).any?
-  end
-
-  def has_grade_attchments?(course)
-    course.grades.map(&:attachments).any?
-  end
-
-  def course_has_attchments?(course)
-    has_assignment_attchments?(course) || has_badge_attchments?(course) || has_challenge_attchments?(course) || has_grade_attchments?(course)
-  end
-
   def old_directory_exists(course)
     File.directory?("#{Rails.root}/files/uploads/#{course.course_number}-#{course.id}")
   end
@@ -46,7 +26,7 @@ namespace :move_attachment_directories do
 
     courses = Course.all
     courses.each do |c|
-      if course_has_attchments?(c)
+      if c.has_attachments?
         puts(c.inspect)
         old_file_path = "#{Rails.root}/files/uploads/#{c.course_number}-#{c.id}"
         puts("old_file_path: ", old_file_path)
@@ -94,7 +74,7 @@ namespace :move_attachment_directories do
           FileUtils.remove_dir old_dir
         end
       elsif(Course.exists?(course_id))
-        if(course_has_attchments?(Course.find(course_id)))
+        if((Course.find(course_id)).has_attachments?)
           puts("Course has attachments, but does not have 'new' directory")
           puts("Course number was perviously changed")
           if args[:run_it] == "true"
