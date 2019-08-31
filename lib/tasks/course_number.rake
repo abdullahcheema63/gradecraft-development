@@ -42,11 +42,9 @@ namespace :move_attachment_directories do
     path = [
       base_dir,
       course_id.to_s,
-      "badge_files",
-      badge_id.to_s,
+      "badge_files/",
     ].compact
-    path = path.join "/"
-    path << "/"
+    path.join "/"
   end
 
   #/gradecraft-development/files/uploads/<course_id>/challenge_files/
