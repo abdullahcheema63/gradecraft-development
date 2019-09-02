@@ -165,9 +165,12 @@ namespace :move_attachment_directories do
       else
         old_dir = "#{upload_directory}/#{dir}"
         taskAuditFile.puts("course has no attachments")
-        taskAuditFile.puts("deleteing directory: #{old_dir}")
-        if args[:run_it] == "true"
-          FileUtils.remove_dir old_dir
+        if Dir.empty?(old_dir)
+          taskAuditFile.puts("directory is empty")
+          taskAuditFile.puts("deleteing directory: #{old_dir}")
+          if args[:run_it] == "true"
+            FileUtils.remove_dir old_dir
+          end
         end
       end
 
@@ -183,5 +186,29 @@ namespace :move_attachment_directories do
         taskAuditFile.puts("---------------------------")
       end
     end
+  end
+
+  desc "Go through the files/uploads and remove empty directorys"
+  task :delete_empty_directories, [:run_it] => [:environment] do |t, args|
+
+    auditFile = "#{Rails.root}/files/AttachmentTask.txt"
+    taskAuditFile = File.open(auditFile, 'w')
+
+    upload_directory = "#{Rails.root}/files/uploads"
+
+    all_course_directories = get_source_directories(upload_directory)
+
+    all_course_directories.each do |dir|
+      old_path = upload_directory + "/" + dir
+      puts("checking the old path: #{old_path}")
+
+      if(Dir.empty?(old_path))
+        puts("old path is empty")
+        if args[:run_it] == "true"
+          FileUtils.remove_dir old_dir
+        end
+      end
+    end
+
   end
 end
