@@ -5,6 +5,21 @@
       Select courses you want to pay for and choose payment methods. When the course is done, come back here to turn off the payments.
     </p>
 
+    <div class="table_container">
+      <table>
+        <thead>
+          <tr>
+            <th>Course # </th>
+            <th>Course Name </th>
+            <th>Semester </th>
+            <th>Created by </th>
+            <th>Published </th>
+            <th>Paid </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
     <div class="course_box">
       <div class="course_card" v-for="c of courses" :key="c.id">
         <h4>
