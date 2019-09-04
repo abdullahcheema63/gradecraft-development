@@ -46,7 +46,7 @@ const loadMany = function(modelArray, response, options, filter) {
 const csrftoken = document.head.querySelector("[name='csrf-token']").attributes.content.value;
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "licenses", "license_types"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "subscriptions", "billing_schemes"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
   dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user"] });
@@ -194,7 +194,7 @@ const store = new Vuex.Store({
       },
       getUserLicense: async function({ commit }){
         console.log("getUserLicenses action dispatched")
-        const resp = await fetch("/api/subscription");
+        const resp = await fetch("/api/subscriptions");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -209,7 +209,7 @@ const store = new Vuex.Store({
       },
       getAllLicenseTypes: async function({ commit }){
         console.log("getAllLicenseTypes action dispatched")
-        const resp = await fetch("/api/subscriptions/billing_scheme_teirs");
+        const resp = await fetch("/api/subscriptions/billing_scheme_tiers");
         if (resp.status === 404){
           console.log(resp.status);
         }

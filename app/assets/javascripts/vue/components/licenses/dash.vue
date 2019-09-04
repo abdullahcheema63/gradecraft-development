@@ -1,6 +1,6 @@
 <template>
   <div>
-    <licenses-course-selector :license="userLicense" :courses="userCourses" />
+    <licenses-course-selector :license="userLicense" :courses="userCourses"> </licenses-course-selector>
 
     <div class="content_block bg-green_mint_2">
       <h2>My Subscription Cost</h2>
