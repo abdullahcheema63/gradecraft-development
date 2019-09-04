@@ -56,6 +56,7 @@
             <dropdownDotsComponent>
               <template slot="content">
                 <ul>
+                  <!-- SOPHIA to ERIK: I think this "make primary" option could be a v-if situation? Because we only show this in the list for non-primary payment options -->
                   <li>
                     <a><label for="payment_2">Make Primary</label></a>
                   </li>
@@ -72,7 +73,7 @@
         </div>
 
         <div class="form_options alt-2">
-          <input type="checkbox" id="service_terms_agreement" checked="checked" />
+          <input type="checkbox" id="service_terms_agreement" checked="checked" required="required" />
           <label for="service_terms_agreement">I accept GradeCraft’s
             <a href="#">Terms of Service</a>
           </label>

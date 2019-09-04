@@ -57,6 +57,7 @@
               <input type="checkbox" checked="checked" id="" />
               <label for="">&nbsp; </label>
             </td>
+            <!-- SOPHIA to ERIK: another v-if is if someone else has paid, then you can adapt the disabled static option I have above -->
             <td v-else class="form_options alt-2">
               <input type="checkbox" id="" />
               <label for="">&nbsp; </label>
@@ -66,6 +67,7 @@
       </table>
     </div>
 
+    <!-- SOPHIA to ERIK: we can delete this div.course_box section once you think we've gotten all the functionality we can reuse out of it -->
     <div class="course_box">
       <div class="course_card" v-for="c of courses" :key="c.id">
         <h4>
