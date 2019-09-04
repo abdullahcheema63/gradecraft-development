@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h3>Payment Info</h3>
+      <h2>My Payment Information</h2>
       <div id="stripe"></div>
     </div>
 
@@ -44,7 +44,6 @@
       <input id="phone" v-model="payment.phone" type="number" required="required" />
       <label for="phone">Phone</label>
     </div>
-
   </div>
 </template>
 

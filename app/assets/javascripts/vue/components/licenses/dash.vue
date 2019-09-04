@@ -4,6 +4,9 @@
 
     <div class="content_block bg-green_mint_2">
       <h2>My Subscription Cost</h2>
+      <p>
+        Based on your courses selected from the table above, your subscription cost will be:
+      </p>
       <div class="subscription_cost">
         <h3 class="lining_figures">
           <span>
@@ -72,6 +75,18 @@
           </div>
         </div>
 
+        <buttonModal button_class="secondary function add_something">
+          <template slot="button-text">Add a new payment method</template>
+          <template slot="heading">Add a new payment method</template>
+          <template slot="content">
+            <form>
+              <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
+              <button class="action" type="submit">Save</button>
+            </form>
+          </template>
+        </buttonModal>
+
+
         <div class="form_options alt-2">
           <input type="checkbox" id="service_terms_agreement" checked="checked" required="required" />
           <label for="service_terms_agreement">I accept GradeCraft’s
@@ -82,7 +97,6 @@
         <button type="submit" class="action">Save my changes</button>
       </form>
     </div>
-
 
     <!-- <div class="content_block bg-green_mint">
       <h2>Manage My License Package</h2>
@@ -142,6 +156,7 @@ const data = {
 module.exports = {
   name: "licenses-dash",
   components: {
+    "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/paymentInputs"),
     "licenses-buy-form": () => VComponents.get("vue/components/licenses/buyForm"),
     "licenses-renew-form": () => VComponents.get("vue/components/licenses/renewForm"),
     "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),

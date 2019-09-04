@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
   enable_extension "hstore"
   enable_extension "plpgsql"
 
-  create_table "announcement_states", force: :cascade do |t|
+  create_table "announcement_states", id: :serial, force: :cascade do |t|
     t.integer "announcement_id", null: false
     t.integer "user_id", null: false
     t.boolean "read", default: true
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["user_id"], name: "index_announcement_states_on_user_id"
   end
 
-  create_table "announcements", force: :cascade do |t|
+  create_table "announcements", id: :serial, force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
     t.integer "author_id", null: false
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["recipient_id"], name: "index_announcements_on_recipient_id"
   end
 
-  create_table "assignment_files", force: :cascade do |t|
+  create_table "assignment_files", id: :serial, force: :cascade do |t|
     t.string "filename"
     t.integer "assignment_id"
     t.string "filepath"
@@ -50,14 +50,14 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["assignment_id"], name: "index_assignment_files_on_assignment_id"
   end
 
-  create_table "assignment_groups", force: :cascade do |t|
+  create_table "assignment_groups", id: :serial, force: :cascade do |t|
     t.integer "group_id"
     t.integer "assignment_id"
     t.index ["assignment_id"], name: "index_assignment_groups_on_assignment_id"
     t.index ["group_id"], name: "index_assignment_groups_on_group_id"
   end
 
-  create_table "assignment_score_levels", force: :cascade do |t|
+  create_table "assignment_score_levels", id: :serial, force: :cascade do |t|
     t.integer "assignment_id", null: false
     t.string "name", null: false
     t.integer "points", null: false
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["assignment_id"], name: "index_assignment_score_levels_on_assignment_id"
   end
 
-  create_table "assignment_type_weights", force: :cascade do |t|
+  create_table "assignment_type_weights", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "student_id", null: false
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["student_id", "assignment_type_id"], name: "index_weights_on_student_and_assignment_type"
   end
 
-  create_table "assignment_types", force: :cascade do |t|
+  create_table "assignment_types", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.integer "max_points"
     t.text "description"
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_assignment_types_on_course_id"
   end
 
-  create_table "assignments", force: :cascade do |t|
+  create_table "assignments", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.integer "full_points"
@@ -141,14 +141,14 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_assignments_on_course_id"
   end
 
-  create_table "attachments", force: :cascade do |t|
+  create_table "attachments", id: :serial, force: :cascade do |t|
     t.integer "grade_id", null: false
     t.integer "file_upload_id", null: false
     t.index ["file_upload_id"], name: "index_attachments_on_file_upload_id"
     t.index ["grade_id"], name: "index_attachments_on_grade_id"
   end
 
-  create_table "badge_files", force: :cascade do |t|
+  create_table "badge_files", id: :serial, force: :cascade do |t|
     t.string "filename"
     t.integer "badge_id"
     t.string "filepath"
@@ -159,7 +159,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["badge_id"], name: "index_badge_files_on_badge_id"
   end
 
-  create_table "badges", force: :cascade do |t|
+  create_table "badges", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.integer "full_points", default: 0
@@ -186,7 +186,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.boolean "hide", default: false, null: false
   end
 
-  create_table "challenge_files", force: :cascade do |t|
+  create_table "challenge_files", id: :serial, force: :cascade do |t|
     t.string "filename"
     t.integer "challenge_id"
     t.string "filepath"
@@ -197,7 +197,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["challenge_id"], name: "index_challenge_files_on_challenge_id"
   end
 
-  create_table "challenge_grades", force: :cascade do |t|
+  create_table "challenge_grades", id: :serial, force: :cascade do |t|
     t.integer "challenge_id", null: false
     t.integer "raw_points"
     t.string "status"
@@ -215,7 +215,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["team_id"], name: "index_challenge_grades_on_team_id"
   end
 
-  create_table "challenge_score_levels", force: :cascade do |t|
+  create_table "challenge_score_levels", id: :serial, force: :cascade do |t|
     t.integer "challenge_id", null: false
     t.string "name", null: false
     t.integer "points", null: false
@@ -224,7 +224,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["challenge_id"], name: "index_challenge_score_levels_on_challenge_id"
   end
 
-  create_table "challenges", force: :cascade do |t|
+  create_table "challenges", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.integer "full_points"
@@ -245,14 +245,14 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_challenges_on_course_id"
   end
 
-  create_table "copy_logs", force: :cascade do |t|
+  create_table "copy_logs", id: :serial, force: :cascade do |t|
     t.text "log"
     t.integer "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "course_analytics_exports", force: :cascade do |t|
+  create_table "course_analytics_exports", id: :serial, force: :cascade do |t|
     t.integer "course_id", null: false
     t.integer "owner_id", null: false
     t.text "export_filename"
@@ -267,7 +267,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["owner_id"], name: "index_course_analytics_exports_on_owner_id"
   end
 
-  create_table "course_creations", force: :cascade do |t|
+  create_table "course_creations", id: :serial, force: :cascade do |t|
     t.integer "course_id"
     t.boolean "settings_done", default: false, null: false
     t.boolean "attendance_done", default: false, null: false
@@ -282,7 +282,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_course_creations_on_course_id"
   end
 
-  create_table "course_memberships", force: :cascade do |t|
+  create_table "course_memberships", id: :serial, force: :cascade do |t|
     t.integer "course_id"
     t.integer "user_id"
     t.integer "score", default: 0, null: false
@@ -306,7 +306,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["user_id", "course_id"], name: "index_courses_users_on_user_id_and_course_id"
   end
 
-  create_table "courses", force: :cascade do |t|
+  create_table "courses", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.string "course_number", null: false
     t.string "year"
@@ -373,8 +373,8 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.boolean "always_show_objectives", default: false, null: false
     t.boolean "allows_learning_objectives", default: false, null: false
     t.boolean "disable_grade_emails", default: false
-    t.boolean "delete_student_logged_grade", default: true
     t.integer "subscription_id"
+    t.boolean "delete_student_logged_grade", default: true
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 
@@ -384,7 +384,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["payment_id", "course_id"], name: "index_courses_payments_on_payment_id_and_course_id"
   end
 
-  create_table "criteria", force: :cascade do |t|
+  create_table "criteria", id: :serial, force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.integer "max_points"
@@ -400,7 +400,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["rubric_id"], name: "index_criteria_on_rubric_id"
   end
 
-  create_table "criterion_grades", force: :cascade do |t|
+  create_table "criterion_grades", id: :serial, force: :cascade do |t|
     t.integer "points"
     t.integer "criterion_id", null: false
     t.integer "level_id"
@@ -415,7 +415,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["level_id"], name: "index_criterion_grades_on_level_id"
   end
 
-  create_table "earned_badges", force: :cascade do |t|
+  create_table "earned_badges", id: :serial, force: :cascade do |t|
     t.integer "badge_id", null: false
     t.integer "course_id", null: false
     t.integer "student_id", null: false
@@ -432,7 +432,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["student_id"], name: "index_earned_badges_on_student_id"
   end
 
-  create_table "events", force: :cascade do |t|
+  create_table "events", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.datetime "open_at"
@@ -447,7 +447,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_events_on_course_id"
   end
 
-  create_table "file_uploads", force: :cascade do |t|
+  create_table "file_uploads", id: :serial, force: :cascade do |t|
     t.integer "grade_id"
     t.string "filename"
     t.string "filepath"
@@ -461,7 +461,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_file_uploads_on_course_id"
   end
 
-  create_table "flagged_users", force: :cascade do |t|
+  create_table "flagged_users", id: :serial, force: :cascade do |t|
     t.integer "course_id", null: false
     t.integer "flagger_id", null: false
     t.integer "flagged_id", null: false
@@ -472,7 +472,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["flagger_id"], name: "index_flagged_users_on_flagger_id"
   end
 
-  create_table "grade_scheme_elements", force: :cascade do |t|
+  create_table "grade_scheme_elements", id: :serial, force: :cascade do |t|
     t.string "level"
     t.integer "lowest_points"
     t.string "letter"
@@ -485,7 +485,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_grade_scheme_elements_on_course_id"
   end
 
-  create_table "grades", force: :cascade do |t|
+  create_table "grades", id: :serial, force: :cascade do |t|
     t.integer "raw_points"
     t.integer "assignment_id"
     t.text "feedback"
@@ -527,7 +527,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["submission_id"], name: "index_grades_on_submission_id"
   end
 
-  create_table "group_memberships", force: :cascade do |t|
+  create_table "group_memberships", id: :serial, force: :cascade do |t|
     t.integer "group_id"
     t.integer "student_id"
     t.string "accepted"
@@ -539,7 +539,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["student_id"], name: "index_group_memberships_on_student_id"
   end
 
-  create_table "groups", force: :cascade do |t|
+  create_table "groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -550,7 +550,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_groups_on_course_id"
   end
 
-  create_table "imported_assignments", force: :cascade do |t|
+  create_table "imported_assignments", id: :serial, force: :cascade do |t|
     t.integer "assignment_id"
     t.string "provider", null: false
     t.string "provider_resource_id", null: false
@@ -561,7 +561,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["assignment_id"], name: "index_imported_assignments_on_assignment_id"
   end
 
-  create_table "imported_grades", force: :cascade do |t|
+  create_table "imported_grades", id: :serial, force: :cascade do |t|
     t.integer "grade_id"
     t.string "provider"
     t.string "provider_resource_id"
@@ -570,7 +570,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["grade_id"], name: "index_imported_grades_on_grade_id"
   end
 
-  create_table "imported_users", force: :cascade do |t|
+  create_table "imported_users", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "provider"
     t.string "provider_resource_id"
@@ -580,7 +580,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["user_id"], name: "index_imported_users_on_user_id"
   end
 
-  create_table "institutions", force: :cascade do |t|
+  create_table "institutions", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.boolean "has_site_license", default: false, null: false
     t.string "institution_type"
@@ -588,7 +588,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["name"], name: "index_institutions_on_name"
   end
 
-  create_table "learning_objective_categories", force: :cascade do |t|
+  create_table "learning_objective_categories", id: :serial, force: :cascade do |t|
     t.integer "course_id", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -597,7 +597,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_learning_objective_categories_on_course_id"
   end
 
-  create_table "learning_objective_cumulative_outcomes", force: :cascade do |t|
+  create_table "learning_objective_cumulative_outcomes", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "learning_objective_id"
@@ -607,7 +607,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["user_id"], name: "index_learning_objective_cumulative_outcomes_on_user_id"
   end
 
-  create_table "learning_objective_levels", force: :cascade do |t|
+  create_table "learning_objective_levels", id: :serial, force: :cascade do |t|
     t.integer "course_id"
     t.integer "objective_id", null: false
     t.string "name", null: false
@@ -619,7 +619,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["objective_id"], name: "index_learning_objective_levels_on_objective_id"
   end
 
-  create_table "learning_objective_links", force: :cascade do |t|
+  create_table "learning_objective_links", id: :serial, force: :cascade do |t|
     t.integer "course_id"
     t.integer "objective_id", null: false
     t.datetime "created_at", null: false
@@ -631,7 +631,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["objective_id"], name: "index_learning_objective_links_on_objective_id"
   end
 
-  create_table "learning_objective_observed_outcomes", force: :cascade do |t|
+  create_table "learning_objective_observed_outcomes", id: :serial, force: :cascade do |t|
     t.integer "course_id"
     t.integer "objective_level_id", null: false
     t.datetime "assessed_at", null: false
@@ -646,7 +646,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["objective_level_id"], name: "index_lo_outcomes_on_objective_level_id"
   end
 
-  create_table "learning_objectives", force: :cascade do |t|
+  create_table "learning_objectives", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.integer "count_to_achieve"
@@ -659,7 +659,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_learning_objectives_on_course_id"
   end
 
-  create_table "level_badges", force: :cascade do |t|
+  create_table "level_badges", id: :serial, force: :cascade do |t|
     t.integer "level_id"
     t.integer "badge_id"
     t.datetime "created_at"
@@ -668,7 +668,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["level_id"], name: "index_level_badges_on_level_id"
   end
 
-  create_table "levels", force: :cascade do |t|
+  create_table "levels", id: :serial, force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.integer "points"
@@ -682,7 +682,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["criterion_id"], name: "index_levels_on_criterion_id"
   end
 
-  create_table "linked_courses", force: :cascade do |t|
+  create_table "linked_courses", id: :serial, force: :cascade do |t|
     t.integer "course_id"
     t.string "provider"
     t.string "provider_resource_id"
@@ -692,7 +692,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_linked_courses_on_course_id"
   end
 
-  create_table "lti_providers", force: :cascade do |t|
+  create_table "lti_providers", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "uid"
     t.string "consumer_key"
@@ -723,7 +723,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["subscription_id"], name: "index_payments_on_subscription_id"
   end
 
-  create_table "predicted_earned_badges", force: :cascade do |t|
+  create_table "predicted_earned_badges", id: :serial, force: :cascade do |t|
     t.integer "badge_id"
     t.integer "student_id"
     t.integer "predicted_times_earned", default: 0
@@ -732,7 +732,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["badge_id", "student_id"], name: "index_predidcted_badge_on_student_badge", unique: true
   end
 
-  create_table "predicted_earned_challenges", force: :cascade do |t|
+  create_table "predicted_earned_challenges", id: :serial, force: :cascade do |t|
     t.integer "challenge_id"
     t.integer "student_id"
     t.integer "predicted_points", default: 0
@@ -741,7 +741,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["challenge_id", "student_id"], name: "index_predidcted_challenge_on_student_challenge", unique: true
   end
 
-  create_table "predicted_earned_grades", force: :cascade do |t|
+  create_table "predicted_earned_grades", id: :serial, force: :cascade do |t|
     t.integer "assignment_id"
     t.integer "student_id"
     t.integer "predicted_points", default: 0
@@ -750,7 +750,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["assignment_id", "student_id"], name: "index_predidcted_grade_on_student_assignment", unique: true
   end
 
-  create_table "proposals", force: :cascade do |t|
+  create_table "proposals", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "proposal"
     t.integer "group_id"
@@ -762,7 +762,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["group_id"], name: "index_proposals_on_group_id"
   end
 
-  create_table "providers", force: :cascade do |t|
+  create_table "providers", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.string "consumer_key", null: false
     t.string "consumer_secret", null: false
@@ -773,7 +773,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["providee_type", "providee_id"], name: "index_providers_on_providee_type_and_providee_id"
   end
 
-  create_table "rubrics", force: :cascade do |t|
+  create_table "rubrics", id: :serial, force: :cascade do |t|
     t.integer "assignment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -782,7 +782,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_rubrics_on_course_id"
   end
 
-  create_table "secure_tokens", force: :cascade do |t|
+  create_table "secure_tokens", id: :serial, force: :cascade do |t|
     t.string "uuid"
     t.text "encrypted_key"
     t.integer "user_id"
@@ -797,7 +797,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["user_id"], name: "index_secure_tokens_on_user_id"
   end
 
-  create_table "sessions", force: :cascade do |t|
+  create_table "sessions", id: :serial, force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
     t.datetime "created_at"
@@ -806,7 +806,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "submission_files", force: :cascade do |t|
+  create_table "submission_files", id: :serial, force: :cascade do |t|
     t.string "filename", null: false
     t.integer "submission_id", null: false
     t.string "filepath"
@@ -819,7 +819,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["submission_id"], name: "index_submission_files_on_submission_id"
   end
 
-  create_table "submissions", force: :cascade do |t|
+  create_table "submissions", id: :serial, force: :cascade do |t|
     t.integer "assignment_id", null: false
     t.integer "student_id"
     t.datetime "created_at", null: false
@@ -838,7 +838,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_submissions_on_course_id"
   end
 
-  create_table "submissions_exports", force: :cascade do |t|
+  create_table "submissions_exports", id: :serial, force: :cascade do |t|
     t.integer "assignment_id"
     t.integer "course_id"
     t.integer "professor_id"
@@ -869,7 +869,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
-  create_table "team_leaderships", force: :cascade do |t|
+  create_table "team_leaderships", id: :serial, force: :cascade do |t|
     t.integer "team_id", null: false
     t.integer "leader_id", null: false
     t.datetime "created_at", null: false
@@ -878,7 +878,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["team_id"], name: "index_team_leaderships_on_team_id"
   end
 
-  create_table "team_memberships", force: :cascade do |t|
+  create_table "team_memberships", id: :serial, force: :cascade do |t|
     t.integer "team_id", null: false
     t.integer "student_id", null: false
     t.datetime "created_at", null: false
@@ -887,7 +887,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["team_id"], name: "index_team_memberships_on_team_id"
   end
 
-  create_table "teams", force: :cascade do |t|
+  create_table "teams", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.integer "course_id", null: false
     t.integer "rank"
@@ -900,7 +900,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["course_id"], name: "index_teams_on_course_id"
   end
 
-  create_table "unlock_conditions", force: :cascade do |t|
+  create_table "unlock_conditions", id: :serial, force: :cascade do |t|
     t.integer "unlockable_id"
     t.string "unlockable_type"
     t.integer "condition_id"
@@ -916,7 +916,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["unlockable_id", "unlockable_type"], name: "index_unlock_conditions_on_unlockable_id_and_unlockable_type"
   end
 
-  create_table "unlock_states", force: :cascade do |t|
+  create_table "unlock_states", id: :serial, force: :cascade do |t|
     t.integer "unlockable_id"
     t.string "unlockable_type"
     t.integer "student_id"
@@ -928,7 +928,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["unlockable_id", "unlockable_type"], name: "index_unlock_states_on_unlockable_id_and_unlockable_type"
   end
 
-  create_table "user_authorizations", force: :cascade do |t|
+  create_table "user_authorizations", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "provider"
     t.string "access_token"
@@ -940,7 +940,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["user_id"], name: "index_user_authorizations_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "username", null: false
     t.string "email", null: false
     t.string "crypted_password"
@@ -987,7 +987,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  create_table "version_associations", force: :cascade do |t|
+  create_table "version_associations", id: :serial, force: :cascade do |t|
     t.integer "version_id"
     t.string "foreign_key_name", null: false
     t.integer "foreign_key_id"
@@ -995,7 +995,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_134643) do
     t.index ["version_id"], name: "index_version_associations_on_version_id"
   end
 
-  create_table "versions", force: :cascade do |t|
+  create_table "versions", id: :serial, force: :cascade do |t|
     t.string "item_type", null: false
     t.integer "item_id", null: false
     t.string "event", null: false
