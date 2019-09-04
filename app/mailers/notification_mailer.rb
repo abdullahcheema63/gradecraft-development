@@ -90,8 +90,8 @@ class NotificationMailer < ApplicationMailer
 
   def payment_received(payment)
     @payment = payment
-    @license = payment.license
-    @user = payment.license.user
+    @subscription = payment.subscription
+    @user = payment.subscription.user
     mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
       format.text
       format.html

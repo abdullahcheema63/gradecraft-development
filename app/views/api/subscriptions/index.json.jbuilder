@@ -1,9 +1,9 @@
 json.data do
-  json.partial! "api/licenses/license", license: @license
+  json.partial! "api/subscriptions/subscription", subscription: @subscription
 end
 
 json.included do
-  json.array! @license.courses.each do |course|
+  json.array! @subscription.courses.each do |course|
     json.type                                 "courses"
     json.id                                   course.id.to_s
 

@@ -1,14 +1,13 @@
 <%= yield %>
 
-<% if @current_user.license %>
+<% if @current_user.subscription %>
   <% content_for :scripts do %>
     <script type="text/javascript">
-      var userLicense = {
-        maxCourses: <%= @current_user.license.max_courses %>,
-        currentCourses: <%= @current_user.license.courses.length %>,
-        expires: "<%= @current_user.license.expires %>"
+      var userSubscription = {
+        currentCourses: <%= @current_user.subscription.courses.length %>,
+        expires: "<%= @current_user.subscription.renewal_date %>"
       }
-      store.dispatch("addUserLicenseInfo", userLicense)
+      store.dispatch("addUserLicenseInfo", userSubscription)
     </script>
   <% end %>
 <% end %>

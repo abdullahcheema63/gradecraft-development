@@ -1,7 +1,13 @@
 class Payment < ApplicationRecord
   before_create :set_defaults
 
-  belongs_to :license
+  #belongs_to :license
+  belongs_to :subscription
+
+  #setup relationship to the courses this pays for
+  has_and_belongs_to_many :courses
+
+
   attr_accessor :stripe_token
 
   validates_presence_of :first_name, :last_name, :organization, :phone, :addr1, :city, :country, :amount_usd

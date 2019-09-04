@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   # 20. Learning Objectives
   # 21. Errors
   # 22. Admin
+  # 23. Subscriptions
 
   # 1. Analytics & Charts
   namespace :analytics do
@@ -554,8 +555,8 @@ Rails.application.routes.draw do
     resources :levels, only: [:create, :update, :destroy]
     resources :level_badges, only: [:create, :destroy]
 
-    resources :licenses, only: [:index, :create, :license_type_options] do
-      get :license_type_options, on: :collection
+    resources :subscriptions, only: [:index, :create, :billing_scheme_teirs] do
+      get :billing_scheme_teirs, on: :collection
       patch :update, on: :collection
       put :edit, on: :collection
     end
@@ -659,8 +660,8 @@ Rails.application.routes.draw do
     end
   end
 
-  # 23. Licenses
-  resources :licenses, only: :index
+  # 23. Subscriptions
+  resources :subscriptions, only: :index
 
   # root, bro
   root to: "home#index"

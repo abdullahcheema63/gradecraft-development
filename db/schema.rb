@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_26_154838) do
+ActiveRecord::Schema.define(version: 2019_09_04_134643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -177,6 +177,13 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
     t.boolean "student_awardable", default: false, null: false
     t.boolean "auto_award_after_unlock"
     t.index ["course_id"], name: "index_badges_on_course_id"
+  end
+
+  create_table "billing_schemes", force: :cascade do |t|
+    t.integer "max_courses"
+    t.integer "min_courses"
+    t.decimal "price_per_course"
+    t.boolean "hide", default: false, null: false
   end
 
   create_table "challenge_files", force: :cascade do |t|
@@ -367,8 +374,14 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
     t.boolean "allows_learning_objectives", default: false, null: false
     t.boolean "disable_grade_emails", default: false
     t.boolean "delete_student_logged_grade", default: true
-    t.integer "license_id"
+    t.integer "subscription_id"
     t.index ["institution_id"], name: "index_courses_on_institution_id"
+  end
+
+  create_table "courses_payments", id: false, force: :cascade do |t|
+    t.bigint "payment_id", null: false
+    t.bigint "course_id", null: false
+    t.index ["payment_id", "course_id"], name: "index_courses_payments_on_payment_id_and_course_id"
   end
 
   create_table "criteria", force: :cascade do |t|
@@ -669,26 +682,6 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
     t.index ["criterion_id"], name: "index_levels_on_criterion_id"
   end
 
-  create_table "license_types", force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "default_max_courses"
-    t.integer "default_max_students"
-    t.integer "default_duration_months"
-    t.decimal "price_usd"
-    t.boolean "hide", default: false, null: false
-  end
-
-  create_table "licenses", force: :cascade do |t|
-    t.bigint "user_id"
-    t.integer "license_type_id", null: false
-    t.integer "max_courses"
-    t.integer "max_students"
-    t.datetime "expires", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_licenses_on_user_id"
-  end
-
   create_table "linked_courses", force: :cascade do |t|
     t.integer "course_id"
     t.string "provider"
@@ -710,7 +703,7 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.bigint "license_id"
+    t.bigint "subscription_id"
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.string "organization", null: false
@@ -726,7 +719,8 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
     t.decimal "amount_usd", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["license_id"], name: "index_payments_on_license_id"
+    t.integer "billing_scheme_id"
+    t.index ["subscription_id"], name: "index_payments_on_subscription_id"
   end
 
   create_table "predicted_earned_badges", force: :cascade do |t|
@@ -864,6 +858,15 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
     t.index ["course_id"], name: "index_submissions_exports_on_course_id"
     t.index ["professor_id"], name: "index_submissions_exports_on_professor_id"
     t.index ["team_id"], name: "index_submissions_exports_on_team_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "billing_scheme_id", null: false
+    t.datetime "renewal_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "team_leaderships", force: :cascade do |t|
@@ -1011,7 +1014,7 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
   add_foreign_key "announcements", "users", column: "author_id"
   add_foreign_key "announcements", "users", column: "recipient_id"
   add_foreign_key "courses", "institutions"
-  add_foreign_key "courses", "licenses"
+  add_foreign_key "courses", "subscriptions"
   add_foreign_key "earned_badges", "users", column: "awarded_by_id"
   add_foreign_key "flagged_users", "courses"
   add_foreign_key "flagged_users", "users", column: "flagged_id"
@@ -1026,11 +1029,11 @@ ActiveRecord::Schema.define(version: 2019_07_26_154838) do
   add_foreign_key "learning_objective_observed_outcomes", "learning_objective_cumulative_outcomes", column: "learning_objective_cumulative_outcomes_id"
   add_foreign_key "learning_objectives", "courses"
   add_foreign_key "learning_objectives", "learning_objective_categories", column: "category_id"
-  add_foreign_key "licenses", "license_types"
-  add_foreign_key "licenses", "users"
   add_foreign_key "linked_courses", "courses"
-  add_foreign_key "payments", "licenses"
+  add_foreign_key "payments", "subscriptions"
   add_foreign_key "secure_tokens", "courses"
   add_foreign_key "secure_tokens", "users"
+  add_foreign_key "subscriptions", "billing_schemes"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "user_authorizations", "users"
 end

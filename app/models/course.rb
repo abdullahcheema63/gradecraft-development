@@ -82,11 +82,13 @@ class Course < ApplicationRecord
     c.has_many :learning_objectives
     c.has_many :unlock_conditions
     c.has_one  :copy_log
-    c.belongs_to :license
+    c.belongs_to :subscription
   end
 
   has_many :users, through: :course_memberships
   belongs_to :institution
+  has_and_belongs_to_many :payments
+
   accepts_nested_attributes_for :users
   accepts_nested_attributes_for :assignments, allow_destroy: true
 
@@ -121,17 +123,17 @@ class Course < ApplicationRecord
     result = CopyValidator.new.validate self, associations: assoc
     raise CopyValidationError.new(result.details, "Failed to copy #{self.name} due to validation errors") if result.has_errors
 
-    license_id = nil
+    subscription_id = nil
     if (Rails.env.production?)
-      license_id = self.license_id
+      subscription_id = self.subscription_id
     end
 
     if copy_type != "with_students"
-      copy_with_associations(attributes.merge(lti_uid: nil, license_id: license_id, status: true), assoc)
+      copy_with_associations(attributes.merge(lti_uid: nil, subscription_id: subscription_id, status: true), assoc)
     else
       begin
         Course.skip_callback(:create, :after, :create_admin_memberships)
-        copy_with_associations(attributes.merge(lti_uid: nil, license_id: license_id, status: true), assoc)
+        copy_with_associations(attributes.merge(lti_uid: nil, subscription_id: subscription_id, status: true), assoc)
       ensure
         Course.set_callback(:create, :after, :create_admin_memberships)
       end
@@ -261,7 +263,7 @@ class Course < ApplicationRecord
   end
 
   def is_licensed?
-    !!(self.has_paid || (self.license && !self.license.is_expired?))
+    !!(self.has_paid || (self.subscription && !self.subscription.is_expired?))
   end
 
   def admin_disabled_grade_email?

@@ -13,15 +13,8 @@ class Subscription < ApplicationRecord
 
   accepts_nested_attributes_for :payments
 
-  def set_defaults
-    # Would we need to set defaults for a subscription?
-
-    self.max_courses ||= self.license_type.default_max_courses
-    self.max_students ||= self.license_type.default_max_students
-  end
-
   def is_expired?
-    expires < DateTime.now
+    renewal_date < DateTime.now
   end
 
   def start!(payment, duration=nil)
@@ -30,14 +23,14 @@ class Subscription < ApplicationRecord
     # billing scheme can return price per month
     # duration stores amount of months they pay for?
     duration ||= self.license_type.default_duration_months.months
-    self.expires = DateTime.now + duration
+    self.renewal_date = DateTime.now + duration
     add_payment! payment
   end
 
   def renew!(payment, duration=nil)
-    # See notes from above start! method
-    duration ||= self.license_type.default_duration_months.months
-    self.expires = is_expired? ? (DateTime.now + duration) : (expires + duration)
+    # See notes from above `start!` method
+    # duration ||= self.license_type.default_duration_months.months
+    self.renewal_date = is_expired? ? (DateTime.now + duration) : (renewal_date + duration)
     add_payment! payment
   end
 

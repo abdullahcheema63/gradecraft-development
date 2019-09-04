@@ -22,7 +22,7 @@
             = f.check_box :remove_avatar_file_name
             Remove Image
 
-      - if ! @user.kerberos_uid.present? && ! @user.lti_uid.present? 
+      - if ! @user.kerberos_uid.present? && ! @user.lti_uid.present?
         .update-password-wrapper
           %button.button-link.update-button#update-password Change Password
           .update-password-form{"aria-hidden": "true"}
@@ -74,8 +74,3 @@
         .main-buttons
           = submit_tag "Update Settings", class: "button action"
           = link_to glyph("times-circle") + "Cancel", root_path, class: "button secondary"
-
-        
-      - if !(Rails.env.production?) && !(@user.is_student?(current_course))
-        .content_block.bg-green_mint
-          %licenses-dash{ "data-component": true, "stripe-pk": Rails.configuration.stripe[:publishable_key], ":license-type-options": render(:template => "api/licenses/_license_types.json.jbuilder", :locals => { license_types: LicenseType.where(hide:false) }).html_safe }

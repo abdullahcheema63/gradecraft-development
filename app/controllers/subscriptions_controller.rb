@@ -1,6 +1,6 @@
 
 # rubocop:disable AndOr
-class LicensesController < ApplicationController
+class SubscriptionsController < ApplicationController
   skip_before_action :require_course_membership
   before_action :ensure_staff?
 
@@ -11,7 +11,7 @@ class LicensesController < ApplicationController
   # root
   # GET /
   def index
-    @title = "Licenses"
+    @title = "Subscriptions"
     @user = current_user
     @stripePk = Rails.configuration.stripe[:publishable_key]
   end

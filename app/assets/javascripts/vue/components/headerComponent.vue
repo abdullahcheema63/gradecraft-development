@@ -1,11 +1,11 @@
 <template>
   <div id="header" class="fancy">
-    <a id="header_link" href="https://gradecraft.com" v-focus>
+    <a id="header_link" href="/overview" v-focus>
       <img class="small-hide" src="/assets/logo.svg" width="450" height="100" alt="Return to your GradeCraft dashboard" />
       <img class="small-show" src="/assets/logo-monogram.svg" width="110" height="100" alt="Return to your GradeCraft dashboard" />
     </a>
     <div class="header-actions" ref="clickAway">
-      <p id="free_trial_user" v-if="user.license.length" :class="{open:activeFreetrialMsg}" @click="toggleFreetrialMsg">
+      <p id="free_trial_user" v-if="user.subscription" :class="{open:activeFreetrialMsg}" @click="toggleFreetrialMsg">
         <a class="small-hide">Free Trial Account</a>
         <a class="small-show">Free Trial</a>
       </p>
@@ -31,7 +31,7 @@
         <ul>
           <li><a :href="user.accountURL">My Account</a></li>
           <li><a href="dashboard/#">View Tour</a></li>
-          <li><a href="licenses">My Subscription</a></li>
+          <li><a href="subscriptions">My Subscription</a></li>
           <li><a href="logout">Logout</a></li>
         </ul>
       </div>

@@ -194,7 +194,7 @@ const store = new Vuex.Store({
       },
       getUserLicense: async function({ commit }){
         console.log("getUserLicenses action dispatched")
-        const resp = await fetch("/api/licenses");
+        const resp = await fetch("/api/subscription");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -209,7 +209,7 @@ const store = new Vuex.Store({
       },
       getAllLicenseTypes: async function({ commit }){
         console.log("getAllLicenseTypes action dispatched")
-        const resp = await fetch("/api/licenses/license_type_options");
+        const resp = await fetch("/api/subscriptions/billing_scheme_teirs");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -276,7 +276,7 @@ const store = new Vuex.Store({
         console.log("inside deleteCourse action", resp)
       },
       newLicensePayment: async function({ commit }, payment){
-        const resp = await fetch("/api/licenses", {
+        const resp = await fetch("/api/subscriptions", {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -302,7 +302,7 @@ const store = new Vuex.Store({
         commit('updateUserLicense', license)
       },
       updateLicensePayment: async function({ commit }, payment){
-        const resp = await fetch("/api/licenses", {
+        const resp = await fetch("/api/subscriptions", {
           method: 'PATCH',
           headers: {
             'Accept': 'application/json',
@@ -329,7 +329,7 @@ const store = new Vuex.Store({
         commit('updateUserLicense', license)
       },
       updateCourseLicense: async function({ commit }, courseIds){
-        const resp = await fetch("/api/licenses/edit", {
+        const resp = await fetch("/api/subscriptions/edit", {
           method: "PUT",
           headers: {
             "Accept": "application/json",

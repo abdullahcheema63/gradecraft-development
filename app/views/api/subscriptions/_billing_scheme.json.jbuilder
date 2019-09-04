@@ -1,0 +1,5 @@
+json.id billing_scheme.id.to_s
+json.default_max_courses billing_scheme.max_courses
+json.default_max_students license_type.min_courses
+json.price_usd billing_scheme.price_per_course
+json.hide billing_scheme.hide
