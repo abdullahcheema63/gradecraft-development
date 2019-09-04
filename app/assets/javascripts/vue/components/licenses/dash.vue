@@ -1,8 +1,90 @@
 <template>
   <div>
-    <licenses-course-selector v-if="hasLicense" :license="userLicense" :courses="userCourses" />
+    <licenses-course-selector :license="userLicense" :courses="userCourses" />
 
-    <div class="content_block bg-green_mint">
+    <div class="content_block bg-green_mint_2">
+      <h2>My Subscription Cost</h2>
+      <div class="subscription_cost">
+        <h3 class="lining_figures">
+          <span>
+            <sup>$</sup>
+            40
+          </span>
+        </h3>
+        <p>
+          <strong>per month</strong>
+        </p>
+      </div>
+      <p>
+        You will be <strong>billed on the X of every month.</strong>
+        <br />
+        <a href="https://gradecraft.com/licenses/" target="_blank">Review our subscription price options</a>
+      </p>
+    </div>
+
+    <div class="content_block bg-green_mint_2">
+      <h2 class="unspace-top">My Payment Methods</h2>
+      <form>
+        <div class="form_options payment_method">
+          <input type="radio" id="payment_1" checked="checked" name="payment_group" />
+          <div>
+            <p>
+              <strong>Visa</strong>
+              **** **** **** 4242 <span></span> Expires 04/2024
+            </p>
+            <dropdownDotsComponent>
+              <template slot="content">
+                <ul>
+                  <li>
+                    <a>Edit</a>
+                  </li>
+                  <li>
+                    <a>Delete</a>
+                  </li>
+                </ul>
+              </template>
+            </dropdownDotsComponent>
+          </div>
+        </div>
+        <div class="form_options payment_method">
+          <input type="radio" id="payment_2" name="payment_group" />
+          <div>
+            <p>
+              <strong>Mastercard</strong>
+              **** **** **** 4242 <span></span> Expires 04/2024
+            </p>
+            <dropdownDotsComponent>
+              <template slot="content">
+                <ul>
+                  <!-- SOPHIA to ERIK: I think this "make primary" option could be a v-if situation? Because we only show this in the list for non-primary payment options -->
+                  <li>
+                    <a><label for="payment_2">Make Primary</label></a>
+                  </li>
+                  <li>
+                    <a>Edit</a>
+                  </li>
+                  <li>
+                    <a>Delete</a>
+                  </li>
+                </ul>
+              </template>
+            </dropdownDotsComponent>
+          </div>
+        </div>
+
+        <div class="form_options alt-2">
+          <input type="checkbox" id="service_terms_agreement" checked="checked" required="required" />
+          <label for="service_terms_agreement">I accept GradeCraft’s
+            <a href="#">Terms of Service</a>
+          </label>
+        </div>
+
+        <button type="submit" class="action">Save my changes</button>
+      </form>
+    </div>
+
+
+    <!-- <div class="content_block bg-green_mint">
       <h2>Manage My License Package</h2>
       <licenses-details v-if="hasLicense" :license="this.userLicense" :license-type="licenseType" :courses="userCourses" />
       <div v-else>
@@ -45,7 +127,7 @@
         If you need a license package for an entire school or district, or a custom arrangement, please don’t hesitate to email us at
         <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!
       </p>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -65,6 +147,7 @@ module.exports = {
     "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),
     "licenses-details": () => VComponents.get("vue/components/licenses/details"),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
+    dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },
   data: function() { return data; },
   props: {

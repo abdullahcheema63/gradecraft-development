@@ -5,6 +5,69 @@
       Select courses you want to pay for and choose payment methods. When the course is done, come back here to turn off the payments.
     </p>
 
+    <div class="table_container">
+      <table class="form_options-present my_subscription">
+        <thead>
+          <tr>
+            <th>Course # </th>
+            <th>Course Name </th>
+            <th>Semester </th>
+            <th>Published </th>
+            <th>Paid </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HSWW 123</td>
+            <td>Hogwarts First Years</td>
+            <td>Fall 2019</td>
+            <td><span class="checked">&nbsp;</span></td>
+            <td class="form_options alt-2">
+              <input type="checkbox" id="course_select_1" checked="checked" />
+              <label for="course_select_1">&nbsp; </label>
+            </td>
+          </tr>
+          <tr>
+            <td>HSWW 456</td>
+            <td>Hogwarts Fourth Years</td>
+            <td>Fall 2020</td>
+            <td> </td>
+            <td class="form_options alt-2">
+              <input type="checkbox" id="course_select_2" />
+              <label for="course_select_2">&nbsp; </label>
+            </td>
+          </tr>
+          <tr>
+            <td>HSWW 456</td>
+            <td>Hogwarts Fourth Years</td>
+            <td>Fall 2020</td>
+            <td> </td>
+            <td class="form_options alt-2">
+              <input type="checkbox" id="course_select_3" checked="checked" disabled="disabled" />
+              <label for="course_select_3">Madame Maxime </label>
+            </td>
+          </tr>
+          <tr v-for="c of courses" :key="c.id">
+            <td>{{c.number}}</td>
+            <td>{{c.name}}</td>
+            <td>{{c.semester}} {{c.year}}</td>
+            <td><span v-if="c.published" class="checked">&nbsp;</span> </td>
+
+            <td v-if="c.licensed" class="form_options alt-2">
+              <input type="checkbox" checked="checked" id="" />
+              <label for="">&nbsp; </label>
+            </td>
+            <!-- SOPHIA to ERIK: another v-if is if someone else has paid, then you can adapt the disabled static option I have above -->
+            <td v-else class="form_options alt-2">
+              <input type="checkbox" id="" />
+              <label for="">&nbsp; </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SOPHIA to ERIK: we can delete this div.course_box section once you think we've gotten all the functionality we can reuse out of it -->
     <div class="course_box">
       <div class="course_card" v-for="c of courses" :key="c.id">
         <h4>
