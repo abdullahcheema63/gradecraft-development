@@ -47,6 +47,21 @@
               <label for="course_select_3">Madame Maxime </label>
             </td>
           </tr>
+          <tr v-for="c of courses" :key="c.id">
+            <td>{{c.number}}</td>
+            <td>{{c.name}}</td>
+            <td>{{c.semester}} {{c.year}}</td>
+            <td><span v-if="c.published" class="checked">&nbsp;</span> </td>
+
+            <td v-if="c.licensed" class="form_options alt-2">
+              <input type="checkbox" checked="checked" id="" />
+              <label for="">&nbsp; </label>
+            </td>
+            <td v-else class="form_options alt-2">
+              <input type="checkbox" id="" />
+              <label for="">&nbsp; </label>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
