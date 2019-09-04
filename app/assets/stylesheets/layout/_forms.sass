@@ -234,17 +234,55 @@ textarea,
           background: url('/assets/icon-form_CheckboxCheckedDisabled_2.svg') no-repeat center left
           background-size: auto 22px
 
-table.my_subscription
+  &.payment_method
+    p
+      margin: 0
+
+      span
+        position: relative
+        margin: 0 0.75em
+
+        &:before
+          content: ''
+          display: inline-block
+          border-radius: 50%
+          width: 7px
+          height: 7px
+          background-color: $pink_1
+          position: absolute
+          top: 6px
+          left: -6px
+
+    input[type="radio"]
+      & + div
+        border: 1px solid $blue-medium_2
+        background-color: white
+        max-width: 800px
+        border-radius: $button-radius
+        position: relative
+        padding: 0.7em 1em
+
+      &:checked + div
+        border: 3px solid $blue_dark
+        font-family: 'ProximaNova_regular', sans-serif
+
+    .dropdown_dots
+      top: 0.7em
+      right: 1em
+
+table.form_options-present
   .form_options
     input[type="checkbox"]
       & + label
         padding-top: 2px
         padding-bottom: 2px
 
-      &:checked
-        &:disabled + label
-          font-family: 'ProximaNova_regular-italic', sans-serif
-
+  &.my_subscription
+    .form_options
+      input[type="checkbox"]
+        &:checked
+          &:disabled + label
+            font-family: 'ProximaNova_regular-italic', sans-serif
 
 .flex-2
   &.form_pair

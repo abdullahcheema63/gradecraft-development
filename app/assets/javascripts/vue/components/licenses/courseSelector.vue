@@ -6,7 +6,7 @@
     </p>
 
     <div class="table_container">
-      <table class="my_subscription">
+      <table class="form_options-present my_subscription">
         <thead>
           <tr>
             <th>Course # </th>

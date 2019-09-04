@@ -25,13 +25,50 @@
     <div class="content_block bg-green_mint_2">
       <h2 class="unspace-top">My Payment Methods</h2>
       <form>
-        <div class="form_options">
+        <div class="form_options payment_method">
           <input type="radio" id="payment_1" checked="checked" name="payment_group" />
-          <label for="payment_1">Visa </label>
+          <div>
+            <p>
+              <strong>Visa</strong>
+              **** **** **** 4242 <span></span> Expires 04/2024
+            </p>
+            <dropdownDotsComponent>
+              <template slot="content">
+                <ul>
+                  <li>
+                    <a>Edit</a>
+                  </li>
+                  <li>
+                    <a>Delete</a>
+                  </li>
+                </ul>
+              </template>
+            </dropdownDotsComponent>
+          </div>
         </div>
-        <div class="form_options">
+        <div class="form_options payment_method">
           <input type="radio" id="payment_2" name="payment_group" />
-          <label for="payment_2">Mastercard </label>
+          <div>
+            <p>
+              <strong>Mastercard</strong>
+              **** **** **** 4242 <span></span> Expires 04/2024
+            </p>
+            <dropdownDotsComponent>
+              <template slot="content">
+                <ul>
+                  <li>
+                    <a><label for="payment_2">Make Primary</label></a>
+                  </li>
+                  <li>
+                    <a>Edit</a>
+                  </li>
+                  <li>
+                    <a>Delete</a>
+                  </li>
+                </ul>
+              </template>
+            </dropdownDotsComponent>
+          </div>
         </div>
 
         <div class="form_options alt-2">
@@ -109,6 +146,7 @@ module.exports = {
     "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),
     "licenses-details": () => VComponents.get("vue/components/licenses/details"),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
+    dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },
   data: function() { return data; },
   props: {
