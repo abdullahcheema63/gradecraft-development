@@ -6,17 +6,48 @@
     </p>
 
     <div class="table_container">
-      <table>
+      <table class="my_subscription">
         <thead>
           <tr>
             <th>Course # </th>
             <th>Course Name </th>
             <th>Semester </th>
-            <th>Created by </th>
             <th>Published </th>
             <th>Paid </th>
           </tr>
         </thead>
+        <tbody>
+          <tr>
+            <td>HSWW 123</td>
+            <td>Hogwarts First Years</td>
+            <td>Fall 2019</td>
+            <td><span class="checked">&nbsp;</span></td>
+            <td class="form_options alt-2">
+              <input type="checkbox" id="course_select_1" checked="checked" />
+              <label for="course_select_1">&nbsp; </label>
+            </td>
+          </tr>
+          <tr>
+            <td>HSWW 456</td>
+            <td>Hogwarts Fourth Years</td>
+            <td>Fall 2020</td>
+            <td> </td>
+            <td class="form_options alt-2">
+              <input type="checkbox" id="course_select_2" />
+              <label for="course_select_2">&nbsp; </label>
+            </td>
+          </tr>
+          <tr>
+            <td>HSWW 456</td>
+            <td>Hogwarts Fourth Years</td>
+            <td>Fall 2020</td>
+            <td> </td>
+            <td class="form_options alt-2">
+              <input type="checkbox" id="course_select_3" checked="checked" disabled="disabled" />
+              <label for="course_select_3">Madame Maxime </label>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
