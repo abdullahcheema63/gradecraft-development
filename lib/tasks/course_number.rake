@@ -95,11 +95,14 @@ namespace :move_attachment_directories do
     all_course_directories = get_source_directories(upload_directory)
     taskAuditFile.puts("all_course_directories: #{all_course_directories}")
 
+    deleted_course_ids = []
+
     all_course_directories.each do |dir|
       course_id = dir.split('-').last
-      course = Course.find(course_id)
 
-      if course.has_attachments?
+      course = Course.find(course_id) if Course.find(course_id).exists? else deleted_course_ids << course_id
+
+      if course && course.has_attachments?
         taskAuditFile.puts("course #{course_id} has attachments")
 
         if course.has_assignment_attachments?
@@ -117,7 +120,7 @@ namespace :move_attachment_directories do
           end
         end
 
-        if course.has_badge_attachments?
+        if course && course.has_badge_attachments?
           course.badges.each do |badge|
             if badge.badge_files.present?
               badge.badge_files.each do |bf|
@@ -132,7 +135,7 @@ namespace :move_attachment_directories do
           end
         end
 
-        if course.has_grade_attachments?
+        if course && course.has_grade_attachments?
           course.grades.each do |grade|
             if grade.file_uploads.present?
               grade.file_uploads.each do |fu|
@@ -147,7 +150,7 @@ namespace :move_attachment_directories do
           end
         end
 
-        if course.has_submission_attachments?
+        if course && course.has_submission_attachments?
           course.submissions.each do |sub|
             if sub.submission_files.present?
               sub.submission_files.each do |sf|
@@ -185,6 +188,9 @@ namespace :move_attachment_directories do
         cf.file.file.move_to(new_path)
         taskAuditFile.puts("---------------------------")
       end
+
+      taskAuditFile.puts("Course ID's of courses that were deleted but still in files/uploads: #{deleted_course_ids}")
+
     end
   end
 
