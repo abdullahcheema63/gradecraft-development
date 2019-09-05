@@ -45,7 +45,11 @@ class SubmissionFile < ApplicationRecord
 
   # returns nil if group or student has been deleted but file still exists
   def owner_name
-    submission.id.to_s
+    if submission.assignment.grade_scope == "Group"  && submission.group.present?
+      submission.group.name.gsub(/\s/, "-")
+    elsif submission.assignment.grade_scope == "Individual" && submission.student.present?
+      "#{submission.student.last_name}-#{submission.student.first_name}"
+    end
   end
 
   def extension

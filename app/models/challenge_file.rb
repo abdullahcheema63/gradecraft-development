@@ -5,8 +5,4 @@ class ChallengeFile < ApplicationRecord
   validates :filename, presence: true, length: { maximum: 50 }
 
   mount_uploader :file, AttachmentUploader
-
-  def course
-    challenge.course
-  end
 end
