@@ -21,7 +21,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
         submissions_export.update_export_completed_time
       rescue StandardError => error
-        puts "Submission Export error: #{error}"
+        puts "Submission Export: #{error}"
       end
     else
       if logger
@@ -88,7 +88,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
   def write_submission_binary_file(submitter, submission_file, index)
     destination_file_path = submission_binary_file_path(submitter, submission_file, index)
-    source_file_path = "#{Rails.root}#{submission_file.file.to_s}"
+    source_file_path = "#{Rails.root}/#{submission_file.file.to_s}"
     FileUtils.cp(source_file_path, destination_file_path)
   end
 
