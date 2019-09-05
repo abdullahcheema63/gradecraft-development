@@ -29,7 +29,6 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   def store_dir_pieces
     [
       store_dir_prefix,
-      "uploads",
       course,
       assignment,
       file_klass,
@@ -38,23 +37,29 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   def store_dir_prefix
-    return "files"
+    return "files/uploads"
   end
 
   def course
     # rubocop:disable AndOr
-    "#{model.course.course_number}-#{model.course.id}" if model and model.class.method_defined? :course and model.course
+    "#{model.course.id}" if model and model.class.method_defined? :course and model.course
   end
 
+  # Assignment name is added into directory path, used for submission_file and submisison_attachments
   def assignment
-    "assignments/#{model.assignment.name.gsub(/\s/, "_").downcase[0..20]}-#{model.assignment.id}" if model.class.method_defined? :assignment
+    "assignments/#{model.assignment.id}" if model.class.method_defined? :assignment
   end
 
+  #in prod: adds "attachments" for FileUpload
+  #changing to add "grade_attachments" for FileUpload,
+  #else adds model name like assignment_files
   def file_klass
     return model.klass_name if model.class.method_defined? :klass_name
     klass_name = model.class.to_s.underscore.pluralize
   end
 
+  # User's name is put into directory path if it is a submission_file
+  #Changing to put in submission ID
   def owner_name
     model.owner_name if model.class.method_defined? :owner_name
   end

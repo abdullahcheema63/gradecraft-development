@@ -32,12 +32,6 @@ class NotificationMailerPreview < ActionMailer::Preview
     NotificationMailer.group_status_updated group.id
   end
 
-  def lti_error
-    user = User.first
-    course = Course.first
-    NotificationMailer.lti_error user, course
-  end
-
   def revised_submission
     submission = Submission.last
     professor = User.first
