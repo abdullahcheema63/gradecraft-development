@@ -11,7 +11,7 @@ class API::SubscriptionsController < ApplicationController
     @payments = @subscription.payments.all
   end
 
-  def billing_scheme_teirs
+  def billing_scheme_tiers
     @billing_schemes = BillingScheme.all
   end
 

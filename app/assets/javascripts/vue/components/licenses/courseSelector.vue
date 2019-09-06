@@ -56,7 +56,7 @@ module.exports = {
   name: "licenses-course-selector",
   data() {
     return {
-      newSubscribingCourseIds: []
+
     }
   },
   computed: {
@@ -66,6 +66,21 @@ module.exports = {
     userCourses(){
       return this.$store.getters.userCourseMemberships
     },
+    selectedLicensedCourses() {
+      return this.userCourses.filter(course =>
+          course.licensed || this.newSubscribingCourseIds.includes(course.id)
+        );
+    },
+    newSubscribingCourseIds: {
+      get: function() {
+        return this.$store.state.newSubscribingCourseIds;
+      },
+      set: function (courseIds) {
+        this.$store.state.newSubscribingCourseIds = courseIds;
+        //let courseIds = this.newSubscribingCourseIds;
+        //courseIds.includes(courseId) ? courseIds.remove(courseId) : courseIds.push(courseId);
+      }
+    }
   },
   methods: {
     isLicensed(course) {

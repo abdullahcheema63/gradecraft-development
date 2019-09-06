@@ -1,6 +1,7 @@
 <template>
   <div>
-    <licenses-course-selector> </licenses-course-selector>
+    <licenses-course-selector>
+    </licenses-course-selector>
 
     <div class="content_block bg-green_mint_2">
       <h2>My Subscription Cost</h2>
@@ -11,7 +12,7 @@
         <h3 class="lining_figures">
           <span>
             <sup>$</sup>
-            40
+            {{totalCost}}
           </span>
         </h3>
         <p>
@@ -164,11 +165,37 @@ module.exports = {
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },
-  data: function() { return data; },
+  data: function() {
+    return {
+        courses: [],
+        showRenew: false,
+      };
+  },
   props: {
     stripePk: String,
   },
   computed: {
+    activeBillingRecord(){
+      let selectedCourseCount = this.selectedLicensedCourses.length
+      for (let licenseType of this.licenseTypeOptions) {
+        if (licenseType.min_courses <= selectedCourseCount && selectedCourseCount <= licenseType.max_courses) {
+          return licenseType
+        }
+      }
+      return null
+    },
+    originalCost(){
+      return this.totalCost - this.newCost;
+    },
+    totalCost(){
+      return this.activeBillingRecord ? this.activeBillingRecord.price_per_course * this.selectedLicensedCourses.length : 0;
+    },
+    newCost(){
+      return this.activeBillingRecord ? this.activeBillingRecord.price_per_course * this.newSubscribingCourseIds.length : 0;
+    },
+    paymentNeeded(){
+      return this.newCost > 0;
+    },
     licenseTypeOptions(){
       return this.$store.state.allLicenseTypes
     },
@@ -183,6 +210,17 @@ module.exports = {
         ? this.licenseTypeOptions.find(lt => lt.id === this.userLicense.license_type_id)
         : undefined;
     },
+    userCourses(){
+      return this.$store.getters.userCourseMemberships
+    },
+    selectedLicensedCourses() {
+      return this.userCourses.filter(course =>
+          course.licensed || this.newSubscribingCourseIds.includes(course.id)
+        );
+    },
+    newSubscribingCourseIds() {
+      return this.$store.state.newSubscribingCourseIds;
+    }
   },
   methods: {
     toggleRenew() {

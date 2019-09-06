@@ -63,6 +63,7 @@ const store = new Vuex.Store({
     allInstitutions: [],
     allLicenseTypes: [],
     userLicense: null,
+    newSubscribingCourseIds: [],
     user: {
       id: null,
       firstName: "",
