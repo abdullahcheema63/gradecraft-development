@@ -1,6 +1,6 @@
 <template>
   <div>
-    <licenses-course-selector :license="userLicense" :courses="userCourses"> </licenses-course-selector>
+    <licenses-course-selector> </licenses-course-selector>
 
     <div class="content_block bg-green_mint_2">
       <h2>My Subscription Cost</h2>
@@ -174,9 +174,6 @@ module.exports = {
     },
     userLicense(){
       return this.$store.state.userLicense
-    },
-    userCourses(){
-      return this.$store.getters.userCourseMemberships
     },
     hasLicense(){
       return !!this.userLicense;

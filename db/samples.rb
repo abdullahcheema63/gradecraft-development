@@ -1,6 +1,6 @@
 require "./db/samples/courses.rb"
 require "./db/samples/badges.rb"
-require "./db/samples/license_types.rb"
+require "./db/samples/billing_schemes.rb"
 require "./db/samples/assignment_types.rb"
 require "./db/samples/assignments.rb"
 require "./db/samples/challenges.rb"
