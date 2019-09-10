@@ -18,6 +18,8 @@
         <p>
           <strong>per month</strong>
         </p>
+        new cost: {{newCost}}
+        Currently paying (except if you upgrade enough to lower the price per course): {{originalCost}}
       </div>
       <p>
         You will be <strong>billed on the X of every month.</strong>
@@ -98,52 +100,6 @@
         <button type="submit" class="action">Save my changes</button>
       </form>
     </div>
-
-    <!-- <div class="content_block bg-green_mint">
-      <h2>Manage My License Package</h2>
-      <licenses-details v-if="hasLicense" :license="this.userLicense" :license-type="licenseType" :courses="userCourses" />
-      <div v-else>
-        <p>
-          Your
-          <b>free trial account,</b>
-          allows you to explore GradeCraft as much as you’d like! <br />
-          The only things you can’t do are:
-        </p>
-        <ul>
-          <li>Integrate with other tools (like Canvas or Moodle)</li>
-          <li>Import or add other users (such as assistants and students)</li>
-        </ul>
-        <p>
-          If you like what you see, you can upgrade your account with a license of your choice!
-          <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a> to see what’s best for you; we have options for Higher Ed and K–12.
-        </p>
-      </div>
-
-      <buttonModal button_class="action secondary" ref="buttonModal_license">
-        <template slot="button-text" v-if="hasLicense">Renew my account license</template>
-        <template slot="button-text" v-else>Upgrade my account!</template>
-
-        <template slot="heading" v-if="hasLicense">Account license renewal</template>
-        <template slot="heading" v-else>Account Upgrade</template>
-
-        <template slot="content">
-          <div>
-            <licenses-renew-form v-if="hasLicense" :license="this.userLicense" :license-type="licenseType" :stripePk="stripePk" />
-            <licenses-buy-form v-if="!hasLicense" :license-type-options="licenseTypeOptions" :stripePk="stripePk" />
-          </div>
-        </template>
-      </buttonModal>
-
-      <p v-if="hasLicense">
-        To change your license package or add additional course licenses, please email us at
-        <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!
-      </p>
-      <p v-else>
-        If you need a license package for an entire school or district, or a custom arrangement, please don’t hesitate to email us at
-        <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>. We’re more than happy to help!
-      </p>
-    </div> -->
-
   </div>
 </template>
 
@@ -178,7 +134,7 @@ module.exports = {
     activeBillingRecord(){
       let selectedCourseCount = this.selectedLicensedCourses.length
       for (let licenseType of this.licenseTypeOptions) {
-        if (licenseType.min_courses <= selectedCourseCount && selectedCourseCount <= licenseType.max_courses) {
+        if (licenseType.minCourses <= selectedCourseCount && selectedCourseCount <= licenseType.maxCourses) {
           return licenseType
         }
       }
@@ -188,10 +144,10 @@ module.exports = {
       return this.totalCost - this.newCost;
     },
     totalCost(){
-      return this.activeBillingRecord ? this.activeBillingRecord.price_per_course * this.selectedLicensedCourses.length : 0;
+      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.selectedLicensedCourses.length : 0;
     },
     newCost(){
-      return this.activeBillingRecord ? this.activeBillingRecord.price_per_course * this.newSubscribingCourseIds.length : 0;
+      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.newSubscribingCourseIds.length : 0;
     },
     paymentNeeded(){
       return this.newCost > 0;
