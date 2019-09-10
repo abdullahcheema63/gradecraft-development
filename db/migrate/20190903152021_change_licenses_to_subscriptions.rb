@@ -14,8 +14,8 @@ class ChangeLicensesToSubscriptions < ActiveRecord::Migration[5.2]
     rename_column :billing_scheme, :default_max_courses, :max_courses
     rename_column :billing_scheme, :default_max_students, :min_courses
 
-    remove_column :billing_scheme, :default_duration_months
-    remove_column :subscriptions, :max_students
-    remove_column :subscriptions, :max_courses
+    remove_column :billing_scheme, :default_duration_months, :integer
+    remove_column :subscriptions, :max_students, :integer
+    remove_column :subscriptions, :max_courses, :integer
   end
 end
