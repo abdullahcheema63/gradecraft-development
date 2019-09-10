@@ -18,12 +18,24 @@
         <p>
           <strong>per month</strong>
         </p>
-        new cost: {{newCost}}
-        Currently paying (except if you upgrade enough to lower the price per course): {{originalCost}}
       </div>
+
+      <div class="payment_today">
+        <h3>Today’s payment total:</h3>
+        <h3><span class="lining_figures"><sup>$</sup>9</span></h3>
+      </div>
+
+      <p>
+        new cost: {{newCost}}
+        <br />
+        Currently paying (except if you upgrade enough to lower the price per course):
+        {{originalCost}}
+      </p>
+
+      <h3>Subscription Timing</h3>
       <p>
         You will be <strong>billed on the X of every month.</strong>
-        <br />
+        Courses you pay for between billing cycles will be prorated by day.
         <a href="https://gradecraft.com/licenses/" target="_blank">Review our subscription price options</a>
       </p>
     </div>
@@ -89,7 +101,6 @@
           </template>
         </buttonModal>
 
-
         <div class="form_options alt-2">
           <input type="checkbox" id="service_terms_agreement" checked="checked" required="required" />
           <label for="service_terms_agreement">I accept GradeCraft’s
@@ -97,7 +108,7 @@
           </label>
         </div>
 
-        <button type="submit" class="action">Save my changes</button>
+        <button type="submit" class="action">Apply changes</button>
       </form>
     </div>
   </div>
