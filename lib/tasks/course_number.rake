@@ -95,11 +95,18 @@ namespace :move_attachment_directories do
     all_course_directories = get_source_directories(upload_directory)
     taskAuditFile.puts("all_course_directories: #{all_course_directories}")
 
+    deleted_course_ids = []
+
     all_course_directories.each do |dir|
       course_id = dir.split('-').last
-      course = Course.find(course_id)
 
-      if course.has_attachments?
+      if Course.exists?(course_id)
+        course = Course.find(course_id)
+      else
+        deleted_course_ids << course_id
+      end
+
+      if course && course.has_attachments?
         taskAuditFile.puts("course #{course_id} has attachments")
 
         if course.has_assignment_attachments?
@@ -110,7 +117,9 @@ namespace :move_attachment_directories do
                 new_path = build_assignment_path(course_id, assignment.id)
                 new_path << af.file.file.filename
                 taskAuditFile.puts("to this new path: #{new_path}")
-                af.file.file.move_to(new_path)
+                if args[:run_it] == "true"
+                  af.file.file.move_to(new_path)
+                end
                 taskAuditFile.puts("---------------------------")
               end
             end
@@ -125,7 +134,9 @@ namespace :move_attachment_directories do
                 new_path = build_badge_path(course_id, badge.id)
                 new_path << bf.file.file.filename
                 taskAuditFile.puts("to this new path: #{new_path}")
-                bf.file.file.move_to(new_path)
+                if args[:run_it] == "true"
+                  bf.file.file.move_to(new_path)
+                end
                 taskAuditFile.puts("---------------------------")
               end
             end
@@ -140,7 +151,9 @@ namespace :move_attachment_directories do
                 new_path = build_file_upload_path(course_id, grade.assignment.id)
                 new_path << fu.file.file.filename
                 taskAuditFile.puts("to this new path: #{new_path}")
-                fu.file.file.move_to(new_path)
+                if args[:run_it] == "true"
+                  fu.file.file.move_to(new_path)
+                end
                 taskAuditFile.puts("---------------------------")
               end
             end
@@ -154,7 +167,9 @@ namespace :move_attachment_directories do
                 taskAuditFile.puts("moving submission file: #{sf.inspect}")
                 new_path = build_submission_path(course_id, sub.assignment.id, sub.id)
                 new_path << sf.file.file.filename
-                taskAuditFile.puts("to this new path: #{new_path}")
+                if args[:run_it] == "true"
+                  taskAuditFile.puts("to this new path: #{new_path}")
+                end
                 sf.file.file.move_to(new_path)
                 taskAuditFile.puts("---------------------------")
               end
@@ -185,6 +200,9 @@ namespace :move_attachment_directories do
         cf.file.file.move_to(new_path)
         taskAuditFile.puts("---------------------------")
       end
+
+      taskAuditFile.puts("Course ID's of courses that were deleted but still in files/uploads: #{deleted_course_ids}")
+
     end
   end
 
@@ -209,7 +227,7 @@ namespace :move_attachment_directories do
         taskAuditFile.puts("old path is empty")
         if args[:run_it] == "true"
           taskAuditFile.puts("deleting directory #{old_path}")
-          FileUtils.remove_dir old_dir
+          FileUtils.remove_dir old_path
         end
       end
     end
