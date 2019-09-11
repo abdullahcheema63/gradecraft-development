@@ -189,21 +189,22 @@ namespace :move_attachment_directories do
         end
       end
 
-      challenge_files = ChallengeFile.all
-
-      challenge_files.each do |cf|
-        taskAuditFile.puts("moving challenge file: #{cf.inspect}")
-        course_id = cf.challenge.course.id
-        new_path = build_challange_path(course_id)
-        new_path << cf.file.file.filename
-        taskAuditFile.puts("to this new path: #{new_path}")
-        cf.file.file.move_to(new_path)
-        taskAuditFile.puts("---------------------------")
-      end
-
-      taskAuditFile.puts("Course ID's of courses that were deleted but still in files/uploads: #{deleted_course_ids}")
-
     end
+    
+    challenge_files = ChallengeFile.all
+
+    challenge_files.each do |cf|
+      taskAuditFile.puts("moving challenge file: #{cf.inspect}")
+      course_id = cf.challenge.course.id
+      new_path = build_challange_path(course_id)
+      new_path << cf.file.file.filename
+      taskAuditFile.puts("to this new path: #{new_path}")
+      cf.file.file.move_to(new_path)
+      taskAuditFile.puts("---------------------------")
+    end
+
+    taskAuditFile.puts("Course ID's of courses that were deleted but still in files/uploads: #{deleted_course_ids}")
+
   end
 
   desc "Go through the files/uploads and remove empty directorys"
