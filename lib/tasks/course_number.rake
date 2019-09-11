@@ -96,6 +96,7 @@ namespace :move_attachment_directories do
     taskAuditFile.puts("all_course_directories: #{all_course_directories}")
 
     deleted_course_ids = []
+    no_attachment_course_ids = []
 
     all_course_directories.each do |dir|
       course_id = dir.split('-').last
@@ -167,10 +168,10 @@ namespace :move_attachment_directories do
                 taskAuditFile.puts("moving submission file: #{sf.inspect}")
                 new_path = build_submission_path(course_id, sub.assignment.id, sub.id)
                 new_path << sf.file.file.filename
+                taskAuditFile.puts("to this new path: #{new_path}")
                 if args[:run_it] == "true"
-                  taskAuditFile.puts("to this new path: #{new_path}")
+                  sf.file.file.move_to(new_path)
                 end
-                sf.file.file.move_to(new_path)
                 taskAuditFile.puts("---------------------------")
               end
             end
@@ -179,7 +180,8 @@ namespace :move_attachment_directories do
 
       else
         old_dir = "#{upload_directory}/#{dir}"
-        taskAuditFile.puts("course has no attachments")
+        taskAuditFile.puts("course #{course_id} has no attachments")
+        no_attachment_course_ids << course_id
         if Dir.empty?(old_dir)
           taskAuditFile.puts("directory is empty")
           taskAuditFile.puts("deleteing directory: #{old_dir}")
@@ -204,6 +206,7 @@ namespace :move_attachment_directories do
     end
 
     taskAuditFile.puts("Course ID's of courses that were deleted but still in files/uploads: #{deleted_course_ids}")
+    taskAuditFile.puts("Course ID's of courses still have a folder in files/uploads but do not have attachments in the DB: #{no_attachment_course_ids}")
 
   end
 
