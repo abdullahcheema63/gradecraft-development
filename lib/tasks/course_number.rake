@@ -221,7 +221,7 @@ namespace :move_attachment_directories do
 
         taskAuditFile.puts("checking old path: #{path}")
 
-        size = `du -s #{path}`
+        size = `du -s #{path.shellescape}`
         taskAuditFile.puts("size of old path: #{size}")
 
         if(size.chars.first == "0")
