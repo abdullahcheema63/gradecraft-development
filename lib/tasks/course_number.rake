@@ -190,7 +190,7 @@ namespace :move_attachment_directories do
       end
 
     end
-    
+
     challenge_files = ChallengeFile.all
 
     challenge_files.each do |cf|
@@ -215,23 +215,21 @@ namespace :move_attachment_directories do
 
     upload_directory = "#{Rails.root}/files/uploads"
 
-    all_course_directories = get_source_directories(upload_directory)
+    Dir.foreach(upload_directory) do |folder_name|
+      path = upload_directory << "/" << folder_name
 
-    all_course_directories.each do |dir|
-      old_path = upload_directory + "/" + dir
-      taskAuditFile.puts("checking the old path: #{old_path}")
+      taskAuditFile.puts("checking old path: #{path}")
 
-      size = `du -s #{old_path}`
+      size = `du -s #{path}`
       taskAuditFile.puts("size of old path: #{size}")
 
       if(size.chars.first == "0")
-        taskAuditFile.puts("old path is empty")
+        taskAuditFile.puts("path is empty")
+        taskAuditFile.puts("deleting directory #{path}")
         if args[:run_it] == "true"
-          taskAuditFile.puts("deleting directory #{old_path}")
-          FileUtils.remove_dir old_path
+          FileUtils.remove_dir path
         end
       end
     end
-
   end
 end
