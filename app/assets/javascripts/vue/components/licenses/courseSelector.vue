@@ -9,30 +9,25 @@
       <table class="form_options-present my_subscription">
         <thead>
           <tr>
+            <th>Paid </th>
             <th>Course # </th>
             <th>Course Name </th>
             <th>Semester </th>
             <th>Published </th>
-            <th>Paid </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>HSWW 456</td>
-            <td>Hogwarts Fourth Years</td>
-            <td>Fall 2020</td>
-            <td> </td>
             <td class="form_options alt-2">
               <input type="checkbox" id="course_select_3" checked="checked" disabled="disabled" />
               <label for="course_select_3">Madame Maxime </label>
             </td>
+            <td>HSWW 456</td>
+            <td>Hogwarts Fourth Years</td>
+            <td>Fall 2020</td>
+            <td> </td>
           </tr>
           <tr v-for="c of userCourses" :key="c.id">
-            <td>{{c.number}}</td>
-            <td>{{c.name}}</td>
-            <td>{{c.semester}} {{c.year}}</td>
-            <td><span v-if="c.published" class="checked">&nbsp;</span> </td>
-
             <td v-if="c.licensed" class="form_options alt-2">
               <input type="checkbox" checked="checked" id="" />
               <label for="">&nbsp; </label>
@@ -42,6 +37,11 @@
               <input type="checkbox" :id="c.id" :value="c.id" v-model="newSubscribingCourseIds"/>
               <label :for="c.id">&nbsp; </label>
             </td>
+
+            <td>{{c.number}}</td>
+            <td>{{c.name}}</td>
+            <td>{{c.semester}} {{c.year}}</td>
+            <td><span v-if="c.published" class="checked">&nbsp;</span> </td>
           </tr>
         </tbody>
       </table>
