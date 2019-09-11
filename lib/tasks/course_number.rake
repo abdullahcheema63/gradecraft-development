@@ -215,21 +215,23 @@ namespace :move_attachment_directories do
 
     upload_directory = "#{Rails.root}/files/uploads"
 
-    Dir.foreach(upload_directory) do |folder_name|
-      path = upload_directory << "/" << folder_name
+    Dir.chdir(upload_directory) do
+      Dir.glob('*').select { |folder_name|
+        path = upload_directory + "/" + folder_name
 
-      taskAuditFile.puts("checking old path: #{path}")
+        taskAuditFile.puts("checking old path: #{path}")
 
-      size = `du -s #{path}`
-      taskAuditFile.puts("size of old path: #{size}")
+        size = `du -s #{path}`
+        taskAuditFile.puts("size of old path: #{size}")
 
-      if(size.chars.first == "0")
-        taskAuditFile.puts("path is empty")
-        taskAuditFile.puts("deleting directory #{path}")
-        if args[:run_it] == "true"
-          FileUtils.remove_dir path
+        if(size.chars.first == "0")
+          taskAuditFile.puts("path is empty")
+          taskAuditFile.puts("deleting directory #{path}")
+          if args[:run_it] == "true"
+            FileUtils.remove_dir path
+          end
         end
-      end
+      }
     end
   end
 end
