@@ -20,13 +20,12 @@
         </p>
       </div>
 
-      <div class="payment_today">
+      <div class="payment_today" v-if="newCost">
         <h3>Today’s payment total:</h3>
-        <h3><span class="lining_figures"><sup>$</sup>9</span></h3>
+        <h3><span class="lining_figures"><sup>$</sup>{{newCost}}</span></h3>
       </div>
 
       <p>
-        new cost: {{newCost}}
         <br />
         Currently paying (except if you upgrade enough to lower the price per course):
         {{originalCost}}
@@ -210,7 +209,7 @@
                 </div>
               </div>
             </div>
-            <button type="button" class="action">Submit</button>
+            <button type="button" class="action" @click="updateSubscription()">Submit</button>
           </template>
         </buttonModal>
       </form>
@@ -247,7 +246,7 @@ module.exports = {
   },
   computed: {
     activeBillingRecord(){
-      let selectedCourseCount = this.selectedLicensedCourses.length
+      let selectedCourseCount = this.selectedSubscribedCourses.length
       for (let licenseType of this.licenseTypeOptions) {
         if (licenseType.minCourses <= selectedCourseCount && selectedCourseCount <= licenseType.maxCourses) {
           return licenseType
@@ -259,10 +258,16 @@ module.exports = {
       return this.totalCost - this.newCost;
     },
     totalCost(){
-      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.selectedLicensedCourses.length : 0;
+      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.selectedSubscribedCourses.length : 0;
     },
     newCost(){
-      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.newSubscribingCourseIds.length : 0;
+      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.newSubscribingCourseIds.length - this.subtractedCost : 0;
+    },
+    subtractedCost(){
+      let originalCourseCount = this.$store.getters.originalLicensedCourses.length;
+      let currentSubscriptionCount = this.currentSubscribedCourseIds.length;
+      let subtractedCount = originalCourseCount - currentSubscriptionCount;
+      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * subtractedCount : 0;
     },
     paymentNeeded(){
       return this.newCost > 0;
@@ -284,14 +289,17 @@ module.exports = {
     userCourses(){
       return this.$store.getters.userCourseMemberships
     },
-    selectedLicensedCourses() {
+    selectedSubscribedCourses() {
       return this.userCourses.filter(course =>
-          course.licensed || this.newSubscribingCourseIds.includes(course.id)
+          this.currentSubscribedCourseIds.includes(course.id) || this.newSubscribingCourseIds.includes(course.id)
         );
     },
     newSubscribingCourseIds() {
       return this.$store.state.newSubscribingCourseIds;
-    }
+    },
+    currentSubscribedCourseIds(){
+      return this.$store.state.currentSubscribedCourseIds;
+    },
   },
   methods: {
     toggleRenew() {
@@ -299,6 +307,10 @@ module.exports = {
     },
     updateLicense(){
       this.$refs.buttonModal_license.toggleModalState()
+    },
+    updateSubscription(){
+      console.log("Dispatching method updateSubscription")
+      this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)
     }
   },
   created: function() {

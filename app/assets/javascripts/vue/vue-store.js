@@ -64,6 +64,7 @@ const store = new Vuex.Store({
     allLicenseTypes: [],
     userLicense: null,
     newSubscribingCourseIds: [],
+    currentSubscribedCourseIds: [],
     user: {
       id: null,
       firstName: "",
@@ -302,6 +303,19 @@ const store = new Vuex.Store({
         license = apiResponseToDataDataItem(body)
         commit('updateUserLicense', license)
       },
+      updateSubscription: async function({ commit }, subscribingCourses){
+        const resp = await fetch("/api/subscriptions", {
+          method: 'PATCH',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(subscribingCourses),
+        });
+      },
       updateLicensePayment: async function({ commit }, payment){
         const resp = await fetch("/api/subscriptions", {
           method: 'PATCH',
@@ -401,6 +415,10 @@ const store = new Vuex.Store({
             licensed: course.licensed,
             published: course.published
            };
+        });
+        let subscribedCourses = state.user.courseMembership.filter(course => course.licensed);
+        state.currentSubscribedCourseIds = subscribedCourses.map(course => {
+          return course.id
         });
       },
       addAdminCourses(state, courses){
@@ -557,6 +575,9 @@ const store = new Vuex.Store({
       },
       userCourseMemberships: state => {
         return state.user.courseMembership;
+      },
+      originalLicensedCourses: (state, getters) => {
+        return getters.userCourseMemberships.filter(course => course.licensed);
       }
     }
 })

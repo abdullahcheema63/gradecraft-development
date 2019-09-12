@@ -29,8 +29,8 @@
           </tr>
           <tr v-for="c of userCourses" :key="c.id">
             <td v-if="c.licensed" class="form_options alt-2">
-              <input type="checkbox" checked="checked" id="" />
-              <label for="">&nbsp; </label>
+              <input type="checkbox" :id="c.id" :value="c.id" v-model="currentSubscribedCourseIds"/>
+              <label :for="c.id">&nbsp; </label>
             </td>
             <!-- SOPHIA to ERIK: another v-if is if someone else has paid, then you can adapt the disabled static option I have above -->
             <td v-else class="form_options alt-2">
@@ -66,10 +66,18 @@ module.exports = {
     userCourses(){
       return this.$store.getters.userCourseMemberships
     },
-    selectedLicensedCourses() {
+    selectedSubscribedCourses() {
       return this.userCourses.filter(course =>
           course.licensed || this.newSubscribingCourseIds.includes(course.id)
         );
+    },
+    currentSubscribedCourseIds: {
+      get: function() {
+        return this.$store.state.currentSubscribedCourseIds;
+      },
+      set: function (courseIds) {
+        this.$store.state.currentSubscribedCourseIds = courseIds;
+      }
     },
     newSubscribingCourseIds: {
       get: function() {
@@ -77,8 +85,6 @@ module.exports = {
       },
       set: function (courseIds) {
         this.$store.state.newSubscribingCourseIds = courseIds;
-        //let courseIds = this.newSubscribingCourseIds;
-        //courseIds.includes(courseId) ? courseIds.remove(courseId) : courseIds.push(courseId);
       }
     }
   },
@@ -102,7 +108,13 @@ module.exports = {
         .filter(id => id !== course.id);
       this.updateCourses(newList);
     },
-  }
+    updateCurrentSubscribedCourse(courseId) {
+      console.log("Update Subscribed", courseID);
+      (this.$store.state.newSubscribingCourseIds.includes(courseID)
+      ? this.$store.state.newSubscribingCourseIds.remove(courseID)
+      : this.$store.state.newSubscribingCourseIds.push(courseID));
+    },
+  },
 }
 ```
 </script>

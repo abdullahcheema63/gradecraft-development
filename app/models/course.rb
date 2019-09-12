@@ -140,6 +140,14 @@ class Course < ApplicationRecord
     end
   end
 
+  def unsubscribe
+    self.update_attribute(:subscription_id, nil)
+  end
+
+  def subscribe(subscription_id)
+    self.update_attribute(:subscription_id, subscription_id)
+  end
+
   def uses_learning_objectives?
     allows_learning_objectives? && has_learning_objectives?
   end

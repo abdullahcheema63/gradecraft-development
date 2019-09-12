@@ -77,7 +77,7 @@ class API::SubscriptionsController < ApplicationController
       end
     end
     if @subscription.save
-      @billing_scheme = BillingScheme.all
+      @billing_schemes = BillingScheme.all
       #probably wont need this for the API to run ??
 
       @courses = get_courses_where_professor
@@ -88,15 +88,52 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
-  # PATCH api/licenses
+  # PATCH api/subscriptions
   def update
     @subscription = current_user.subscription
+    @subscribed_courses = @subscription.courses
+    subscribed_course_ids = @subscribed_courses.map(&:id)
+    current_subscribed_courses_count = @subscribed_courses.length
+
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
 
-    p = renew_params
-    p[:payment][:amount_usd] = @license.license_type.price_usd
+    selected_courses = params[:_json]
+    selected_course_ids = selected_courses.map{ |c| c["id"] }
+
+    new_subscribed_courses_count = selected_courses.length
+
+    if new_subscribed_courses_count == current_subscribed_courses_count
+      #check if courses are the same / swap courses
+      if (selected_course_ids - subscribed_course_ids).empty?
+        puts("courses subscribed are the same as courses selected ")
+        puts("selected: #{selected_course_ids }")
+        puts("current: #{ subscribed_course_ids }")
+      else
+        courses_to_unsubscribe = subscribed_course_ids - selected_course_ids
+        puts("Removing subscription from: #{courses_to_unsubscribe}")
+        unsubscribe_courses(courses_to_unsubscribe)
+
+        courses_to_subscribe = selected_course_ids - subscribed_course_ids
+        puts("adding subscription to: #{courses_to_subscribe}")
+        subscribe_courses(courses_to_subscribe, @subscription.id)
+      end
+
+    elsif new_subscribed_courses_count < current_subscribed_courses_count
+      #remove a subscription from a course
+      courses_to_unsubscribe = subscribed_course_ids - selected_course_ids
+      puts("Removing subscription from: #{courses_to_unsubscribe}")
+      unsubscribe_courses(courses_to_unsubscribe)
+
+    else
+      # new courses need to be paid for
+      puts("more courses selected than currently subscribed, needs payment")
+
+    end
+
+    #p = renew_params
+    #p[:payment][:amount_usd] = @license.license_type.price_usd
     #Need to change this to calculate the amount they have to pay ?
 
 
@@ -121,12 +158,30 @@ class API::SubscriptionsController < ApplicationController
 
   private
 
+  def unsubscribe_courses(course_ids)
+    course_ids.each do |id|
+      course = Course.find(id)
+      course.unsubscribe
+    end
+  end
+
+  def subscribe_courses(course_ids, subscription_id)
+    course_ids.each do |id|
+      course = Course.find(id)
+      course.subscribe(subscription_id)
+    end
+  end
+
   def render_error(message, errors, status=400)
     render json: {
       message: message,
       errors: errors,
       success: false
     }, status: status
+  end
+
+  def subscription_id_params
+    params.permit(_json: [:id])
   end
 
   def payment_permitted_params
