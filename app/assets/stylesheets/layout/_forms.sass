@@ -403,6 +403,78 @@ table.form_options-present
       left: -0.55em
       top: 2px
 
+.subscription_summary
+  & > div
+    margin: 2em 0
+
+  h3
+    margin: 0
+
+  ul.pink_dots
+    margin-top: 0
+
+    li
+      display: flex
+      align-items: baseline
+      justify-content: space-between
+
+    p
+      margin: 0
+
+      &:first-of-type
+        flex: 1
+
+      &:last-of-type
+        width: 225px
+        margin-left: 1.5em
+
+        strong
+          display: inline-block
+          width: 35px
+
+  .total
+    display: flex
+    align-items: baseline
+    justify-content: space-between
+    max-width: 850px
+
+    div
+      &:first-of-type
+        flex: 1
+
+      &:last-of-type
+        margin-left: 1.5em
+        width: 255px
+
+        h3
+          margin: 0 0 0 0.5em
+          font-size: 2em
+
+        span
+          position: relative
+
+          sup
+            font-size: 0.6em
+            position: absolute
+            left: -0.55em
+            top: 2px
+
+      &.today
+        position: relative
+        background: azure
+
+        &:after
+          content: ''
+          width: 80px
+          height: 80px
+          display: block
+          position: absolute
+          background-color: $bg-blue_2
+          border-radius: 50%
+          top: calc(-100% - 4px)
+          left: -1em
+          z-index: -1
+
 #stripe
   max-width: 800px
   margin: 0 0 2em 0

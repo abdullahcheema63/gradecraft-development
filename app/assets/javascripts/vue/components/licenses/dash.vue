@@ -108,7 +108,111 @@
           </label>
         </div>
 
-        <button type="submit" class="action">Apply changes</button>
+        <buttonModal button_class="action">
+          <template slot="button-text">Apply changes</template>
+          <template slot="heading">Subscription Summary</template>
+          <template slot="content">
+            <h2>My Subscription Summary</h2>
+            <p>
+              Below is a summary of the changes you’re making to your subscription, including any costs you’ve incurred and will be charged for today.
+            </p>
+            <div class="subscription_summary">
+              <!-- v-if the user has ADDED courses -->
+              <div>
+                <h3>Added Courses</h3>
+                <ul class="pink_dots">
+                  <li>
+                    <p>
+                      <strong>C123 Added Course Title Here</strong>
+                    </p>
+                    <p>
+                      <strong><sup>$</sup>9 </strong>
+                      prorate (<sup>$</sup>20 per month)
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              <!-- v-if the user has REMOVED courses -->
+              <div>
+                <h3>Removed Courses</h3>
+                <ul class="pink_dots">
+                  <li>
+                    <p>
+                      <strong>C123 Removed Course Title Here</strong>
+                    </p>
+                    <p>
+                      <strong><sup>$</sup>20</strong>
+                      per month
+                    </p>
+                </li>
+                </ul>
+              </div>
+
+              <div>
+                  <h3>Subscribed Courses</h3>
+                  <ul class="pink_dots">
+                    <li>
+                      <p>
+                        <strong>C123 Course Title Here</strong>
+                        <br />
+                        Published
+                      </p>
+                      <p>
+                        <strong><sup>$</sup>20</strong>
+                        per month
+                      </p>
+                    </li>
+                    <li>
+                      <p>
+                        <strong>C123 Course Title Here</strong>
+                        <br />
+                        Fall 2019, Published
+                      </p>
+                      <p>
+                        <strong><sup>$</sup>20</strong>
+                        per month
+                      </p>
+                    </li>
+                    <li>
+                      <p>
+                        <strong>C123 Course Title Here</strong>
+                      </p>
+                      <p>
+                        <strong><sup>$</sup>20</strong>
+                        per month
+                      </p>
+                    </li>
+                  </ul>
+              </div>
+              <div>
+                <h3>Selected Payment Method</h3>
+                <p>
+                  Visa **** **** **** 4242 (expires 04/2024)
+                </p>
+              </div>
+              <div class="total">
+                <div>
+                  <h3 class="teal_text">Today’s payment total</h3>
+                </div>
+                <div class="today">
+                  <h3><span class="lining_figures"><sup>$</sup>9</span></h3>
+                </div>
+              </div>
+              <div class="total">
+                <div>
+                  <h3>New monthly bill</h3>
+                  <p>
+                    You will be billed this amount on the X of every month
+                  </p>
+                </div>
+                <div>
+                  <h3><span class="lining_figures"><sup>$</sup>60</span></h3>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="action">Submit</button>
+          </template>
+        </buttonModal>
       </form>
     </div>
   </div>
