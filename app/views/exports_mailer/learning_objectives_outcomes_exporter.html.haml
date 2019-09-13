@@ -1,5 +1,17 @@
-%h2{ :align => "center" }
-  %strong Dear #{ @user.first_name },
+%td.hero_img
+  = image_tag "email-hero_Neutral.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%p{ :align => "center" }
-  The learning objectives outcomes export you have requested for #{ @course.name } is attached.
+%td
+  %h1
+    Hi there, #{@user.first_name}!
+
+  %p
+    The #{ @course.learning_objective_term.downcase } outcomes export you requested for
+    %strong
+      #{ @course.name }
+    is attached.
+
+  %p
+    Go gameful!
+    %br
+    GradeCraft
