@@ -75,13 +75,13 @@ end
 
 # ---------------------------- Create License Types! -------------------------#
 
-@license_types.each do |data|
-  license_type = LicenseType.create! do |l|
+@billing_schemes.each do |data|
+  billing_scheme = BillingScheme.create! do |l|
     data.keys.each do |k|
       l[k] = data[k]
     end
   end
-  print "Created License Type: " + license_type.name
+  print "Created Billing Scheme: " + billing_scheme.id
 end
 
 # ---------------------------- Users and Courses -----------------------------#
@@ -182,11 +182,11 @@ p = Payment.new({
   source: "Freebie"
 })
 
-license = License.new({
-  license_type: LicenseType.last,
-  user: User.find_by(username: "albus"),
+subscription = Subscription.new({
+  billing_scheme_id: BillingScheme.first.id,
+  user_id: User.find_by(username: "albus"),
 })
-license.start! p
+subscription.start! p
 
 # create a hash on each course config to store assignment types and assignments
 @courses.each do |name,config|
@@ -327,15 +327,15 @@ p = Payment.new({
   source: "NotStripe"
 })
 
-license = License.new({
-  license_type: LicenseType.first,
-  user: User.find_by(username: "severus"),
+subscription = Subscription.new({
+  billing_scheme_id: BillingScheme.first.id,
+  user_id: User.find_by(username: "severus").id,
   courses: [
     @courses[:leaderboards_team_challenges][:course],
     @courses[:power_ups_locks_weighting_config][:course],
   ]
 })
-license.start! p
+subscription.start! p
 
 # Generate sample GSI
 User.create! do |u|

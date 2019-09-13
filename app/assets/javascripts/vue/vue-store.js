@@ -61,7 +61,7 @@ const store = new Vuex.Store({
     allCourses: [],
     allInstructors: [],
     allInstitutions: [],
-    allLicenseTypes: [],
+    allBillingSchemes: [],
     userLicense: null,
     newSubscribingCourseIds: [],
     currentSubscribedCourseIds: [],
@@ -209,8 +209,8 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserLicense', final)
       },
-      getAllLicenseTypes: async function({ commit }){
-        console.log("getAllLicenseTypes action dispatched")
+      getAllBillingSchemes: async function({ commit }){
+        console.log("getAllBillingSchemes action dispatched")
         const resp = await fetch("/api/subscriptions/billing_scheme_tiers");
         if (resp.status === 404){
           console.log(resp.status);
@@ -222,7 +222,7 @@ const store = new Vuex.Store({
         console.log(json);
         const final = apiResponseToData(json);
         console.log(final);
-        commit('addAllLicenseTypes', final)
+        commit('addAllBillingSchemes', final)
       },
       addNewCourse: async function({commit}, course){
         const resp = await fetch("/api/courses", {
@@ -512,8 +512,8 @@ const store = new Vuex.Store({
           }
         })
       },
-      addAllLicenseTypes(state, licenseTypes){
-        state.allLicenseTypes = licenseTypes
+      addAllBillingSchemes(state, billingSchemes){
+        state.allBillingSchemes = billingSchemes
       },
       addUserLicense (state, licenseObj){
         state.userLicense = licenseObj

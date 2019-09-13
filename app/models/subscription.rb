@@ -7,7 +7,6 @@ class Subscription < ApplicationRecord
   belongs_to :user
   # belongs_to :license_type
   # belongs_to :billing_scheme // price per course & tier level 1-5 etc...
-  #
 
   validates_presence_of :billing_scheme
 

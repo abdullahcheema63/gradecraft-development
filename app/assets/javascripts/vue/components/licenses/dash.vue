@@ -273,18 +273,13 @@ module.exports = {
       return this.newCost > 0;
     },
     billingSchemeTiers(){
-      return this.$store.state.allLicenseTypes
+      return this.$store.state.allBillingSchemes
     },
     userLicense(){
       return this.$store.state.userLicense
     },
     hasLicense(){
       return !!this.userLicense;
-    },
-    licenseType() {
-      return (this.userLicense && this.billingSchemeTiers)
-        ? this.billingSchemeTiers.find(lt => lt.id === this.userLicense.license_type_id)
-        : undefined;
     },
     userCourses(){
       return this.$store.getters.userCourseMemberships
@@ -315,7 +310,7 @@ module.exports = {
   created: function() {
     this.$store.dispatch("getUserLicense");
     this.$store.dispatch("getCourseMemberships");
-    this.$store.dispatch("getAllLicenseTypes");
+    this.$store.dispatch("getAllBillingSchemes");
   },
 }
 ```
