@@ -20,7 +20,7 @@
         </p>
       </div>
 
-      <div class="payment_today" v-if="newCost">
+      <div class="payment_today" v-if="newCost > 0">
         <h3>Today’s payment total:</h3>
         <h3><span class="lining_figures"><sup>$</sup>{{newCost}}</span></h3>
       </div>
@@ -149,7 +149,18 @@
 
               <div>
                   <h3>Subscribed Courses</h3>
-                  <ul class="pink_dots">
+                  <ul class="pink_dots" >
+                    <li v-for="course of selectedSubscribedCourses" :key ="course.id">
+                      <p>
+                        <strong> {{course.number}} {{course.name}} </strong>
+                        <br />
+                        <template v-if="course.published">Published</template>
+                      </p>
+                      <p>
+                        <strong><sup>$</sup> {{ activeBillingRecord.pricePerCourse }} </strong>
+                        per month
+                      </p>
+                    </li>
                     <li>
                       <p>
                         <strong>C123 Course Title Here</strong>
@@ -161,29 +172,9 @@
                         per month
                       </p>
                     </li>
-                    <li>
-                      <p>
-                        <strong>C123 Course Title Here</strong>
-                        <br />
-                        Fall 2019, Published
-                      </p>
-                      <p>
-                        <strong><sup>$</sup>20</strong>
-                        per month
-                      </p>
-                    </li>
-                    <li>
-                      <p>
-                        <strong>C123 Course Title Here</strong>
-                      </p>
-                      <p>
-                        <strong><sup>$</sup>20</strong>
-                        per month
-                      </p>
-                    </li>
                   </ul>
               </div>
-              <div>
+              <div v-if="newCost > 0">
                 <h3>Selected Payment Method</h3>
                 <p>
                   Visa **** **** **** 4242 (expires 04/2024)
@@ -194,18 +185,18 @@
                   <h3 class="teal_text">Today’s payment total</h3>
                 </div>
                 <div class="today">
-                  <h3><span class="lining_figures"><sup>$</sup>9</span></h3>
+                  <h3><span class="lining_figures"><sup>$</sup>{{ newCost }}</span></h3>
                 </div>
               </div>
               <div class="total">
                 <div>
-                  <h3>New monthly bill</h3>
+                  <h3>Monthly bill total</h3>
                   <p>
                     You will be billed this amount on the X of every month
                   </p>
                 </div>
                 <div>
-                  <h3><span class="lining_figures"><sup>$</sup>60</span></h3>
+                  <h3><span class="lining_figures"><sup>$</sup>{{totalCost}}</span></h3>
                 </div>
               </div>
             </div>

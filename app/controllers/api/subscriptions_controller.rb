@@ -106,12 +106,18 @@ class API::SubscriptionsController < ApplicationController
     selected_course_ids = selected_courses.map{ |c| c["id"].to_i }
     new_subscribed_courses_count = selected_courses.length
 
+    puts("selected: #{selected_course_ids }")
+    puts("current: #{ subscribed_course_ids }")
+
     if new_subscribed_courses_count == current_subscribed_courses_count
       #check if courses are the same / swap courses, won't need to update Billing Scheme id
       if (selected_course_ids - subscribed_course_ids).empty?
         puts("courses subscribed are the same as courses selected ")
-        puts("selected: #{selected_course_ids }")
-        puts("current: #{ subscribed_course_ids }")
+
+        respond_to do |format|
+          format.json { head :ok }
+        end
+
       else
         courses_to_unsubscribe = subscribed_course_ids - selected_course_ids
         puts("Removing subscription from: #{courses_to_unsubscribe}")
@@ -124,8 +130,6 @@ class API::SubscriptionsController < ApplicationController
 
     elsif new_subscribed_courses_count < current_subscribed_courses_count
       #remove a subscription from a course
-      puts("selected: #{selected_course_ids }")
-      puts("current: #{ subscribed_course_ids }")
 
       courses_to_unsubscribe = subscribed_course_ids - selected_course_ids
       puts("Removing subscription from: #{courses_to_unsubscribe}")
@@ -178,13 +182,19 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
-  def change_billing_scheme(course_count)
+  def determine_billing_scheme(course_count)
     @billing_schemes.each do |billing_scheme|
       if billing_scheme.min_courses <= course_count && course_count <= billing_scheme.max_courses
-        if @subscription.billing_scheme_id != billing_scheme.id
-          @subscription.update_billing_scheme_id(billing_scheme.id)
-        end
+        return billing_scheme
       end
+    end
+  end
+
+  def change_billing_scheme(course_count)
+    billing_scheme = determine_billing_scheme(course_count)
+    puts("determined bs: #{billing_scheme.inspect}")
+    if @subscription.billing_scheme_id != billing_scheme.id
+      @subscription.update_billing_scheme_id(billing_scheme.id)
     end
   end
 
