@@ -103,7 +103,7 @@ class API::SubscriptionsController < ApplicationController
     current_subscribed_courses_count = @subscribed_courses.length
 
     selected_courses = params[:_json]
-    selected_course_ids = selected_courses.map{ |c| c["id"] }
+    selected_course_ids = selected_courses.map{ |c| c["id"].to_i }
     new_subscribed_courses_count = selected_courses.length
 
     if new_subscribed_courses_count == current_subscribed_courses_count
@@ -124,9 +124,13 @@ class API::SubscriptionsController < ApplicationController
 
     elsif new_subscribed_courses_count < current_subscribed_courses_count
       #remove a subscription from a course
+      puts("selected: #{selected_course_ids }")
+      puts("current: #{ subscribed_course_ids }")
+
       courses_to_unsubscribe = subscribed_course_ids - selected_course_ids
       puts("Removing subscription from: #{courses_to_unsubscribe}")
       unsubscribe_courses(courses_to_unsubscribe)
+      change_billing_scheme(new_subscribed_courses_count)
 
     else
       # new courses need to be paid for
@@ -171,6 +175,16 @@ class API::SubscriptionsController < ApplicationController
     course_ids.each do |id|
       course = Course.find(id)
       course.subscribe(subscription_id)
+    end
+  end
+
+  def change_billing_scheme(course_count)
+    @billing_schemes.each do |billing_scheme|
+      if billing_scheme.min_courses <= course_count && course_count <= billing_scheme.max_courses
+        if @subscription.billing_scheme_id != billing_scheme.id
+          @subscription.update_billing_scheme_id(billing_scheme.id)
+        end
+      end
     end
   end
 

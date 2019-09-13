@@ -33,6 +33,10 @@ class Subscription < ApplicationRecord
     add_payment! payment
   end
 
+  def update_billing_scheme_id(billing_scheme_id)
+    self.update_attribute(:billing_scheme_id, billing_scheme_id)
+  end
+
   private
 
   def payment_note
