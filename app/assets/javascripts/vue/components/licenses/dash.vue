@@ -299,7 +299,7 @@ module.exports = {
     }
   },
   created: function() {
-    this.$store.dispatch("getUserLicense");
+    this.$store.dispatch("getUserSubscription");
     this.$store.dispatch("getCourseMemberships");
     this.$store.dispatch("getAllBillingSchemes");
   },
