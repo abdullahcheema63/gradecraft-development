@@ -247,9 +247,9 @@ module.exports = {
   computed: {
     activeBillingRecord(){
       let selectedCourseCount = this.selectedSubscribedCourses.length
-      for (let licenseType of this.licenseTypeOptions) {
-        if (licenseType.minCourses <= selectedCourseCount && selectedCourseCount <= licenseType.maxCourses) {
-          return licenseType
+      for (let billingScheme of this.billingSchemeTiers) {
+        if (billingScheme.minCourses <= selectedCourseCount && selectedCourseCount <= billingScheme.maxCourses) {
+          return billingScheme
         }
       }
       return null
@@ -272,7 +272,7 @@ module.exports = {
     paymentNeeded(){
       return this.newCost > 0;
     },
-    licenseTypeOptions(){
+    billingSchemeTiers(){
       return this.$store.state.allLicenseTypes
     },
     userLicense(){
@@ -282,8 +282,8 @@ module.exports = {
       return !!this.userLicense;
     },
     licenseType() {
-      return (this.userLicense && this.licenseTypeOptions)
-        ? this.licenseTypeOptions.find(lt => lt.id === this.userLicense.license_type_id)
+      return (this.userLicense && this.billingSchemeTiers)
+        ? this.billingSchemeTiers.find(lt => lt.id === this.userLicense.license_type_id)
         : undefined;
     },
     userCourses(){
@@ -309,7 +309,6 @@ module.exports = {
       this.$refs.buttonModal_license.toggleModalState()
     },
     updateSubscription(){
-      console.log("Dispatching method updateSubscription")
       this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)
     }
   },

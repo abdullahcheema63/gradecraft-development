@@ -91,21 +91,23 @@ class API::SubscriptionsController < ApplicationController
   # PATCH api/subscriptions
   def update
     @subscription = current_user.subscription
-    @subscribed_courses = @subscription.courses
-    subscribed_course_ids = @subscribed_courses.map(&:id)
-    current_subscribed_courses_count = @subscribed_courses.length
+    @billing_schemes = BillingScheme.all
 
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
 
+
+    @subscribed_courses = @subscription.courses
+    subscribed_course_ids = @subscribed_courses.map(&:id)
+    current_subscribed_courses_count = @subscribed_courses.length
+
     selected_courses = params[:_json]
     selected_course_ids = selected_courses.map{ |c| c["id"] }
-
     new_subscribed_courses_count = selected_courses.length
 
     if new_subscribed_courses_count == current_subscribed_courses_count
-      #check if courses are the same / swap courses
+      #check if courses are the same / swap courses, won't need to update Billing Scheme id
       if (selected_course_ids - subscribed_course_ids).empty?
         puts("courses subscribed are the same as courses selected ")
         puts("selected: #{selected_course_ids }")
