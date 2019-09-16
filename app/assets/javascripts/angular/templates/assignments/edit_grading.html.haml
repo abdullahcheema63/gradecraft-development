@@ -5,3 +5,6 @@
 
   .form-subsection(ng-if="!assignment.pass_fail")
     %assignment-score-levels(data-assignment="assignment")
+
+  .form-subsection(ng-if="assignment.student_logged && assignment.pass_fail")
+    %p Uncheck student logged or pass/fail to see more grading options

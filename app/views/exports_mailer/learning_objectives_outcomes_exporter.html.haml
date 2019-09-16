@@ -6,7 +6,7 @@
     Hi there, #{@user.first_name}!
 
   %p
-    The learning objectives outcomes export you requested for
+    The #{ @course.learning_objective_term.downcase } outcomes export you requested for
     %strong
       #{ @course.name }
     is attached.

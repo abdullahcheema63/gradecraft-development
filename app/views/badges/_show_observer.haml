@@ -17,4 +17,4 @@
         %ul
           - presenter.badge.badge_files.each do |bf|
             %li
-              = link_to bf.filename, bf.url
+              = link_to bf.filename, bf.file.to_s

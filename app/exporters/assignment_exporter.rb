@@ -15,7 +15,7 @@ class AssignmentExporter
 
   # These headers are not used for import
   ADDITIONAL_HEADERS = [
-    "Assignment Id", "Created At", "Submissions Count", "Grades Count", "Learning Objectives"
+    "Assignment Id", "Created At", "Submissions Count", "Grades Count", "Learning Objectives", "Assignment Visibility"
   ]
 
   def export
@@ -37,7 +37,8 @@ class AssignmentExporter
           formatted_date(a.created_at),
           a.submissions.submitted.count,
           a.grades.student_visible.count,
-          a.learning_objectives.pluck(:name).join(',')
+          a.learning_objectives.pluck(:name).join(','),
+          visibility(a)
         ]
       end
     end
@@ -48,5 +49,19 @@ class AssignmentExporter
   def formatted_date(date)
     return nil if date.nil?
     date.in_time_zone(@user.time_zone).strftime("%m/%d/%Y")
+  end
+
+  def visibility(assignment)
+    if assignment.unlock_conditions.exists?
+      if !assignment.visible_when_locked
+        return "Hidden when locked"
+      end
+      
+      return "Visible when locked"
+    end
+
+    return "Visible" if assignment.visible
+      
+    return "Hidden"
   end
 end

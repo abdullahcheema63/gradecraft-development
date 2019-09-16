@@ -6,6 +6,8 @@ describe LearningObjective do
   let(:grade) { build :student_visible_grade, raw_points: 1000, student: student }
   let(:student) { build :user }
 
+  let(:lookups) {build ModelCopierLookups }
+
   describe "validations" do
     it "require a name" do
       learning_objective.name = nil
@@ -129,6 +131,33 @@ describe LearningObjective do
       observed_outcome
       grade.update raw_points: 1500
       expect(learning_objective.progress student).to include "Completed"
+    end
+  end
+
+  describe "#copy" do
+    subject { learning_objective.copy }
+    let(:course) { create :course }
+    let(:learning_objective) { create :learning_objective }
+    let(:learning_objective_level) { create :learning_objective_level}
+    let(:assignment) { create :assignment }
+
+    it "creates only one copy" do
+      learning_objective
+      expect{ subject }.to change(LearningObjective, :count).by 1
+    end
+
+    it "makes a duplicated copy of itself" do
+      expect(subject).to_not eq learning_objective
+    end
+
+    it "saves the copy if the learning objective is saved" do
+      expect(subject).to_not be_new_record
+    end
+
+    it "copies the learning objective levels" do
+      learning_objective.levels.push(learning_objective_level)
+      expect(subject.levels.size).to eq 1
+      expect(subject.levels.map(&:objective_id)).to eq [subject.id]
     end
   end
 end

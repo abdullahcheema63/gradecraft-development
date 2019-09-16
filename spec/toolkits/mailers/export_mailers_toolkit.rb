@@ -31,20 +31,12 @@ module Toolkits
         end
 
         RSpec.shared_examples "a submissions export email with archive data" do
-          it "includes the archive format" do
-            should include "ZIP"
-          end
-
           it "includes the archive url" do
             should include downloads_path
           end
         end
 
         RSpec.shared_examples "a submissions export email without archive data" do
-          it "includes the archive format" do
-            should include "ZIP"
-          end
-
           it "doesn't include the archive url" do
             should_not include downloads_path
           end
