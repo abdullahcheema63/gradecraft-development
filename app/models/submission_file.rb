@@ -43,7 +43,8 @@ class SubmissionFile < ApplicationRecord
     "#{submission.base_filename} - Submission File#{file_number}#{extension}"
   end
 
-  # returns nil if group or student has been deleted but file still exists
+  # BEFORE EFS this would return this users name or group name
+  # Now just returning the ID of the submission 
   def owner_name
     submission.id.to_s
   end

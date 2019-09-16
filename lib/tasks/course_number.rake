@@ -57,7 +57,7 @@ namespace :move_attachment_directories do
     path.join "/"
   end
 
-  #/gradecraft-development/files/uploads/<course_id>/assignments/<assignment_id>/grade_attachments/
+  #/gradecraft-development/files/uploads/<course_id>/assignments/<assignment_id>/attachments/
   def build_file_upload_path(course_id, assignment_id)
     path = [
       base_dir,
@@ -69,7 +69,6 @@ namespace :move_attachment_directories do
     path.join "/"
   end
 
-  #NEED to change `owner_name` to submission id
   #/gradecraft-development/files/uploads/<course_id>/assignments/<assignment_id>/submission_files/<submission_id>
   def build_submission_path(course_id, assignment_id, submission_id)
     path = [
