@@ -432,6 +432,9 @@ table.form_options-present
           display: inline-block
           width: 35px
 
+        &.removed
+          width: 240px
+
   .total
     display: flex
     align-items: baseline
@@ -473,6 +476,10 @@ table.form_options-present
           top: calc(-100% - 4px)
           left: -12px
           z-index: -1
+
+          @include mobile-xl
+            width: 70px
+            height: 70px
 
 #stripe
   max-width: 800px

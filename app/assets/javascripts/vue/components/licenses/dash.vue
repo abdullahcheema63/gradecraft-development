@@ -139,8 +139,8 @@
                     <p>
                       <strong>C123 Removed Course Title Here</strong>
                     </p>
-                    <p>
-                      <strong><sup>$</sup>20</strong>
+                    <p class="removed">
+                      &ndash; <sup> $</sup>20
                       per month
                     </p>
                 </li>
