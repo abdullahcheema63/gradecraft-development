@@ -1,14 +1,24 @@
-%h2{:align => "center"}
-  %strong You've got a new #{ @course.challenge_term } Grade!
-%h3{:align => "center"}
-  You can now view your grade for
-  #{ @course.challenge_term.downcase } "#{ @challenge.name }"
-  in #{ @course.name }.
-%p
-- if @course.show_grade_predictor?
-  %hr/
-  %p{:align => "center"}
-    Don't forget to update your plan for the semester by checking your
-    = succeed "." do
-      = link_to @course.grade_predictor_term, predictor_url
-  %hr/
+%td.hero_img
+  = image_tag "email-hero_Neutral.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+
+%td
+  %h1
+    You’ve got a new #{ @course.challenge_term } Grade!
+
+  %p
+    Hi #{ @student.first_name }, you can now view your grade for
+    #{ @course.challenge_term.downcase }
+    %strong
+      #{ @challenge.name }
+    in #{ @course.name }.
+
+  - if @course.show_grade_predictor?
+    %p
+      Don’t forget to update your plan for the semester by checking your
+      = succeed "." do
+        = link_to @course.grade_predictor_term, predictor_url
+
+  %p
+    Play on!
+    %br
+    GradeCraft

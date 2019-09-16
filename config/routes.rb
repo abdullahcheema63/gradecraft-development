@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   mount Resque::Server, at: "/jobs", constraints: AdminConstraint.new
   mount JasmineRails::Engine, at: '/specs', constraints: AdminConstraint.new if defined?(JasmineRails)
 
+  get "/files/*all", to: "redocuments#download"
+
   # 1. Analytics & Charts
   # 2. Announcements
   # 3. Assignments, Submissions, Grades
@@ -85,6 +87,7 @@ Rails.application.routes.draw do
         get :mass_edit
         put :mass_update
         post :self_log
+        delete :delete_self_logged
         delete :delete_all
       end
     end
@@ -496,7 +499,8 @@ Rails.application.routes.draw do
       get :due_this_week, on: :collection
     end
 
-    resources :earned_badges, only: [:create, :destroy]
+    resources :earned_badges, only: [:create, :update, :destroy]
+
     get "courses/:course_id/badges/:badge_id/earned_badges/:id/confirm_earned", to: "earned_badges#confirm_earned",
       as: :earned_badge_confirm
 

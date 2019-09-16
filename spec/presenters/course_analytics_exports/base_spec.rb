@@ -1,6 +1,8 @@
 describe Presenters::CourseAnalyticsExports::Base do
   subject { described_class.new params: params }
 
+  before { skip }
+
   let(:export) { create :course_analytics_export }
   let(:course) { export.course }
   let(:owner) { export.owner }

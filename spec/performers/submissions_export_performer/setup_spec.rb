@@ -5,11 +5,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
   describe "#setup" do
     subject { performer.setup }
 
-    it "ensures that the s3fs tmpdir exists" do
-      expect(S3fs).to receive(:ensure_tmpdir)
-      performer
-    end
-
     it "finds the submissions export by id" do
       allow(SubmissionsExport).to receive(:find) { create(:submissions_export) }
       expect(SubmissionsExport).to receive(:find).with(submissions_export.id)
