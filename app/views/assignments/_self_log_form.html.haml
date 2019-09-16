@@ -2,10 +2,10 @@
   - if ! student.self_reported_done?(assignment)
     %h3.uppercase Self Log your outcome:
     - if assignment.has_levels?
-      = f.select :raw_points, assignment.assignment_score_levels.map { |l| [l.formatted_name,l.points] }, :prompt => "Select your outcome"
-      = f.submit "Submit", class: "button success"
+      = f.select :raw_points, assignment.assignment_score_levels.map { |l| [l.formatted_name,l.points] }, prompt: "Select your outcome"
+      = f.submit "Submit", class: "button success self_grade_outcomes_button", disabled: true
     - elsif assignment.pass_fail?
       = f.select :pass_fail_status, [[term_for(:pass), "Pass"], [term_for(:fail), "Fail"]], prompt: "Select your outcome"
-      = f.submit "Submit", class: "button success"
+      = f.submit "Submit", class: "button success self_grade_outcomes_button", disabled: true
     - else
       = f.submit "I have completed this #{term_for :assignment}", class: "button success"

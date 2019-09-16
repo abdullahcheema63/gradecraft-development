@@ -1,13 +1,22 @@
-%h2{:align => "center"}
-  %strong #{@announcement.course.name} Announcement
+%td.hero_img
+  = image_tag "email-hero_Neutral.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%p{:align => "center"}
-  = @announcement.abstract.html_safe
+%td
+  %h1
+    Announcement for #{@announcement.course.name}
 
-%p{:align => "center"}
-  %em – #{@announcement.author.name}
+  %div
+    %p
+      = @announcement.abstract.html_safe
 
-%p{:align => "center"}
-  To read more, please visit
-  = link_to announcement_url(@announcement), announcement_url(@announcement)
-%hr/
+    %p
+      —#{@announcement.author.name}
+
+  %p
+    To read more, please visit
+    = link_to announcement_url(@announcement), announcement_url(@announcement)
+
+  %p
+    Play on!
+    %br
+    GradeCraft

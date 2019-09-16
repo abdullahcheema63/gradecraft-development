@@ -21,7 +21,7 @@
       %ul
         Downloads
         - assignment.assignment_files.each do |af|
-          %li= link_to af.filename, af.url
+          %li= link_to af.filename, af.file.to_s
 
     %p.minimize= raw assignment.description
 

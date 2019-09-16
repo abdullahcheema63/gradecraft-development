@@ -35,38 +35,6 @@ describe ExportsMailer do
 
   before(:each) { deliver_email }
 
-  describe "#submissions_export_started" do
-    let(:deliver_email) do
-      ExportsMailer
-        .submissions_export_started(professor, assignment)
-        .deliver_now
-    end
-
-    it_behaves_like "a gradecraft email to a professor"
-
-    it "BCC's to the gradecraft admin" do
-      expect(email.bcc).to eq [admin_email]
-    end
-
-    it "has the correct subject" do
-      expect(email.subject).to eq "Submissions export for #{ assignment_term } #{assignment.name} is being created"
-    end
-
-    describe "text part body" do
-      subject { text_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a submissions export email without archive data"
-      it_behaves_like "an email text part"
-    end
-
-    describe "html part body" do
-      subject { html_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a submissions export email without archive data"
-      it_behaves_like "an email html part"
-    end
-  end
-
   describe "#submissions_export_success" do
     let(:deliver_email) do
       ExportsMailer
@@ -89,10 +57,6 @@ describe ExportsMailer do
       it_behaves_like "a complete submissions export email body"
       it_behaves_like "a submissions export email with archive data"
       it_behaves_like "an email text part"
-
-      it "includes the secure download url" do
-        expect(subject).to include secure_download_url(secure_token)
-      end
     end
 
     describe "html part body" do
@@ -100,10 +64,6 @@ describe ExportsMailer do
       it_behaves_like "a complete submissions export email body"
       it_behaves_like "a submissions export email with archive data"
       it_behaves_like "an email html part"
-
-      it "includes the secure download url" do
-        expect(subject).to include secure_download_url(secure_token)
-      end
     end
   end
 
@@ -133,117 +93,6 @@ describe ExportsMailer do
     describe "html part body" do
       subject { html_part.body }
       it_behaves_like "a complete submissions export email body"
-      it_behaves_like "an email html part"
-    end
-  end
-
-  describe "#team_submissions_export_started" do
-    let(:deliver_email) do
-      ExportsMailer
-        .team_submissions_export_started(professor, assignment, team)
-        .deliver_now
-    end
-
-    it_behaves_like "a gradecraft email to a professor"
-
-    it "BCC's to the gradecraft admin" do
-      expect(email.bcc).to eq [admin_email]
-    end
-
-    it "has the correct subject" do
-      expect(email.subject).to eq \
-        "Submissions export for #{team_term} #{team.name} is being created"
-    end
-
-    describe "text part body" do
-      subject { text_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a team submissions export email"
-      it_behaves_like "a submissions export email without archive data"
-      it_behaves_like "an email text part"
-    end
-
-    describe "html part body" do
-      subject { html_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a team submissions export email"
-      it_behaves_like "a submissions export email without archive data"
-      it_behaves_like "an email html part"
-    end
-  end
-
-  describe "#team_submissions_export_success" do
-    let(:deliver_email) do
-      ExportsMailer.team_submissions_export_success(
-        professor, assignment, team, submissions_export, secure_token
-      ).deliver_now
-    end
-
-    it_behaves_like "a gradecraft email to a professor"
-
-    it "BCC's to the gradecraft admin" do
-      expect(email.bcc).to eq [admin_email]
-    end
-
-    it "has the correct subject" do
-      expect(email.subject).to eq \
-        "Submissions export for #{team_term} #{team.name} is ready"
-    end
-
-    describe "text part body" do
-      subject { text_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a team submissions export email"
-      it_behaves_like "a submissions export email with archive data"
-      it_behaves_like "an email text part"
-
-      it "includes the secure download url" do
-        expect(subject).to include secure_download_url(secure_token)
-      end
-    end
-
-    describe "html part body" do
-      subject { html_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a team submissions export email"
-      it_behaves_like "a submissions export email with archive data"
-      it_behaves_like "an email html part"
-
-      it "includes the secure download url" do
-        expect(subject).to include secure_download_url(secure_token)
-      end
-    end
-  end
-
-  describe "#team_submissions_export_failure" do
-    let(:deliver_email) do
-      ExportsMailer
-        .team_submissions_export_failure(professor, assignment, team)
-        .deliver_now
-    end
-
-    it_behaves_like "a gradecraft email to a professor"
-
-    it "BCC's to the gradecraft admin" do
-      expect(email.bcc).to eq [admin_email]
-    end
-
-    it "has the correct subject" do
-      expect(email.subject).to eq \
-        "Submissions export for #{team_term} #{team.name} failed to build"
-    end
-
-    describe "text part body" do
-      subject { text_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a team submissions export email"
-      it_behaves_like "an email text part"
-    end
-
-    describe "html part body" do
-      subject { html_part.body }
-      it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a team submissions export email"
       it_behaves_like "an email html part"
     end
   end

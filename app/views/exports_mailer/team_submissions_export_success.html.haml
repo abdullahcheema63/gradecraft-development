@@ -1,21 +1,24 @@
-%h2{:align => "center"}
-  %strong Dear #{ @professor.first_name },
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%h3{:align => "center"}
-  Your requested submissions export of #{ @course.assignment_term.downcase} "#{ @assignment.name }"
-  in course #{ @course.name }
-  was successfully created for #{ @course.team_term.downcase } #{ @team.name }.
-%p
-%p{:align => "center"}
-  You can download your completed ZIP archive
-  = succeed ". This link will expire after one week." do
-    %a{ :href => secure_download_url(@secure_token) } here
+%td
+  %h1
+    Good news, #{ @professor.first_name }!
 
-%p{:align => "center"}
-  Alternatively you can download the submissions archive on the submissions downloads page
-  = succeed "." do
-    %a{:href => "#{ downloads_url }"} here
-%hr/
+  %p
+    Your requested submissions export of #{ @course.assignment_term.downcase}
+    %strong
+      #{ @assignment.name }
+    in course #{ @course.name } was successfully created for #{ @course.team_term.downcase }
+    %strong
+      #{ @team.name }.
 
-%p Sincerely,
-%p GradeCraft
+  %p
+    You can visit
+    = succeed "." do
+      %a{:href => "#{ downloads_url }"} to download the submissions archive from the submissions downloads page
+
+    %p
+      Thanks for being gameful!
+      %br
+      GradeCraft

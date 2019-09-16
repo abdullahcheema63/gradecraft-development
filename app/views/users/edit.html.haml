@@ -1,6 +1,6 @@
 .pageContent
-  = render partial: "layouts/alerts", locals: { model: @user, term: "user" }
+  = render partial: "layouts/alerts", locals: { model: @user, term: "user"}
   - if @user.internal?
-    = render partial: "internal_user_form"
+    = render partial: "internal_user_form", locals: { edit_user: true }
   - else
-    = render partial: "gradecraft_user_form"
+    = render partial: "gradecraft_user_form", locals: { edit_user: true }

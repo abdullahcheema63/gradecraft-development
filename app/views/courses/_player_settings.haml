@@ -14,3 +14,7 @@
     = f.check_box :has_character_profiles, {"aria-describedby" => "has_character_profiles"}
     = f.label :has_character_profiles, "Character Profiles"
     .form-hint{id: "has_character_profiles"} Do students create a profile for their character in the class?
+
+  .form-flex-row
+    .form-item.col-50
+      = f.input :full_points, label: "Customize Student Dashboard Progress Bar Points Limit", hint: "Change the upper limit of the number of points used while displaying the progress bar on the student dashboard. (Useful if the course has many optional assignments) \n (Set value to 0 for default progress bar)"

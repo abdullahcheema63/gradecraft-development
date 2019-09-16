@@ -4,7 +4,6 @@
 # already a ruby class.
 
 class FileUpload < ApplicationRecord
-  include S3Manager::Carrierwave
 
   belongs_to :course
   belongs_to :assignment
