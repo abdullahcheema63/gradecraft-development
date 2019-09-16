@@ -69,6 +69,17 @@ class CourseMembershipsController < ApplicationController
     end
 
     return { deletable: true }
+    
+  def remove_leaders_from_teams(course_membership)
+    staff_member = course_membership.user
+
+    course = course_membership.course
+
+    staff_member.team_leaderships_for_course(course).each do |team_leadership|
+      team = team_leadership.team 
+      team.leaders = team.leaders.reject {|member| member["id"] == staff_member.id}
+      team.save
+    end
   end
 
   def destroy
@@ -85,8 +96,12 @@ class CourseMembershipsController < ApplicationController
       return
     end
     
-    Services::CancelsCourseMembership.call course_membership
+    if course_membership.user.is_staff?(course_membership.course)
+      remove_leaders_from_teams(course_membership)
+    end
 
+    Services::CancelsCourseMembership.call course_membership
+   
     respond_to do |format|
       format.html { redirect_to session[:return_to], notice: "#{course_membership.user.name} was successfully removed from course." }
       format.json {  head :ok }

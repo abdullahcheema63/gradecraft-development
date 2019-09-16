@@ -46,7 +46,7 @@ gem 'jquery-rails'
 gem 'light-service'
 
 gem 'multi_json'
-gem 'mini_magick'
+gem 'mini_magick', '~> 4.9.4'
 gem 'mongoid', '~> 6.0.0'
 gem 'namae'
 gem 'ng-rails-csrf'
@@ -71,6 +71,7 @@ gem 'rack-mini-profiler', require: false
 gem 'rails_autolink'
 gem 'rdiscount'
 gem 'redis', '~> 4.0'
+gem 'copy_carrierwave_file'
 
 # retry dsl for resque
 gem 'resque-retry'

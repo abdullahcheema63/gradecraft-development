@@ -40,17 +40,6 @@ describe TimelineHelper do
       end
     end
 
-    it "displays any attachments" do
-      document1 = double(:attachment, filename: "Document1.png", url: "http://example.com/document1")
-      allow(assignment).to receive(:assignment_files).and_return [document1]
-      html = helper.assignment_timeline_content(assignment)
-      expect(html).to have_tag "ul", with: { class: "attachments" }
-      expect(html).to have_tag "li", with: { class: "document" }
-      expect(html).to have_tag "a", with: { href: "http://example.com/document1" } do
-        with_text "Document1.png"
-      end
-    end
-
     it "displays the description if it's present" do
       allow(assignment).to receive(:description).and_return "This is a description"
       html = helper.assignment_timeline_content(assignment)
@@ -65,17 +54,6 @@ describe TimelineHelper do
       html = helper.challenge_timeline_content(challenge)
       expect(html).to have_tag "a", with: { href: challenge_path(challenge) } do
         with_text "See the details"
-      end
-    end
-
-    it "displays any attachments" do
-      document1 = double(:attachment, filename: "Document1.png", url: "http://example.com/document1")
-      allow(challenge).to receive(:challenge_files).and_return [document1]
-      html = helper.challenge_timeline_content(challenge)
-      expect(html).to have_tag "ul", with: { class: "attachments" }
-      expect(html).to have_tag "li", with: { class: "document" }
-      expect(html).to have_tag "a", with: { href: "http://example.com/document1" } do
-        with_text "Document1.png"
       end
     end
 

@@ -1,6 +1,4 @@
 class SubmissionFile < ApplicationRecord
-  include S3Manager::Carrierwave
-  include S3Manager::Streaming
   include Historical
 
   belongs_to :submission, inverse_of: :submission_files
@@ -16,10 +14,6 @@ class SubmissionFile < ApplicationRecord
   scope :missing, -> { where(file_missing: true) }
   scope :present, -> { where(file_missing: false) }
 
-  def s3_manager
-    @s3_manager ||= S3Manager::Manager.new
-  end
-
   def mark_file_missing
     update_attributes file_missing: true, last_confirmed_at: Time.now
   end
@@ -33,7 +27,7 @@ class SubmissionFile < ApplicationRecord
   end
 
   def exists_on_storage?
-    S3Manager::Manager::ObjectSummary.new(s3_object_file_key, s3_manager).exists?
+    self.file.present?
   end
 
   def course
