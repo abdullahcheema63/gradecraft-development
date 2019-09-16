@@ -1,5 +1,5 @@
 .pageContent
-  = render partial: "layouts/alerts", locals: { model: @user, term: "user" }
+  = render partial: "layouts/alerts", locals: { model: @user, term: "user"}
 
   - if Rails.env.production?
     %h3 Please note:
@@ -20,7 +20,7 @@
 
     #tabt1.ui-tabs-panel.ui-widget-content{role: "tabpanel"}
       #tab1{ class: ("active" unless @user.internal?) }
-        = render partial: "gradecraft_user_form"
+        = render partial: "gradecraft_user_form", locals: { edit_user: false }
 
       #tab2{ class: ("active" if @user.internal?) }
-        = render partial: "internal_user_form"
+        = render partial: "internal_user_form", locals: { edit_user: false }

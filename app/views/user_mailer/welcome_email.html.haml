@@ -1,9 +1,22 @@
-%h2{:align => "center"}
-  %strong Welcome to GradeCraft!
-%h3{:align => "center"} Your email #{@user.email} is registered with a new GradeCraft account.
-%p
-%hr
-%p{ align: "center" }
-  You can visit the
-  = link_to "dashboard", dashboard_url
-  to get started.
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+
+%td
+  %h1
+    Welcome to GradeCraft!
+
+  %p
+    Your email
+    %strong
+      #{@user.email}
+    is registered with a new GradeCraft account.
+
+  %p
+    Visit your dashboard to get started:
+
+  = link_to "Get started!", dashboard_url, class: "button"
+
+  %p
+    Play on!
+    %br
+    GradeCraft

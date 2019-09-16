@@ -40,7 +40,7 @@ describe FileUpload do
     it "has a filename and url based off of the original file" do
       subject.save!
       expect(subject.filename).to eq("original_file_name")
-      expect(subject.url).to match(/\d+_test_image\.jpg/)
+      expect(subject.file.to_s).to match(/\d+_test_image\.jpg/)
     end
 
     it "shortens and removes non-word characters from file names on save" do
@@ -53,15 +53,6 @@ describe FileUpload do
     end
   end
 
-  describe "url" do
-    subject { file.url }
-    before { allow(file).to receive_message_chain(:s3_object, :presigned_url) { "http://some.url" }}
-
-    it "returns the presigned amazon url" do
-      expect(subject).to eq("http://some.url")
-    end
-  end
-
   describe "#course" do
     it "returns the associated course" do
       expect(subject.course).to eq(course)
@@ -71,18 +62,6 @@ describe FileUpload do
   describe "#assignment" do
     it "returns the associated assignment" do
       expect(subject.assignment).to eq(assignment)
-    end
-  end
-
-  describe "S3Manager::Carrierwave inclusion" do
-    let(:file_upload) { build(:file_upload) }
-
-    it "can be deleted from s3" do
-      expect(file_upload.respond_to?(:delete_from_s3)).to be_truthy
-    end
-
-    it "can check whether it exists on s3" do
-      expect(file_upload.respond_to?(:exists_on_s3?)).to be_truthy
     end
   end
 end

@@ -15,5 +15,5 @@
       .form-item
         = label_tag :send_welcome, "Send welcome email"
         = check_box_tag :send_welcome, "1", true
-  = render partial: "courses", locals: { form: f }
+  = render partial: "courses", locals: { form: f, edit_user: edit_user }
   = render partial: "users/submit_buttons"
