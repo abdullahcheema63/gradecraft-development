@@ -73,45 +73,6 @@ describe SubmissionFilesController do
         request.env["HTTP_REFERER"] = "http://some-referrer.com"
       end
 
-      context "user is authorized to download the submission" do
-        before { ability.can :download, submission_file }
-        let(:send_data_options) { ["some_data", { filename: "stuff.xyz" }] }
-
-        context "the submission file is streamable" do
-          it "streams the submission file with the filename" do
-            allow(presenter).to receive(:send_data_options) { send_data_options }
-            expect(controller).to receive(:send_data).with(*send_data_options) do |c|
-              # expressly render nothing so that the controller doesn't attempt
-              # to render the template
-              controller.render head: :ok, body: nil
-            end
-            result
-          end
-        end
-
-        context "the submission file is not streamable" do
-          before do
-            allow(presenter).to receive(:submission_file_streamable?) { false }
-          end
-
-          it "marks the submission_file_missing" do
-            expect(presenter).to receive(:mark_submission_file_missing)
-            result
-          end
-
-          it "returns a flash alert saying the file was not found" do
-            result
-            expect(controller.flash[:alert])
-              .to match(/requested file was not found/)
-          end
-
-          it "redirects to the referrer" do
-            result
-            expect(response).to redirect_to "http://some-referrer.com"
-          end
-        end
-      end
-
       context "user is not authorized to read the submission" do
         before { ability.cannot :download, submission_file }
 

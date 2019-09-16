@@ -65,16 +65,8 @@ describe CourseAnalyticsExportsMailer do
         should_not include "DOCTYPE"
       end
 
-      it "includes the secure download url" do
-        expect(subject).to include secure_download_url(token)
-      end
-
       it "includes the archive url" do
         should include downloads_path
-      end
-
-      it "includes the archive format" do
-        should include "ZIP"
       end
     end
 
@@ -93,16 +85,8 @@ describe CourseAnalyticsExportsMailer do
         should include "DOCTYPE"
       end
 
-      it "includes the secure download url" do
-        expect(subject).to include secure_download_url(token)
-      end
-
       it "includes the archive url" do
         should include downloads_path
-      end
-
-      it "includes the archive format" do
-        should include "ZIP"
       end
     end
   end

@@ -11,7 +11,7 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
 
     let(:submission_files) { [ submission_file1, submission_file2 ] }
     let(:submission_file1) { build(:submission_file, filename: "gary_ate_ants.ralph", file_missing: false) }
-    let(:submission_file2) { build(:submission_file, file_missing: false) }
+    let(:submission_file2) { build(:submission_file, file: "gary_ate_ants.ralph", file_missing: false) }
 
     let(:submitter) { build(:user, first_name: "Edwina", last_name: "Georgebot") }
 
@@ -87,59 +87,6 @@ RSpec.describe SubmissionsExportPerformer, type: :background_job do
 
         it "returns the submitter directory path for the submitter and filename" do
           expect(result).to eq "the/path"
-        end
-      end
-
-      describe "#write_submission_binary_file" do
-        let(:result) do
-          subject.write_submission_binary_file(submitter, submission_file1, 5)
-        end
-
-        it "gets the binary submission file path" do
-          expect(performer).to receive(:submission_binary_file_path)
-            .with(submitter, submission_file1, 5)
-          result
-        end
-
-        it "streams the s3 file to the disk via the submission file" do
-          allow(performer).to receive(:submission_binary_file_path) { "/xyz" }
-          expect(performer).to receive(:stream_s3_file_to_disk)
-            .with(submission_file1, "/xyz")
-          result
-        end
-      end
-
-      describe "#stream_s3_file_to_disk" do
-        subject { performer.instance_eval { stream_s3_file_to_disk(@some_submission_file, @some_target_file_path) }}
-        let(:s3_manager) { performer.instance_eval { s3_manager }}
-        let(:mikos_bases_file_path) { "#{tmp_dir}/allyoarbases_r_belong_2_miko.snk" }
-
-        let(:cache_ivars) do
-          performer.instance_variable_set(:@some_submission_file, submission_file1)
-          performer.instance_variable_set(:@some_target_file_path, mikos_bases_file_path)
-        end
-
-        before(:each) do
-          allow(submission_file1).to receive(:s3_object_file_key) { "something-weird-happened-here" }
-          cache_ivars
-        end
-
-        context "s3_manager#write_s3_manager_to_disk succeeds without error" do
-          before do
-            allow(s3_manager).to receive(:write_s3_object_to_disk) { true }
-          end
-
-          it "writes the s3 file to the file path for the archive directory" do
-            expect(s3_manager).to receive(:write_s3_object_to_disk).with(submission_file1.s3_object_file_key, mikos_bases_file_path)
-            subject
-          end
-        end
-
-        context "s3_manager#write_s3_object_to_disk raises an Aws NoSuchKey error" do
-          it "marks the submission file as missing" do
-            expect(submission_file1).to receive(:mark_file_missing)
-            subject
-          end
         end
       end
 

@@ -5,21 +5,6 @@ describe SubmissionFile do
   let(:submission) { build(:submission, course: course, assignment: assignment, student: student) }
   let(:submission_file) { submission.submission_files.last }
 
-  describe "#s3_manager" do
-    subject { submission_file.s3_manager }
-    let(:submission_file) { build(:submission_file) }
-
-    it "creates an S3Manager::Manager object" do
-      expect(subject.class).to eq(S3Manager::Manager)
-    end
-
-    it "caches the S3Manager object" do
-      subject
-      expect(S3Manager::Manager).not_to receive(:new)
-      subject
-    end
-  end
-
   describe "#check_and_set_confirmed_status" do
     subject { submission_file.check_and_set_confirmed_status }
     let(:submission_file) { build(:submission_file) }
@@ -67,33 +52,4 @@ describe SubmissionFile do
     end
   end
 
-  describe "#exists_on_storage?" do
-    subject { submission_file.exists_on_storage? }
-    let(:submission_file) { build(:submission_file) }
-    let(:public_url) { Tempfile.new("waffle") }
-
-    context "Rails env is anything but development" do
-      let(:s3_manager) { double(S3Manager) }
-      let(:s3_object_summary) { double(S3Manager::Manager::ObjectSummary).as_null_object }
-      let(:s3_object_file_key) { "really-this-shouldnt-make-it.txt" }
-
-      before do
-        allow(submission_file).to receive_messages({
-          s3_object_file_key: s3_object_file_key,
-          s3_manager: s3_manager
-        })
-        allow(S3Manager::Manager::ObjectSummary).to receive(:new) { s3_object_summary }
-      end
-
-      it "builds a new S3 object summary with the object file key and s3 manager" do
-        expect(S3Manager::Manager::ObjectSummary).to receive(:new).with(s3_object_file_key, s3_manager)
-        subject
-      end
-
-      it "checks whether the object exists" do
-        expect(s3_object_summary).to receive(:exists?)
-        subject
-      end
-    end
-  end
 end

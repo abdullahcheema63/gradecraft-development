@@ -1,6 +1,6 @@
-Dear #{ @student.first_name },
+You’ve got a new grade!
 
-You can now view the grade for your #{ @course.assignment_term.downcase } "#{ @assignment.name }" in course #{ @course.name }.
+Hi #{ @student.first_name }, you can now view the grade for your #{ @course.assignment_term.downcase } "#{ @assignment.name }" in course #{ @course.name }.
 
 Visit #{ assignment_url(@assignment) } to view your results.
 
@@ -10,5 +10,4 @@ Visit #{ assignment_url(@assignment) } to view your results.
   = predictor_url
 
 Play on!
-
 GradeCraft

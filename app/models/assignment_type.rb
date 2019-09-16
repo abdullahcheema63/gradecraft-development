@@ -9,7 +9,7 @@ class AssignmentType < ApplicationRecord
   belongs_to :course
   has_many :assignments, -> { order("position ASC") }, dependent: :destroy
   has_many :submissions, through: :assignments
-  has_many :grades
+  has_many :grades, through: :assignments
 
   has_many :learning_objective_links, as: :learning_objective_linkable
 

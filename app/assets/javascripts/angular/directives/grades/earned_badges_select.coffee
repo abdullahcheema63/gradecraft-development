@@ -31,6 +31,11 @@
         badge.available_for_student = true
       else
         BadgeService.createEarnedBadge(badge.id, vm.studentId, GradeService.grades[0].id)
+
+    vm.setBadgeFeedback = (badge)->
+      return if !vm.badgeIsActionable(badge)
+      if earnedBadge = vm.badgeIsEarnedForGrade(badge)
+        BadgeService.updateEarnedBadge(badge.id, earnedBadge, vm.BadgeService.earnedBadgesFeedback[badge.id])
   ]
 
   {
@@ -38,7 +43,8 @@
     controller: AwardedBadgesCtrl,
     controllerAs: 'vm',
     scope: {
-      studentId: '@'
+      studentId: '@',
+      badgeFeedbackInput: '@'
     },
     templateUrl: 'grades/earned_badges_select.html'
   }

@@ -21,7 +21,7 @@
             %ul.no-style
               %li{"ng-repeat"=>"assignment in loShowCtrl.linkedAssignments"}
                 %a{"ng-href"=>"/assignments/{{assignment.id}}"} {{assignment.name}}
-                
+
                 %descriptor-icon{"data-icon"=>"lock", "ng-if"=>"assignment.unlock_conditions"}
                   %ul.icon-list
                     %li{"ng-repeat"=>"condition in assignment.unlock_conditions"}
@@ -121,7 +121,7 @@
 
             %descriptor-icon{"data-icon"=>"key", "ng-if"=>"assignment.is_a_condition"}
               %ul.icon-list
-                %li{"ng-repeat"=>"key in assignment.unlock_keys"} 
+                %li{"ng-repeat"=>"key in assignment.unlock_keys"}
                   {{key}}
             %assignment-descriptor-icons{"data-assignment"=>"assignment"}
           %td.center

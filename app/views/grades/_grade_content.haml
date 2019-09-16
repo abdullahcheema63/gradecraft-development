@@ -29,6 +29,9 @@
 - if grade.feedback.present?
   = render partial: "grades/components/feedback", locals: { grade: grade }
 
+- if current_course.delete_student_logged_grade && grade.assignment.student_logged?
+  = render partial: "grades/components/delete_self_logged", locals: { grade: grade }
+
 - if grade.earned_badges.present?
   = render partial: "grades/components/badges", locals: { grade: grade }
 
