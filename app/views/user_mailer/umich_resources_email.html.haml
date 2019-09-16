@@ -1,26 +1,38 @@
-%h2
-  %strong Hello, #{@user.first_name}
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%h3 Welcome to GradeCraft!
+%td
+  %h1
+    Welcome to GradeCraft!
 
-%p Thank you for adding GradeCraft to your course!  GradeCraft is a tool built at the University of Michigan that facilitates teaching from a gameful perspective.  Some highlights of how we do things differently:
+  %p
+    Hello, #{@user.first_name}
 
-%ul
-  %li Students’ grades start from zero and build up
-  %li Students can predict and track their grades
-  %li Create assessment paths for students or allow them to create their own
-  %li Integrates with Canvas to import grades from quizzes or used as a standalone gradebook.
+  %p
+    Thank you for adding GradeCraft to your course! GradeCraft is a tool built at the University of Michigan that facilitates teaching from a gameful perspective. Here are some highlights of how we do things differently:
 
-%p As you begin to explore and build your course, we wanted to share some resources to help:
+  %ul
+    %li Students’ grades start from zero and build up
+    %li Students can predict and track their grades
+    %li Create assessment paths for students or allow them to create their own
+    %li Integrates with Canvas to import grades from quizzes or used as a standalone gradebook
 
-%ul
-  %li= link_to "Guide to Getting Started", "http://gamefulpedagogy.com/getting-started/".html_safe
-  %li= link_to "Frequently Asked Questions", "https://gradecraft.zendesk.com/hc/en-us".html_safe
-  %li= link_to "Syllabi Examples", "http://gamefulpedagogy.com/example-syllabi/".html_safe
-  %li= link_to "Your 'Go-To' Resource for All Things Gameful", "http://gamefulpedagogy.com/".html_safe
+  %p
+    As you begin to explore and build your course, here are some resources that may help:
 
-%p Once you have had some time to look around, please feel free to reach out to us at help@gradecraft.com to let us know if you have questions or need any further information.
+  %ul
+    %li= link_to "Guide to Getting Started", "http://gamefulpedagogy.com/getting-started/".html_safe
+    %li= link_to "Frequently Asked Questions", "https://gradecraft.zendesk.com/hc/en-us".html_safe
+    %li= link_to "Syllabi Examples", "http://gamefulpedagogy.com/example-syllabi/".html_safe
+    %li= link_to "Your 'Go-To' Resource for All Things Gameful", "http://gamefulpedagogy.com/".html_safe
 
-%p Happy Exploring!
+  %p
+    Once you have had some time to look around, please feel free to reach out to us at
+    %a{:href => "mailto:help@gradecraft.com"}
+      help@gradecraft.com
+    to let us know if you have questions or need any further information.
 
-%p The GradeCraft Team
+  %p
+    Happy Exploring!
+    %br
+    GradeCraft

@@ -18,7 +18,7 @@ class CourseAnalyticsExportPerformer < ResqueJob::Performer
   end
 
   def deliver_mailer
-    mailer = export.s3_object_exists? ? success_mailer : failure_mailer
+    mailer = export.local_file_exists? ? success_mailer : failure_mailer
     mailer.deliver_now
 
     export.update_attributes last_completed_step: "deliver_mailer"
@@ -41,8 +41,8 @@ class CourseAnalyticsExportPerformer < ResqueJob::Performer
 
     ensure
       begin
-        # once we've successfully built the export on s3fs, let's upload it
-        export.upload_builder_archive_to_s3
+        #local file upload
+        export.upload_file(export.local_file_path)
 
       ensure
         export.update_export_completed_time

@@ -1,4 +1,5 @@
-Congratulations #{ @student.first_name }!
+Congratulations, #{ @student.first_name }!
+
 You've earned the #{ @earned_badge.badge.name } #{ @course.badge_term }.
 
 - if @earned_badge.feedback.present?
@@ -7,3 +8,6 @@ You've earned the #{ @earned_badge.badge.name } #{ @course.badge_term }.
 
 Check out what other #{ @course.badge_term.pluralize } you can earn in #{ @course.name.html_safe } here:
 = badges_url
+
+Play on!
+GradeCraft

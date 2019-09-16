@@ -17,5 +17,5 @@
       .form-item
         = f.label :password_confirmation
         = f.password_field :password_confirmation, as: :password
-  = render partial: "courses", locals: { form: f }
+  = render partial: "courses", locals: { form: f, edit_user: edit_user }
   = render partial: "users/submit_buttons"
