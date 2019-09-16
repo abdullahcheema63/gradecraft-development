@@ -70,7 +70,6 @@ class CoursesController < ApplicationController
       change_current_course @course.id
       redirect_to action: :edit, id: @course.id and return
     end
-    @attachments = @course.has_attachments?
     authorize! :update, @course
   end
 
