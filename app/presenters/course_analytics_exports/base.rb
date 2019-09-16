@@ -22,11 +22,14 @@ module Presenters
       end
 
       def export_job
-        @export_job ||= ::CourseAnalyticsExportJob.new export_id: export.id
+        #should there be a check here if the @expor t is not existed yet? or use params[:id] ? 
+        @export_job ||= ::CourseAnalyticsExportJob.new export_id: @export.id
       end
 
       def export
-        @export ||= ::CourseAnalyticsExport.find params[:id]
+        if CourseAnalyticsExport.where(id: params[:id]).exists?
+          @export ||= ::CourseAnalyticsExport.find params[:id]
+        end
       end
 
       def destroy_export
@@ -39,10 +42,6 @@ module Presenters
 
       def current_user
         properties[:current_user]
-      end
-
-      def stream_export
-        export.stream_s3_object_body
       end
 
       def export_filename

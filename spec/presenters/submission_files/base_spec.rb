@@ -4,7 +4,6 @@ describe Presenters::SubmissionFiles::Base do
   let(:submission_file) do
     double(:submission_file,
       submission: double(Submission),
-      object_stream: double(S3Manager::ObjectStream).as_null_object,
       id: rand(1000)
     )
   end
@@ -73,43 +72,6 @@ describe Presenters::SubmissionFiles::Base do
     end
   end
 
-  describe "#submission_file_streamable?" do
-    let(:result) { subject.submission_file_streamable? }
-
-    context "submission_file does not exist" do
-      it "returns false" do
-        allow(subject).to receive(:submission_file) { nil }
-        expect(result).to eq false
-      end
-    end
-
-    context "submission_file exists" do
-      it "returns the outcome of ObjectStream#exists?" do
-        allow(submission_file).to receive_message_chain(
-          :object_stream, :exists?) { "some-value" }
-        expect(result).to eq "some-value"
-      end
-    end
-  end
-
-  describe "#stream_submission_file" do
-    let(:result) { subject.stream_submission_file }
-
-    context "the submission file is streamable" do
-      it "streams the object from the submission file" do
-        expect(submission_file.object_stream).to receive(:stream!)
-        result
-      end
-    end
-
-    context "the submission file is not streamable" do
-      it "returns false" do
-        allow(subject).to receive(:submission_file_streamable?) { false }
-        expect(result).to eq false
-      end
-    end
-  end
-
   describe "#filename" do
     let(:presenter_params) { { index: "10" } }
     it "returns the instructor_filename for the submission file" do
@@ -136,11 +98,4 @@ describe Presenters::SubmissionFiles::Base do
     end
   end
 
-  describe "#send_data_options" do
-    it "returns a splattable array with the options for send_data" do
-      allow(subject).to receive_messages \
-        stream_submission_file: "filez", filename: "stuff.txt"
-      expect(subject.send_data_options).to eq ["filez", filename: "stuff.txt"]
-    end
-  end
 end

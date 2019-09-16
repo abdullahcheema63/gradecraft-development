@@ -20,12 +20,6 @@ describe UploadsController do
       subject
     end
 
-    it "deletes the upload from s3" do
-      stub_submission_file
-      expect(submission_file).to receive(:delete_from_s3)
-      subject
-    end
-
     it "sets the upload to an ivar" do
       subject
       expect(assigns(:upload)).to eq(submission_file)
@@ -48,15 +42,6 @@ describe UploadsController do
       it "destroys the upload with flash" do
         expect(controller).to receive(:destroy_upload_with_flash)
         subject
-      end
-    end
-
-    context "upload failed to delete from s3" do
-      before { allow(submission_file).to receive(:exists_on_s3?) { true }}
-      it "sets a flash alert" do
-        stub_submission_file
-        subject
-        expect(flash[:alert]).to match(/File failed to delete from the server/)
       end
     end
   end

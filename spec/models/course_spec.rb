@@ -645,7 +645,7 @@ describe Course do
   end
 
   describe "#assignment_weight_spent_for_student(student)" do
-    subject { create :course_with_weighting, total_weights: 4 }
+    subject { create :course_with_weighting, total_weights: 4, full_points: 1 }
 
     it "returns false if the student has not yet spent enough weights" do
       student = create(:user, courses: [subject], role: :student)

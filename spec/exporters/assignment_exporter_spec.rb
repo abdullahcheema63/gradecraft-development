@@ -7,7 +7,7 @@ describe AssignmentExporter do
   describe "#export(course)" do
     it "generates an empty CSV if there are no assignments" do
       csv = subject.export
-      expect(csv).to eq "Name,Assignment Type,Point Total,Description,Purpose,Open At,Due At,Accepts Submissions,Accept Until,Required,Assignment Id,Created At,Submissions Count,Grades Count,Learning Objectives\n"
+      expect(csv).to eq "Name,Assignment Type,Point Total,Description,Purpose,Open At,Due At,Accepts Submissions,Accept Until,Required,Assignment Id,Created At,Submissions Count,Grades Count,Learning Objectives,Assignment Visibility\n"
     end
 
     it "returns the header list for alignment with import" do
