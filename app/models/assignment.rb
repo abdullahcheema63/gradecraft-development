@@ -7,7 +7,6 @@ class Assignment < ApplicationRecord
   include UploadsMedia
   include UnlockableCondition
   include Analytics::AssignmentAnalytics
-  include S3Manager::Copying
 
   belongs_to :course
   belongs_to :assignment_type, -> { order("position ASC") }
@@ -171,7 +170,7 @@ class Assignment < ApplicationRecord
   end
 
   def has_grades?
-    grades.exists?
+    grades.where(student_visible: true).exists?
   end
 
   def has_unlock_condition?
@@ -336,7 +335,6 @@ class Assignment < ApplicationRecord
   end
 
   private
-
   def students_with_submissions_on_team_conditions
     ["id in (#{student_with_submissions_query})",
      "id in (select distinct(student_id) from team_memberships where team_id = ?)"]
@@ -351,6 +349,10 @@ class Assignment < ApplicationRecord
     self.threshold_points = 0 if self.threshold_points.nil?
   end
 
+  def file_attachment_is_valid?(attachment_file)
+    !attachment_file.file.nil? && !attachment_file.file.path.nil? && File.file?(attachment_file.file.path)
+  end
+
   def copy_files(copy)
     copy.save unless copy.persisted?
     copy_media(copy) if media.present?
@@ -359,15 +361,20 @@ class Assignment < ApplicationRecord
 
   # Copy assignment media
   def copy_media(copy)
-    remote_upload(copy, self, "media", media.url)
+    CopyCarrierwaveFile::CopyFileService.new(self, copy, :media).set_file
+    copy.save unless copy.persisted?
   end
 
   # Copy assignment files
   def copy_assignment_files(copy)
+    copy.save unless copy.persisted?
+
     assignment_files.each do |af|
-      next unless exists_remotely?(af, "file")
-      assignment_file = copy.assignment_files.create filename: af[:filename]
-      remote_upload(assignment_file, af, "file", af.url)
+      if file_attachment_is_valid?(af)
+        assignment_file = copy.assignment_files.create filename: af[:filename]
+        CopyCarrierwaveFile::CopyFileService.new(af, assignment_file, :file).set_file
+        assignment_file.save unless assignment_file.persisted?
+      end
     end
   end
 end

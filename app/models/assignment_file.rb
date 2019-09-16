@@ -1,5 +1,4 @@
 class AssignmentFile < ApplicationRecord
-  include S3Manager::Carrierwave
 
   belongs_to :assignment, inverse_of: :assignment_files
 

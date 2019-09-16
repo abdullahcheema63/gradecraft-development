@@ -1,163 +1,278 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Page does not exist (404)  || GradeCraft</title>
-  <link rel="stylesheet" type="text/css" href="/css/background.css">
-
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 | GradeCraft</title>
+  <link href="https://fonts.googleapis.com/css?family=Arvo|Montserrat:300" rel="stylesheet">
+  <style>
+    body{
+      margin: 0;
+      padding: 0;
+      background: #CCEBF7;
+      font-family: 'Montserrat', Verdana, sans-serif;
+      font-size: 18px;
+      line-height: 1.45em;
+      color: #0e0e51;
+    }
+    h1{font-size: 4em;}
+    h2{font-size: 2.2em;}
+    h1, h2{
+      font-family: 'Arvo', Times, serif;
+      font-weight: normal;
+      line-height: 1.2em;
+      margin: 0;
+    }
+    svg{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    .error_msg{
+      z-index: 100;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border: 4px solid #6eccf6;
+      padding: 2em;
+      box-sizing: border-box;
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      animation: fadeIn 2.5s linear;
+    }
+    .error_msg h1,
+    .error_msg h2,
+    .error_msg p{
+      animation: fadeIn 2.7s linear;
+    }
+    .error_msg svg{
+      position: absolute;
+      bottom: -73px;
+      right: 10px;
+      height: 80px;
+      width: auto;
+    }
+    @keyframes fadeIn {
+      0% {opacity: 0;}
+      90% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+    @media only screen and (max-width: 600px) {
+      body{font-size: 16px;}
+      h1{font-size: 3em;}
+      h2{font-size: 1.5em;}
+      svg{
+        right: 0;
+        width: 800px;
+      }
+      .error_msg{
+        padding: 1em;
+        top: 10vh;
+        transform: translate(-50%, 0);
+      }
+      .error_msg svg{
+        right: 50%;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-  <div class="back-color-wash"></div>
-
-  <div class="back-sky-container">
-    <div class="cloud cloud-1">
-      <div class="cloud-bubble cloud-bubble-1"></div>
-      <div class="cloud-bubble cloud-bubble-12"></div>
-      <div class="cloud-bubble cloud-bubble-9"></div>
-      <div class="cloud-bubble cloud-bubble-7"></div>
-      <div class="cloud-bubble cloud-bubble-2"></div>
-    </div>
-
-    <div class="cloud cloud-2">
-      <div class="cloud-bubble cloud-bubble-1"></div>
-      <div class="cloud-bubble cloud-bubble-8"></div>
-      <div class="cloud-bubble cloud-bubble-3"></div>
-      <div class="cloud-bubble cloud-bubble-6"></div>
-      <div class="cloud-bubble cloud-bubble-1"></div>
-    </div>
-    <div class="cloud cloud-3">
-      <div class="cloud-bubble cloud-bubble-1"></div>
-      <div class="cloud-bubble cloud-bubble-2"></div>
-      <div class="cloud-bubble cloud-bubble-9"></div>
-      <div class="cloud-bubble cloud-bubble-4"></div>
-      <div class="cloud-bubble cloud-bubble-8"></div>
-    </div>
-    <div class="cloud cloud-4">
-      <div class="cloud-bubble cloud-bubble-2"></div>
-      <div class="cloud-bubble cloud-bubble-5"></div>
-      <div class="cloud-bubble cloud-bubble-9"></div>
-      <div class="cloud-bubble cloud-bubble-4"></div>
-      <div class="cloud-bubble cloud-bubble-12"></div>
-    </div>
-    <div class="cloud cloud-5">
-      <div class="cloud-bubble cloud-bubble-7"></div>
-      <div class="cloud-bubble cloud-bubble-2"></div>
-      <div class="cloud-bubble cloud-bubble-12"></div>
-      <div class="cloud-bubble cloud-bubble-1"></div>
-      <div class="cloud-bubble cloud-bubble-5"></div>
-    </div>
+  <div class="error_msg">
+    <h1>404</h1>
+    <h2>Page Not Found</h2>
+    <p>
+      Oops! Sorry, I took away your page!
+    </p>
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      viewBox="0 0 100 102" enable-background="new 0 0 100 102" xml:space="preserve">
+      <g>
+      	<path fill="#FFFFFF" d="M75.18,9.01c0,0-4.255,13.693,0.798,42.292c5.053,28.6,17.087,45.921,17.087,45.921
+      		S56.43,89.068,31.424,59.817S2.934,9.166,2.934,9.166V0.777h72.133L75.18,9.01z"/>
+      	<path fill="none" stroke="#6eccf6" stroke-width="5" stroke-miterlimit="10" d="M75.18,9.01c0,0-4.255,13.693,0.798,42.292
+      		c5.053,28.6,17.087,45.921,17.087,45.921S56.43,89.068,31.424,59.817S2.934,9.166,2.934,9.166"/>
+      </g>
+    </svg>
   </div>
 
-  <div class="daylight message-container">
-    <h1>Page Not Found</h1>
-    <div class="message">It must be lost in the clouds somewhere!</div>
-    <div class="back-to-site"><a href="/">Take me home...</a></div>
-  </div>
+  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    viewBox="0 0 1600 800" enable-background="new 0 0 1600 800" xml:space="preserve">
+    <style>
+      .cloud_1 {animation: cloudDrift_1 200s linear infinite;}
+      .cloud_2 {animation: cloudDrift_2 250s linear infinite;}
+      #Yeti_Arm {
+          animation: yetiWave 3s linear infinite;
+          transform-origin: 90% 70%;
+          animation-delay: 2s;
+      }
+      #Yeti {animation: moveYeti 2s ease-out;}
 
+      @keyframes cloudDrift_1{
+          60% { opacity: 1; transform: translateX(1700px);}
+          61% { opacity: 0; }
+          80% { opacity: 0; transform: translateX(-600px); }
+          81% { opacity: 1; }
+          100% { transform: translateX(0px); }
+      }
+      @keyframes cloudDrift_2{
+          20% { opacity: 1; transform: translateX(700px);}
+          21% { opacity: 0; }
+          45% { opacity: 0; transform: translateX(-1700px); }
+          46% { opacity: 1; }
+          100% { transform: translateX(0px); }
+      }
 
-  <div class="background-container">
-    <div class="hills">
-      <div class="hill hill-1 hill-position-1"></div>
-      <div class="hill hill-2 hill-position-3"></div>
-      <div class="hill hill-3 hill-position-2"></div>
-    </div>
+      @keyframes yetiWave {
+          25% { transform: rotate(10deg); }
+          75% { transform: rotate(-10deg); }
+          100% { transform: rotate(0); }
+      }
+      @keyframes moveYeti {
+          0% { transform: translateX(500px); }
+          100% { transform: translateX(0); }
+      }
+    </style>
 
-    <div class="background-left-wrapper">
-      <div class="mountain mountain-size-1">
-        <div class="mountain-left-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-left-spacer"></div>
-          <div class="mountain-peak-left-side"></div>
-        </div>
-        <div class="mountain-right-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-right-spacer"></div>
-          <div class="mountain-peak-right-side"></div>
-        </div>
-        <div class="mountain-root"></div>
-        <div class="mountain-root right"></div>
-      </div>
-      <div class="mountain mountain-2  mountain-size-3">
-        <div class="mountain-left-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-left-spacer"></div>
-          <div class="mountain-peak-left-side"></div>
-        </div>
-        <div class="mountain-right-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-right-spacer"></div>
-          <div class="mountain-peak-right-side"></div>
-        </div>
-        <div class="mountain-root"></div>
-        <div class="mountain-root right"></div>
-      </div>
-      <div class="mountain mountain-3 mountain-size-5">
-        <div class="mountain-left-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-left-spacer"></div>
-          <div class="mountain-peak-left-side"></div>
-        </div>
-        <div class="mountain-right-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-right-spacer"></div>
-          <div class="mountain-peak-right-side"></div>
-        </div>
-        <div class="mountain-root"></div>
-        <div class="mountain-root right"></div>
-      </div>
-    </div>
+    <rect id="background" x="0" y="0" fill="#CCEBF7" width="1600" height="650"/>
+    <path class="cloud_1" fill="#FFFFFF" d="M435.858,198.242h-137.5c6.903,0,12.5-5.597,12.5-12.5s-5.597-12.5-12.5-12.5h-250
+    	c-6.903,0-12.5,5.597-12.5,12.5s5.597,12.5,12.5,12.5h137.5c6.904,0,12.5,5.597,12.5,12.5s-5.596,12.5-12.5,12.5h-44.626
+    	c-6.903,0-12.5,5.597-12.5,12.5s5.597,12.5,12.5,12.5h250c6.904,0,12.5-5.597,12.5-12.5s-5.596-12.5-12.5-12.5h44.625
+    	c6.903,0,12.5-5.597,12.5-12.5S442.761,198.242,435.858,198.242z"/>
+    <path class="cloud_2" fill="#FFFFFF" d="M1498.365,47.31h-137.5c6.903,0,12.5-5.597,12.5-12.5s-5.597-12.5-12.5-12.5h-325.054
+    	c-6.902,0-12.5,5.597-12.5,12.5c0,6.903,5.598,12.5,12.5,12.5h137.502c6.902,0,12.5,5.597,12.5,12.5s-5.598,12.5-12.5,12.5h-44.627
+    	c-6.901,0-12.5,5.597-12.5,12.5s5.599,12.5,12.5,12.5h325.056c6.903,0,12.5-5.597,12.5-12.5s-5.597-12.5-12.5-12.5h44.625
+    	c6.903,0,12.5-5.597,12.5-12.5S1505.27,47.31,1498.365,47.31z"/>
 
-    <div class="background-right-wrapper">
-      <div class="mountain mountain-4 mountain-size-2">
-        <div class="mountain-left-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-left-spacer"></div>
-          <div class="mountain-peak-left-side"></div>
-        </div>
-        <div class="mountain-right-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-right-spacer"></div>
-          <div class="mountain-peak-right-side"></div>
-        </div>
-        <div class="mountain-root"></div>
-        <div class="mountain-root right"></div>
-      </div>
-      <div class="mountain mountain-5 mountain-size-4">
-        <div class="mountain-left-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-left-spacer"></div>
-          <div class="mountain-peak-left-side"></div>
-        </div>
-        <div class="mountain-right-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-right-spacer"></div>
-          <div class="mountain-peak-right-side"></div>
-        </div>
-        <div class="mountain-root"></div>
-        <div class="mountain-root right"></div>
-      </div>
-      <div class="mountain mountain-6 mountain-size-2">
-        <div class="mountain-left-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-left-spacer"></div>
-          <div class="mountain-peak-left-side"></div>
-        </div>
-        <div class="mountain-right-side"></div>
-        <div class="mountain-peak">
-          <div class="mountain-peak-right-spacer"></div>
-          <div class="mountain-peak-right-side"></div>
-        </div>
-        <div class="mountain-root"></div>
-        <div class="mountain-root right"></div>
-      </div>
-    </div>
-  </div>
+    <g id="graphics">
+    	<polygon fill="#2D264B" points="1392.506,537.491 1079.994,224.999 654.963,650 1392.506,650 	"/>
+    	<polygon fill="#2D264B" points="89.998,650 1102.775,650 577.74,124.999 89.998,612.708 	"/>
+    	<g>
+    		<polygon fill="#2C4268" points="459.998,313.432 232.323,541.09 232.323,650 540.072,650 		"/>
+    		<polygon fill="#52749C" points="459.998,313.432 687.673,541.09 687.673,650 459.998,650 		"/>
+    	</g>
+    	<g>
+    		<polygon fill="#52749C" points="862.494,300 862.494,300 793.711,650 1212.518,650 		"/>
+    		<polygon fill="#2C4268" points="512.469,650 862.494,650 862.494,300 		"/>
+    	</g>
+    	<g>
+    		<polygon fill="#52749C" points="1399.987,450 1399.987,450 1360.683,650 1600,650 		"/>
+    		<polygon fill="#2C4268" points="1199.053,651.72 1399.067,651.72 1399.067,451.72 		"/>
+    	</g>
+    	<g>
+    		<polygon fill="#345889" points="1012.48,650 1248.332,650 1212.494,450 		"/>
+    		<polygon fill="#3771B4" points="1212.494,450 1212.494,450 1212.494,650 1412.508,650 		"/>
+    	</g>
+    	<g>
+    		<polygon fill="#345889" points="-0.002,650 235.85,650 200.012,450 		"/>
+    		<polygon fill="#3771B4" points="200.012,450 200.012,450 200.012,650 400.025,650 		"/>
+    	</g>
+    	<polygon fill="#64C2E6" points="957.488,500.381 807.859,650 1107.117,650 	"/>
+    	<g>
+    		<polygon fill="#345889" points="363.972,650 657.024,650 612.489,401.5 		"/>
+    		<polygon fill="#3771B4" points="612.489,401.5 612.489,401.5 612.489,650 861.005,650 		"/>
+    	</g>
+    	<polygon fill="#64C2E6" points="362.489,550.002 262.483,650 462.494,650 	"/>
+    	<polygon fill="#EBEAEA" points="577.743,130.647 456.356,252.027 577.743,373.406 699.133,252.027 	"/>
+    	<polyline fill="#DADADA" points="200.373,456.843 119.875,537.336 200.373,617.829 	"/>
+    	<polygon fill="#EBEAEA" points="1080.081,231 983.74,327.334 1080.081,423.668 1176.422,327.334 	"/>
+    	<g>
+    		<rect x="-0.002" y="650" fill="#EBEAEA" width="1600.002" height="150"/>
+    		<path fill="#DADADA" d="M359.391,689.703H258.516c5.064,0,9.17-3.057,9.17-6.826c0-3.77-4.106-6.826-9.17-6.826H75.108
+    			c-5.064,0-9.17,3.057-9.17,6.826c0,3.77,4.106,6.826,9.17,6.826h100.875c5.065,0,9.17,3.057,9.17,6.826s-4.105,6.826-9.17,6.826
+    			h-32.739c-5.064,0-9.17,3.057-9.17,6.826c0,3.77,4.106,6.826,9.17,6.826h183.409c5.065,0,9.17-3.057,9.17-6.826
+    			c0-3.77-4.105-6.826-9.17-6.826h32.738c5.064,0,9.17-3.057,9.17-6.826S364.455,689.703,359.391,689.703z"/>
+    		<path fill="#DADADA" d="M915.71,723.746H809.161c5.349,0,9.686-3.057,9.686-6.826c0-3.77-4.337-6.826-9.686-6.826H615.437
+    			c-5.349,0-9.686,3.057-9.686,6.826c0,3.77,4.337,6.826,9.686,6.826h106.549c5.35,0,9.686,3.057,9.686,6.826
+    			c0,3.77-4.336,6.826-9.686,6.826h-34.581c-5.349,0-9.686,3.057-9.686,6.826s4.337,6.826,9.686,6.826h193.725
+    			c5.35,0,9.686-3.057,9.686-6.826s-4.336-6.826-9.686-6.826h34.58c5.349,0,9.686-3.057,9.686-6.826
+    			C925.395,726.802,921.059,723.746,915.71,723.746z"/>
+    		<path fill="#DADADA" d="M1436.07,733.472h-106.549c5.349,0,9.686-3.057,9.686-6.826c0-3.77-4.337-6.826-9.686-6.826h-193.725
+    			c-5.349,0-9.686,3.057-9.686,6.826c0,3.77,4.337,6.826,9.686,6.826h106.548c5.35,0,9.686,3.057,9.686,6.826
+    			c0,3.77-4.336,6.826-9.686,6.826h-34.581c-5.349,0-9.686,3.057-9.686,6.826c0,3.77,4.337,6.826,9.686,6.826h193.725
+    			c5.35,0,9.686-3.057,9.686-6.826c0-3.77-4.336-6.826-9.686-6.826h34.58c5.349,0,9.686-3.057,9.686-6.826
+    			C1445.756,736.529,1441.42,733.472,1436.07,733.472z"/>
+    	</g>
+    </g>
+
+    <polyline fill="#EBEAEA" points="200.071,617.829 280.569,537.336 200.071,456.843 "/>
+    <polyline fill="#DADADA" points="862.665,307.173 771.706,398.126 862.665,489.079 "/>
+    <polyline fill="#EBEAEA" points="862.323,489.079 953.282,398.126 862.323,307.173 "/>
+    <polyline fill="#DADADA" points="613.866,408.838 522.907,499.791 613.866,590.744 "/>
+    <polyline fill="#EBEAEA" points="613.524,590.744 704.483,499.791 613.524,408.838 "/>
+    <polyline fill="#DADADA" points="1213.44,458.955 1122.482,549.908 1213.44,640.861 "/>
+    <polyline fill="#EBEAEA" points="1213.099,640.861 1304.058,549.908 1213.099,458.955 "/>
+
+    <g id="Yeti">
+        <g id="Yeti_Arm">
+            <path fill="#FFFFFF" d="M1385.294,526.988c-5.693,5.542-6.809,10.412-10.326,15.413c-5.172,7.355-13.658,8.658-20.286,11.703
+                c-6.628,3.045-21.951,5.348-34.554,6.543c-2.782,0.264-10.924-0.03-18.903-0.847c-1.839-0.188-10.264-8.339-6.435-1.233
+                c0.33,0.612-0.354,0.39-1.015,0.286c-0.53-0.083-1.05-0.169-1.557-0.258c-1.016-0.177-6.507-10.109-4.358-0.927
+                c0.449,1.919-1.479-0.103-2.641-0.903c-2.083-1.435-17.685-17.438-11.698-4.27c4.75,10.445-24.82-9.205-29.761-12.16
+                c-6.406-3.831-4.499-3.984-11.974,2.018c-8.202,6.586-35.356,24.196-30.683,48.653c0.645,3.375,17.783,15.899,19.689,17.245
+                c0.535,0.378,1.377,0.942,2.476,1.654c1.092,0.707-33.149,10.84,10.43,8.154c5.322-0.328,10.963,0.159,7.909,1.948
+                c-0.526,0.308-7.232,3.796-5.803,4.946c0.967,0.779,14.876-0.049,15.991,0.522c2.145,1.099-6.699,4.177-4.44,5.16
+                c2.198,0.956,14.731-0.273,17.129,0.596c9.144,3.313,20.067,6.07,35.266,8.886c5.477,1.015,14.369,1.305,24.924,1.224
+                c2.922-0.022-4.452,8.227-0.58,7.04c4.378-1.341,14.863-7.317,17.519-7.4c30.815-0.957,63.436,2.172,77.078-0.571
+                c22.818-3.077,59.539-35.523,59.539-35.523s-10.939-42.073-24.72-59.878C1439.727,527.207,1394.572,517.956,1385.294,526.988z"/>
+            <path fill="#4F80BA" d="M1244.636,539.98c0,0-12.158-19.761-13.918-15.281c-1.808,4.604-1.053,13.885-3.555,12.277
+                c-8.199-5.266-16.896-14.19-19.557-11.139c-2.634,3.021,10.02,24.124,8.606,20.93c0,0-21.54-12.909-24.144-10.052
+                c-2.928,3.213,10.429,24.731,10.429,24.731s-22.449-6.984-22.442-2.999c0.003,1.863,7.571,8.81,13.548,15.78
+                c2.212,2.579-17.08,2.332-11.239,6.585c5.162,3.758,19.616,11.697,19.616,11.697L1244.636,539.98z"/>
+        </g>
+        <g id="Yeti_Body">
+        	<path fill="#FFFFFF" d="M1466.716,713.107c1.076-7.887,3.245-12.099,6.512-10.955l9.008,14.439
+        		c3.833,2.979,1.504-11.656,5.874-9.345c19.441,10.279,38.304,50.363,58.516,92.754H1600V434.431
+        		c-11.344-10.366-20.592-19.419-23.735-23.853c-3.456-4.876-7.834-17.43-13.991-32.455c-0.353-0.861,6.778-1.2,6.414-2.069
+        		c-0.361-0.862-8.323-3.288-8.695-4.155c-0.554-1.292,11.072-0.416,10.35-1.638c-1.539-2.604-13.213-4.817-13.814-6.098
+        		c-4.417-9.419-9.541-18.601-15.523-25.832c-12.083-14.605-30.394-29.178-57.951-36.878c-30.586-8.546-63.876,3.756-103.026,16.081
+        		c-0.998,0.314-4.163-2.312-8.849-3.775c-41.738-13.033-6.941,7.91-9.012,8.462c-37.986,10.125-69.077,19.798-69.703,23.369
+        		c-1.353,7.718,42.429,18.088,42.429,18.088s-32.566,35.458-30.826,40.504c1.74,5.046,38.141,1.343,43.183,0.807
+        		c-0.832,1.395-1.386,32.779,7.204,66.042c0.406,1.572,0.828,3.148,1.264,4.725c0.68,2.457-3.333,20.133-4.007,22.606
+        		c-1.35,4.949,8.187-8.641,9.263-5.391c0.853,2.577-2.717,13.823-1.836,16.338c0.871,2.485,5.69-6.946,6.57-4.548
+        		c8.561,23.346,11.814,32.652,11.954,34.915l44.589,123.337c12.105,3.204,17.767,14.081,28.116,29.605
+        		C1453.811,697.785,1466.09,717.697,1466.716,713.107z"/>
+        	<path fill="#4F80BA" stroke="#F6F6F6" stroke-miterlimit="10" d="M1380.976,428.905c-1.98,12.924,16.273,59.205,30.074,68.169
+        		s24.54,16.33,77.476-11.002c52.937-27.332,51.605-32.51,56.09-49.034c4.485-16.525-36.567-77.66-45.808-79.278
+        		s-26.26,36.883-31.527,38.694c-5.267,1.81-0.492-9.197-6.739-13.907c-6.246-4.711-43.098,40.617-46.593,35.066
+        		c-3.164-5.026,3.418-16.545,1.361-21.481C1411.699,387.462,1382.789,417.07,1380.976,428.905z"/>
+        	<circle fill="#2D264B" cx="1428.428" cy="440.185" r="8.594"/>
+        	<circle fill="#2D264B" cx="1485.067" cy="413.234" r="8.594"/>
+        	<path fill="#2D264B" d="M1435.222,465.754c-0.198,0.618,19.661,10.007,46.382-5.837c17.864-10.592,24.438-30.561,23.423-31.5
+        		C1504.012,427.477,1435.42,465.137,1435.222,465.754z"/>
+        	<g>
+
+        			<ellipse transform="matrix(0.8531 -0.5217 0.5217 0.8531 4.9433 849.3763)" fill="#DF5B6B" cx="1510.86" cy="415.909" rx="8.493" ry="4.068"/>
+
+        			<line fill="#EEB5C8" stroke="#F0B7CB" stroke-width="0.9168" stroke-miterlimit="10" x1="1508.399" y1="414.906" x2="1507.755" y2="418.553"/>
+
+        			<line fill="#EEB5C8" stroke="#F0B7CB" stroke-width="0.9168" stroke-miterlimit="10" x1="1510.94" y1="413.636" x2="1510.296" y2="417.283"/>
+
+        			<line fill="#EEB5C8" stroke="#F0B7CB" stroke-width="0.9168" stroke-miterlimit="10" x1="1513.163" y1="412.26" x2="1512.519" y2="415.907"/>
+        	</g>
+        	<g>
+
+        			<ellipse transform="matrix(0.8531 -0.5217 0.5217 0.8531 -33.3824 809.0759)" fill="#DF5B6B" cx="1420.129" cy="463.821" rx="8.493" ry="4.068"/>
+
+        			<line fill="#EEB5C8" stroke="#F0B7CB" stroke-width="0.9168" stroke-miterlimit="10" x1="1417.668" y1="462.818" x2="1417.024" y2="466.465"/>
+
+        			<line fill="#EEB5C8" stroke="#F0B7CB" stroke-width="0.9168" stroke-miterlimit="10" x1="1420.208" y1="461.548" x2="1419.565" y2="465.194"/>
+
+        			<line fill="#EEB5C8" stroke="#F0B7CB" stroke-width="0.9168" stroke-miterlimit="10" x1="1422.431" y1="460.171" x2="1421.788" y2="463.818"/>
+        	</g>
+        	<polygon fill="none" stroke="#ECEBEB" stroke-width="2.7363" stroke-miterlimit="10" points="1451.129,458.406 1455.827,463.407
+        		1453.859,456.773 	"/>
+        	<polygon fill="#272643" stroke="#ECEBEB" stroke-width="2.7363" stroke-miterlimit="10" points="1485.938,439.582
+        		1490.636,444.583 1488.669,437.949 	"/>
+        </g>
+    </g>
+  </svg>
   <!-- Start of gradecraft Zendesk Widget script -->
-<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="gradecraft.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
-/*]]>*/</script>
-<!-- End of gradecraft Zendesk Widget script -->
-
-
+  <script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="gradecraft.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+  /*]]>*/</script>
+  <!-- End of gradecraft Zendesk Widget script -->
 </body>
 </html>

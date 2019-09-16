@@ -60,7 +60,8 @@
           %a{"ng-href"=>"{{course.copy_courses_with_students_path}}",
              "data-disable-with"=>"Copying...",
              "data-method"=>"copy",
-             "rel"=>"nofollow"}
+             "rel"=>"nofollow",
+             "ng-if"=>"!course.has_learning_objectives"}
             %i.fa.fa-edit
             Copy + Students
         %li

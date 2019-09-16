@@ -1,12 +1,6 @@
 class NotificationMailer < ApplicationMailer
   layout "mailers/notification_layout"
 
-  def lti_error(user_data, course_data)
-    @user_data = user_data
-    @course_data = course_data
-    send_admin_email "Unknown LTI user/course"
-  end
-
   def successful_submission(submission_id)
     send_assignment_email_to_user submission_id, "Submitted"
   end
@@ -55,28 +49,29 @@ class NotificationMailer < ApplicationMailer
     send_student_email "#{@course.course_number} - You've completed the #{@course.learning_objective_term}!"
   end
 
-  def group_status_updated(group_id)
-    @group = Group.find group_id
+  def group_status_updated(group_member, group)
+    @student = group_member
+
+    @group = group
+
     @course = @group.course
-    @group.students.each do |group_member|
-      mail(to: group_member.email, subject: "#{@course.course_number} - Group #{@group.approved}") do |format|
-        @student = group_member
-        format.text
-        format.html
-      end
+    
+    mail(to: @student.email, subject: "#{@course.course_number} - Group #{@group.approved}") do |format|
+      format.text
+      format.html
     end
   end
 
-  def group_notify(group_id)
-    @group = Group.find group_id
+  def group_notify(group_member, group)
+    @student = group_member
+
+    @group = group
+
     @course = @group.course
-    @group_members = @group.students
-    @group_members.each do |gm|
-      mail(to: gm.email, subject: "#{@course.course_number} - New Group") do |format|
-        @student = gm
-        format.text
-        format.html
-      end
+    
+    mail(to: @student.email, subject: "#{@course.course_number} - New Group") do |format|
+      format.text
+      format.html
     end
   end
 

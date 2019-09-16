@@ -71,7 +71,7 @@
       %p.italic You have not unlocked this #{term_for :assignment}. To achieve this you must:
       %ul
         - presenter.assignment.unlock_conditions.each do |uc|
-          - if !uc.condition_type == "Learning Objective"
+          - if !(uc.condition_type == "LearningObjective")
             %li= link_to uc.requirements_description_sentence(current_user.time_zone), uc.condition
           - else
             %li= link_to uc.requirements_description_sentence(current_user.time_zone), learning_objectives_objective_path(uc.condition_id)
@@ -80,7 +80,7 @@
   %p.italic To unlock it, #{ term_for :students } must:
   %ul
     - presenter.assignment.unlock_conditions.each do |condition|
-      - if !condition.unlockable_type == GradeSchemeElement
+      - if !(condition.unlockable_type == GradeSchemeElement)
         %li= link_to condition.requirements_description_sentence(current_user.time_zone), condition.unlockable
       - else
         %li= condition.requirements_description_sentence(current_user.time_zone)
@@ -89,7 +89,7 @@
   %h3.uppercase #{glyph(:key)} This #{term_for :assignment} is a Key:
   %ul
     - presenter.assignment.unlock_keys.each do |key|
-      - if !key.unlockable_type == GradeSchemeElement
+      - if !(key.unlockable_type == GradeSchemeElement)
         %li= link_to key.key_description_sentence(current_user.time_zone), key.unlockable
       - else
         %li= key.key_description_sentence(current_user.time_zone)
@@ -99,7 +99,7 @@
     %h3.uppercase Attachments:
     %ul
       - presenter.assignment.assignment_files.each do |af|
-        %li= link_to af.filename, af.url
+        %li= link_to af.filename, af.file.to_s
 
   %h3.uppercase Guidelines:
   = raw sanitize_external_links presenter.assignment.description

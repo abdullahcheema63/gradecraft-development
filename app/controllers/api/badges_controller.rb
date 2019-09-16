@@ -38,6 +38,7 @@ class API::BadgesController < ApplicationController
   def update
     @badge = Badge.find(params[:id])
     if @badge.update_attributes badge_params
+      @badge = Badge.find(params[:id])
       render "api/badges/show", success: true, status: 200
     else
       render json: {
