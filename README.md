@@ -58,9 +58,11 @@ cp .env.sample .env
 
 4. Install a Ruby version manager of your choice and set current version to project version (Steps below pertain to [rbenv](https://github.com/rbenv/rbenv))
 
-```sh
-brew install rbenv
+* Use `brew install rbenv` to install rbenv on MacOS and run the following
 
+* Use [these instructions](https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-18-04) instead of the method above for installing rbenv if using Ubuntu and run the following
+
+```sh
 # run command and follow instructions, will likely be the next step where you edit ~/.bash_profile
 rbenv init
 
@@ -77,12 +79,25 @@ rbenv local 2.5.3 (or rbenv global 2.5.3 if preferred)
 # Restart terminal for changes to fully take into effect and ensure that the command rbenv works
 ```
 
+
+
+
 5. Install databases
+
+* On MacOS use the following:
 
 ```sh
 brew install mongodb
 brew install redis
 brew install postgresql
+```
+
+* On Ubuntu use the following:
+
+```sh
+sudo apt-get install mongodb
+sudo apt-get install redis
+sudo apt-get install postgresql
 ```
 
 6. Ensure access to `/data/db` write directory for MongodDB
@@ -105,7 +120,53 @@ gem install bundler -v 1.17.3
 bundle (or bundle install)
 ```
 
+* When installing on Ubuntu, make sure dependencies for all the gems are installed first by running the following
+
+```sh
+# For timfel-krb5-auth
+sudo apt-get install -y libpam-krb5 libkrb5-dev
+
+# For pg
+sudo apt-get install libpq-dev
+
+# Ensuring there is an ExecJS runtime
+sudo apt-get install nodejs 
+```
+
+
 9. Start Postgres database and ensure it is running on port `5432` (Optional: Download and run with [Postgres.app](https://postgresapp.com/) for Mac OS)
+
+* Use the following to start Postgres on Ubuntu
+```sh
+sudo /etc/init.d/postgresql start
+```
+
+* Before starting the Postgres database on Ubuntu, ensure the `pg_hba.conf` file as located at `/etc/postgresql/<version>/main/pg_hba.conf` (where \<version\> is the version number of Postgres installed) has the following contents (the file has to be edited as root):
+
+```sh
+# Database administrative login by Unix domain socket
+local   all             postgres                                peer
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     peer
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            trust
+# IPv6 local connections:
+host    all             all             ::1/128                 trust
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+#local   replication     postgres                                peer
+#host    replication     postgres        127.0.0.1/32            md5
+#host    replication     postgres        ::1/128                 md5
+```
+* Restart the Postgres server using the following
+```sh
+sudo service postgresql restart
+```
+
+To edit the file use the following:
 
 10. Create and populate databases with sample data
 

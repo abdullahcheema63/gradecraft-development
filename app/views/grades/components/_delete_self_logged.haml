@@ -1,0 +1,3 @@
+%p
+  = simple_form_for grade.assignment, url: delete_self_logged_assignment_grades_path(grade.assignment.id), method: :delete do |f|
+    = f.submit "Delete self logged grade", class: "button"
