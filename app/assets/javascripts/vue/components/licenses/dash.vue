@@ -117,33 +117,25 @@
             </p>
             <div class="subscription_summary">
               <!-- v-if the user has ADDED courses -->
-              <div>
+              <div v-if="newSubscribingCourseIds">
                 <h3>Added Courses</h3>
                 <ul class="pink_dots">
-                  <li>
-                    <p>
-                      <strong>C123 Added Course Title Here</strong>
-                    </p>
-                    <p>
-                      <strong><sup>$</sup>9 </strong>
-                      prorate (<sup>$</sup>20 per month)
-                    </p>
+                  <li v-for="course of newSubscribingCourseIds" :key="course.id">
+                    <p> <strong>{{course.name}}</strong></p>
+                    <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
+                    <p> <strong><sup>$</sup>{{activeBillingRecord.pricePerCourse}}</strong> per months</p>
                   </li>
                 </ul>
               </div>
               <!-- v-if the user has REMOVED courses -->
-              <div>
+              <div v-if="newSubscribingCourseIds">
                 <h3>Removed Courses</h3>
                 <ul class="pink_dots">
-                  <li>
-                    <p>
-                      <strong>C123 Removed Course Title Here</strong>
-                    </p>
-                    <p>
-                      <strong><sup>$</sup>20</strong>
-                      per month
-                    </p>
-                </li>
+                  <li v-for="course of removedSubscribedCourses" :key="course.id">
+                    <p> <strong>{{course.name}}</strong></p>
+                    <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
+                    <p> <strong><sup>$</sup>{{activeBillingRecord.pricePerCourse}}</strong> per months</p>
+                  </li>
                 </ul>
               </div>
 
@@ -277,7 +269,7 @@ module.exports = {
     },
     selectedSubscribedCourses() {
       return this.userCourses.filter(course =>
-          this.currentSubscribedCourseIds.includes(course.id) || this.newSubscribingCourseIds.includes(course.id)
+          this.currentSubscribedCourseIds.includes(course) || this.newSubscribingCourseIds.includes(course)
         );
     },
     newSubscribingCourseIds() {
@@ -286,6 +278,9 @@ module.exports = {
     currentSubscribedCourseIds(){
       return this.$store.state.currentSubscribedCourseIds;
     },
+    removedSubscribedCourses(){
+      return this.$store.getters.removedSubscribedCourses;
+    }
   },
   methods: {
     toggleRenew() {

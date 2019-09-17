@@ -29,12 +29,12 @@
           </tr>
           <tr v-for="c of userCourses" :key="c.id">
             <td v-if="c.licensed" class="form_options alt-2">
-              <input type="checkbox" :id="c.id" :value="c.id" v-model="currentSubscribedCourseIds"/>
+              <input type="checkbox" :id="c.id" :value="c" v-model="currentSubscribedCourseIds"/>
               <label :for="c.id">&nbsp; </label>
             </td>
             <!-- SOPHIA to ERIK: another v-if is if someone else has paid, then you can adapt the disabled static option I have above -->
             <td v-else class="form_options alt-2">
-              <input type="checkbox" :id="c.id" :value="c.id" v-model="newSubscribingCourseIds"/>
+              <input type="checkbox" :id="c.id" :value="c" v-model="newSubscribingCourseIds"/>
               <label :for="c.id">&nbsp; </label>
             </td>
 

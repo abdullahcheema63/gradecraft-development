@@ -65,6 +65,7 @@ const store = new Vuex.Store({
     userSubscription: null,
     newSubscribingCourseIds: [],
     currentSubscribedCourseIds: [],
+    previouslySubscribedCourses: [],
     user: {
       id: null,
       firstName: "",
@@ -417,9 +418,8 @@ const store = new Vuex.Store({
            };
         });
         let subscribedCourses = state.user.courseMembership.filter(course => course.licensed);
-        state.currentSubscribedCourseIds = subscribedCourses.map(course => {
-          return course.id
-        });
+        state.currentSubscribedCourseIds = subscribedCourses
+        state.previouslySubscribedCourses = [...subscribedCourses]
       },
       addAdminCourses(state, courses){
         //console.log("inside addAdminCourses mutation")
@@ -562,6 +562,9 @@ const store = new Vuex.Store({
     getters: {
       user: state => {
         return state.user
+      },
+      removedSubscribedCourses: state => {
+        return state.previouslySubscribedCourses.filter(course => state.currentSubscribedCourseIds.indexOf(course) === -1)
       },
       userOnboardingStatus: state => {
         return state.user.hasSeenCourseOnboarding
