@@ -122,6 +122,7 @@
                 <ul class="pink_dots">
                   <li v-for="course of newSubscribingCourses" :key="course.id">
                     <p> <strong>{{course.number}} {{course.name}}</strong>
+                      <br />
                       <template v-if="course.published">Published</template>
                     </p>
                     <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
@@ -135,6 +136,7 @@
                 <ul class="pink_dots">
                   <li v-for="course of removedSubscribedCourses" :key="course.id">
                     <p> <strong>{{course.number}} {{course.name}}</strong>
+                      <br />
                       <template v-if="course.published">Published</template>
                     </p>
                     <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
