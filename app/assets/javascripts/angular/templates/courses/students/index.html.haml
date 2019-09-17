@@ -173,10 +173,10 @@
             %li{"ng-if"=>"coursesStudentsIndexCtrl.showActivateAccount(student)"}
               %a{"ng-click"=>"coursesStudentsIndexCtrl.activateUser(student)"}
                 %i.fa.fa-check
-                Activate Account
+              Activate Accapp/controllers/course_memberships_controller.rbount
 
             -# Resend activation email
-            %li{"ng-if"=>"coursesStudentsIndexCtrl.showResendActivationEmail(student)"}
+            %li
               %a{"ng-href"=>"{{student.resend_activation_email_path}}"}
                 %i.fa.fa-envelope
                 Resend Activation Email
