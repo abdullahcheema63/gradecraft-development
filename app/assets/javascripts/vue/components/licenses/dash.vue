@@ -117,24 +117,28 @@
             </p>
             <div class="subscription_summary">
               <!-- v-if the user has ADDED courses -->
-              <div v-if="newSubscribingCourseIds">
+              <div v-if="newSubscribingCourseIds.length">
                 <h3>Added Courses</h3>
                 <ul class="pink_dots">
                   <li v-for="course of newSubscribingCourseIds" :key="course.id">
-                    <p> <strong>{{course.name}}</strong></p>
+                    <p> <strong>{{course.number}} {{course.name}}</strong>
+                      <template v-if="course.published">Published</template>
+                    </p>
                     <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                    <p> <strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per months</p>
+                    <p> <strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
                   </li>
                 </ul>
               </div>
               <!-- v-if the user has REMOVED courses -->
-              <div v-if="newSubscribingCourseIds">
+              <div v-if="removedSubscribedCourses.length">
                 <h3>Removed Courses</h3>
                 <ul class="pink_dots">
                   <li v-for="course of removedSubscribedCourses" :key="course.id">
-                    <p> <strong>{{course.name}}</strong></p>
+                    <p> <strong>{{course.number}} {{course.name}}</strong>
+                      <template v-if="course.published">Published</template>
+                    </p>
                     <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                    <p> <strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per months</p>
+                    <p> <strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
                   </li>
                 </ul>
               </div>
