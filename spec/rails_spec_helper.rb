@@ -24,6 +24,7 @@ require "resque_spec/scheduler" # allow resque spec to test scheduled jobs
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 Dir[Rails.root.join("spec/toolkits/**/*.rb")].each { |f| require f }
+Dir["./app/services/*.rb"].each { |f| require f }
 Dir["./app/uploaders/*.rb"].each { |f| require f }
 Dir["./app/validators/*.rb"].each { |f| require f }
 Dir["./app/proctors/*.rb"].each { |f| require f }
@@ -75,8 +76,6 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 
   config.infer_spec_type_from_file_location!
-
-  config.raise_errors_for_deprecations!
 
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = false # THIS IS DIFFERENT FROM THE BASE SPEC HELPER. TODO: GET ALIGNED
