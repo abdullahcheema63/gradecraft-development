@@ -184,10 +184,6 @@ RSpec.describe SubmissionsExportsController, type: :controller do
           expect(controller).not_to receive(:require_login)
         end
 
-        it "doesn't increment the page views" do
-          expect(controller).not_to receive(:increment_page_views)
-        end
-
         it "doesn't get course scores" do
           expect(controller).not_to receive(:course_scores)
         end

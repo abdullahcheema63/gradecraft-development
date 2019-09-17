@@ -14,14 +14,3 @@ Resque.redis = REDIS
 
 Resque::Failure::MultipleWithRetrySuppression.classes = [Resque::Failure::Redis, Resque::Failure::Rollbar]
 Resque::Failure.backend = Resque::Failure::MultipleWithRetrySuppression
-
-# rate limits by queue
-
-# process 20 jobs/second max
-Resque.rate_limit(:pageview_event_logger, at: 20, per: 1)
-
-# process 2 jobs/second max
-Resque.rate_limit(:login_event_logger, at: 2, per: 1)
-
-# process 20 jobs/second max
-Resque.rate_limit(:predictor_event_logger, at: 20, per: 1)

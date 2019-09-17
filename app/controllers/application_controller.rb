@@ -28,7 +28,6 @@ class ApplicationController < ActionController::Base
 
   before_action :require_login, except: [:not_authenticated, :failed_authentication]
   before_action :require_course_membership, except: [:not_authenticated, :failed_authentication]
-  before_action :increment_page_views
   before_action :set_paper_trail_whodunnit
 
   include ApplicationHelper
@@ -118,13 +117,6 @@ class ApplicationController < ActionController::Base
 
   def current_ability
     @current_ability ||= Ability.new(current_user, current_course)
-  end
-
-  # Tracking page view counts
-  def increment_page_views
-    return unless current_user && request.format.html?
-    # PageviewEventLogger.new(event_session)
-    #                    .enqueue_in_and_check_with_fallback Lull.time_until_next_lull
   end
 
   def time_zone(&block)

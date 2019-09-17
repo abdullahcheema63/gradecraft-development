@@ -159,11 +159,6 @@ RSpec.describe CourseAnalyticsExportsController, type: :controller do
           result
         end
 
-        it "doesn't increment the page views" do
-          expect(controller).not_to receive(:increment_page_views)
-          result
-        end
-
         it "doesn't get course scores" do
           expect(controller).not_to receive(:course_scores)
           result

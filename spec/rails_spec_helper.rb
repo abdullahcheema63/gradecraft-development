@@ -49,16 +49,6 @@ RSpec.configure do |config|
     end
   end
 
-  # don't log pageviews in controller tests
-  config.before(:each, type: :controller) do
-    allow(controller).to receive(:increment_page_views).and_return true
-  end
-
-  # don't log pageviews in feature tests
-  config.before(:each, type: :feature) do
-    allow_any_instance_of(ApplicationController).to receive(:increment_page_views).and_return true
-  end
-
   config.around(:each) do |example|
     DatabaseCleaner.cleaning do
       example.run

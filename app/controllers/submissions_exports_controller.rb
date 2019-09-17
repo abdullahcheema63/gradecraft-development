@@ -3,7 +3,6 @@ class SubmissionsExportsController < ApplicationController
 
   skip_before_action :require_login, only: :secure_download
   skip_before_action :require_course_membership, only: :secure_download
-  skip_before_action :increment_page_views, only: :secure_download
 
   def create
     if create_submissions_export && submissions_export_job.enqueue
