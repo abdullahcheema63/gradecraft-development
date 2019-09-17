@@ -18,9 +18,6 @@ require "capybara/rspec"
 require "rails-controller-testing"
 require "sidekiq/testing"
 
-# ResqueSpec libraries
-require "resque_spec/scheduler" # allow resque spec to test scheduled jobs
-
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -46,7 +43,7 @@ RSpec.configure do |config|
   config.before(:each) do
     Sidekiq::Worker.clear_all
   end
-  
+
   config.before(:suite) do
     begin
       DatabaseCleaner.strategy = :transaction

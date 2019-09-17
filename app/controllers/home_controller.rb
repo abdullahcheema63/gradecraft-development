@@ -23,7 +23,7 @@ class HomeController < ApplicationController
 
   def health_check
     begin
-      @redis_status = Resque.redis.redis.call("ping") == "PONG" ? "Connected" : "Error"
+      @redis_status = Redis.redis.call("ping") == "PONG" ? "Connected" : "Error"
     rescue StandardError => e
       @error = e.message
       raise

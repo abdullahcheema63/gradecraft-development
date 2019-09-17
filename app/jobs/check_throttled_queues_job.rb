@@ -9,7 +9,7 @@ class CheckThrottledQueuesJob
   attr_reader :redis
 
   def initialize
-    @redis = Resque.redis
+    @redis = Redis
   end
 
   def perform

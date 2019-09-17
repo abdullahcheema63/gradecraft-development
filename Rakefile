@@ -5,8 +5,6 @@
 require File.expand_path("../config/application", __FILE__)
 
 GradeCraft::Application.load_tasks
-require "resque/tasks"
-require "resque/scheduler/tasks"
 
 namespace :resque do
   task setup: :environment do

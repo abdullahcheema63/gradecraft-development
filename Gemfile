@@ -121,8 +121,6 @@ group :test do
   gem 'launchy'
   gem 'rails-controller-testing', require: false
   gem 'rspec-rails'
-  # add spec helpers for testing Resque objects and resque scheduler
-  gem 'resque_spec', git: 'https://github.com/leshill/resque_spec.git', branch: 'master'
   gem 'rspec-html-matchers'
   gem 'simplecov'
   gem 'webmock'
