@@ -70,7 +70,6 @@ RSpec.configure do |config|
   config.include GradeCraft::Matchers::Integration, type: :feature
   config.include GradeCraft::Integration::TestHelpers::Authentication, type: :feature
 
-  config.include BackgroundJobs
   config.tty = true
 
   config.use_transactional_fixtures = true
