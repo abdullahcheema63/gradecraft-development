@@ -418,6 +418,9 @@ table.form_options-present
       align-items: baseline
       justify-content: space-between
 
+      &:before
+        top: 12px
+
     p
       margin: 0
 
@@ -433,7 +436,11 @@ table.form_options-present
           width: 35px
 
         &.removed
-          width: 240px
+          width: 235px
+
+          span
+            width: 45px
+            display: inline-block
 
   .total
     display: flex

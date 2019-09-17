@@ -140,7 +140,7 @@
                       <strong>C123 Removed Course Title Here</strong>
                     </p>
                     <p class="removed">
-                      &ndash; <sup> $</sup>20
+                      <span>&ndash;<sup>$</sup>20</span>
                       per month
                     </p>
                 </li>
@@ -148,7 +148,7 @@
               </div>
 
               <div>
-                  <h3>Subscribed Courses</h3>
+                  <h3>Already Subscribed Courses</h3>
                   <ul class="pink_dots" >
                     <li v-for="course of selectedSubscribedCourses" :key ="course.id">
                       <p>
@@ -157,7 +157,7 @@
                         <template v-if="course.published">Published</template>
                       </p>
                       <p>
-                        <strong><sup>$</sup> {{ activeBillingRecord.pricePerCourse }} </strong>
+                        <strong><sup>$</sup>{{ formatPrice(activeBillingRecord.pricePerCourse) }} </strong>
                         per month
                       </p>
                     </li>
@@ -296,6 +296,9 @@ module.exports = {
     },
     updateSubscription(){
       this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)
+    },
+    formatPrice(price){
+      return Math.floor(price);
     }
   },
   created: function() {
