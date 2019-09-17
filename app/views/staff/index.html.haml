@@ -33,6 +33,6 @@
                 %li= link_to decorative_glyph(:dashboard) + "Dashboard",  staff_path(user)
                 = active_course_link_to decorative_glyph(:edit) + "Edit",  edit_user_path(user)
                 = active_course_link_to decorative_glyph(:trash) + "Delete",  user.course_memberships.where(course: current_course).first, data: { confirm: "Are you sure you want to delete #{user.name}'s course membership in #{current_course.name}?"}, :method => :delete
+                = active_course_link_to glyph(:envelope) + "Resend Activation Email", resend_activation_email_user_path(user.id)
                 - if !user.activated?
                   = active_course_link_to decorative_glyph(:check) + "Activate", manually_activate_user_path(user.id), :method => :put
-                  = active_course_link_to glyph(:envelope) + "Resend Activation Email", resend_activation_email_user_path(user.id)
