@@ -123,7 +123,7 @@
                   <li v-for="course of newSubscribingCourseIds" :key="course.id">
                     <p> <strong>{{course.name}}</strong></p>
                     <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                    <p> <strong><sup>$</sup>{{activeBillingRecord.pricePerCourse}}</strong> per months</p>
+                    <p> <strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per months</p>
                   </li>
                 </ul>
               </div>
@@ -134,13 +134,13 @@
                   <li v-for="course of removedSubscribedCourses" :key="course.id">
                     <p> <strong>{{course.name}}</strong></p>
                     <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                    <p> <strong><sup>$</sup>{{activeBillingRecord.pricePerCourse}}</strong> per months</p>
+                    <p> <strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per months</p>
                   </li>
                 </ul>
               </div>
 
               <div>
-                  <h3>Subscribed Courses</h3>
+                  <h3>Already Subscribed Courses</h3>
                   <ul class="pink_dots" >
                     <li v-for="course of selectedSubscribedCourses" :key ="course.id">
                       <p>
@@ -149,7 +149,7 @@
                         <template v-if="course.published">Published</template>
                       </p>
                       <p>
-                        <strong><sup>$</sup> {{ activeBillingRecord.pricePerCourse }} </strong>
+                        <strong><sup>$</sup>{{ formatPrice(activeBillingRecord.pricePerCourse) }} </strong>
                         per month
                       </p>
                     </li>
@@ -291,6 +291,9 @@ module.exports = {
     },
     updateSubscription(){
       this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)
+    },
+    formatPrice(price){
+      return Math.floor(price);
     }
   },
   created: function() {
