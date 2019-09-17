@@ -76,7 +76,6 @@ class Course < ApplicationRecord
     c.has_many :teams
     c.has_many :course_memberships
     c.has_many :submissions_exports
-    c.has_many :course_analytics_exports
     c.has_many :events
     c.has_many :providers, as: :providee
     c.has_many :learning_objective_categories
@@ -274,7 +273,7 @@ class Course < ApplicationRecord
 
     course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
     course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
-    
+
     ModelCopier.new(self, @lookups).copy(attributes: attributes,
                                          associations: course_associations,
                                          cross_references: [

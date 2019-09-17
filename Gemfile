@@ -47,7 +47,6 @@ gem 'light-service'
 
 gem 'multi_json'
 gem 'mini_magick', '~> 4.9.4'
-gem 'mongoid', '~> 6.0.0'
 gem 'namae'
 gem 'ng-rails-csrf'
 gem 'nokogiri'

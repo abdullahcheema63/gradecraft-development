@@ -100,7 +100,6 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.3.2)
       msgpack (~> 1.0)
-    bson (4.3.0)
     builder (3.2.3)
     bullet (5.9.0)
       activesupport (>= 3.0.0)
@@ -320,11 +319,6 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
-    mongo (2.6.2)
-      bson (>= 4.3.0, < 5.0.0)
-    mongoid (6.0.3)
-      activemodel (~> 5.0)
-      mongo (~> 2.3)
     mono_logger (1.1.0)
     msgpack (1.2.4)
     multi_json (1.13.1)
@@ -679,7 +673,6 @@ DEPENDENCIES
   light-service
   lol_dba
   mini_magick (~> 4.9.4)
-  mongoid (~> 6.0.0)
   multi_json
   namae
   newrelic_rpm
