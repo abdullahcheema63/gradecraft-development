@@ -4,7 +4,6 @@ describe GradebookExporterJob do
   let(:job_attributes) { {"user_id" => user.id, "course_id" => course.id} }
 
   describe "#perform_async" do
-    before(:each) { ResqueSpec.reset! }
     let(:gradebook_exporter_queue) { queue(GradebookExporterJob) }
     subject { GradebookExporterJob.perform_async(job_attributes) }
 

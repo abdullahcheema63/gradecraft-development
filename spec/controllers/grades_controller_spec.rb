@@ -4,10 +4,6 @@ describe GradesController do
   let(:assignment) { create :assignment, course: course }
   let(:grade) { create(:grade, student: student, assignment: assignment, course: course) }
 
-  before do
-    allow(Resque).to receive(:enqueue).and_return(true)
-  end
-
   context "as professor" do
     let(:professor) { create(:course_membership, :professor, course: course).user }
 
