@@ -16,6 +16,7 @@ require "paper_trail"
 require "paper_trail/frameworks/rspec"
 require "capybara/rspec"
 require "rails-controller-testing"
+require "sidekiq/testing"
 
 # ResqueSpec libraries
 require "resque_spec/scheduler" # allow resque spec to test scheduled jobs
@@ -37,8 +38,15 @@ ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
 FactoryBot::SyntaxRunner.send(:include, FileHelpers)
 
+Sidekiq::Testing.fake!
+
 RSpec.configure do |config|
   config.include FileHelpers
+
+  config.before(:each) do
+    Sidekiq::Worker.clear_all
+  end
+  
   config.before(:suite) do
     begin
       DatabaseCleaner.strategy = :transaction
