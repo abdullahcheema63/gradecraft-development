@@ -80,11 +80,6 @@ describe GradesController do
     end
 
     describe "POST exclude" do
-      before do
-        allow_any_instance_of(ScoreRecalculatorJob).to \
-          receive(:enqueue).and_return true
-      end
-
       it "marks the Grade as excluded, but preserves the data" do
         grade.update(
           raw_points: 500,
@@ -122,11 +117,6 @@ describe GradesController do
     end
 
     describe "POST include" do
-      before do
-        allow_any_instance_of(ScoreRecalculatorJob).to \
-          receive(:enqueue).and_return true
-      end
-
       it "marks the Grade as included, and clears the excluded details" do
         grade.update(
           raw_points: 500,

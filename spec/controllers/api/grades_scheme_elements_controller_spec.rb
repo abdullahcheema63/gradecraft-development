@@ -76,7 +76,7 @@ describe API::GradeSchemeElementsController do
 
       it "recalculates scores for all students in the course" do
         expect{ put :update, params: params, format: :json }.to \
-          change{ queue(ScoreRecalculatorJob).size }.by course.students.count
+          change(ScoreRecalculatorJob.jobs, :size).by course.students.count
       end
 
       it "deletes grades scheme elements" do

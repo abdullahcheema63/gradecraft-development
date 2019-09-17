@@ -75,12 +75,12 @@ class InfoController < ApplicationController
   def learning_objectives_outcomes_file
     course = current_user.courses.find_by(id: params[:id])
     LearningObjectivesOutcomesExporterJob
-      .new(
-        user_id: current_user.id,
-        course_id: course.id,
-        filename: "#{ course.name } Learning Objectives Outcomes - #{ Date.today }.csv"
-      ).enqueue
-      
+      .perform_async(
+        current_user.id,
+        course.id,
+        "#{ course.name } Learning Objectives Outcomes - #{ Date.today }.csv"
+      )
+
     flash[:notice]="Your request to export the learning objectives outcomes for \"#{ course.name }\" is currently being processed. We will email you the data shortly."
     redirect_back_or_default
   end
@@ -88,11 +88,11 @@ class InfoController < ApplicationController
   def gradebook_file
     course = current_user.courses.find_by(id: params[:id])
     GradebookExporterJob
-      .new(
-        user_id: current_user.id,
-        course_id: course.id,
-        filename: "#{ course.name } Gradebook - #{ Date.today }.csv"
-      ).enqueue
+      .perform_async(
+        current_user.id,
+        course.id,
+        "#{ course.name } Gradebook - #{ Date.today }.csv"
+      )
 
     flash[:notice]="Your request to export the gradebook for \"#{ course.name }\" is currently being processed. We will email you the data shortly."
     redirect_back_or_default
@@ -101,7 +101,7 @@ class InfoController < ApplicationController
   def multiplied_gradebook
     course = current_user.courses.find_by(id: params[:id])
     MultipliedGradebookExporterJob
-      .new(user_id: current_user.id, course_id: course.id, filename: "#{ course.name } Multiplied Gradebook - #{ Date.today }.csv").enqueue
+      .perform_async(current_user.id, course.id, "#{ course.name } Multiplied Gradebook - #{ Date.today }.csv")
 
     flash[:notice]="Your request to export the multiplied gradebook for \"#{ course.name }\" is currently being processed. We will email you the data shortly."
     redirect_back_or_default
@@ -110,9 +110,7 @@ class InfoController < ApplicationController
   # downloadable grades for course with  export
   def research_gradebook
     course = current_user.courses.find_by(id: params[:id])
-    @grade_export_job = GradeExportJob.new(user_id: current_user.id, course_id: course.id,
-    filename: "#{ course.name } Research Gradebook - #{ Date.today }.csv")
-    @grade_export_job.enqueue
+    @grade_export_job = GradeExportJob.perform_async(current_user.id, course.id, "#{ course.name } Research Gradebook - #{ Date.today }.csv")
 
     flash[:notice]="Your request to export grade data from course \"#{ course.name }\" is currently being processed. We will email you the data shortly."
     redirect_back_or_default
@@ -126,8 +124,7 @@ class InfoController < ApplicationController
 
   def submissions
     course = current_user.courses.find_by(id: params[:id])
-    @submission_export_job = SubmissionExportJob.new(user_id: current_user.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv")
-    @submission_export_job.enqueue
+    @submission_export_job = SubmissionExportJob.perform_async(current_user.id, course.id, "#{ course.name } Submissions Export - #{ Date.today }.csv")
 
     flash[:notice]="Your request to export submissions from course \"#{ course.name }\" is currently being processed. We will email you the data shortly."
     redirect_back_or_default

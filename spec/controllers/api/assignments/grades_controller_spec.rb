@@ -48,14 +48,10 @@ describe API::Assignments::GradesController do
 
     describe "PUT #release" do
       let!(:grades) { create_list :in_progress_grade, 2, course: course }
-      let(:grade_updater_job) { instance_double "GradeUpdaterJob", enqueue: true }
-
-      before(:each) { allow(GradeUpdaterJob).to receive(:new).and_return grade_updater_job }
 
       it "releases the selected grades for the course" do
-        expect(grade_updater_job).to receive(:enqueue).twice
-
-        put :release, params: { grade_ids: grades.pluck(:id) }, format: :json
+        expect{ put :release, params: { grade_ids: grades.pluck(:id) }, format: :json }.to \
+          change(GradeUpdaterJob.jobs, :size).by 2
 
         expect(grades.each(&:reload)).to all have_attributes instructor_modified: true,
           student_visible: true, complete: true

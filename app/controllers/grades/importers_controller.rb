@@ -107,7 +107,7 @@ class Grades::ImportersController < ApplicationController
 
   # Schedule the `GradeUpdater` for all grades provided
   def enqueue_multiple_grade_update_jobs(grade_ids)
-    grade_ids.each { |id| GradeUpdaterJob.new(grade_id: id).enqueue }
+    grade_ids.each { |id| GradeUpdaterJob.perform_async(id) }
   end
 
   def syllabus

@@ -1,0 +1,27 @@
+:schedule:
+  check_throttled_queues:
+    cron: "0 1 * * *"
+    class: CheckThrottledQueuesJob
+    description: "This job runs daily and checks if any of the throttled Resque \
+                  queues are queue_at_or_over_rate_limit?. If yes, then the next job(s) will \
+                  be removed as needed so that the queue does not continue to grow. See \
+                  https://github.com/UM-USElab/gradecraft-development/blob/fbe5a46c1835a944c1e05afa25103c27cbae0535/doc/maintenance.md \
+                  for additional details regarding this bug."
+
+  notify_created_courses:
+    cron: "0 0 1 * *"
+    class: NotifyCreatedCoursesJob
+    description: "This job triggers an export of all courses created within the \
+                  last month and emails it to a list of recipients as a CSV attachment."
+
+  recalculate_active_course_scores:
+    cron: "0 2 * * *"
+    class: RecalculateActiveCourseScoresJob
+    description: "This job triggers a score recalculation job for every student \
+                  belonging to an active course."
+
+:queues:
+  - high
+  - default
+  - low
+  - rollbar

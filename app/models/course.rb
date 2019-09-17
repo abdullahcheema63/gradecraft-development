@@ -193,7 +193,7 @@ class Course < ApplicationRecord
 
   def recalculate_student_scores
     ordered_student_ids.each do |student_id|
-      ScoreRecalculatorJob.new(user_id: student_id, course_id: self.id).enqueue
+      ScoreRecalculatorJob.perform_async(student_id, self.id)
     end
   end
 

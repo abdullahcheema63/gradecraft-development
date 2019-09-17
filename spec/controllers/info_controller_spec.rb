@@ -64,11 +64,8 @@ describe InfoController do
 
     describe "GET gradebook_file" do
       it "retrieves the gradebook" do
-        expect(GradebookExporterJob).to \
-          receive(:new).with(user_id: professor.id, course_id: course.id, filename: "#{ course.name } Gradebook - #{ Date.today }.csv")
-            .and_call_original
-        expect_any_instance_of(GradebookExporterJob).to receive(:enqueue)
-        get :gradebook_file, params: { id: course.id }
+        expect{ get :gradebook_file, params: { id: course.id } }.to \
+        change(GradebookExporterJob.jobs, :size).by 1
       end
 
       it "redirects to the root path if there is no referer" do
@@ -85,11 +82,8 @@ describe InfoController do
 
     describe "GET multipled_gradebook" do
       it "retrieves the multiplied gradebook" do
-        expect(MultipliedGradebookExporterJob).to \
-          receive(:new).with(user_id: professor.id, course_id: course.id, filename: "#{ course.name } Multiplied Gradebook - #{ Date.today }.csv")
-            .and_call_original
-        expect_any_instance_of(MultipliedGradebookExporterJob).to receive(:enqueue)
-        get :multiplied_gradebook, params: { id: course.id }
+        expect{ get :multiplied_gradebook, params: { id: course.id } }.to change(MultipliedGradebookExporterJob.jobs, :size).by 1
+        expect(MultipliedGradebookExporterJob.jobs.last["args"]).to eq [professor.id, course.id, "#{ course.name } Multiplied Gradebook - #{ Date.today }.csv"]
       end
 
       it "redirects to the root path if there is no referer" do
@@ -120,11 +114,8 @@ describe InfoController do
 
     describe "GET research_gradebook" do
       it "retrieves the research gradebook" do
-        expect(GradeExportJob).to \
-          receive(:new).with(user_id: professor.id, course_id: course.id, filename: "#{ course.name } Research Gradebook - #{ Date.today }.csv")
-            .and_call_original
-        expect_any_instance_of(GradeExportJob).to receive(:enqueue)
-        get :research_gradebook, params: { id: course.id }
+        expect{ get :research_gradebook, params: { id: course.id } }.to \
+        change(GradeExportJob.jobs, :size).by 1
       end
 
       it "redirects to the root path if there is no referer" do

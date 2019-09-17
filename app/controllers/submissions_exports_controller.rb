@@ -5,7 +5,7 @@ class SubmissionsExportsController < ApplicationController
   skip_before_action :require_course_membership, only: :secure_download
 
   def create
-    if create_submissions_export && submissions_export_job.enqueue
+    if create_submissions_export && SubmissionsExportJob.perform_async(@submissions_export.id)
       flash[:success] = "Your submissions export is being prepared. You'll receive an email when it's complete."
     else
       flash[:alert] = "Your submissions export failed to build. An administrator has been contacted about the issue."
@@ -71,12 +71,6 @@ class SubmissionsExportsController < ApplicationController
       professor_id: current_user.id,
       team_id: params[:team_id],
       use_groups: params[:use_groups]
-    )
-  end
-
-  def submissions_export_job
-    @submissions_export_job ||= SubmissionsExportJob.new(
-      submissions_export_id: @submissions_export.id
     )
   end
 

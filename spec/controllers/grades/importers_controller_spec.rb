@@ -52,14 +52,12 @@ describe Grades::ImportersController do
         expect(response.body).to include "2 Grades Imported Successfully"
       end
 
-      it "enqueues the resque job to update the grades" do
+      it "enqueues the job to update the grades" do
         student.reload.update_attribute :email, "robert@example.com"
         second_student = create(:user, username: "jimmy", courses: [course], role: :student)
-        ResqueSpec.reset!
 
-        post :upload, params: { assignment_id: assignment.id, importer_provider_id: :csv, file: file }
-
-        expect(GradeUpdaterJob).to have_queue_size_of(2)
+        expect{ post :upload, params: { assignment_id: assignment.id, importer_provider_id: :csv, file: file } }.to \
+          change(GradeUpdaterJob.jobs, :size).by 2
       end
 
       context "with students that are not part of the current course" do
