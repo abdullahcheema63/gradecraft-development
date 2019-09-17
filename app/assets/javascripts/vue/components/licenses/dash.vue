@@ -117,10 +117,10 @@
             </p>
             <div class="subscription_summary">
               <!-- v-if the user has ADDED courses -->
-              <div v-if="newSubscribingCourseIds.length">
+              <div v-if="newSubscribingCourses.length">
                 <h3>Added Courses</h3>
                 <ul class="pink_dots">
-                  <li v-for="course of newSubscribingCourseIds" :key="course.id">
+                  <li v-for="course of newSubscribingCourses" :key="course.id">
                     <p> <strong>{{course.number}} {{course.name}}</strong>
                       <template v-if="course.published">Published</template>
                     </p>
@@ -146,7 +146,7 @@
               <div>
                   <h3>Already Subscribed Courses</h3>
                   <ul class="pink_dots" >
-                    <li v-for="course of selectedSubscribedCourses" :key ="course.id">
+                    <li v-for="course of remainingSubscribedCourses" :key ="course.id">
                       <p>
                         <strong> {{course.number}} {{course.name}} </strong>
                         <br />
@@ -154,17 +154,6 @@
                       </p>
                       <p>
                         <strong><sup>$</sup>{{ formatPrice(activeBillingRecord.pricePerCourse) }} </strong>
-                        per month
-                      </p>
-                    </li>
-                    <li>
-                      <p>
-                        <strong>C123 Course Title Here</strong>
-                        <br />
-                        Published
-                      </p>
-                      <p>
-                        <strong><sup>$</sup>20</strong>
                         per month
                       </p>
                     </li>
@@ -248,11 +237,11 @@ module.exports = {
       return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.selectedSubscribedCourses.length : 0;
     },
     newCost(){
-      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.newSubscribingCourseIds.length - this.subtractedCost : 0;
+      return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.newSubscribingCourses.length - this.subtractedCost : 0;
     },
     subtractedCost(){
       let originalCourseCount = this.$store.getters.originalLicensedCourses.length;
-      let currentSubscriptionCount = this.currentSubscribedCourseIds.length;
+      let currentSubscriptionCount = this.currentSubscribedCourses.length;
       let subtractedCount = originalCourseCount - currentSubscriptionCount;
       return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * subtractedCount : 0;
     },
@@ -273,14 +262,18 @@ module.exports = {
     },
     selectedSubscribedCourses() {
       return this.userCourses.filter(course =>
-          this.currentSubscribedCourseIds.includes(course) || this.newSubscribingCourseIds.includes(course)
+          this.currentSubscribedCourses.includes(course) || this.newSubscribingCourses.includes(course)
         );
     },
-    newSubscribingCourseIds() {
-      return this.$store.state.newSubscribingCourseIds;
+    newSubscribingCourses() {
+      return this.$store.state.newSubscribingCourses;
     },
-    currentSubscribedCourseIds(){
-      return this.$store.state.currentSubscribedCourseIds;
+    currentSubscribedCourses(){
+      return this.$store.state.currentSubscribedCourses;
+    },
+    remainingSubscribedCourses(){
+      return this.selectedSubscribedCourses.filter(course =>
+        this.newSubscribingCourses.indexOf(course) === -1 )
     },
     removedSubscribedCourses(){
       return this.$store.getters.removedSubscribedCourses;
