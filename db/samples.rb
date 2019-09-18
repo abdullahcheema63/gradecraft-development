@@ -81,7 +81,7 @@ end
       l[k] = data[k]
     end
   end
-  print "Created Billing Scheme: " + billing_scheme.id
+  print "Created Billing Scheme: ", billing_scheme.id
 end
 
 # ---------------------------- Users and Courses -----------------------------#
@@ -184,7 +184,7 @@ p = Payment.new({
 
 subscription = Subscription.new({
   billing_scheme_id: BillingScheme.first.id,
-  user_id: User.find_by(username: "albus"),
+  user_id: User.find_by(username: "albus").id,
 })
 subscription.start! p
 
