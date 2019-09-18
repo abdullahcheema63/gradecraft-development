@@ -16,7 +16,6 @@
 
     vm.levelSelected = (objectiveId, levelId) ->
       outcome = vm.observedOutcomeFor(objectiveId)
-      console.log("learning objective outcome", outcome)
       return false if !outcome?
       outcome.objective_level_id == levelId
 

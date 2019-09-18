@@ -30,7 +30,7 @@
         %h2 Grading Rubric
         = render partial: "rubrics/components/rubric_table", locals: { rubric: presenter.rubric, presenter: presenter, student: @grade.student, include_grade_info: false }
 
-    - if presenter.course.has_learning_objectives?
+    - if presenter.assignment.learning_objectives.exists?
       %hr.dotted
       %section
         %h2
