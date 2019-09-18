@@ -49,6 +49,12 @@ class API::LearningObjectives::LevelsController < ApplicationController
       end
     end
 
+    if @objective.levels.length - 1 < 2
+      render json: { message: "Cannot delete levels as there should be at least two levels for a learning objective.", success: false },
+      status: 500
+      return
+    end
+
     @level = @objective.levels.find params[:id]
     @level.destroy
 
