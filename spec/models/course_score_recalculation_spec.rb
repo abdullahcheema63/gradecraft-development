@@ -19,12 +19,12 @@ describe Course do
     context "no student ids are present" do
       it "doesn't increase the queue size" do
         allow(@course1).to receive(:ordered_student_ids) { [] }
-        expect{ subject }.not_to change(ScoreRecalculatorJob, :size)
+        expect{ subject }.not_to change(ScoreRecalculatorJob.jobs, :size)
       end
     end
 
     it "increases the queue size by two" do
-      expect{ subject }.to change(ScoreRecalculatorJob, :size).by 2
+      expect{ subject }.to change(ScoreRecalculatorJob.jobs, :size).by 2
     end
   end
 
