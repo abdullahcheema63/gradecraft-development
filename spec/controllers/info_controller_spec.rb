@@ -149,11 +149,8 @@ describe InfoController do
 
     describe "GET submission export" do
       it "retrieves the submission export" do
-        expect(SubmissionExportJob).to \
-          receive(:new).with(user_id: professor.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv")
-            .and_call_original
-        expect_any_instance_of(SubmissionExportJob).to receive(:enqueue)
-        get :submissions, params: { id: course.id }
+        expect{ get :submissions, params: { id: course.id}, format: :json }.to \
+          change(SubmissionExportJob.jobs, :size).by 1
       end
 
       it "redirects to the root path if there is no referer" do
