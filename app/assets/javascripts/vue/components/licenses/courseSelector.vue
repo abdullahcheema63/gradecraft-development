@@ -29,12 +29,12 @@
           </tr>
           <tr v-for="c of userCourses" :key="c.id">
             <td v-if="c.licensed" class="form_options alt-2">
-              <input type="checkbox" :id="c.id" :value="c" v-model="currentSubscribedCourseIds"/>
+              <input type="checkbox" :id="c.id" :value="c" v-model="currentSubscribedCourses"/>
               <label :for="c.id">&nbsp; </label>
             </td>
             <!-- SOPHIA to ERIK: another v-if is if someone else has paid, then you can adapt the disabled static option I have above -->
             <td v-else class="form_options alt-2">
-              <input type="checkbox" :id="c.id" :value="c" v-model="newSubscribingCourseIds"/>
+              <input type="checkbox" :id="c.id" :value="c" v-model="newSubscribingCourses"/>
               <label :for="c.id">&nbsp; </label>
             </td>
 
@@ -68,23 +68,23 @@ module.exports = {
     },
     selectedSubscribedCourses() {
       return this.userCourses.filter(course =>
-          course.licensed || this.newSubscribingCourseIds.includes(course.id)
+          course.licensed || this.newSubscribingCourses.includes(course.id)
         );
     },
-    currentSubscribedCourseIds: {
+    currentSubscribedCourses: {
       get: function() {
-        return this.$store.state.currentSubscribedCourseIds;
+        return this.$store.state.currentSubscribedCourses;
       },
       set: function (courseIds) {
-        this.$store.state.currentSubscribedCourseIds = courseIds;
+        this.$store.state.currentSubscribedCourses = courseIds;
       }
     },
-    newSubscribingCourseIds: {
+    newSubscribingCourses: {
       get: function() {
-        return this.$store.state.newSubscribingCourseIds;
+        return this.$store.state.newSubscribingCourses;
       },
       set: function (courseIds) {
-        this.$store.state.newSubscribingCourseIds = courseIds;
+        this.$store.state.newSubscribingCourses = courseIds;
       }
     }
   },
@@ -110,9 +110,9 @@ module.exports = {
     },
     updateCurrentSubscribedCourse(courseId) {
       console.log("Update Subscribed", courseID);
-      (this.$store.state.newSubscribingCourseIds.includes(courseID)
-      ? this.$store.state.newSubscribingCourseIds.remove(courseID)
-      : this.$store.state.newSubscribingCourseIds.push(courseID));
+      (this.$store.state.newSubscribingCourses.includes(courseID)
+      ? this.$store.state.newSubscribingCourses.remove(courseID)
+      : this.$store.state.newSubscribingCourses.push(courseID));
     },
   },
 }

@@ -63,8 +63,8 @@ const store = new Vuex.Store({
     allInstitutions: [],
     allBillingSchemes: [],
     userSubscription: null,
-    newSubscribingCourseIds: [],
-    currentSubscribedCourseIds: [],
+    newSubscribingCourses: [],
+    currentSubscribedCourses: [],
     previouslySubscribedCourses: [],
     user: {
       id: null,
@@ -418,7 +418,7 @@ const store = new Vuex.Store({
            };
         });
         let subscribedCourses = state.user.courseMembership.filter(course => course.licensed);
-        state.currentSubscribedCourseIds = subscribedCourses
+        state.currentSubscribedCourses = subscribedCourses
         state.previouslySubscribedCourses = [...subscribedCourses]
       },
       addAdminCourses(state, courses){
@@ -564,7 +564,8 @@ const store = new Vuex.Store({
         return state.user
       },
       removedSubscribedCourses: state => {
-        return state.previouslySubscribedCourses.filter(course => state.currentSubscribedCourseIds.indexOf(course) === -1)
+        return state.previouslySubscribedCourses.filter(course =>
+          state.currentSubscribedCourses.indexOf(course) === -1)
       },
       userOnboardingStatus: state => {
         return state.user.hasSeenCourseOnboarding
