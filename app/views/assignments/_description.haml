@@ -71,7 +71,7 @@
       %p.italic You have not unlocked this #{term_for :assignment}. To achieve this you must:
       %ul
         - presenter.assignment.unlock_conditions.each do |uc|
-          - if !(uc.condition_type == "Learning Objective")
+          - if !(uc.condition_type == "LearningObjective")
             %li= link_to uc.requirements_description_sentence(current_user.time_zone), uc.condition
           - elsif uc.condition_type == "Assignment"
             - if !uc.check_assignment_condition_visible
