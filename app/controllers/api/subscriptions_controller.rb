@@ -21,34 +21,18 @@ class API::SubscriptionsController < ApplicationController
       return render json: { data: current_user.subscription, errors: [ "Subscription already exists!" ] }, status: 409
     end
 
-    l = buy_params
-    license_type = LicenseType.find(l[:license_type_id])
-    #Param for license_type_id ??
-
     @subscription = Subscription.new({
-      billing_scheme: billing_scheme,
-      user: current_user,
+      billing_scheme_id: BillingScheme.find_by(min_courses: 0).id,
+      user_id: current_user.id,
+      renewal_date: DateTime.yesterday
     })
-    p = l[:payment]
-    p[:amount_usd] = billing_scheme.price_usd
-    #Change this to have the determined total price from price_per_course and num courses on subscription
-
-
-    payment = Payment.new(p)
-    return render_error @subscription.errors.messages.merge(payment.errors.messages), @subscription.errors.messages.merge(payment.errors.messages) unless (@subscription.valid? && payment.valid?)
-    begin
-      @subscription.start! payment
-    rescue Stripe::CardError => e
-      return render_error e.message, e.message, 500
-    rescue => e
-      return render_error e.message, e
+    if @subscription.save!
+      puts("Created a subscription! #{@subscription.inspect}")
+      redirect_back(fallback_location: fallback_location)
     else
-      @billing_schemes = BillingScheme.all
-      #probably wont need this for the API to run ??
+      puts("Could not create a subscription for:  #{current_user.inspect}")
 
-      @courses = get_courses_where_professor
-      @payments = @subscription.payments.all
-      render "api/subscriptions/index", success: true, status: 201
+      return render json: { data: current_user.subscription, errors: [ "Error creating a new subscription!" ] }, status: 500
     end
   end
 
@@ -109,6 +93,10 @@ class API::SubscriptionsController < ApplicationController
     puts("selected: #{selected_course_ids }")
     puts("current: #{ subscribed_course_ids }")
 
+    courses_to_unsubscribe = subscribed_course_ids - selected_course_ids
+
+    courses_to_subscribe = selected_course_ids - subscribed_course_ids
+
     if new_subscribed_courses_count == current_subscribed_courses_count
       #check if courses are the same / swap courses, won't need to update Billing Scheme id
       if (selected_course_ids - subscribed_course_ids).empty?
@@ -119,11 +107,9 @@ class API::SubscriptionsController < ApplicationController
         end
 
       else
-        courses_to_unsubscribe = subscribed_course_ids - selected_course_ids
         puts("Removing subscription from: #{courses_to_unsubscribe}")
         unsubscribe_courses(courses_to_unsubscribe)
 
-        courses_to_subscribe = selected_course_ids - subscribed_course_ids
         puts("adding subscription to: #{courses_to_subscribe}")
         subscribe_courses(courses_to_subscribe, @subscription.id)
       end
@@ -131,7 +117,6 @@ class API::SubscriptionsController < ApplicationController
     elsif new_subscribed_courses_count < current_subscribed_courses_count
       #remove a subscription from a course
 
-      courses_to_unsubscribe = subscribed_course_ids - selected_course_ids
       puts("Removing subscription from: #{courses_to_unsubscribe}")
       unsubscribe_courses(courses_to_unsubscribe)
       change_billing_scheme(new_subscribed_courses_count)
@@ -139,30 +124,50 @@ class API::SubscriptionsController < ApplicationController
     else
       # new courses need to be paid for
       puts("more courses selected than currently subscribed, needs payment")
+      courses_to_pay_for_count = new_subscribed_courses_count - current_subscribed_courses_count
+      new_billing_scheme = determine_billing_scheme(new_subscribed_courses_count)
+      amount_to_pay = courses_to_pay_for_count * new_billing_scheme.price_per_course
 
-    end
+      puts("Cost to pay today: #{amount_to_pay}")
+      puts("Removing subscription from: #{courses_to_unsubscribe}")
+      puts("adding subscription to: #{courses_to_subscribe}")
 
-    #p = renew_params
-    #p[:payment][:amount_usd] = @license.license_type.price_usd
-    #Need to change this to calculate the amount they have to pay ?
+      p = renew_params
+      p[:payment][:amount_usd] = amount_to_pay
+
+      payment = Payment.new(p[:payment])
+      return render_error payment.errors.messages, payment.errors.messages unless payment.valid?
+      begin
+        @subscription.renew! payment
+
+        if courses_to_unsubscribe.length
+          unsubscribe_courses(courses_to_unsubscribe)
+        end
+        if courses_to_subscribe.length
+          subscribe_courses(courses_to_subscribe, @subscription.id)
+        end
+        change_billing_scheme(new_subscribed_courses_count)
+
+      rescue Stripe::CardError => e
+        return render_error e.message, e.message, 500
+      rescue => e
+        render_error e.message, e
+      else
+        #subscription was successfully updated
+
+        #not sure how to successfully return
+        render "api/subscriptions/index", success: true, status: 200
 
 
+        #BELOW IS FROM JAMES's work
+        @billing_schemes = BillingScheme.all
+        #probably wont need this for the API to run ??
 
-    payment = Payment.new(p[:payment])
-    return render_error payment.errors.messages, payment.errors.messages unless payment.valid?
-    begin
-      @subscription.renew! payment
-    rescue Stripe::CardError => e
-      return render_error e.message, e.message, 500
-    rescue => e
-      render_error e.message, e
-    else
-      @billing_schemes = BillingScheme.all
-      #probably wont need this for the API to run ??
+        @courses = get_courses_where_professor
+        @payments = @subscription.payments.all
+        render "api/subscriptions/index", success: true, status: 200
+      end
 
-      @courses = get_courses_where_professor
-      @payments = @subscription.payments.all
-      render "api/subscriptions/index", success: true, status: 200
     end
   end
 

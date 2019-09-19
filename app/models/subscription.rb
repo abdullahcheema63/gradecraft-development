@@ -42,7 +42,7 @@ class Subscription < ApplicationRecord
 
   def payment_note
     #self.license_type.name + " Exp.: " + self.expires.to_s
-    "Subscription for " + self.course.name + " exp.: " + self.renewal_date.to_s
+    "Subscription for " + self.courses.last.name + " exp.: " + self.renewal_date.to_s
 
   end
 
@@ -52,7 +52,7 @@ class Subscription < ApplicationRecord
     # Force save immediately to ensure that a failed save invalidates the charge.
     begin
       save!
-      # NotificationMailer.payment_received(payment).deliver_now
+      NotificationMailer.payment_received(payment).deliver_now
     rescue => e
       payment.refund!
       raise

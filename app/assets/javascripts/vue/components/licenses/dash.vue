@@ -242,7 +242,7 @@ module.exports = {
       return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.newSubscribingCourses.length - this.subtractedCost : 0;
     },
     subtractedCost(){
-      let originalCourseCount = this.$store.getters.originalLicensedCourses.length;
+      let originalCourseCount = this.previouslySubscribedCourses.length;
       let currentSubscriptionCount = this.currentSubscribedCourses.length;
       let subtractedCount = originalCourseCount - currentSubscriptionCount;
       return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * subtractedCount : 0;
@@ -272,6 +272,9 @@ module.exports = {
     },
     currentSubscribedCourses(){
       return this.$store.state.currentSubscribedCourses;
+    },
+    previouslySubscribedCourses(){
+      return this.$store.state.previouslySubscribedCourses;
     },
     remainingSubscribedCourses(){
       return this.selectedSubscribedCourses.filter(course =>

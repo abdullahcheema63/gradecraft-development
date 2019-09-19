@@ -200,6 +200,7 @@ const store = new Vuex.Store({
         const resp = await fetch("/api/subscriptions");
         if (resp.status === 404){
           console.log(resp.status);
+          store.dispatch("createSubscription");
         }
         else if (!resp.ok){
           throw resp;
@@ -303,6 +304,29 @@ const store = new Vuex.Store({
         }
         subscription = apiResponseToDataDataItem(body)
         commit('updateUserSubscription', subscription)
+      },
+      createSubscription: async function({ commit }){
+        const resp = await fetch("/api/subscriptions", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin'
+        });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
       },
       updateSubscription: async function({ commit }, subscribingCourses){
         const resp = await fetch("/api/subscriptions", {
@@ -580,8 +604,5 @@ const store = new Vuex.Store({
       userCourseMemberships: state => {
         return state.user.courseMembership;
       },
-      originalLicensedCourses: (state, getters) => {
-        return getters.userCourseMemberships.filter(course => course.licensed);
-      }
     }
 })

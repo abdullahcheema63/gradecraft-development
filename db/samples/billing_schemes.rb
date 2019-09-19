@@ -1,6 +1,12 @@
 @billing_schemes = []
 
 @billing_schemes.push({
+  max_courses: 0,
+  min_courses: 0,
+  price_per_course: 0,
+})
+
+@billing_schemes.push({
   max_courses: 3,
   min_courses: 1,
   price_per_course: 20.0,
