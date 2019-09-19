@@ -14,7 +14,3 @@ Rails.application.configure do
   config.eager_load = false
   config.session_store :cookie_store, key: "_gradecraft_session", :expire_after => 60.minutes
 end
-
-CarrierWave.configure do |config|
-  config.storage = :file
-end

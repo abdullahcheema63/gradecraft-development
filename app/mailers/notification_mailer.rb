@@ -1,12 +1,6 @@
 class NotificationMailer < ApplicationMailer
   layout "mailers/notification_layout"
 
-  def lti_error(user_data, course_data)
-    @user_data = user_data
-    @course_data = course_data
-    send_admin_email "Unknown LTI user/course"
-  end
-
   def successful_submission(submission_id)
     send_assignment_email_to_user submission_id, "Submitted"
   end

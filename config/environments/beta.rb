@@ -110,9 +110,3 @@ Rails.application.configure do
 
   config.session_store :active_record_store, :expire_after => 60.minutes
 end
-
-require 'carrierwave/storage/fog'
-
-CarrierWave.configure do |config|
-  config.storage = :fog
-end

@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq', constraints: AdminConstraint.new
   mount JasmineRails::Engine, at: '/specs', constraints: AdminConstraint.new if defined?(JasmineRails)
 
+  get "/files/*all", to: "redocuments#download"
+
   # 1. Analytics & Charts
   # 2. Announcements
   # 3. Assignments, Submissions, Grades

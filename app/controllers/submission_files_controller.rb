@@ -4,15 +4,15 @@ class SubmissionFilesController < ApplicationController
   def download
     authorize! :download, presenter.submission_file
 
-    # let's use the object_stream here because there's no reason to hit S3 twice
-    if presenter.submission_file_streamable?
-      # rubocop:disable AndOr
-      send_data(*presenter.send_data_options) and return
-    else
-      presenter.mark_submission_file_missing
-      flash[:alert] = "The requested file was not found on the server."
-      redirect_to request.referrer
-    end
+    file_path = URI.decode(presenter.submission_file.file.path)
+    send_file file_path, x_sendfile: true
+
+    #send_data(*presenter.send_data_options) and return
+    #else
+    #  presenter.mark_submission_file_missing
+    #  flash[:alert] = "The requested file was not found on the server."
+    #  redirect_to request.referrer
+    #end
   end
 
   def presenter

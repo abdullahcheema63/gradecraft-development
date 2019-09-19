@@ -69,6 +69,7 @@ gem 'rack-mini-profiler', require: false
 gem 'rails_autolink'
 gem 'rdiscount'
 gem 'redis', '~> 4.0'
+gem 'copy_carrierwave_file'
 
 
 gem 'responders'
