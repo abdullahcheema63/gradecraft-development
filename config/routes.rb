@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
   get "/files/*all", to: "redocuments#download"
 
+  post "/upload_froala_images" => "froala_uploads#upload_image", :as => :upload_image
+  get "/download_froala_object/:name" => "froala_uploads#access_file", :as => :upload_access_file, :name => /.*/
+
   # 1. Analytics & Charts
   # 2. Announcements
   # 3. Assignments, Submissions, Grades

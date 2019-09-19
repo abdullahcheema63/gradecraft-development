@@ -31,6 +31,7 @@ $( "#tabs" ).tabs({
   key: 'RD4H4B12B7iB6E5C3A4I2I3C8B6B5A4C-11NGNe1IODMGYNSFKV==',
   inlineMode: false,
   heightMin: 200,
+  imageUploadURL: '/upload_froala_images',
   toolbarButtons: [
     'bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align',
     'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html'
