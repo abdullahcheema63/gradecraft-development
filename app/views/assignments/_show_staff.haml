@@ -22,7 +22,7 @@
           %a.class-analytics-tab{"href" => "#tab4"}
             %span Class
             Analytics
-      - if presenter.course_uses_learning_objectives?
+      - if presenter.course_has_learning_objectives?
         %li
           %a{"href" => "#tab5"}= term_for :learning_objectives
 
@@ -47,6 +47,6 @@
           - else
             .tab-container
               = render partial: "grades/analytics", locals: { presenter: presenter, analytics_class: "analytics-tab-panel" }
-      - if presenter.course_uses_learning_objectives?
+      - if presenter.course_has_learning_objectives?
         .ui-tabs-panel#tab5{ role: "tabpanel", "aria-hidden" => false }
           %learning-objective-instructor-overview{"data-course-id"=>"#{current_course.id}", "data-assignment-id"=>"#{presenter.assignment.id}"}

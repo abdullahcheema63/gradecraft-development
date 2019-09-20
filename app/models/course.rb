@@ -133,10 +133,6 @@ class Course < ApplicationRecord
     end
   end
 
-  def uses_learning_objectives?
-    allows_learning_objectives? && has_learning_objectives?
-  end
-
   def save_copy_logs(lookups)
     copy_log = CopyLog.new(course: self)
     copy_log.parse_log(lookups.lookup_hash)
@@ -274,7 +270,7 @@ class Course < ApplicationRecord
 
     course_associations.push({ learning_objective_categories: { course_id: :id } }) if has_learning_objectives?
     course_associations.push({ learning_objectives: { course_id: :id } }) if has_learning_objectives?
-    
+
     ModelCopier.new(self, @lookups).copy(attributes: attributes,
                                          associations: course_associations,
                                          cross_references: [
