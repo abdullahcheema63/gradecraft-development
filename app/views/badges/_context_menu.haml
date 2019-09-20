@@ -4,7 +4,7 @@
       - if actions.include? :edit
         = active_course_link_to decorative_glyph(:edit) + "Edit", edit_badge_path(badge), class: "button button-edit"
       - if actions.include? :new
-        = active_course_link_to decorative_glyph(:plus) + "New #{(term_for :badge).titleize}", new_badge_path, class: "button button-edit"
+        = active_course_link_to decorative_glyph(:plus) + "Add a New #{(term_for :badge).titleize}", new_badge_path, class: "button button-edit"
       - if !current_page?(badges_path)
         %li.dropdown
           %button.button-edit.button-options{role: "button", type: "button"}= decorative_glyph(:cog) + "Options" + decorative_glyph("caret-down")
