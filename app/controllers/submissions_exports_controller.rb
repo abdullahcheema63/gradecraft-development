@@ -5,7 +5,7 @@ class SubmissionsExportsController < ApplicationController
   skip_before_action :require_course_membership, only: :secure_download
 
   def create
-    if create_submissions_export && SubmissionExportJob.perform_async(@submissions_export.id)
+    if create_submissions_export && SubmissionListExporterJob.perform_async(@submissions_export.id)
       flash[:success] = "Your submissions export is being prepared. You'll receive an email when it's complete."
     else
       flash[:alert] = "Your submissions export failed to build. An administrator has been contacted about the issue."

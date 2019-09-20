@@ -147,10 +147,10 @@ describe InfoController do
       end
     end
 
-    describe "GET submission export" do
-      it "retrieves the submission export" do
+    describe "GET submission list exporter" do
+      it "retrieves the submission list exporter" do
         expect{ get :submissions, params: { id: course.id}, format: :json }.to \
-          change(SubmissionExportJob.jobs, :size).by 1
+          change(SubmissionListExporterJob.jobs, :size).by 1
       end
 
       it "redirects to the root path if there is no referer" do

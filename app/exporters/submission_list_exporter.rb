@@ -1,4 +1,4 @@
-class SubmissionExporter
+class SubmissionListExporter
   def export(course)
     CSV.generate do |csv|
       csv << baseline_headers(course)

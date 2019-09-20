@@ -7,7 +7,7 @@ class ExportsMailer < ApplicationMailer
   # need for building the secure download method on success emails
   add_template_helper(SecureTokenHelper)
 
-  def submission_export(course, user, filename, csv_data)
+  def submission_list_exporter(course, user, filename, csv_data)
     set_export_ivars(course, user)
     attachments["#{ course.name } Submissions - #{ Date.today }.csv"] = csv_attachment(csv_data)
     send_export_email "Submission export for #{ course.name } is attached"

@@ -1,4 +1,4 @@
-class SubmissionExportJob
+class SubmissionListExporterJob
   include Sidekiq::Worker
 
   def perform(user_id, course_id, filename=nil)
@@ -14,12 +14,12 @@ class SubmissionExportJob
   attr_reader :csv_data
 
   def fetch_csv_data(course)
-    @csv_data = SubmissionExporter.new.export(course)
+    @csv_data = SubmissionListExporter.new.export(course)
   end
 
-  def notify_submission_export(user, course, filename)
+  def notify_submission_list_exporter(user, course, filename)
     ExportsMailer
-      .submission_export(course, user, filename, @csv_data)
+      .submission_list_exporter(course, user, filename, @csv_data)
       .deliver_now
   end
 end
