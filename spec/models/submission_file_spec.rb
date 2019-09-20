@@ -1,4 +1,4 @@
-describe SubmissionFile, :focus => true do
+describe SubmissionFile do
   subject { new_submission_file }
 
   let(:course) { build(:course) }
