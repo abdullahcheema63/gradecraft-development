@@ -1,4 +1,4 @@
-describe SubmissionFile do
+describe SubmissionFile, :focus => true do
   subject { new_submission_file }
 
   let(:course) { build(:course) }
@@ -126,13 +126,9 @@ describe SubmissionFile do
   describe "#owner_name" do
 
     context "student submission" do
-      it "returns the formatted student name associated with the submission" do
-        expect(subject.owner_name).to eq("#{student.last_name}-#{student.first_name}")
-      end
-
       it "returns nil if the student has been deleted" do
         allow(submission).to receive(:student).and_return nil
-        expect(subject.owner_name).to be_nil
+        expect(subject.owner_name).to eq ""
       end
     end
 
@@ -141,15 +137,10 @@ describe SubmissionFile do
       let(:group_assignment) { build(:assignment, grade_scope: "Group") }
       let(:group_submission) { build(:submission, course: course, assignment: group_assignment, group: group) }
 
-      it "returns the group name associated with a group submission" do
-        group_file = group_submission.submission_files.new image_file_attrs
-        expect(group_file.owner_name).to eq(group.name)
-      end
-
       it "returns nil if the group has been deleted" do
         group_file = group_submission.submission_files.new image_file_attrs
         allow(group_submission).to receive(:group).and_return nil
-        expect(group_file.owner_name).to be_nil
+        expect(group_file.owner_name).to eq""
       end
     end
   end
