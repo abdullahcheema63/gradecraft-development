@@ -19,7 +19,9 @@ module Submissions::GradeHistory
       .remove("name" => "updated_at")
       .remove("name" => "file")
       .remove("name" => "store_dir")
-      .remove("name" => "id")
+      .remove("name" => "id")      
+      .remove("name" => "complete")
+      .remove("name" => "student_visible")
       .transform do |history_item|
         if history_item.version.item_type == "SubmissionFile"
           history_item.changeset["event"] = "upload"
