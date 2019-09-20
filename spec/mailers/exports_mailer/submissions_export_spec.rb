@@ -57,10 +57,6 @@ describe ExportsMailer do
       it_behaves_like "a complete submissions export email body"
       it_behaves_like "a submissions export email with archive data"
       it_behaves_like "an email text part"
-
-      it "includes the secure download url" do
-        expect(subject).to include secure_download_url(secure_token)
-      end
     end
 
     describe "html part body" do
@@ -68,10 +64,6 @@ describe ExportsMailer do
       it_behaves_like "a complete submissions export email body"
       it_behaves_like "a submissions export email with archive data"
       it_behaves_like "an email html part"
-
-      it "includes the secure download url" do
-        expect(subject).to include secure_download_url(secure_token)
-      end
     end
   end
 
