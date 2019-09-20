@@ -21,5 +21,6 @@
 
       .comments-box
         %textarea{"ng-model"=>"loGradingCtrl.outcomeFor(objective.id).comments",
-                  "ng-blur"=>"loGradingCtrl.queueUpdateObjectiveOutcome(objective.id)",
+                  "ng-model-options"=>"{ debounce: 750 } ",
+                  "ng-change"=>"loGradingCtrl.queueUpdateObjectiveOutcome(objective.id)",
                   "froala"=>"loGradingCtrl.froalaOptions"}

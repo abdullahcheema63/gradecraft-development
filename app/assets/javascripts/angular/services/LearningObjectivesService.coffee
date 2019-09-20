@@ -26,7 +26,10 @@
     _.find(cumulativeOutcomes, { learning_objective_id: objectiveId })
 
   cumulativeOutcomeForStudent = (objectiveId, studentId) ->
-    _.find(cumulativeOutcomes, { learning_objective_id: objectiveId, user_id: studentId })
+    for outcome in cumulativeOutcomes
+      if parseInt(outcome.learning_objective_id) == parseInt(objectiveId) \
+          && parseInt(outcome.user_id) == parseInt(studentId)
+        return outcome
 
   observedOutcomesFor = (cumulativeOutcomeId, type=null, id=null) ->
     criteria = { learning_objective_cumulative_outcomes_id: cumulativeOutcomeId }
@@ -214,6 +217,7 @@
           GradeCraftAPI.logResponse(response)
         , (response) ->
           GradeCraftAPI.logResponse(response)
+          alert(response.data.message)
       )
 
   updateOrder = (levels, objectiveId) ->
