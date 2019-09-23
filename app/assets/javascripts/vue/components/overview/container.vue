@@ -162,41 +162,32 @@
           <div class="content_block">
             <h2>Past Courses</h2>
             <p>
-              This section has all your past courses, that you were a student, auditor, observer, or GSI in. You can’t make changes to past courses but you can review them.
+              This section has all your past courses that you were a <strong>student, auditor, observer, or GSI</strong> in. You can’t make changes to past courses but you can review them.
             </p>
-            <h4>Select which filters you want to apply:</h4>
-          </div>
 
-          <div v-if="pastCourses.length">
-            <guideMessage>
-              <p>
-                These are all your
-                <em>published,</em>
-                inactive courses. You can request to copy them if you like how you’ve set them up in the past—just use the “request a copy” feature in the section below!
-              </p>
-            </guideMessage>
-
-            <div class="filter_box">
-              <p>Select which filters you want to apply:</p>
-              <div>
-                <span v-for="year in courseTermYear" :key="year">
-                  <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
-                  <label :for="year">{{year}}</label>
-                </span>
+            <div v-if="pastCourses.length">
+              <div class="filter_box">
+                <h4>Select which filters you want to apply:</h4>
+                <div>
+                  <span v-for="year in courseTermYear" :key="year">
+                    <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
+                    <label :for="year">{{year}}</label>
+                  </span>
+                </div>
+                <div>
+                  <span v-for="term in courseTermName" :key="term">
+                    <input :id="term" type="checkbox" v-model="termName" :value="term"/>
+                    <label :for="term">{{term}}</label>
+                  </span>
+                </div>
               </div>
-              <div>
-                <span v-for="term in courseTermName" :key="term">
-                  <input :id="term" type="checkbox" v-model="termName" :value="term"/>
-                  <label :for="term">{{term}}</label>
-                </span>
+              <div class="course_box" v-if="filteredPastCourses.length">
+                <courseCard v-for="course in filteredPastCourses" :key="course.id" :course="course" status="past"></courseCard>
               </div>
-            </div>
-            <div class="course_box" v-if="filteredPastCourses.length">
-              <courseCard v-for="course in filteredPastCourses" :key="course.id" :course="course" status="past"></courseCard>
             </div>
             <div class="course_box" v-else>
               <div class="course_card empty">
-                <p><em>empty past course lives here</em></p>
+                <p><em>You don't have any past courses to view</em></p>
               </div>
             </div>
           </div>
