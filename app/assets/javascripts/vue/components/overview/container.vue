@@ -91,7 +91,7 @@
             <template slot="heading">Published Courses</template>
             <template slot="content">
               <div class="course_box" v-if="currentCourses.length">
-                <courseCard v-for="course in currentCourses" :key="course.id"  :course="course" status="published"></courseCard>
+                <courseCard v-for="course in publishedCourses" :key="course.id"  :course="course" status="published"></courseCard>
               </div>
 
               <div class="course_box" v-else>
@@ -132,6 +132,29 @@
               If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>
             </p>
             <h4>Select which filters you want to apply:</h4>
+          </div>
+          <div class="filter_box">
+            <p>Select which filters you want to apply:</p>
+            <div>
+              <span v-for="year in courseTermYear" :key="year">
+                <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
+                <label :for="year">{{year}}</label>
+              </span>
+            </div>
+            <div>
+              <span v-for="term in courseTermName" :key="term">
+                <input :id="term" type="checkbox" v-model="termName" :value="term"/>
+                <label :for="term">{{term}}</label>
+              </span>
+            </div>
+          </div>
+          <div class="course_box" v-if="archivedCourses.length">
+            <courseCard v-for="course in archivedCourses" :key="course.id" :course="course" status="archived"></courseCard>
+          </div>
+          <div class="course_box" v-else>
+            <div class="course_card empty">
+              <p> empty archived course box lives here </p>
+            </div>
           </div>
         </div>
 
@@ -421,6 +444,21 @@ module.exports = {
     currentCourses(){
       return this.$store.state.user.courseMembership.filter( course => {
         return course.active
+      });
+    },
+    publishedCourses(){
+      return this.currentCourses.filter( course => {
+        return course.published
+      });
+    },
+    unpublishedCourses(){
+      return this.currentCourses.filter( course => {
+        return !course.published
+      });
+    },
+    archivedCourses(){
+      return this.$store.state.user.courseMembership.filter( course => {
+        return !course.active
       });
     },
     pastCourses(){

@@ -190,6 +190,25 @@
       <a class="button next" v-bind:href="course.url">View course</a>
     </div>
   </div>
+  <div v-else-if="status=='archived'" class="course_card archived" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
+    <h4>
+      <span>{{ course.number }} {{ course.name }}</span>
+      <span>{{ course.term.name }} {{ course.term.year }}</span>
+    </h4>
+
+    <div class="course_status">
+      <p>{{course.role}}</p>
+      <div>
+        <p :class="'licensed'" v-if="is_licensed">
+          Licensed
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <a class="button next" v-bind:href="course.url">View course</a>
+    </div>
+  </div>
 </template>
 
 <script lang='coffee'>`
