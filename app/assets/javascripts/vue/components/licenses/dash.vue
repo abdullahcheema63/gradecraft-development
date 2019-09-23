@@ -118,7 +118,7 @@
             <div class="subscription_summary">
               <!-- v-if the user has ADDED courses -->
               <div v-if="newSubscribingCourses.length">
-                <h3>Added Courses</h3>
+                <h3>Adding Courses</h3>
                 <ul class="pink_dots">
                   <li v-for="course of newSubscribingCourses" :key="course.id">
                     <p> <strong>{{course.number}} {{course.name}}</strong>
@@ -126,27 +126,31 @@
                       <template v-if="course.published">Published</template>
                     </p>
                     <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                    <p> <strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
+                    <p><strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
                   </li>
                 </ul>
               </div>
               <!-- v-if the user has REMOVED courses -->
               <div v-if="removedSubscribedCourses.length">
-                <h3>Removed Courses</h3>
+                <h3>Removing Courses</h3>
                 <ul class="pink_dots">
                   <li v-for="course of removedSubscribedCourses" :key="course.id">
-                    <p> <strong>{{course.number}} {{course.name}}</strong>
+                    <p><strong>{{course.number}} {{course.name}}</strong>
                       <br />
                       <template v-if="course.published">Published</template>
                     </p>
                     <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                    <p> <strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
+                    <p class="removed">
+                      &ndash;
+                      <sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}
+                      per month
+                    </p>
                   </li>
                 </ul>
               </div>
 
               <div>
-                  <h3>Already Subscribed Courses</h3>
+                  <h3>Continuing Courses</h3>
                   <ul class="pink_dots" >
                     <li v-for="course of remainingSubscribedCourses" :key ="course.id">
                       <p>
