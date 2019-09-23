@@ -191,8 +191,13 @@
                 </span>
               </div>
             </div>
-            <div class="course_box">
+            <div class="course_box" v-if="filteredPastCourses.length">
               <courseCard v-for="course in filteredPastCourses" :key="course.id" :course="course" status="past"></courseCard>
+            </div>
+            <div class="course_box" v-else>
+              <div class="course_card empty">
+                <p><em>empty past course lives here</em></p>
+              </div>
             </div>
           </div>
         </div>
