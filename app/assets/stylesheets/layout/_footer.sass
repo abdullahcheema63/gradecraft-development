@@ -71,13 +71,17 @@ footer
     left: 0
     right: 0
 
+    @include mobile
+      position: static
+      margin-bottom: 5em
+
     p
       margin: 0 2em
 
     a
       color: $grey-faint
       font-family: 'ProximaNova_regular', sans-serif
-      
+
       &:hover
         color: $blue
 
