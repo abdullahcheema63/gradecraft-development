@@ -443,7 +443,6 @@ const store = new Vuex.Store({
         });
         let subscribedCourses = state.user.courseMembership.filter(course => course.licensed);
         state.currentSubscribedCourses = subscribedCourses
-        state.previouslySubscribedCourses = [...subscribedCourses]
       },
       addAdminCourses(state, courses){
         //console.log("inside addAdminCourses mutation")
@@ -541,6 +540,7 @@ const store = new Vuex.Store({
       },
       addUserSubscription (state, subscriptionObj){
         state.userSubscription = subscriptionObj
+        state.previouslySubscribedCourses = subscriptionObj.courses
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)

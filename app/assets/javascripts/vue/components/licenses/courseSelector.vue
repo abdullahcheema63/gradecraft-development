@@ -28,7 +28,11 @@
             <td> </td>
           </tr>
           <tr v-for="c of userCourses" :key="c.id">
-            <td v-if="c.licensed" class="form_options alt-2">
+            <td v-if="c.licensed && !subscribedByUser(c.id)" class="form_options alt-2">
+              <input type="checkbox" :id="c.id" checked="checked" disabled="disabled" />
+              <label :for="c.id"> Subscribed by other user </label>
+            </td>
+            <td v-else-if="c.licensed" class="form_options alt-2">
               <input type="checkbox" :id="c.id" :value="c" v-model="currentSubscribedCourses"/>
               <label :for="c.id">&nbsp; </label>
             </td>
@@ -66,10 +70,8 @@ module.exports = {
     userCourses(){
       return this.$store.getters.userCourseMemberships
     },
-    selectedSubscribedCourses() {
-      return this.userCourses.filter(course =>
-          course.licensed || this.newSubscribingCourses.includes(course.id)
-        );
+    subscribedCourseIds(){
+      return this.$store.state.previouslySubscribedCourses.map(course => course.id)
     },
     currentSubscribedCourses: {
       get: function() {
@@ -89,6 +91,13 @@ module.exports = {
     }
   },
   methods: {
+    subscribedByUser(courseId){
+      if ( this.subscribedCourseIds.indexOf(courseId) === -1 ) {
+        return false;
+      } else {
+      return true;
+      }
+    },
     isLicensed(course) {
       return this.licensedCourses
         && this.licensedCourses.some(c => c.id === course.id);
