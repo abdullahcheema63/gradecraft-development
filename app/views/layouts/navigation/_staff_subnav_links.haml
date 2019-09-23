@@ -31,9 +31,9 @@
 %h3 Users
 %li= link_to_unless_current decorative_glyph(:user) + "#{term_for :students}", students_path
 - if current_course.has_teams?
-  %li= link_to_unless_current decorative_glyph(:users) + "#{term_for :teams}", teams_path
+  %li= link_to_unless_current decorative_glyph("user-plus") + "#{term_for :teams}", teams_path
 %li
-  = link_to_unless_current decorative_glyph("user-plus") + "#{term_for :groups}", groups_path do |name|
+  = link_to_unless_current decorative_glyph(:users) + "#{term_for :groups}", groups_path do |name|
     = raw("<span class='sidebar-nav'>#{name}</span>")
   - if current_course.groups_to_review_count > 0
     %div.notification-badge.staff-notification-badge= current_course.groups_to_review_count
