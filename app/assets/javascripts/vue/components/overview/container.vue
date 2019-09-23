@@ -131,29 +131,30 @@
               <br />
               If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>
             </p>
-            <h4>Select which filters you want to apply:</h4>
-          </div>
-          <div class="filter_box">
-            <p>Select which filters you want to apply:</p>
-            <div>
-              <span v-for="year in courseTermYear" :key="year">
-                <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
-                <label :for="year">{{year}}</label>
-              </span>
+            <div v-if="archivedCourses.length">
+              <div class="filter_box">
+                <p><strong>Select which filters you want to apply:</strong></p>
+                <div>
+                  <span v-for="year in courseTermYear" :key="year">
+                    <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
+                    <label :for="year">{{year}}</label>
+                  </span>
+                </div>
+                <div>
+                  <span v-for="term in courseTermName" :key="term">
+                    <input :id="term" type="checkbox" v-model="termName" :value="term"/>
+                    <label :for="term">{{term}}</label>
+                  </span>
+                </div>
+              </div>
+              <div class="course_box">
+                <courseCard v-for="course in archivedCourses" :key="course.id" :course="course" status="archived"></courseCard>
+              </div>
             </div>
-            <div>
-              <span v-for="term in courseTermName" :key="term">
-                <input :id="term" type="checkbox" v-model="termName" :value="term"/>
-                <label :for="term">{{term}}</label>
-              </span>
-            </div>
-          </div>
-          <div class="course_box" v-if="archivedCourses.length">
-            <courseCard v-for="course in archivedCourses" :key="course.id" :course="course" status="archived"></courseCard>
-          </div>
-          <div class="course_box" v-else>
-            <div class="course_card empty">
-              <p> empty archived course box lives here </p>
+            <div class="course_box" v-else>
+              <div class="course_card empty">
+                <p><em>You don't have any archived courses to view</em></p>
+              </div>
             </div>
           </div>
         </div>
@@ -167,7 +168,7 @@
 
             <div v-if="pastCourses.length">
               <div class="filter_box">
-                <h4>Select which filters you want to apply:</h4>
+                <p><strong>Select which filters you want to apply:</strong></p>
                 <div>
                   <span v-for="year in courseTermYear" :key="year">
                     <input :id="year" type="checkbox" v-model="termYear" :value="year"/>

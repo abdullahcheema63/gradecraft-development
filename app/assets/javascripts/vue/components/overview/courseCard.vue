@@ -205,8 +205,25 @@
       </div>
     </div>
 
-    <div>
+    <div class="button_box">
       <a class="button next" v-bind:href="course.url">View course</a>
+
+      <dropdownDotsComponent>
+        <template slot="content">
+          <ul>
+            <li>
+              <a>Copy</a>
+            </li>
+            <li>
+              <a>Delete</a>
+            </li>
+            <li>
+              <a>Request to Unarchive</a>
+            </li>
+          </ul>
+        </template>
+      </dropdownDotsComponent>
+
     </div>
   </div>
 </template>
