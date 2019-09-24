@@ -70,7 +70,7 @@ RSpec.describe AttachmentUploader do
 
     before(:each) do
       allow(subject).to receive_messages(
-        store_dir_prefix: "some-prefix",
+        store_dir_prefix: "files/uploads",
         course: "some-course",
         assignment: "some-assignment",
         file_klass: "devious_files",
@@ -81,7 +81,7 @@ RSpec.describe AttachmentUploader do
     it "returns an array with those components" do
       expect(result).to eq(
         [
-          "some-prefix", "uploads", "some-course", "some-assignment",
+          "files/uploads", "some-course", "some-assignment",
           "devious_files", "dave-eversby"
         ]
       )
@@ -89,7 +89,7 @@ RSpec.describe AttachmentUploader do
 
     it "compacts nils from the array" do
       allow(subject).to receive_messages(course: nil, file_klass: nil)
-      expect(result).to eq([ "some-prefix", "uploads", "some-assignment", "dave-eversby" ])
+      expect(result).to eq([ "files/uploads", "some-assignment", "dave-eversby" ])
     end
   end
 
@@ -98,9 +98,9 @@ RSpec.describe AttachmentUploader do
     let(:course) { create(:course) }
 
     context "model has a course method" do
-      it "returns a string with the format of <course_number-course_id>" do
+      it "returns a string with the format of <course_id>" do
         allow(model).to receive(:course) { course }
-        expect(result).to eq("#{course.course_number}-#{course.id}")
+        expect(result).to eq("#{course.id}")
       end
     end
 
@@ -117,9 +117,9 @@ RSpec.describe AttachmentUploader do
     let(:assignment) { create(:assignment) }
 
     context "model has an assignment method" do
-      it "returns a string with the format of <assignment_name-assignment_id>" do
+      it "returns a string with the format of <assignment_id>" do
         allow(model).to receive(:assignment) { assignment }
-        expect(result).to eq("assignments/#{model.assignment.name.gsub(/\s/, "_").downcase[0..20]}-#{model.assignment.id}")
+        expect(result).to eq("assignments/#{model.assignment.id}")
       end
     end
 
