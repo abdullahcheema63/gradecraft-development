@@ -8,14 +8,6 @@ describe LearningObjectives::LinksController do
   end
 
   describe "GET index" do
-    context "when the current course does not have learning objectives enabled" do
-      it "redirects to dashboard" do
-        course.update(allows_learning_objectives: false)
-        get :index
-        expect(response).to redirect_to dashboard_path
-      end
-    end
-
     context "when the current course has learning objectives enabled" do
       let!(:learning_objective) { create :learning_objective, course: course }
 
