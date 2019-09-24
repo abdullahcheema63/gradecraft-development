@@ -21,7 +21,7 @@ class SubmissionsExportPerformer < ResqueJob::Performer
 
         submissions_export.update_export_completed_time
       rescue StandardError => error
-        puts "Submission Export: #{error}"
+        puts "Submission Export error: #{error}"
       end
     else
       if logger
