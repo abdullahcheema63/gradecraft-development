@@ -87,7 +87,7 @@
             </div>
           </div>
 
-          <accordionComponent accordion_content="bg-grey_barely">
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true">
             <template slot="heading">Published Courses</template>
             <template slot="content">
               <div class="course_box" v-if="currentCourses.length">
@@ -102,7 +102,7 @@
             </template>
           </accordionComponent>
 
-          <accordionComponent accordion_content="bg-grey_barely">
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true">
             <template slot="heading">Unpublished Courses</template>
             <template slot="content">
               <div v-if="userIsInstructor && unpublishedCourses.length">

@@ -16,15 +16,15 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'accordion-component',
-  props: ['accordion_class', 'accordion_content'],
+  props: ['open_default', 'accordion_content'],
   data() {
     return {
-      active: false
+      active: this.open_default,
     }
   },
   methods: {
     toggleActive() {
-      this.active = !this.active
+      this.active = !this.active;
     }
   },
   computed: {
