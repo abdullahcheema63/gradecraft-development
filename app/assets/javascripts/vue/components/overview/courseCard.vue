@@ -52,7 +52,7 @@
         <p>Planned</p>
         <p>Submitted</p>
       </legend>
-      <div v-if="course.assignments">
+      <div v-if="course.assignments[0]">
         <div class="assignment" v-for="assignment in course.assignments">
           <div>
             <p>
@@ -268,7 +268,7 @@ module.exports = {
   },
   methods: {
     formatDate(date){
-      return moment(String(date)).format('LLL')
+      return moment(String(date)).format('LLLL')
     },
     toggleModalState(){
       this.modalState = !this.modalState
