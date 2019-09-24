@@ -90,7 +90,7 @@
           <accordionComponent accordion_content="bg-grey_barely" :open_default="true">
             <template slot="heading">Published Courses</template>
             <template slot="content">
-              <div class="course_box" v-if="currentCourses.length">
+              <div class="course_box" v-if="publishedCourses.length">
                 <courseCard v-for="course in publishedCourses" :key="course.id"  :course="course" status="published"></courseCard>
               </div>
 
@@ -106,14 +106,13 @@
             <template slot="heading">Unpublished Courses</template>
             <template slot="content">
               <div v-if="userIsInstructor && unpublishedCourses.length">
-                <h2 class="unspace-top">Unpublished Courses</h2>
                 <div class="course_box" v-if="unpublishedCourses.length">
                   <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
                 </div>
-                <div class="course_box" v-else>
-                  <div class="course_card empty">
-                    <p><em>You don't have any unpublished courses</em></p>
-                  </div>
+              </div>
+              <div class="course_box" v-else>
+                <div class="course_card empty">
+                  <p><em>You don't have any unpublished courses</em></p>
                 </div>
               </div>
             </template>

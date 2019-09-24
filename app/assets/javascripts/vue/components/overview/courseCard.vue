@@ -52,24 +52,26 @@
         <p>Planned</p>
         <p>Submitted</p>
       </legend>
-      <div class="assignment" v-for="assignment in course.assignments">
-        <div>
-          <p>
-            <a>{{assignment.name}}</a>
-            <span v-if="assignment.dueDate">Due {{assignment.dueDate}}</span>
-          </p>
-        </div>
-        <div v-if="is_staff">
-          <p>{{assignment.planned}}</p>
-          <p>{{assignment.submitted}}</p>
-        </div>
-        <div v-else>
-          <p :class="assignment_status(assignment)">
-            {{assignment_status(assignment)}}
-          </p>
+      <div v-if="course.assignments">
+        <div class="assignment" v-for="assignment in course.assignments">
+          <div>
+            <p>
+              <a>{{assignment.name}}</a>
+              <span v-if="assignment.due_at">Due {{formatDate(assignment.due_at)}}</span>
+            </p>
+          </div>
+          <div v-if="is_staff">
+            <p>{{assignment.planned}}</p>
+            <p>{{assignment.submitted}}</p>
+          </div>
+          <div v-else>
+            <p :class="assignment_status(assignment)">
+              {{assignment_status(assignment)}}
+            </p>
+          </div>
         </div>
       </div>
-      <div class="empty" v-if="!course.assignments.length">
+      <div class="empty" v-else>
         <p v-if="is_staff"><em>There aren’t any assignments coming up for this course</em></p>
         <p v-else><em>You don’t have any assignments coming up for this course</em></p>
       </div>
@@ -265,6 +267,9 @@ module.exports = {
     }
   },
   methods: {
+    formatDate(date){
+      return moment(String(date)).format('LLL')
+    },
     toggleModalState(){
       this.modalState = !this.modalState
     },
