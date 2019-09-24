@@ -3,11 +3,7 @@
     %h2.form-title Basics
     .form-flex-row
       .form-item
-        - if @attachments
-          = f.input :course_number, label: "Course Number", disabled: true
-          = "You are unable to change your course number at this time, please contact us if you need this changed"
-        - else
-          = f.input :course_number, label: "Course Number"
+        = f.input :course_number, label: "Course Number"
 
       .form-item
         = f.input :name, label: "Course Name"
