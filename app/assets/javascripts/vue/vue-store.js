@@ -260,10 +260,9 @@ const store = new Vuex.Store({
         })
         state.copyError = resp
         console.log("inside copyCourse action", resp)
-
       },
-      deleteCourse: async function({commit, state}, courseId ){
-        var api = "/api/courses/" + courseId
+      deleteCourse: async function({commit, state}, courseID ){
+        var api = "/api/courses/" + courseID
         const resp = await fetch(api, {
           method: 'DELETE',
           headers: {
@@ -273,7 +272,7 @@ const store = new Vuex.Store({
             'X-Requested-With': 'XMLHttpRequest',
           },
           credentials: 'same-origin',
-          body: JSON.stringify(courseId)
+          body: JSON.stringify(courseID)
         }).then((response) => {
           window.location.replace(state.overviewURL)
         })

@@ -49,7 +49,7 @@ class API::CoursesController < ApplicationController
     begin
       duplicated = @course.copy(course_id)
 
-      duplicated.published = false 
+      duplicated.published = false
       if duplicated.save
         if !current_user_is_admin? && current_user.role(duplicated).nil?
           duplicated.course_memberships.create(user: current_user, role: current_role)

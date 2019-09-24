@@ -95,7 +95,7 @@
               <a>Archive</a>
             </li>
             <li>
-              <a>Delete</a>
+              <a @click="deleteCourse(course.id)">Delete</a>
             </li>
           </ul>
         </template>
@@ -247,6 +247,7 @@ module.exports = {
       licenseStatus: this.course.licensed ? "license" : "trial",
       dropdownState: false,
       copyingCourse: false,
+      deletingCourse: false,
     }
   },
   computed: {
@@ -292,6 +293,10 @@ module.exports = {
     copyCourse(courseID){
       this.copyingCourse = true
       this.$store.dispatch('copyCourse', courseID)
+    },
+    deleteCourse(courseID){
+      this.deletingCourse = true
+      this.$store.dispatch('deleteCourse', courseID)
     }
   }
 }
