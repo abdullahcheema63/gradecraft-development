@@ -244,7 +244,7 @@ const store = new Vuex.Store({
         state.courseCreationError = resp
         console.log("inside addNewCourse action" , resp)
       },
-      copyCourse: async function({commit, state}, course ){
+      copyCourse: async function({commit, state}, courseID ){
         const resp = await fetch("/api/courses/copy", {
           method: 'POST',
           headers: {
@@ -254,7 +254,7 @@ const store = new Vuex.Store({
             'X-Requested-With': 'XMLHttpRequest',
           },
           credentials: 'same-origin',
-          body: JSON.stringify(course)
+          body: JSON.stringify(courseID)
         }).then((response) => {
           window.location.replace(store.state.overviewURL)
         })
