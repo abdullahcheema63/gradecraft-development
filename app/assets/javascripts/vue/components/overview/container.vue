@@ -50,11 +50,11 @@
                         <label for="course_name">Course name</label>
                       </div>
                       <div class="form_elem">
-                        <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar"></flat-pickr>
+                        <flat-pickr v-model="newCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar" autocomplete="off"></flat-pickr>
                         <label for="course_start">Course start date</label>
                       </div>
                       <div class="form_elem">
-                        <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar"></flat-pickr>
+                        <flat-pickr v-model="newCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar" autocomplete="off"></flat-pickr>
                         <label for="course_end">Course end date</label>
                       </div>
 
