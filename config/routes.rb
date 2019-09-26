@@ -9,9 +9,6 @@ Rails.application.routes.draw do
 
   get "/files/*all", to: "redocuments#download"
 
-  post "/upload_froala_images" => "froala_uploads#upload_image", :as => :upload_image
-  get "/download_froala_object/:name" => "froala_uploads#access_file", :as => :upload_access_file, :name => /.*/
-
   # 1. Analytics & Charts
   # 2. Announcements
   # 3. Assignments, Submissions, Grades
@@ -516,6 +513,9 @@ Rails.application.routes.draw do
     post "badges/:badge_id/file_uploads", to: "badge_files#create"
     delete "badge_files/:id", to: "badge_files#destroy"
 
+    post "upload_froala_images", to: "inline_images#upload_froala_image", as: :upload_image
+    get "download_froala_object/:name", to: "inline_images#access_file", as: :upload_access_file, name: /.*/
+  
     resources :gradebook, only: [] do
       collection do
         get :assignments

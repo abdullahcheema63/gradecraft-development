@@ -1,9 +1,14 @@
 'use strict';
 
+function CurrentURL(){
+	console.log(window.location.pathname);
+	return window.location.pathname;
+}
+
 angular.module('froala', []).
 	value('froalaConfig', {
 	key: 'RD4H4B12B7iB6E5C3A4I2I3C8B6B5A4C-11NGNe1IODMGYNSFKV==',
-	imageUploadURL: '/upload_froala_images',
+	imageUploadURL: "/api/upload_froala_images?type=" + CurrentURL(),
 	inlineMode: true,
     heightMin: 200,
     toolbarButtons: [ 'bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align', 'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html' ],
@@ -37,6 +42,8 @@ angular.module('froala', []).
 		for (var i = 0; i < froalaEvents.length; i++) {
 		   scope[froalaEvents[i]] = '=' + eventNameToSlug(froalaEvents[i]);
 		}
+
+		console.log("scope", scope)
 
 		return {
 			restrict: 'A',
