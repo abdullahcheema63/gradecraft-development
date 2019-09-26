@@ -46,7 +46,7 @@ const loadMany = function(modelArray, response, options, filter) {
 const csrftoken = document.head.querySelector("[name='csrf-token']").attributes.content.value;
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "subscriptions", "billing_schemes"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "payment", "subscriptions", "billing_schemes"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
   dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user"] });
@@ -62,6 +62,7 @@ const store = new Vuex.Store({
     allInstructors: [],
     allInstitutions: [],
     allBillingSchemes: [],
+    allSubscriptions: [],
     userSubscription: null,
     newSubscribingCourses: [],
     currentSubscribedCourses: [],
@@ -180,6 +181,20 @@ const store = new Vuex.Store({
         const final = apiResponseToData(json);
         //console.log(final);
         commit('addAllInstructors', final)
+      },
+      getAllSubscriptions: async function({ commit }){
+        const resp = await fetch("/api/subscriptions/all_subscriptions");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log(json);
+        const final = apiResponseToData(json);
+        console.log(final);
+        commit('addAllSubscriptions', final)
       },
       getAllInstitutions: async function({ commit }){
         const resp = await fetch("api/institutions");
@@ -472,6 +487,20 @@ const store = new Vuex.Store({
             studentNumber: course.student_count,
             instructors: {...course.staff},
             subscription: {...course.subscription},
+          }
+        })
+      },
+      addAllSubscriptions (state, subscriptions){
+        console.log("subscriptions:", subscriptions)
+        state.allSubscriptions = subscriptions.map(subscription => {
+          return {
+            id: subscription.id,
+            userID: subscription.user_id,
+            renewalDate: subscription.renewal_date,
+            createdAt: subscription.created_at,
+            updatedAt: subscription.updated_at,
+            billing_scheme_id: subscription.billing_scheme_id,
+            payments: {...subscription.payments}
           }
         })
       },

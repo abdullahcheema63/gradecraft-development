@@ -555,8 +555,9 @@ Rails.application.routes.draw do
     resources :levels, only: [:create, :update, :destroy]
     resources :level_badges, only: [:create, :destroy]
 
-    resources :subscriptions, only: [:index, :create, :billing_scheme_tiers] do
+    resources :subscriptions, only: [:index, :create, :billing_scheme_tiers, :all_subscriptions] do
       get :billing_scheme_tiers, on: :collection
+      get :all_subscriptions, on: :collection
       patch :update, on: :collection
       put :edit, on: :collection
     end
