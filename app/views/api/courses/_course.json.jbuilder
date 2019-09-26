@@ -13,6 +13,15 @@ json.attributes do
   json.has_learning_objectives course.has_learning_objectives?
   json.student_weighted course.student_weighted?
 
+  json.subscription do
+    json.id course.subscription_id
+    json.user_id course.subscription.user_id
+    json.renewal_date course.subscription.renewal_date
+    json.created_at course.subscription.created_at
+    json.updated_at course.subscription.updated_at
+    json.billing_scheme_id course.subscription.billing_scheme_id
+  end if course.subscription_id
+
   json.name course.name
   json.semester course.semester
   json.year course.year

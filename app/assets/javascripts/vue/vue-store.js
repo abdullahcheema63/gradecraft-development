@@ -421,6 +421,7 @@ const store = new Vuex.Store({
             active: course.active,
             instructor: "Cait Holman",
             url: course.change_course_path,
+            subscription: {...course.subscription},
             gradingStatus: {
               url: course.grading_status_path,
               ungraded: course.ungraded,
@@ -469,7 +470,8 @@ const store = new Vuex.Store({
             term: course.semester,
             year: course.year,
             studentNumber: course.student_count,
-            instructors: {...course.staff}
+            instructors: {...course.staff},
+            subscription: {...course.subscription},
           }
         })
       },
