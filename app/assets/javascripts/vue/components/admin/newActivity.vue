@@ -49,7 +49,7 @@
               <tr>
                 <th>Course # </th>
                 <th>Course Name </th>
-                <th>Licensed </th>
+                <th>Subscribed </th>
                 <th>Active </th>
                 <th>Published </th>
                 <th>Copied </th>
@@ -99,7 +99,7 @@
     <accordionComponent>
       <template slot="heading">Subscription expiration</template>
       <template slot="content">
-        <p>Licenses that will expire within 30 days from today</p>
+        <p>Subscriptions that will expire within 30 days from today</p>
         <div class="table_container" v-if="expiringLicenseInstructors.length">
           <table>
             <thead>

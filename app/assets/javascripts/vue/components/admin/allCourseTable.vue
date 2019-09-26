@@ -24,12 +24,12 @@
             <label for="inactive">Inactive</label>
           </span>
           <span>
-            <input id="licensed" type="checkbox" value="licensed" v-model="showLicensed" />
-            <label for="licensed">Licensed</label>
+            <input id="subscribed" type="checkbox" value="subscribed" v-model="showSubscribed" />
+            <label for="subscribed">Subscribed</label>
           </span>
           <span>
-            <input id="unlicensed" type="checkbox" value="unlicensed" v-model="showUnlicensed" />
-            <label for="unlicensed">Unlicensed</label>
+            <input id="unsubscribed" type="checkbox" value="unsubscribed" v-model="showUnsubscribed" />
+            <label for="unsubscribed">Unsubscribed</label>
           </span>
         </div>
         <div>
@@ -60,7 +60,7 @@
             <tr>
               <th>Course ID </th>
               <th>Course Name </th>
-              <th>Licensed </th>
+              <th>Subscribed </th>
               <th>Active </th>
               <th>Published</th>
               <th>Instructor(s)</th>
@@ -142,14 +142,12 @@ module.exports = {
       currentPageItemMin: 0,
       currentPageItemMax: 10,
       searchCourseName: '',
-      showLicensed: false,
-      showUnlicensed: false,
+      showSubscribed: false,
+      showUnsubscribed: false,
       showPublished: false,
       showUnpublished: false,
       showActive: false,
       showInactive: false,
-      showLicensedAccounts: false,
-      showFreeAccounts: false,
       courseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
       courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
       termName: [],
@@ -175,8 +173,8 @@ module.exports = {
         name = name.toLowerCase()
         if(!(name.includes(this.searchCourseName.toLowerCase()))){return false}
       }
-      if(this.showLicensed != this.showUnlicensed){
-        if(this.showLicensed != course.licensed){return false}
+      if(this.showSubscribed != this.showUnsubscribed){
+        if(this.showSubscribed != course.licensed){return false}
       }
       if(this.showActive != this.showInactive){
         if (this.showActive != course.active){return false}
