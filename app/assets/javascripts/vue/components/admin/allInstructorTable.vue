@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>All Instructor Users</h2>
-    <p>Manage instructor users and their licensed accounts.</p>
+    <p>Manage instructor users and their subscribed accounts.</p>
     <form>
       <div class="form_elem">
         <input type="text" id="name_contains" v-model="searchName" placeholder="Name contains..." />
@@ -13,12 +13,12 @@
         <p>Select which filters you want to apply to the table below: </p>
         <div>
           <span>
-            <input id="licensed_acccounts" type="checkbox" value="licensed" v-model="showLicensed" />
-            <label for="licensed_acccounts">Licensed Accounts</label>
+            <input id="subscribed_acccounts" type="checkbox" value="subscribed" v-model="showSubscribed" />
+            <label for="subscribed_acccounts">Subscribed Accounts</label>
           </span>
           <span>
-            <input id="unlicensed_accounts" type="checkbox" value="unlicensed" v-model="showUnlicensed" />
-            <label for="unlicensed_accounts">Unlicensed accounts</label>
+            <input id="unsubscribed_accounts" type="checkbox" value="unsubscribed" v-model="showUnsubscribed" />
+            <label for="unsubscribed_accounts">Unsubscribed accounts</label>
           </span>
           <span>
             <input id="active_accounts" type="checkbox" value="active" v-model="showInActiveCourse" />
@@ -34,11 +34,11 @@
             <tr>
               <th>First Name </th>
               <th>Last Name </th>
-              <th>License Expiration </th>
+              <th>Subscription Renewal Date </th>
               <th>Payment Method </th>
-              <th>Account Type</th>
+              <th>Billing Scheme</th>
               <th>Active Courses </th>
-              <th>Licensed Course </th>
+              <th>Subscribed Course </th>
               <th># Students in Course </th>
               <th>Actions </th>
             </tr>
@@ -107,8 +107,8 @@ module.exports = {
       currentPageItemMin: 0,
       currentPageItemMax: 10,
       searchName: "",
-      showLicensed: "",
-      showUnlicensed: "",
+      showSubscribed: "",
+      showUnsubscribed: "",
       showInActiveCourse: "",
     }
   },
@@ -131,8 +131,8 @@ module.exports = {
         name = name.toLowerCase();
         if(!(name.includes(this.searchName.toLowerCase()))) {return false}
       }
-      if (this.showLicensed != this.showUnlicensed){
-        if(this.showLicensed != instructor.licensed){return false}
+      if (this.showSubscribed != this.showUnsubscribed){
+        if(this.showSubscribed != instructor.licensed){return false}
       }
       if(this.showInActiveCourse){
         if(this.hasActiveCourse(instructor.courses) != true){return false}
