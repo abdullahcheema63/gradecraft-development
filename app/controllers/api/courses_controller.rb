@@ -1,8 +1,8 @@
 # rubocop:disable AndOr
 class API::CoursesController < ApplicationController
-  before_action :ensure_staff?, only: [:show, :copy, :create]
+  before_action :ensure_staff?, only: [:show, :copy, :create, :unpublish, :publish, :archive]
   before_action :use_current_course, only: [:analytics, :one_week_analytics]
-  before_action :ensure_admin?, only: [:destroy]
+  before_action :ensure_admin?, only: [:destroy, :unarchive]
 
   # skip_before_action :verify_authenticity_token, only: :create
 
@@ -49,6 +49,7 @@ class API::CoursesController < ApplicationController
     begin
       duplicated = @course.copy(course_id)
 
+      duplicated.published = false
       if duplicated.save
         if !current_user_is_admin? && current_user.role(duplicated).nil?
           duplicated.course_memberships.create(user: current_user, role: current_role)
@@ -87,6 +88,48 @@ class API::CoursesController < ApplicationController
     @course = Course.find(course_id)
     authorize! :destroy, @course
     @course.destroy
+  end
+
+  # PUT /api/courses/unpublish
+  def unpublish
+    puts "inside api unpublish"
+    course_id = params[:_json]
+    @course = Course.find(course_id)
+    if @course
+      authorize! :update, @course
+      @course.update(published: false)
+    end
+  end
+
+  # PUT /api/courses/publish
+  def publish
+    course_id = params[:_json]
+    @course = Course.find(course_id)
+    if @course && @course.subscription_id
+      authorize! :update, @course
+      authorize! :publish, @course
+      @course.update(published: true)
+    end
+  end
+
+  def archive
+    puts "inside api controller archive "
+    course_id = params[:_json]
+    @course = Course.find(course_id)
+    if @course
+      authorize! :update, @course
+      @course.update(status: false)
+    end
+  end
+
+  def unarchive
+    course_id = params[:_json]
+    @course = Course.find(course_id)
+    if @course
+      authorize! :update, @course
+      @course.update(published: false)
+      @course.update(status: true)
+    end
   end
 
   # GET api/courses/analytics

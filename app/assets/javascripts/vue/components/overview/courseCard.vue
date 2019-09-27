@@ -1,5 +1,8 @@
 <template>
   <div v-if="status=='published'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
+    <div v-if="copyingCourse">
+      <h1>yes you're actually able to copy a course</h1>
+    </div>
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
@@ -83,16 +86,16 @@
         <template slot="content">
           <ul>
             <li>
-              <a>Copy</a>
+              <a @click="copyCourse(course.id)">Copy</a>
             </li>
             <li>
-              <a>Unpublish</a>
+              <a @click="unpublishCourse(course.id)">Unpublish</a>
             </li>
             <li>
-              <a>Archive</a>
+              <a @click="archiveCourse(course.id)">Archive</a>
             </li>
             <li>
-              <a>Delete</a>
+              <a @click="deleteCourse(course.id)">Delete</a>
             </li>
           </ul>
         </template>
@@ -138,13 +141,13 @@
         <template slot="content">
           <ul>
             <li>
-              <a>Copy</a>
+              <a @click="copyCourse(course.id)">Copy</a>
+            </li>
+            <li v-if="course.licensed">
+              <a @click="publishCourse(course.id)">Publish</a>
             </li>
             <li>
-              <a>Publish</a>
-            </li>
-            <li>
-              <a>Archive</a>
+              <a @click="archiveCourse(course.id)">Archive</a>
             </li>
             <li>
               <a>Delete</a>
@@ -215,7 +218,7 @@
         <template slot="content">
           <ul>
             <li>
-              <a>Copy</a>
+              <a @click="copyCourse(course.id)">Copy</a>
             </li>
             <li>
               <a>Delete</a>
@@ -244,6 +247,8 @@ module.exports = {
       modalState: false,
       licenseStatus: this.course.licensed ? "license" : "trial",
       dropdownState: false,
+      copyingCourse: false,
+      deletingCourse: false,
     }
   },
   computed: {
@@ -286,6 +291,23 @@ module.exports = {
       if (this.licenseStatus === "license"){this.$store.dispatch('licenseCourse', this.course.id)}
       if (this.licenseStatus === "trial"){this.$store.dispatch('unLicenseCourse', this.course.id)}
     },
+    copyCourse(courseID){
+      this.copyingCourse = true
+      this.$store.dispatch('copyCourse', courseID)
+    },
+    unpublishCourse(courseID){
+      this.$store.dispatch('unpublishCourse', courseID)
+    },
+    publishCourse(courseID){
+      this.$store.dispatch('publishCourse', courseID)
+    },
+    archiveCourse(courseID){
+      this.$store.dispatch('archiveCourse', courseID)
+    },
+    deleteCourse(courseID){
+      this.deletingCourse = true
+      this.$store.dispatch('deleteCourse', courseID)
+    }
   }
 }
 `</script>

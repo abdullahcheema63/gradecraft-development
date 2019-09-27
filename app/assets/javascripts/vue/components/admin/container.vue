@@ -90,6 +90,7 @@ module.exports = {
     this.$store.dispatch("getAllCourses");
     this.$store.dispatch("getAllInstructors");
     this.$store.dispatch("getAllUsers");
+    this.$store.dispatch("getAllSubscriptions");
     this.$store.dispatch("getAllInstitutions");
   },
   computed: {

@@ -26,7 +26,7 @@
       <div>
         <h3 class="lining_figures app_licenses">16?</h3>
         <div>
-          <h4>Course Licenses</h4>
+          <h4>Subscriptions</h4>
           <p>
             <strong>10?</strong>
             renewed
@@ -49,7 +49,7 @@
               <tr>
                 <th>Course # </th>
                 <th>Course Name </th>
-                <th>Licensed </th>
+                <th>Subscribed </th>
                 <th>Active </th>
                 <th>Published </th>
                 <th>Copied </th>
@@ -97,16 +97,16 @@
       </template>
     </accordionComponent>
     <accordionComponent>
-      <template slot="heading">License expiration</template>
+      <template slot="heading">Subscription expiration</template>
       <template slot="content">
-        <p>Licenses that will expire within 30 days from today</p>
+        <p>Subscriptions that will expire within 30 days from today</p>
         <div class="table_container" v-if="expiringLicenseInstructors.length">
           <table>
             <thead>
               <tr>
                 <th>First Name </th>
                 <th>Last Name </th>
-                <th>License Expiration </th>
+                <th>Renewal Date </th>
                 <th>Payment Method </th>
                 <th># Active Courses </th>
                 <th>Actions </th>
@@ -164,6 +164,9 @@ module.exports = {
     },
     allNewCourses(){
       return this.filterNewCourses(this.allCourses)
+    },
+    allSubscriptions(){
+      return this.$store.state.allSubscriptions;
     },
     newTrialCoursesCount(){
       var count = this.allNewCourses.reduce(function(n, course){

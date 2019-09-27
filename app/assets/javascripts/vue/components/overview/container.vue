@@ -567,10 +567,6 @@ module.exports = {
       }
       return this.newCourseErrors
     },
-    copyCourse(){
-      this.copyingCourse = true
-      this.$store.dispatch('copyCourse', this.copyCourseID)
-    }
   }
 }
 `</script>

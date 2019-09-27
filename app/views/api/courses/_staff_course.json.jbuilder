@@ -11,6 +11,13 @@ json.attributes do
   json.unread_announcements Announcement.unread_count_for(current_user, course)
 
   json.name course.name
+
+  json.subscription do
+    json.id course.subscription_id
+    json.user_id course.subscription.user_id
+    json.renewal_date course.subscription.renewal_date
+  end if course.subscription_id
+
   json.semester course.semester
   json.year course.year
   json.course_number course.course_number

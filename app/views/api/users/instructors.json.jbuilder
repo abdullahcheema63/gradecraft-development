@@ -12,10 +12,12 @@ json.data @instructors.includes(:course_memberships) do |instructor|
     end
     json.licensed instructor.subscription.present?
     if instructor.subscription
-      json.license_expires instructor.subscription.expires
-      json.payment_method instructor.subscription.payments.last.source
-      json.account_type instructor.subscription.billing_scheme.id
+      json.license_expires instructor.subscription.renewal_date
+      json.account_type instructor.subscription.billing_scheme_id
       json.active_courses instructor.subscription.courses.count
+      if instructor.subscription.payments.length > 0
+        json.payment_method instructor.subscription.payments.last.source
+      end
     end
   end
   json.relationships do

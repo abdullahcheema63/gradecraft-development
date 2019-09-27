@@ -472,7 +472,7 @@ Rails.application.routes.draw do
 
     resources :challenges, only: :index
 
-    resources :courses, only: [:index, :show, :create, :copy, :destroy] do
+    resources :courses, only: [:index, :show, :create, :copy, :unpublish, :publish, :archive, :unarchive, :destroy] do
       resource :copy_log, only: [:show]
       resources :students, only: :index, module: :courses
       collection do
@@ -480,6 +480,10 @@ Rails.application.routes.draw do
         post :copy
         post :create
         post :destroy
+        post :unpublish
+        post :publish
+        post :archive
+        post :unarchive
         get "analytics"
         get "one_week_analytics", to: "courses#one_week_analytics"
         resources :importers, only: [], module: :courses, param: :provider_id do
@@ -555,8 +559,9 @@ Rails.application.routes.draw do
     resources :levels, only: [:create, :update, :destroy]
     resources :level_badges, only: [:create, :destroy]
 
-    resources :subscriptions, only: [:index, :create, :billing_scheme_tiers] do
+    resources :subscriptions, only: [:index, :create, :billing_scheme_tiers, :all_subscriptions] do
       get :billing_scheme_tiers, on: :collection
+      get :all_subscriptions, on: :collection
       patch :update, on: :collection
       put :edit, on: :collection
     end

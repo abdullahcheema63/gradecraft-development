@@ -1,5 +1,6 @@
 class API::SubscriptionsController < ApplicationController
   skip_before_action :require_course_membership
+  before_action :ensure_admin?, only: [:all_subscriptions]
 
   # GET api/subscriptions
   def index
@@ -13,6 +14,10 @@ class API::SubscriptionsController < ApplicationController
 
   def billing_scheme_tiers
     @billing_schemes = BillingScheme.all
+  end
+
+  def all_subscriptions
+    @subscriptions = Subscription.all
   end
 
   # POST api/subscriptions

@@ -46,7 +46,7 @@ const loadMany = function(modelArray, response, options, filter) {
 const csrftoken = document.head.querySelector("[name='csrf-token']").attributes.content.value;
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "subscriptions", "billing_schemes"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "payment", "subscriptions", "billing_schemes"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
   dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user"] });
@@ -57,11 +57,16 @@ const store = new Vuex.Store({
     overviewURL: "/overview",
     courseCopyError: "",
     courseCreationError: "",
+    courseUnpublishError: "",
+    coursePublishError: "",
+    courseArchiveError: "",
+    courseUnarchiveError: "",
     allUsers: [],
     allCourses: [],
     allInstructors: [],
     allInstitutions: [],
     allBillingSchemes: [],
+    allSubscriptions: [],
     userSubscription: null,
     newSubscribingCourses: [],
     currentSubscribedCourses: [],
@@ -181,6 +186,20 @@ const store = new Vuex.Store({
         //console.log(final);
         commit('addAllInstructors', final)
       },
+      getAllSubscriptions: async function({ commit }){
+        const resp = await fetch("/api/subscriptions/all_subscriptions");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log(json);
+        const final = apiResponseToData(json);
+        console.log(final);
+        commit('addAllSubscriptions', final)
+      },
       getAllInstitutions: async function({ commit }){
         const resp = await fetch("api/institutions");
         if (resp.status === 404){
@@ -244,7 +263,7 @@ const store = new Vuex.Store({
         state.courseCreationError = resp
         console.log("inside addNewCourse action" , resp)
       },
-      copyCourse: async function({commit, state}, course ){
+      copyCourse: async function({commit, state}, courseID ){
         const resp = await fetch("/api/courses/copy", {
           method: 'POST',
           headers: {
@@ -254,16 +273,15 @@ const store = new Vuex.Store({
             'X-Requested-With': 'XMLHttpRequest',
           },
           credentials: 'same-origin',
-          body: JSON.stringify(course)
+          body: JSON.stringify(courseID)
         }).then((response) => {
           window.location.replace(store.state.overviewURL)
         })
-        state.copyError = resp
+        state.courseCopyError = resp
         console.log("inside copyCourse action", resp)
-
       },
-      deleteCourse: async function({commit, state}, courseId ){
-        var api = "/api/courses/" + courseId
+      deleteCourse: async function({commit, state}, courseID ){
+        var api = "/api/courses/" + courseID
         const resp = await fetch(api, {
           method: 'DELETE',
           headers: {
@@ -273,11 +291,79 @@ const store = new Vuex.Store({
             'X-Requested-With': 'XMLHttpRequest',
           },
           credentials: 'same-origin',
-          body: JSON.stringify(courseId)
+          body: JSON.stringify(courseID)
         }).then((response) => {
           window.location.replace(state.overviewURL)
         })
         console.log("inside deleteCourse action", resp)
+      },
+      unpublishCourse: async function({ commit, state }, courseID){
+        const resp = await fetch("/api/courses/unpublish", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(courseID),
+        }).then((response) => {
+          window.location.replace(store.state.overviewURL)
+        })
+        state.courseUnpublishError = resp
+        console.log("inside unpublishCourse action", resp)
+      },
+      publishCourse: async function({ commit, state }, courseID){
+        const resp = await fetch("/api/courses/publish", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(courseID),
+        }).then((response) => {
+          window.location.replace(store.state.overviewURL)
+        })
+        state.coursePublishError = resp
+        console.log("inside publishCourse action", resp)
+      },
+      archiveCourse: async function({ commit, state }, courseID){
+        const resp = await fetch("/api/courses/archive", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(courseID),
+        }).then((response) => {
+          window.location.replace(store.state.overviewURL)
+        })
+        state.courseArchiveError = resp
+        console.log("inside archiveCourse action", resp)
+      },
+      unarchiveCourse :async function({ commit, state }, courseID){
+        const resp = await fetch("/api/courses/unarchive", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(courseID),
+        }).then((response) => {
+          window.location.replace(store.state.overviewURL)
+        })
+        state.courseUnarchiveError = resp
+        console.log("inside unarchiveCourse action", resp)
       },
       newLicensePayment: async function({ commit }, payment){
         const resp = await fetch("/api/subscriptions", {
@@ -422,6 +508,7 @@ const store = new Vuex.Store({
             active: course.active,
             instructor: "Cait Holman",
             url: course.change_course_path,
+            subscription: {...course.subscription},
             gradingStatus: {
               url: course.grading_status_path,
               ungraded: course.ungraded,
@@ -470,7 +557,22 @@ const store = new Vuex.Store({
             term: course.semester,
             year: course.year,
             studentNumber: course.student_count,
-            instructors: {...course.staff}
+            instructors: {...course.staff},
+            subscription: {...course.subscription},
+          }
+        })
+      },
+      addAllSubscriptions (state, subscriptions){
+        console.log("subscriptions:", subscriptions)
+        state.allSubscriptions = subscriptions.map(subscription => {
+          return {
+            id: subscription.id,
+            userID: subscription.user_id,
+            renewalDate: subscription.renewal_date,
+            createdAt: subscription.created_at,
+            updatedAt: subscription.updated_at,
+            billing_scheme_id: subscription.billing_scheme_id,
+            payments: {...subscription.payments}
           }
         })
       },
