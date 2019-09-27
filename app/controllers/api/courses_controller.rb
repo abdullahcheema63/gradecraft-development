@@ -1,8 +1,8 @@
 # rubocop:disable AndOr
 class API::CoursesController < ApplicationController
-  before_action :ensure_staff?, only: [:show, :copy, :create, :unpublish, :publish]
+  before_action :ensure_staff?, only: [:show, :copy, :create, :unpublish, :publish, :archive]
   before_action :use_current_course, only: [:analytics, :one_week_analytics]
-  before_action :ensure_admin?, only: [:destroy]
+  before_action :ensure_admin?, only: [:destroy, :unarchive]
 
   # skip_before_action :verify_authenticity_token, only: :create
 
@@ -109,6 +109,26 @@ class API::CoursesController < ApplicationController
       authorize! :update, @course
       authorize! :publish, @course
       @course.update(published: true)
+    end
+  end
+
+  def archive
+    puts "inside api controller archive "
+    course_id = params[:_json]
+    @course = Course.find(course_id)
+    if @course
+      authorize! :update, @course
+      @course.update(status: false)
+    end
+  end
+
+  def unarchive
+    course_id = params[:_json]
+    @course = Course.find(course_id)
+    if @course
+      authorize! :update, @course
+      @course.update(published: false)
+      @course.update(status: true)
     end
   end
 

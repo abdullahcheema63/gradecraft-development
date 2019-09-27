@@ -92,7 +92,7 @@
               <a @click="unpublishCourse(course.id)">Unpublish</a>
             </li>
             <li>
-              <a>Archive</a>
+              <a @click="archiveCourse(course.id)">Archive</a>
             </li>
             <li>
               <a @click="deleteCourse(course.id)">Delete</a>
@@ -146,7 +146,7 @@
               <a @click="publishCourse(course.id)">Publish</a>
             </li>
             <li>
-              <a>Archive</a>
+              <a @click="archiveCourse(course.id)">Archive</a>
             </li>
             <li>
               <a>Delete</a>
@@ -217,7 +217,7 @@
         <template slot="content">
           <ul>
             <li>
-              <a>Copy</a>
+              <a @click="copyCourse(course.id)">Copy</a>
             </li>
             <li>
               <a>Delete</a>
@@ -299,6 +299,9 @@ module.exports = {
     },
     publishCourse(courseID){
       this.$store.dispatch('publishCourse', courseID)
+    },
+    archiveCourse(courseID){
+      this.$store.dispatch('archiveCourse', courseID)
     },
     deleteCourse(courseID){
       this.deletingCourse = true
