@@ -122,6 +122,7 @@
   <div v-else-if="status=='unpublished'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
+      <span>{{ course.term.name }} {{ course.term.year }}</span>
     </h4>
 
     <div class="course_status">

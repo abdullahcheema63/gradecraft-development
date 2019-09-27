@@ -44,7 +44,7 @@
 
             <td>{{c.number}}</td>
             <td>{{c.name}}</td>
-            <td>{{c.semester}} {{c.year}}</td>
+            <td>{{c.term.name}} {{c.term.year}}</td>
             <td><span v-if="c.published" class="checked">&nbsp;</span> </td>
           </tr>
         </tbody>
