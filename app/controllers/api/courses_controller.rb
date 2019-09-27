@@ -90,6 +90,28 @@ class API::CoursesController < ApplicationController
     @course.destroy
   end
 
+  # PUT /api/courses/unpublish
+  def unpublish
+    puts "inside api unpublish"
+    course_id = params[:_json]
+    @course = Course.find(course_id)
+    if @course
+      authorize! :update, @course
+      @course.update(published: false)
+    end
+  end
+
+  # PUT /api/courses/publish
+  def publish
+    course_id = params[:_json]
+    @course = Course.find(course_id)
+    if @course && @course.subscription_id
+      authorize! :update, @course
+      authorize! :publish, @course
+      @course.update(published: true)
+    end
+  end
+
   # GET api/courses/analytics
   def analytics
     if current_user_is_student?

@@ -89,7 +89,7 @@
               <a @click="copyCourse(course.id)">Copy</a>
             </li>
             <li>
-              <a>Unpublish</a>
+              <a @click="unpublishCourse(course.id)">Unpublish</a>
             </li>
             <li>
               <a>Archive</a>
@@ -140,10 +140,10 @@
         <template slot="content">
           <ul>
             <li>
-              <a>Copy</a>
+              <a @click="copyCourse(course.id)">Copy</a>
             </li>
-            <li>
-              <a>Publish</a>
+            <li v-if="course.licensed">
+              <a @click="publishCourse(course.id)">Publish</a>
             </li>
             <li>
               <a>Archive</a>
@@ -293,6 +293,12 @@ module.exports = {
     copyCourse(courseID){
       this.copyingCourse = true
       this.$store.dispatch('copyCourse', courseID)
+    },
+    unpublishCourse(courseID){
+      this.$store.dispatch('unpublishCourse', courseID)
+    },
+    publishCourse(courseID){
+      this.$store.dispatch('publishCourse', courseID)
     },
     deleteCourse(courseID){
       this.deletingCourse = true

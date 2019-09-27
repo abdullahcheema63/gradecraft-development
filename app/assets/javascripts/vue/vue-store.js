@@ -57,6 +57,8 @@ const store = new Vuex.Store({
     overviewURL: "/overview",
     courseCopyError: "",
     courseCreationError: "",
+    courseUnpublishError: "",
+    coursePublishError: "",
     allUsers: [],
     allCourses: [],
     allInstructors: [],
@@ -273,7 +275,7 @@ const store = new Vuex.Store({
         }).then((response) => {
           window.location.replace(store.state.overviewURL)
         })
-        state.copyError = resp
+        state.courseCopyError = resp
         console.log("inside copyCourse action", resp)
       },
       deleteCourse: async function({commit, state}, courseID ){
@@ -292,6 +294,40 @@ const store = new Vuex.Store({
           window.location.replace(state.overviewURL)
         })
         console.log("inside deleteCourse action", resp)
+      },
+      unpublishCourse: async function({ commit, state }, courseID){
+        const resp = await fetch("/api/courses/unpublish", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(courseID),
+        }).then((response) => {
+          window.location.replace(store.state.overviewURL)
+        })
+        state.courseUnpublishError = resp
+        console.log("inside unpublishCourse action", resp)
+      },
+      publishCourse: async function({ commit, state }, courseID){
+        const resp = await fetch("/api/courses/publish", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(courseID),
+        }).then((response) => {
+          window.location.replace(store.state.overviewURL)
+        })
+        state.coursePublishError = resp
+        console.log("inside publishCourse action", resp)
       },
       newLicensePayment: async function({ commit }, payment){
         const resp = await fetch("/api/subscriptions", {

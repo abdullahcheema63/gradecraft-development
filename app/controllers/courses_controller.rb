@@ -144,6 +144,7 @@ class CoursesController < ApplicationController
   end
 
   def unpublish
+    puts "in course controller unpublish"
     authorize! :update, @course
     @course.update(published: false)
     redirect_to dashboard_path, flash: {
