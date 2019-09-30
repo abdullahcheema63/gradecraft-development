@@ -29,10 +29,23 @@ class API::InlineImagesController < ActionController::Base
   
     def access_file
       puts "Accessing: #{@course.id}"
-      if File.exists?(Rails.root.join("files", "uploads", "#{@course.id}", "froala_uploads", params[:name]))
-        send_data File.read(Rails.root.join("files", "uploads", "#{@course.id}", "froala_uploads", params[:name])), :disposition => "attachment"
+      file_path = Rails.root.join("files", "uploads", "#{@course.id}", "froala_uploads", params[:name])
+      
+      if File.file?(file_path)
+        send_data File.read(file_path), :disposition => "attachment"
       else
         render :nothing => true
+      end
+    end
+
+    def remove_uploaded_file
+      puts "Deleting: #{params[:name]}"
+      file_path = Rails.root.join("files", "uploads", "#{@course.id}", "froala_uploads", params[:name])
+      if File.file?(file_path)
+        File.delete(file_path)
+        render :json => {:deleted => true}.to_json
+      else
+        render :json => {:delete => false}.to_json
       end
     end
 

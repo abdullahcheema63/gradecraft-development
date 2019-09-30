@@ -50,7 +50,17 @@ $( "#tabs" ).tabs({
   toolbarButtonsMD: ['bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align',
   'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html'],
 }).on('froalaEditor.image.removed', function (e, editor, response) {
-  alert('before', response);
+  var viewImageURL = "/api/download_froala_object/";
+  var imageKey = new URL(response.context.src).pathname.replace(viewImageURL, "");
+
+  $.ajax({
+    type: "POST",
+    url: "/api/delete_froala_images",
+    data: { name: imageKey },
+    success: function(){
+      console.log("Image removed");
+    }
+  })
 });
 
 // handle 'select all' buttons, used on release grade forms
