@@ -32,6 +32,11 @@ $( "#tabs" ).tabs({
   inlineMode: false,
   heightMin: 200,
   imageUploadURL: '/api/upload_froala_images',
+  events: {
+    'keypress': function (keypressEvent) {
+      console.log(this)
+    }
+  },
   toolbarButtons: [
     'bold', 'italic', 
     'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align',
@@ -43,8 +48,10 @@ $( "#tabs" ).tabs({
   ],
   toolbarButtonsXS: ['bold', 'italic', 'underline'],
   toolbarButtonsMD: ['bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align',
-  'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html']
-})
+  'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html'],
+}).on('froalaEditor.image.removed', function (e, editor, response) {
+  alert('before', response);
+});
 
 // handle 'select all' buttons, used on release grade forms
 $(".select-all").click(function(e){
