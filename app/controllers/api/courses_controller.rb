@@ -92,7 +92,6 @@ class API::CoursesController < ApplicationController
 
   # PUT /api/courses/unpublish
   def unpublish
-    puts "inside api unpublish"
     course_id = params[:_json]
     @course = Course.find(course_id)
     if @course
@@ -113,12 +112,12 @@ class API::CoursesController < ApplicationController
   end
 
   def archive
-    puts "inside api controller archive "
     course_id = params[:_json]
     @course = Course.find(course_id)
     if @course
       authorize! :update, @course
       @course.update(status: false)
+      @course.unsubscribe
     end
   end
 

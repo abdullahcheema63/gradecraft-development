@@ -31,17 +31,22 @@ module.exports = {
       type: Boolean
     }
   },
+  data() {
+    return {
+      dropDownViz: this.dropdownState
+    }
+  },
   methods: {
     toggle() {
       this.toggleDropdownState()
     },
     toggleDropdownState(){
-      this.dropdownState = !this.dropdownState
+      this.dropDownViz = !this.dropDownViz
     }
   },
   computed: {
     dropdownClass() {
-      if (this.dropdownState) {
+      if (this.dropDownViz) {
         return 'is-open';
       }
       return 'is-closed';
