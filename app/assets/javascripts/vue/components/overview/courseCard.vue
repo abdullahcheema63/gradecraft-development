@@ -82,7 +82,7 @@
 
     <div class="button_box">
       <a class="button next" v-bind:href="course.url">View course</a>
-      <dropdownDotsComponent>
+      <dropdownDotsComponent v-if="is_staff">
         <template slot="content">
           <ul>
             <li>

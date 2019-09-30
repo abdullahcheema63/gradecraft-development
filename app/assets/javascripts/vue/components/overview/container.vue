@@ -417,7 +417,6 @@ module.exports = {
   },
   data() {
     return {
-      tabBarOption: ["Current", "Archived", "Past", "OLD"],
       tabSection: ["Current"],
       config: {
         allowInput: true,
@@ -454,6 +453,18 @@ module.exports = {
     this.$store.dispatch("getCourseMemberships")
   },
   computed: {
+    tabBarOption(){
+      if (this.userIsStudent) {
+        var options = ["Current", "Past", "OLD"]
+      }
+      else if ( this.userIsStudent && this.userIsInstructor ){
+        var options = ["Current", "Archived", "Past", "OLD"]
+      }
+      else {
+        var options = ["Current", "Archived", "OLD"]
+      }
+      return options
+    },
     currentCourses(){
       return this.$store.state.user.courseMembership.filter( course => {
         return course.active
@@ -524,6 +535,12 @@ module.exports = {
         return course.role
       })
       return courseRoles.includes('professor')
+    },
+    userIsStudent(){
+      var courseRoles = this.$store.state.user.courseMembership.map( course => {
+        return course.role
+      })
+      return courseRoles.includes('Student')
     },
     licenseInfo(){
       return this.$store.getters.userLicenseInfo
