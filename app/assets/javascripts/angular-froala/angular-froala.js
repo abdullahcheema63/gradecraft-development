@@ -101,6 +101,20 @@ angular.module('froala', []).
 					updateView();
 				});
 
+				element.on('froalaEditor.image.removed', function (e, editor, response) {
+					var viewImageURL = "/api/download_froala_object/";
+					var imageKey = new URL(response.context.src).pathname.replace(viewImageURL, "");
+					
+					$.ajax({
+						type: "POST",
+						url: "/api/delete_froala_images",
+						data: { name: imageKey },
+						success: function(){
+						console.log("Image removed");
+						}
+					})
+				});
+
 				var registerEventAndCallback = function(eventName, callback){
 			  	if(eventName && callback){
 			  		var el;
