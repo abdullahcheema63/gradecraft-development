@@ -32,6 +32,7 @@ class API::SubscriptionsController < ApplicationController
       renewal_date: DateTime.yesterday
     })
     if @subscription.save!
+      @subscription.create_stripe_customer(current_user.email)
       puts("Created a subscription! #{@subscription.inspect}")
       redirect_back(fallback_location: fallback_location)
     else
@@ -131,6 +132,7 @@ class API::SubscriptionsController < ApplicationController
       puts("more courses selected than currently subscribed, needs payment")
       courses_to_pay_for_count = new_subscribed_courses_count - current_subscribed_courses_count
       new_billing_scheme = determine_billing_scheme(new_subscribed_courses_count)
+      #Need to make a new function to pro-rate the days for amount to pay
       amount_to_pay = courses_to_pay_for_count * new_billing_scheme.price_per_course
 
       puts("Cost to pay today: #{amount_to_pay}")

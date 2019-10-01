@@ -44,33 +44,34 @@
       <input id="phone" v-model="payment.phone" type="number" required="required" />
       <label for="phone">Phone</label>
     </div>
+    <button class="action" type="submit">Save</button>
   </div>
 </template>
 
 <script lang="coffee">
 ```
-const data = {
-  errors: [],
-  cardError: "",
-  payment: {
-    first_name: "",
-    last_name: "",
-    organization: "",
-    phone: "",
-    addr1: "",
-    addr2: "",
-    city: "",
-    country: "",
-    stripe_token: "",
-  }
-};
-
 let stripe;
 let card;
 
 module.exports = {
   name: "licenses-payment-inputs",
-  data: function() { return data; },
+  data: function() {
+    return {
+      errors: [],
+      cardError: "",
+      payment: {
+        first_name: "",
+        last_name: "",
+        organization: "",
+        phone: "",
+        addr1: "",
+        addr2: "",
+        city: "",
+        country: "",
+        stripe_token: "",
+      }
+    }
+  },
   props: {
     stripePk: String,
   },

@@ -95,7 +95,6 @@
           <template slot="content">
             <form>
               <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
-              <button class="action" type="submit">Save</button>
             </form>
           </template>
         </buttonModal>

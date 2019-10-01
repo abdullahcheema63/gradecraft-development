@@ -38,6 +38,19 @@ class Subscription < ApplicationRecord
     self.update_attribute(:billing_scheme_id, billing_scheme_id)
   end
 
+  def create_stripe_customer(email)
+    customer = Stripe::Customer.create(
+      email: email
+    )
+    self.customer_id = customer.id
+    if self.save!
+      puts "created stripe customer"
+    else
+      puts "error creating stripe customer"
+      puts self.inspect
+    end
+  end
+
   private
 
   def payment_note
