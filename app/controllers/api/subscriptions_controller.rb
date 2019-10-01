@@ -42,6 +42,21 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
+  # POST api/subscriptions/add_card
+  def add_card
+    puts "inside ADD_CARD subscriptions api controller"
+    @subscription = current_user.subscription
+    if !@subscription
+      return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
+    end
+    puts params
+
+    puts params.first_name
+
+
+
+  end
+
   # PUT api/licenses/edit
   def edit
     @subscription = current_user.subscription

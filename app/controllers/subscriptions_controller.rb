@@ -14,5 +14,6 @@ class SubscriptionsController < ApplicationController
     @title = "Subscriptions"
     @user = current_user
     @stripePk = Rails.configuration.stripe[:publishable_key]
+    @stripeSk = Rails.configuration.stripe[:secret_key]
   end
 end

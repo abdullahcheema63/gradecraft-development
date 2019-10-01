@@ -564,6 +564,7 @@ Rails.application.routes.draw do
       get :all_subscriptions, on: :collection
       patch :update, on: :collection
       put :edit, on: :collection
+      post :add_card, on: :collection
     end
 
     resources :predicted_earned_badges, only: [:create, :update]

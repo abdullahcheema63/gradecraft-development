@@ -55,6 +55,7 @@ const store = new Vuex.Store({
   state: {
     courseDashboardURL: "/dashboard",
     overviewURL: "/overview",
+    subscriptionsURL: "/subscriptions",
     courseCopyError: "",
     courseCreationError: "",
     courseUnpublishError: "",
@@ -229,6 +230,26 @@ const store = new Vuex.Store({
         const final = apiResponseToDataDataItem(json);
         console.log(final);
         commit('addUserSubscription', final)
+      },
+      addCardToSubscription: async function({ commit, state }, paymentInfo) {
+        console.log("addCardToSubscription action dispatched")
+        console.log(paymentInfo)
+        console.log(JSON.stringify(paymentInfo))
+        const resp = await fetch("/api/subscriptions/add_card", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(paymentInfo),
+        }).then((response) => {
+          window.location.replace(store.state.subscriptionsURL)
+        })
+        console.log("resp")
+        console.log(resp)
       },
       getAllBillingSchemes: async function({ commit }){
         console.log("getAllBillingSchemes action dispatched")

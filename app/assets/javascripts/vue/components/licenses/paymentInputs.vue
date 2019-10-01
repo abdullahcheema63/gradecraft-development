@@ -8,40 +8,40 @@
     <h3>Billing Info</h3>
     <div class="flex-2 form_pair">
       <div class="form_elem">
-        <input id="first_name" v-model="payment.first_name" type="text" required="required" />
+        <input id="first_name" v-model="sourceInfo.first_name" type="text" required="required" />
         <label for="first_name">First Name</label>
       </div>
       <div class="form_elem form_pair">
-        <input id="last_name" v-model="payment.last_name" type="text" required="required" />
+        <input id="last_name" v-model="sourceInfo.last_name" type="text" required="required" />
         <label for="last_name">Last Name</label>
       </div>
     </div>
     <div class="form_elem">
-      <input id="organization" v-model="payment.organization" type="text" />
+      <input id="organization" v-model="sourceInfo.organization" type="text" />
       <label for="organization">Organization</label>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
-        <input id="addr1" v-model="payment.addr1" type="text" required="required" />
+        <input id="addr1" v-model="sourceInfo.addr1" type="text" required="required" />
         <label for="addr1">Address Line 1</label>
       </div>
       <div class="form_elem">
-        <input id="addr2" v-model="payment.addr2" type="text" />
+        <input id="addr2" v-model="sourceInfo.addr2" type="text" />
         <label for="addr2">Address Line 2</label>
       </div>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
-        <input id="city" v-model="payment.city" type="text" required="required" />
+        <input id="city" v-model="sourceInfo.city" type="text" required="required" />
         <label for="city">City</label>
       </div>
       <div class="form_elem">
-        <input id="country" v-model="payment.country" type="text" required="required" />
+        <input id="country" v-model="sourceInfo.country" type="text" required="required" />
         <label for="country">Country</label>
       </div>
     </div>
     <div class="form_elem">
-      <input id="phone" v-model="payment.phone" type="number" required="required" />
+      <input id="phone" v-model="sourceInfo.phone" type="number" required="required" />
       <label for="phone">Phone</label>
     </div>
     <button class="action" @click.prevent="addCard()" type="submit">+ Add Card</button>
@@ -69,24 +69,46 @@ module.exports = {
         city: "",
         country: "",
         stripe_token: "",
+      },
+      sourceInfo: {
+        type: "card",
+        customer_id: "",
+        first_name: "",
+        last_name: "",
+        organization: "",
+        phone: "",
+        addr1: "",
+        addr2: "",
+        city: "",
+        country: "",
+        stripe_token: "",
       }
     }
   },
   props: {
     stripePk: String,
+    stripeSk: String,
   },
   methods: {
     addCard: async function() {
-      const {token, error} = await stripe.createToken(card);
-      if (error) {
-        this.errors.push(error.message);
-      } else {
-        this.payment.stripe_token = token.id;
-      }
-    },
-    addCard: async function() {
       console.log("inside add card on payments input")
-      const paymentInfo = await this.getPayment();
+      const source = await this.createSource();
+      console.log("source:")
+      console.log(source)
+    },
+    createSource: async function() {
+      console.log("inside createSource after form submit plz")
+      this.sourceInfo.customer_id = this.$store.state.userSubscription.customer_id
+      console.log(this.sourceInfo)
+
+      stripe.createSource(card, {
+        customer: this.sourceInfo.customer_id
+        },
+      ).then(function(result){
+        console.log("?created source?")
+        console.log(result)
+      });
+      return this.sourceInfo
     },
     getPayment: async function() {
       console.log("inside getPayment after form submit plz")
