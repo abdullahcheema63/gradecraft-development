@@ -44,7 +44,7 @@
       <input id="phone" v-model="payment.phone" type="number" required="required" />
       <label for="phone">Phone</label>
     </div>
-    <button class="action" type="submit">Save</button>
+    <button class="action" @click.prevent="addCard()" type="submit">+ Add Card</button>
   </div>
 </template>
 
@@ -76,11 +76,25 @@ module.exports = {
     stripePk: String,
   },
   methods: {
-    getPayment: async function() {
+    addCard: async function() {
       const {token, error} = await stripe.createToken(card);
       if (error) {
         this.errors.push(error.message);
       } else {
+        this.payment.stripe_token = token.id;
+      }
+    },
+    addCard: async function() {
+      console.log("inside add card on payments input")
+      const paymentInfo = await this.getPayment();
+    },
+    getPayment: async function() {
+      console.log("inside getPayment after form submit plz")
+      const {token, error} = await stripe.createToken(card);
+      if (error) {
+        this.errors.push(error.message);
+      } else {
+        console.log("inside createToken")
         this.payment.stripe_token = token.id;
       }
       return this.payment;
@@ -105,6 +119,7 @@ module.exports = {
         console.error(self.cardError);
       } else {
         self.cardError = '';
+        console.log("typing into card form")
       }
     });
   },

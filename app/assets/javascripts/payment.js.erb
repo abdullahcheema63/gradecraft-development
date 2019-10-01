@@ -8,6 +8,8 @@
 
   const card = elements.create('card');
 
+  //RED HERRING!!!! PRETTY SURE THIS IS NOT USED TO CREATE A CARD / PAYMNET
+
   // Add an instance of the card Element into the `card-element` <div>.
   card.mount('#card-element');
 
@@ -16,7 +18,7 @@
   const stripeTokenHandler = (token, form) => {
     const hiddenInput = document.createElement('input');
     hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', 'license[payments_attributes][0][stripe_token]');
+    hiddenInput.setAttribute('name', 'payment_token');
     hiddenInput.setAttribute('value', token.id);
     form.appendChild(hiddenInput);
     form.submit();

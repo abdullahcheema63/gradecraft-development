@@ -93,7 +93,7 @@
           <template slot="button-text">Add a new payment method</template>
           <template slot="heading">Add a new payment method</template>
           <template slot="content">
-            <form>
+            <form id="payment-form">
               <licenses-payment-inputs ref="paymentInputs" :stripePk="stripePk"/>
             </form>
           </template>
