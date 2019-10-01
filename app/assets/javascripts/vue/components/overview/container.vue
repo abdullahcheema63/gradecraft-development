@@ -91,7 +91,7 @@
             <template slot="heading">Published Courses</template>
             <template slot="content">
               <div class="course_box" v-if="publishedCourses.length">
-                <courseCard v-for="course in publishedCourses" :key="course.id"  :course="course" status="published"></courseCard>
+                <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
               </div>
 
               <div class="course_box" v-else>
