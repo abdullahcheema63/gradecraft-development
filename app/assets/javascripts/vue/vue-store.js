@@ -231,10 +231,10 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserSubscription', final)
       },
-      addCardToSubscription: async function({ commit, state }, paymentInfo) {
+      addCardToSubscription: async function({ commit, state }, paymentMethod) {
         console.log("addCardToSubscription action dispatched")
-        console.log(paymentInfo)
-        console.log(JSON.stringify(paymentInfo))
+        console.log(paymentMethod)
+        console.log(JSON.stringify(paymentMethod))
         const resp = await fetch("/api/subscriptions/add_card", {
           method: 'POST',
           headers: {
@@ -244,7 +244,7 @@ const store = new Vuex.Store({
             'X-Requested-With': 'XMLHttpRequest',
           },
           credentials: 'same-origin',
-          body: JSON.stringify(paymentInfo),
+          body: JSON.stringify(paymentMethod),
         }).then((response) => {
           window.location.replace(store.state.subscriptionsURL)
         })

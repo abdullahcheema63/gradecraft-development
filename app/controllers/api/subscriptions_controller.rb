@@ -49,11 +49,16 @@ class API::SubscriptionsController < ApplicationController
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
-    puts params
+    customer_id = @subscription.customer_id
 
-    puts params.first_name
+    payment_id = params[:payment_method_id]
 
+    puts "payment_id: #{payment_id}"
+    puts "customer_id: #{customer_id}"
 
+    payment_method = Stripe::PaymentMethod.retrieve(payment_id)
+    
+    puts payment_method
 
   end
 

@@ -5,43 +5,39 @@
       <div id="stripe"></div>
     </div>
 
-    <h3>Billing Info</h3>
-    <div class="flex-2 form_pair">
-      <div class="form_elem">
-        <input id="first_name" v-model="sourceInfo.first_name" type="text" required="required" />
-        <label for="first_name">First Name</label>
-      </div>
-      <div class="form_elem form_pair">
-        <input id="last_name" v-model="sourceInfo.last_name" type="text" required="required" />
-        <label for="last_name">Last Name</label>
-      </div>
-    </div>
+    <h3>Account Nickname</h3>
     <div class="form_elem">
-      <input id="organization" v-model="sourceInfo.organization" type="text" />
-      <label for="organization">Organization</label>
+      <input id="account_name" v-model="paymentMethodInfo.account_name" type="text" />
+      <label for="account_name">Nickname for Card (Ex: Erik's Visa)</label>
+    </div>
+
+    <h3>Billing Info</h3>
+    <div class="form_elem">
+      <input id="full_name" v-model="paymentMethodInfo.full_name" type="text" required="required" />
+      <label for="full_name">Full Name as it appears on card</label>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
-        <input id="addr1" v-model="sourceInfo.addr1" type="text" required="required" />
+        <input id="addr1" v-model="paymentMethodInfo.addr1" type="text" required="required" />
         <label for="addr1">Address Line 1</label>
       </div>
       <div class="form_elem">
-        <input id="addr2" v-model="sourceInfo.addr2" type="text" />
+        <input id="addr2" v-model="paymentMethodInfo.addr2" type="text" />
         <label for="addr2">Address Line 2</label>
       </div>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
-        <input id="city" v-model="sourceInfo.city" type="text" required="required" />
+        <input id="city" v-model="paymentMethodInfo.city" type="text" required="required" />
         <label for="city">City</label>
       </div>
       <div class="form_elem">
-        <input id="country" v-model="sourceInfo.country" type="text" required="required" />
-        <label for="country">Country</label>
+        <input id="country" v-model="paymentMethodInfo.postal_code" type="text" required="required" />
+        <label for="country">Zip Code (postal code)</label>
       </div>
     </div>
     <div class="form_elem">
-      <input id="phone" v-model="sourceInfo.phone" type="number" required="required" />
+      <input id="phone" v-model="paymentMethodInfo.phone" type="number" required="required" />
       <label for="phone">Phone</label>
     </div>
     <button class="action" @click.prevent="addCard()" type="submit">+ Add Card</button>
@@ -51,7 +47,7 @@
 <script lang="coffee">
 ```
 let stripe;
-let card;
+var card;
 
 module.exports = {
   name: "licenses-payment-inputs",
@@ -59,29 +55,15 @@ module.exports = {
     return {
       errors: [],
       cardError: "",
-      payment: {
-        first_name: "",
-        last_name: "",
-        organization: "",
+      paymentMethodInfo: {
+        full_name: "",
+        account_name: "",
         phone: "",
         addr1: "",
         addr2: "",
         city: "",
-        country: "",
-        stripe_token: "",
-      },
-      sourceInfo: {
-        type: "card",
-        customer_id: "",
-        first_name: "",
-        last_name: "",
-        organization: "",
-        phone: "",
-        addr1: "",
-        addr2: "",
-        city: "",
-        country: "",
-        stripe_token: "",
+        postal_code: "",
+        payment_method_id: "",
       }
     }
   },
@@ -92,38 +74,37 @@ module.exports = {
   methods: {
     addCard: async function() {
       console.log("inside add card on payments input")
-      const source = await this.createSource();
-      console.log("source:")
-      console.log(source)
-    },
-    createSource: async function() {
-      console.log("inside createSource after form submit plz")
-      this.sourceInfo.customer_id = this.$store.state.userSubscription.customer_id
-      console.log(this.sourceInfo)
+      const paymentMethod = await this.createPaymentMethod();
 
-      stripe.createSource(card, {
-        customer: this.sourceInfo.customer_id
-        },
-      ).then(function(result){
-        console.log("?created source?")
-        console.log(result)
-      });
-      return this.sourceInfo
+      this.$store.dispatch('addCardToSubscription', paymentMethod)
     },
-    getPayment: async function() {
-      console.log("inside getPayment after form submit plz")
-      const {token, error} = await stripe.createToken(card);
-      if (error) {
-        this.errors.push(error.message);
+    createPaymentMethod: async function() {
+      console.log("inside createPaymentMethod")
+      const result = await stripe.createPaymentMethod('card', card, {
+        billing_details: {
+          address: {
+            city: this.paymentMethodInfo.city,
+            line1: this.paymentMethodInfo.addr1,
+            postal_code: this.paymentMethodInfo.postal_code
+          },
+          phone: this.paymentMethodInfo.phone,
+          name: this.paymentMethodInfo.full_name
+        },
+        });
+      if (result.error) {
+        console.log(result)
+        this.errors.push(result.error.message);
       } else {
-        console.log("inside createToken")
-        this.payment.stripe_token = token.id;
+        console.log(result)
+        this.paymentMethodInfo.payment_method_id = result.paymentMethod.id
       }
-      return this.payment;
+      return this.paymentMethodInfo
     },
   },
   created: function() {
-    stripe = Stripe(this.stripePk);
+    console.log("pk stripe key", this.stripePk)
+    console.log("for some reason Vue or Stripe don't like it when this.stripePk is used to initate connection with stripe")
+    stripe = Stripe('pk_test_P34y48VrjTGbgCrh3ry80Qec');
   },
   mounted: function() {
     var style = {
