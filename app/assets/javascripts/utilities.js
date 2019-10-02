@@ -31,8 +31,15 @@ $( "#tabs" ).tabs({
   key: 'RD4H4B12B7iB6E5C3A4I2I3C8B6B5A4C-11NGNe1IODMGYNSFKV==',
   inlineMode: false,
   heightMin: 200,
+  imageUploadURL: '/api/upload_froala_images',
+  events: {
+    'keypress': function (keypressEvent) {
+      console.log(this)
+    }
+  },
   toolbarButtons: [
-    'bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align',
+    'bold', 'italic', 
+    'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align',
     'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html'
   ],
   toolbarButtonsSM: [
@@ -41,8 +48,20 @@ $( "#tabs" ).tabs({
   ],
   toolbarButtonsXS: ['bold', 'italic', 'underline'],
   toolbarButtonsMD: ['bold', 'italic', 'underline', 'paragraphFormat', 'insertTable', 'formatOL', 'formatUL','align',
-  'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html']
-})
+  'outdent', 'indent', 'insertLink', 'undo', 'redo', 'clearFormatting', 'insertImage', 'insertVideo', 'html'],
+}).on('froalaEditor.image.removed', function (e, editor, response) {
+  var viewImageURL = "/api/download_froala_object/";
+  var imageKey = new URL(response.context.src).pathname.replace(viewImageURL, "");
+
+  $.ajax({
+    type: "POST",
+    url: "/api/delete_froala_images",
+    data: { name: imageKey },
+    success: function(){
+      console.log("Image removed");
+    }
+  })
+});
 
 // handle 'select all' buttons, used on release grade forms
 $(".select-all").click(function(e){
