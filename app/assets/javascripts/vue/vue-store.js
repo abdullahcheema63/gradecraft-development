@@ -246,7 +246,7 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(paymentMethod),
         }).then((response) => {
-          window.location.replace(store.state.subscriptionsURL)
+          console.log(response)
         })
         console.log("resp")
         console.log(resp)

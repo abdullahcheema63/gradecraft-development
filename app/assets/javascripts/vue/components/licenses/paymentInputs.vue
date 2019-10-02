@@ -112,7 +112,6 @@ module.exports = {
       }
       return this.paymentMethodInfo
     },
-    }
   },
   created: function() {
     console.log("pk stripe key", this.stripePk)
