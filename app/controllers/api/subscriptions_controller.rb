@@ -44,6 +44,7 @@ class API::SubscriptionsController < ApplicationController
 
   # POST api/subscriptions/add_card
   def add_card
+    #this.$store.dispatch('addCardToSubscription', paymentMethod)
     puts "inside ADD_CARD subscriptions api controller"
     @subscription = current_user.subscription
     if !@subscription
@@ -51,14 +52,17 @@ class API::SubscriptionsController < ApplicationController
     end
     customer_id = @subscription.customer_id
 
-    payment_id = params[:payment_method_id]
+    source_id = params[:source_id]
 
-    puts "payment_id: #{payment_id}"
+    puts "payment_id: #{source_id}"
     puts "customer_id: #{customer_id}"
 
-    payment_method = Stripe::PaymentMethod.retrieve(payment_id)
-    
-    puts payment_method
+    Stripe::Customer.create_source(
+      customer_id,
+      {
+        source: source_id
+      }
+    )
 
   end
 

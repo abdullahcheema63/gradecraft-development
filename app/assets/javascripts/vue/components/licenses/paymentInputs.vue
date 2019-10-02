@@ -63,7 +63,7 @@ module.exports = {
         addr2: "",
         city: "",
         postal_code: "",
-        payment_method_id: "",
+        source_id: "",
       }
     }
   },
@@ -74,11 +74,23 @@ module.exports = {
   methods: {
     addCard: async function() {
       console.log("inside add card on payments input")
-      const paymentMethod = await this.createPaymentMethod();
+      const paymentMethod = await this.createSource();
 
       this.$store.dispatch('addCardToSubscription', paymentMethod)
     },
-    createPaymentMethod: async function() {
+    createSource: async function() {
+      console.log("inside createSource")
+      const result = await stripe.createSource(card, { type: 'card' })
+      if (result.error) {
+        console.log(result)
+        this.errors.push(result.error.message);
+      } else {
+        console.log(result)
+        this.paymentMethodInfo.source_id = result.source.id
+      }
+      return this.paymentMethodInfo
+    },
+    createPaymentMethod: async function(){
       console.log("inside createPaymentMethod")
       const result = await stripe.createPaymentMethod('card', card, {
         billing_details: {
@@ -96,10 +108,11 @@ module.exports = {
         this.errors.push(result.error.message);
       } else {
         console.log(result)
-        this.paymentMethodInfo.payment_method_id = result.paymentMethod.id
+        this.paymentMethodInfo.source_id = result.paymentMethod.id
       }
       return this.paymentMethodInfo
     },
+    }
   },
   created: function() {
     console.log("pk stripe key", this.stripePk)
