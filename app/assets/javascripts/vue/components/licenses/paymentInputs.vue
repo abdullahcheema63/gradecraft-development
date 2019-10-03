@@ -40,6 +40,10 @@
       <input id="phone" v-model="paymentMethodInfo.phone" type="number" required="required" />
       <label for="phone">Phone</label>
     </div>
+    <div class="form_elem">
+      <input id="default" v-model="paymentMethodInfo.default" type="checkbox" value="default"/>
+      <label for="default">Make Default Payment Source</label>
+    </div>
     <button class="action" @click.prevent="addCard()" type="submit">+ Add Card</button>
   </div>
 </template>
@@ -63,7 +67,8 @@ module.exports = {
         addr2: "",
         city: "",
         postal_code: "",
-        source_id: "",
+        payment_method_id: "",
+        default: false,
       }
     }
   },
@@ -74,21 +79,8 @@ module.exports = {
   methods: {
     addCard: async function() {
       console.log("inside add card on payments input")
-      const paymentMethod = await this.createSource();
-
+      const paymentMethod = await this.createPaymentMethod();
       this.$store.dispatch('addCardToSubscription', paymentMethod)
-    },
-    createSource: async function() {
-      console.log("inside createSource")
-      const result = await stripe.createSource(card, { type: 'card' })
-      if (result.error) {
-        console.log(result)
-        this.errors.push(result.error.message);
-      } else {
-        console.log(result)
-        this.paymentMethodInfo.source_id = result.source.id
-      }
-      return this.paymentMethodInfo
     },
     createPaymentMethod: async function(){
       console.log("inside createPaymentMethod")
@@ -102,13 +94,13 @@ module.exports = {
           phone: this.paymentMethodInfo.phone,
           name: this.paymentMethodInfo.full_name
         },
-        });
+      });
       if (result.error) {
         console.log(result)
         this.errors.push(result.error.message);
       } else {
         console.log(result)
-        this.paymentMethodInfo.source_id = result.paymentMethod.id
+        this.paymentMethodInfo.payment_method_id = result.paymentMethod.id
       }
       return this.paymentMethodInfo
     },

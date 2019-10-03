@@ -44,25 +44,26 @@ class API::SubscriptionsController < ApplicationController
 
   # POST api/subscriptions/add_card
   def add_card
-    #this.$store.dispatch('addCardToSubscription', paymentMethod)
     puts "inside ADD_CARD subscriptions api controller"
     @subscription = current_user.subscription
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
     customer_id = @subscription.customer_id
+    payment_method_id = params[:payment_method_id]
+    make_default = params[:default]
+    puts "default: #{make_default}"
 
-    source_id = params[:source_id]
-
-    puts "payment_id: #{source_id}"
-    puts "customer_id: #{customer_id}"
-
-    Stripe::Customer.create_source(
-      customer_id,
+    payment_method = Stripe::PaymentMethod.attach(
+      payment_method_id,
       {
-        source: source_id
+        customer: customer_id
       }
     )
+
+    if make_default
+      set_card_as_default(customer_id, payment_method_id)
+    end
 
   end
 
@@ -203,6 +204,16 @@ class API::SubscriptionsController < ApplicationController
   end
 
   private
+
+  def set_card_as_default(customer_id, pm_id)
+    puts "setting card as default"
+    Stripe::Customer.update(
+      customer_id,
+      {
+        invoice_settings: { default_payment_method: pm_id }
+      }
+    )
+  end
 
   def unsubscribe_courses(course_ids)
     course_ids.each do |id|

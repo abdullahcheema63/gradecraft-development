@@ -247,6 +247,7 @@ const store = new Vuex.Store({
           body: JSON.stringify(paymentMethod),
         }).then((response) => {
           console.log(response)
+          //dispatch a method to load all the sources for a customer to display in "my payment methods" on the subscriptions page ?  
         })
         console.log("resp")
         console.log(resp)

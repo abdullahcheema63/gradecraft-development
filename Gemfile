@@ -100,7 +100,7 @@ gem 'sassc-rails'
 # secure crypt hashing library stronger than bcrypt or PBDBF2
 gem 'scrypt', '3.0.6'
 
-gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+gem 'stripe', '~> 5.4', '>= 5.4.1'
 gem 'country_select'
 
 gem 'select2-rails'
