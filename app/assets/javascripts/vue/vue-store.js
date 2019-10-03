@@ -248,8 +248,6 @@ const store = new Vuex.Store({
       },
       addCardToSubscription: async function({ commit }, paymentMethod) {
         console.log("addCardToSubscription action dispatched")
-        console.log(paymentMethod)
-        console.log(JSON.stringify(paymentMethod))
         const resp = await fetch("/api/subscriptions/add_card", {
           method: 'POST',
           headers: {
@@ -262,7 +260,26 @@ const store = new Vuex.Store({
           body: JSON.stringify(paymentMethod),
         }).then((response) => {
           console.log(response)
-          //dispatch a method to load all the sources for a customer to display in "my payment methods" on the subscriptions page ?
+          window.location.replace(store.state.subscriptionsURL)
+        })
+        console.log("resp")
+        console.log(resp)
+      },
+      removePaymentMethod: async function({ commit }, paymentMethodID){
+        console.log("removePaymentMethod action dispatched")
+        const resp = await fetch("/api/subscriptions/remove_card", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(paymentMethodID),
+        }).then((response) => {
+          console.log(response)
+          window.location.replace(store.state.subscriptionsURL)
         })
         console.log("resp")
         console.log(resp)

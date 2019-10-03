@@ -54,7 +54,6 @@ class API::SubscriptionsController < ApplicationController
     if customer_id
       response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
       @payment_methods = response.data
-      puts @payment_methods
     end
   end
 
@@ -76,10 +75,21 @@ class API::SubscriptionsController < ApplicationController
         customer: customer_id
       }
     )
-
     if make_default
       set_card_as_default(customer_id, payment_method_id)
     end
+  end
+
+  # POST api/subscriptions/remove_card
+  def remove_card
+    puts "inside REMOVE_CARD subscriptions api controller"
+    @subscription = current_user.subscription
+    if !@subscription
+      return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
+    end
+    payment_method_id = params[:_json]
+
+    Stripe::PaymentMethod.detach(payment_method_id)
 
   end
 

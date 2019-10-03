@@ -56,13 +56,14 @@
                     <a>Edit</a>
                   </li>
                   <li>
-                    <a>Delete</a>
+                    <a @click="removePaymentMethod(paymentMethod.id)">Delete</a>
                   </li>
                 </ul>
               </template>
             </dropdownDotsComponent>
           </div>
         </div>
+        <!-- STATIC PAYMENT METHOD LEFT FOR REFERANCE  -->
         <div class="form_options payment_method">
           <input type="radio" id="payment_2" name="payment_group" />
           <div>
@@ -294,6 +295,9 @@ module.exports = {
   methods: {
     toggleRenew() {
       this.showRenew = !this.showRenew;
+    },
+    removePaymentMethod(pID){
+      this.$store.dispatch('removePaymentMethod', pID)
     },
     updateLicense(){
       this.$refs.buttonModal_license.toggleModalState()
