@@ -46,7 +46,7 @@ const loadMany = function(modelArray, response, options, filter) {
 const csrftoken = document.head.querySelector("[name='csrf-token']").attributes.content.value;
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "payment", "subscriptions", "billing_schemes"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "subscriptions", "billing_schemes", "payment_methods"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
   dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user"] });
@@ -68,7 +68,7 @@ const store = new Vuex.Store({
     allInstitutions: [],
     allBillingSchemes: [],
     allSubscriptions: [],
-    userSubscription: null,
+    userSubscription: {},
     newSubscribingCourses: [],
     currentSubscribedCourses: [],
     previouslySubscribedCourses: [],
@@ -231,7 +231,22 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserSubscription', final)
       },
-      addCardToSubscription: async function({ commit, state }, paymentMethod) {
+      getUserPaymentMethods: async function({commit, state}){
+        console.log("getUserPaymentMethods action dispatched")
+        const resp = await fetch("/api/subscriptions/payment_methods");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log(json);
+        const final = apiResponseToData(json);
+        console.log(final);
+        commit('addUserPaymentMethods', final)
+      },
+      addCardToSubscription: async function({ commit }, paymentMethod) {
         console.log("addCardToSubscription action dispatched")
         console.log(paymentMethod)
         console.log(JSON.stringify(paymentMethod))
@@ -247,7 +262,7 @@ const store = new Vuex.Store({
           body: JSON.stringify(paymentMethod),
         }).then((response) => {
           console.log(response)
-          //dispatch a method to load all the sources for a customer to display in "my payment methods" on the subscriptions page ?  
+          //dispatch a method to load all the sources for a customer to display in "my payment methods" on the subscriptions page ?
         })
         console.log("resp")
         console.log(resp)
@@ -702,6 +717,9 @@ const store = new Vuex.Store({
       },
       updateUserSubscription (state, subscription){
         state.userSubscription = subscription;
+      },
+      addUserPaymentMethods (state, paymentMethods){
+        state.userSubscription.paymentMethods = paymentMethods;
       },
       addUserLicenseInfo (state, licenseInfo){
         state.user.license = {...licenseInfo}

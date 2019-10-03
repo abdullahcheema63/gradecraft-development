@@ -9,7 +9,6 @@ GIT
       rspec-expectations (>= 3.0.0)
       rspec-mocks (>= 3.0.0)
 
-
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -772,7 +771,7 @@ DEPENDENCIES
   simple_form
   simplecov
   sorcery
-  stripe!
+  stripe (~> 5.4, >= 5.4.1)
   uglifier (~> 3.2)
   underscore-rails
   valid_attribute

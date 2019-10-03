@@ -42,6 +42,22 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
+  # GET api/subscriptions/payment_methods
+  def payment_methods
+    puts "inside api/subsciptions/get_payment_methods"
+    @subscription = current_user.subscription
+    if !@subscription
+      return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
+    end
+
+    customer_id = @subscription.customer_id
+    if customer_id
+      response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
+      @payment_methods = response.data
+      puts @payment_methods
+    end
+  end
+
   # POST api/subscriptions/add_card
   def add_card
     puts "inside ADD_CARD subscriptions api controller"

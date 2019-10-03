@@ -5,16 +5,14 @@
       <div id="stripe"></div>
     </div>
 
-    <h3>Account Nickname</h3>
-    <div class="form_elem">
-      <input id="account_name" v-model="paymentMethodInfo.account_name" type="text" />
-      <label for="account_name">Nickname for Card (Ex: Erik's Visa)</label>
-    </div>
-
     <h3>Billing Info</h3>
     <div class="form_elem">
       <input id="full_name" v-model="paymentMethodInfo.full_name" type="text" required="required" />
       <label for="full_name">Full Name as it appears on card</label>
+    </div>
+    <div class="form_elem">
+      <input id="organization" v-model="paymentMethodInfo.organization" type="text" />
+      <label for="organization">Organization</label>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
@@ -61,7 +59,7 @@ module.exports = {
       cardError: "",
       paymentMethodInfo: {
         full_name: "",
-        account_name: "",
+        organization: "",
         phone: "",
         addr1: "",
         addr2: "",

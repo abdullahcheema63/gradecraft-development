@@ -42,12 +42,12 @@
     <div class="content_block bg-green_mint_2">
       <h2 class="unspace-top">My Payment Methods</h2>
       <form>
-        <div class="form_options payment_method">
-          <input type="radio" id="payment_1" checked="checked" name="payment_group" />
+        <div v-for="paymentMethod in userSubscription.paymentMethods" class="form_options payment_method">
+          <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" checked="checked" name="payment_group" />
           <div>
             <p>
-              <strong>Visa</strong>
-              **** **** **** 4242 <span></span> Expires 04/2024
+              <strong>{{paymentMethod.brand}}</strong>
+              **** **** **** {{paymentMethod.last4}} <span></span> Expires {{paymentMethod.exp_month}}/{{paymentMethod.exp_year}}
             </p>
             <dropdownDotsComponent>
               <template slot="content">
@@ -286,6 +286,9 @@ module.exports = {
     },
     removedSubscribedCourses(){
       return this.$store.getters.removedSubscribedCourses;
+    },
+    userSubscription(){
+      return this.$store.state.userSubscription;
     }
   },
   methods: {
@@ -306,6 +309,7 @@ module.exports = {
     this.$store.dispatch("getUserSubscription");
     this.$store.dispatch("getCourseMemberships");
     this.$store.dispatch("getAllBillingSchemes");
+    this.$store.dispatch("getUserPaymentMethods");
   },
 }
 ```
