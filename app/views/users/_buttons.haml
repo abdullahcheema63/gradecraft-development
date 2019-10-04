@@ -1,13 +1,8 @@
 - content_for :context_menu do
   .context-menu
     %ul
-<<<<<<< HEAD
-      - if current_user_is_admin? || current_course.is_licensed?
-        = active_course_link_to decorative_glyph(:plus) + "New User", new_user_path, class: "button button-edit"
-=======
       - if current_user_is_admin? || current_course.has_paid?
         = active_course_link_to decorative_glyph(:plus) + "Add a New User", new_user_path, class: "button button-edit"
->>>>>>> master-efs
         = active_course_link_to decorative_glyph(:download) + "Import Users", users_importers_path, class: "button button-edit"
       - if @user.present? && @user.persisted?
         = active_course_link_to decorative_glyph(:edit) + "Edit User", edit_user_path(@user), class: "button button-edit"
