@@ -284,6 +284,24 @@ const store = new Vuex.Store({
         console.log("resp")
         console.log(resp)
       },
+      makePaymentMethodDefault: async function({ commit }, paymentMethodID){
+        const resp = await fetch("/api/subscriptions/make_payment_method_default", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(paymentMethodID),
+        }).then((response) => {
+          console.log(response)
+          window.location.replace(store.state.subscriptionsURL)
+        })
+        console.log("resp")
+        console.log(resp)
+      },
       getAllBillingSchemes: async function({ commit }){
         console.log("getAllBillingSchemes action dispatched")
         const resp = await fetch("/api/subscriptions/billing_scheme_tiers");

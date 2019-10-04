@@ -73,6 +73,18 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
+  def make_payment_method_default
+    @subscription = current_user.subscription
+    if !@subscription
+      return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
+    end
+    customer_id = @subscription.customer_id
+    payment_method_id = params[:_json]
+
+    set_card_as_default(customer_id, payment_method_id)
+
+  end
+
   # POST api/subscriptions/remove_card
   def remove_card
     puts "inside REMOVE_CARD subscriptions api controller"

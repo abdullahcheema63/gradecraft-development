@@ -53,7 +53,7 @@
               <template slot="content">
                 <ul>
                   <li v-if="!paymentMethod.default_payment_method">
-                    <a><label for="payment_2">Make Primary</label></a>
+                    <a @click="makePaymentMethodDefault(paymentMethod.id)">Make Primary</a>
                   </li>
                   <li>
                     <a>Edit</a>
@@ -301,6 +301,9 @@ module.exports = {
     },
     removePaymentMethod(pID){
       this.$store.dispatch('removePaymentMethod', pID)
+    },
+    makePaymentMethodDefault(pID){
+      this.$store.dispatch('makePaymentMethodDefault', pID)
     },
     updateLicense(){
       this.$refs.buttonModal_license.toggleModalState()

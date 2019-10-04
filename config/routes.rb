@@ -565,6 +565,7 @@ Rails.application.routes.draw do
       patch :update, on: :collection
       put :edit, on: :collection
       post :add_card, on: :collection
+      post :make_payment_method_default, on: :collection
       post :remove_card, on: :collection
     end
 
