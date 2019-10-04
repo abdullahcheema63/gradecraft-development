@@ -10,6 +10,9 @@ class API::SubscriptionsController < ApplicationController
     end
     customer_id = @subscription.customer_id
     if customer_id
+      customer = Stripe::Customer.retrieve(customer_id)
+      @default_payment_method_id = customer.invoice_settings.default_payment_method
+      puts @default_payment_method_id
       response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
       @payment_methods = response.data
     end

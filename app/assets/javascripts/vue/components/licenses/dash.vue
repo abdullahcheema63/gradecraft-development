@@ -42,8 +42,8 @@
     <div class="content_block bg-green_mint_2">
       <h2 class="unspace-top">My Payment Methods</h2>
       <form>
-        <div v-for="paymentMethod in userSubscription.paymentMethods" class="form_options payment_method">
-          <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" checked="checked" name="payment_group" />
+        <div v-for="paymentMethod in userSubscription.payment_methods" class="form_options payment_method">
+          <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" :checked="paymentMethod.default_payment_method" name="payment_group" />
           <div>
             <p>
               <strong>{{paymentMethod.brand}}</strong>
@@ -52,6 +52,9 @@
             <dropdownDotsComponent>
               <template slot="content">
                 <ul>
+                  <li v-if="!paymentMethod.default_payment_method">
+                    <a><label for="payment_2">Make Primary</label></a>
+                  </li>
                   <li>
                     <a>Edit</a>
                   </li>

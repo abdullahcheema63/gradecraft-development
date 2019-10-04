@@ -697,8 +697,6 @@ const store = new Vuex.Store({
       addUserSubscription (state, subscriptionObj){
         console.log("addUserSubscription", subscriptionObj)
         state.userSubscription = subscriptionObj
-        state.userSubscription.paymentMethods = subscriptionObj.payment_methods
-
         state.previouslySubscribedCourses = subscriptionObj.courses
       },
       updateLicense (state, {course_id, status}){

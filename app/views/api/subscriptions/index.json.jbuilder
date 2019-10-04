@@ -40,6 +40,11 @@ json.included do
       json.exp_month payment_method.card.exp_month
       json.exp_year payment_method.card.exp_year
       json.brand payment_method.card.brand
+      if payment_method.id == @default_payment_method_id
+        json.default_payment_method true
+      else
+        json.default_payment_method false
+      end
     end
   end
 end
