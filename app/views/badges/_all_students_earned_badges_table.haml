@@ -25,7 +25,7 @@
         %td{ :width => 80}
           - presenter.badge.earned_badges.where(student_id: student.id).each do |badge|
             - if is_auto_awarded(badge.feedback)
-              %div{ :width => 80}= get_auto_awarded_in_user_timezone
+              %div{ :width => 80}= get_auto_awarded_in_user_timezone(badge.feedback)
             - else
               %div{ :width => 80}= raw badge.feedback
         - if presenter.badge.can_earn_multiple_times
