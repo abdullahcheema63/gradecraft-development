@@ -313,7 +313,6 @@ module.exports = {
     this.$store.dispatch("getUserSubscription");
     this.$store.dispatch("getCourseMemberships");
     this.$store.dispatch("getAllBillingSchemes");
-    this.$store.dispatch("getUserPaymentMethods");
   },
 }
 ```

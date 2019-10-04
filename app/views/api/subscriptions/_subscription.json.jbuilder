@@ -17,11 +17,19 @@ json.relationships do
       json.type "courses"
       json.id course.id.to_s
     end
-  end
+  end if subscription.courses.any?
+
   json.payments do
     json.data subscription.payments do |payment|
       json.type "payments"
       json.id payment.id.to_s
     end
   end if subscription.payments.any?
+
+  json.payment_methods do
+    json.data @payment_methods do |payment_method|
+      json.type "payment_methods"
+      json.id payment_method.id.to_s
+    end
+  end if @payment_methods
 end

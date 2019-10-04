@@ -8,6 +8,11 @@ class API::SubscriptionsController < ApplicationController
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
+    customer_id = @subscription.customer_id
+    if customer_id
+      response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
+      @payment_methods = response.data
+    end
     @courses = get_courses_where_professor
     @payments = @subscription.payments.all
   end
@@ -39,21 +44,6 @@ class API::SubscriptionsController < ApplicationController
       puts("Could not create a subscription for:  #{current_user.inspect}")
 
       return render json: { data: current_user.subscription, errors: [ "Error creating a new subscription!" ] }, status: 500
-    end
-  end
-
-  # GET api/subscriptions/payment_methods
-  def payment_methods
-    puts "inside api/subsciptions/get_payment_methods"
-    @subscription = current_user.subscription
-    if !@subscription
-      return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
-    end
-
-    customer_id = @subscription.customer_id
-    if customer_id
-      response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
-      @payment_methods = response.data
     end
   end
 

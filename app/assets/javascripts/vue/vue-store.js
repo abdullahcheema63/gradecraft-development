@@ -46,10 +46,10 @@ const loadMany = function(modelArray, response, options, filter) {
 const csrftoken = document.head.querySelector("[name='csrf-token']").attributes.content.value;
 
 const apiResponseToData = (responseJson) =>
-  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "subscriptions", "billing_schemes", "payment_methods"] });
+  loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "subscriptions", "billing_schemes"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
-  dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user"] });
+  dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user", "payment_methods"] });
 
 const store = new Vuex.Store({
   state: {
@@ -226,7 +226,7 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        console.log(json);
+        console.log("json from user subscription", json);
         const final = apiResponseToDataDataItem(json);
         console.log(final);
         commit('addUserSubscription', final)
@@ -695,7 +695,10 @@ const store = new Vuex.Store({
         state.allBillingSchemes = billingSchemes
       },
       addUserSubscription (state, subscriptionObj){
+        console.log("addUserSubscription", subscriptionObj)
         state.userSubscription = subscriptionObj
+        state.userSubscription.paymentMethods = subscriptionObj.payment_methods
+
         state.previouslySubscribedCourses = subscriptionObj.courses
       },
       updateLicense (state, {course_id, status}){
