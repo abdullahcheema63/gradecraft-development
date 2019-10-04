@@ -187,6 +187,7 @@ subscription = Subscription.new({
   user_id: User.find_by(username: "albus").id,
 })
 subscription.start! p
+subscription.create_stripe_customer("dumbledore@hogwarts.edu")
 
 # create a hash on each course config to store assignment types and assignments
 @courses.each do |name,config|
@@ -336,6 +337,7 @@ subscription = Subscription.new({
   ]
 })
 subscription.start! p
+subscription.create_stripe_customer("snape@hogwarts.edu")
 
 # Generate sample GSI
 User.create! do |u|
