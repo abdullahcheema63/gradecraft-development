@@ -66,32 +66,6 @@
             </dropdownDotsComponent>
           </div>
         </div>
-        <!-- STATIC PAYMENT METHOD LEFT FOR REFERANCE  -->
-        <div class="form_options payment_method">
-          <input type="radio" id="payment_2" name="payment_group" />
-          <div>
-            <p>
-              <strong>Mastercard</strong>
-              **** **** **** 4242 <span></span> Expires 04/2024
-            </p>
-            <dropdownDotsComponent>
-              <template slot="content">
-                <ul>
-                  <!-- SOPHIA to ERIK: I think this "make primary" option could be a v-if situation? Because we only show this in the list for non-primary payment options -->
-                  <li>
-                    <a><label for="payment_2">Make Primary</label></a>
-                  </li>
-                  <li>
-                    <a>Edit</a>
-                  </li>
-                  <li>
-                    <a>Delete</a>
-                  </li>
-                </ul>
-              </template>
-            </dropdownDotsComponent>
-          </div>
-        </div>
 
         <buttonModal button_class="secondary function add_something">
           <template slot="button-text">Add a new payment method</template>

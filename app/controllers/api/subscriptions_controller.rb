@@ -8,8 +8,9 @@ class API::SubscriptionsController < ApplicationController
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
-    customer_id = @subscription.customer_id
-    if customer_id
+
+    if @subscription.customer_id
+      customer_id = @subscription.customer_id
       customer = Stripe::Customer.retrieve(customer_id)
       @default_payment_method_id = customer.invoice_settings.default_payment_method
       puts @default_payment_method_id
@@ -40,7 +41,6 @@ class API::SubscriptionsController < ApplicationController
       renewal_date: DateTime.yesterday
     })
     if @subscription.save!
-      @subscription.create_stripe_customer(current_user.email)
       puts("Created a subscription! #{@subscription.inspect}")
       redirect_back(fallback_location: fallback_location)
     else
@@ -57,6 +57,11 @@ class API::SubscriptionsController < ApplicationController
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
+
+    if !@subscription.customer_id
+      @subscription.create_stripe_customer(current_user.email)
+    end
+
     customer_id = @subscription.customer_id
     payment_method_id = params[:payment_method_id]
     make_default = params[:default]
