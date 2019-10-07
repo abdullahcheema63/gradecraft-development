@@ -196,7 +196,7 @@
       <a class="button next" v-bind:href="course.url">View course</a>
     </div>
   </div>
-  <div v-else-if="status=='archived'" class="course_card archived" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
+  <div v-else-if="status=='archived'" class="course_card archived" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another, hidden_from_students, request_pending]">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
@@ -219,6 +219,13 @@
           <ul>
             <li>
               <a @click="copyCourse(course.id)">Copy</a>
+            </li>
+            <!-- Note to Erik from Sophia: The "hide" and "show" list item options are conditional based on if the course is hidden from users or not -->
+            <li>
+              <a>Hide</a>
+            </li>
+            <li>
+              <a>Show</a>
             </li>
             <li>
               <a>Delete</a>
@@ -267,6 +274,12 @@ module.exports = {
     },
     created_by_another() {
       if( this.course.createdByAnotherUser ){ return 'another_user_created' }
+    },
+    hidden_from_students() {
+      if( this.course.hiddenFromStudents ){ return 'hidden_from_students' }
+    },
+    request_pending() {
+      if( this.course.requestPending ){ return 'request_pending' }
     },
     is_licensed() {
       return this.course.licensed
