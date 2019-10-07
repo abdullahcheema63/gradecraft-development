@@ -17,7 +17,10 @@
     %b= "Earned on:"
     = l @earned_badge.created_at.in_time_zone(current_user.time_zone)
 
-  %p= raw @earned_badge.feedback
+  - if is_auto_awarded(@earned_badge.feedback)
+    %p= get_auto_awarded_in_user_timezone(@earned_badge.feedback)
+  - else
+    %p= raw @earned_badge.feedback
 
   %p
     %b= "Awarded by:"

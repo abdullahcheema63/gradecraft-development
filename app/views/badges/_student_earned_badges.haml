@@ -4,4 +4,7 @@
       %h2 Awarded
       = glyph(:calendar) + "#{l badge.created_at.in_time_zone(current_user.time_zone) }"
     .earned-badge-feedback
-      = raw badge.feedback
+      - if is_auto_awarded(badge.feedback)
+        = get_auto_awarded_in_user_timezone(badge.feedback)
+      - else
+        = raw badge.feedback
