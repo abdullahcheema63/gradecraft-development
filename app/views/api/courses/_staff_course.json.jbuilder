@@ -14,7 +14,7 @@ json.attributes do
 
   json.subscription do
     json.id course.subscription_id
-    json.user_id course.subscription.user_id
+    json.user_id course.subscription.user_id.to_s
     json.renewal_date course.subscription.renewal_date
   end if course.subscription_id
 

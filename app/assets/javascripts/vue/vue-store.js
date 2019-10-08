@@ -600,8 +600,15 @@ const store = new Vuex.Store({
             published: course.published
            };
         });
-        let subscribedCourses = state.user.courseMembership.filter(course => course.licensed);
+        let subscribedCourses = state.user.courseMembership.filter(course => {
+          if(course.licensed) {
+            return course.subscription.user_id === state.user.id
+          }
+          return false
+        });
         state.currentSubscribedCourses = subscribedCourses
+        state.previouslySubscribedCourses = subscribedCourses
+
       },
       addAdminCourses(state, courses){
         //console.log("inside addAdminCourses mutation")
@@ -715,7 +722,6 @@ const store = new Vuex.Store({
       addUserSubscription (state, subscriptionObj){
         console.log("addUserSubscription", subscriptionObj)
         state.userSubscription = subscriptionObj
-        state.previouslySubscribedCourses = subscriptionObj.courses
       },
       updateLicense (state, {course_id, status}){
         var course_ids = state.user.courseMembership.map( course => course.id)
