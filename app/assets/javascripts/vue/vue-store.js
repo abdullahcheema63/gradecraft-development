@@ -49,7 +49,7 @@ const apiResponseToData = (responseJson) =>
   loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "subscriptions", "billing_schemes"] });
 
 const apiResponseToDataDataItem = (responseJson) =>
-  dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user", "payment_methods"] });
+  dataItem(responseJson.data, responseJson, { include: ["courses", "payments", "user", "subscriptions", "payment_methods"] });
 
 const store = new Vuex.Store({
   state: {

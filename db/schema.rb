@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_01_150717) do
+ActiveRecord::Schema.define(version: 2019_10_07_181833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -704,16 +704,6 @@ ActiveRecord::Schema.define(version: 2019_10_01_150717) do
 
   create_table "payments", force: :cascade do |t|
     t.bigint "subscription_id"
-    t.string "first_name", null: false
-    t.string "last_name", null: false
-    t.string "organization", null: false
-    t.string "phone", null: false
-    t.string "addr1", null: false
-    t.string "addr2"
-    t.string "city", null: false
-    t.string "state"
-    t.string "zip"
-    t.string "country", null: false
     t.string "source", null: false
     t.string "confirmation"
     t.decimal "amount_usd", null: false

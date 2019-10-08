@@ -16,6 +16,15 @@ class Subscription < ApplicationRecord
     renewal_date < DateTime.now
   end
 
+  def create_charge(payment)
+    #renewal date is being set to yesterday if there subsription is just created?
+    # ^ maybe let this be nil?
+    duration ||= DateTime.now + 1.month
+    self.renewal_date = duration
+
+    add_payment! payment
+  end
+
   def start!(payment, duration=nil)
     # set duration as default for subscription?
     # Payment is calculated based on duration & pricing teir
@@ -61,6 +70,8 @@ class Subscription < ApplicationRecord
 
   def add_payment!(payment)
     payments.push payment
+    charge = payment.charge_customer
+    
     # charge = payment.charge! self.user.email, payment_note
     # Force save immediately to ensure that a failed save invalidates the charge.
     begin

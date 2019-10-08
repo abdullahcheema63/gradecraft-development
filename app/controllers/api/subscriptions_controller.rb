@@ -13,7 +13,6 @@ class API::SubscriptionsController < ApplicationController
       customer_id = @subscription.customer_id
       customer = Stripe::Customer.retrieve(customer_id)
       @default_payment_method_id = customer.invoice_settings.default_payment_method
-      puts @default_payment_method_id
       response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
       @payment_methods = response.data
     end
@@ -57,7 +56,6 @@ class API::SubscriptionsController < ApplicationController
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
-
     if !@subscription.customer_id
       @subscription.create_stripe_customer(current_user.email)
     end
@@ -65,7 +63,6 @@ class API::SubscriptionsController < ApplicationController
     customer_id = @subscription.customer_id
     payment_method_id = params[:payment_method_id]
     make_default = params[:default]
-    puts "default: #{make_default}"
 
     payment_method = Stripe::PaymentMethod.attach(
       payment_method_id,
@@ -100,7 +97,6 @@ class API::SubscriptionsController < ApplicationController
     payment_method_id = params[:_json]
 
     Stripe::PaymentMethod.detach(payment_method_id)
-
   end
 
   # PUT api/licenses/edit
@@ -148,7 +144,6 @@ class API::SubscriptionsController < ApplicationController
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
 
-
     @subscribed_courses = @subscription.courses
     subscribed_course_ids = @subscribed_courses.map(&:id)
     current_subscribed_courses_count = @subscribed_courses.length
@@ -193,6 +188,7 @@ class API::SubscriptionsController < ApplicationController
       puts("more courses selected than currently subscribed, needs payment")
       courses_to_pay_for_count = new_subscribed_courses_count - current_subscribed_courses_count
       new_billing_scheme = determine_billing_scheme(new_subscribed_courses_count)
+
       #Need to make a new function to pro-rate the days for amount to pay
       amount_to_pay = courses_to_pay_for_count * new_billing_scheme.price_per_course
 
@@ -200,13 +196,16 @@ class API::SubscriptionsController < ApplicationController
       puts("Removing subscription from: #{courses_to_unsubscribe}")
       puts("adding subscription to: #{courses_to_subscribe}")
 
-      p = renew_params
-      p[:payment][:amount_usd] = amount_to_pay
-
-      payment = Payment.new(p[:payment])
+      payment = Payment.new({
+        amount_usd: amount_to_pay,
+        billing_scheme_id: new_billing_scheme.id,
+        subscription_id: @subscription.id,
+      })
       return render_error payment.errors.messages, payment.errors.messages unless payment.valid?
       begin
-        @subscription.renew! payment
+        puts("inside payment.valid? quest area")
+        #@subscription.renew! payment
+        @subscription.create_charge(payment)
 
         if courses_to_unsubscribe.length
           unsubscribe_courses(courses_to_unsubscribe)
@@ -287,10 +286,6 @@ class API::SubscriptionsController < ApplicationController
       errors: errors,
       success: false
     }, status: status
-  end
-
-  def subscription_id_params
-    params.permit(_json: [:id])
   end
 
   def payment_permitted_params
