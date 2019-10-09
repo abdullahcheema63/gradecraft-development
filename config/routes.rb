@@ -273,7 +273,6 @@ Rails.application.routes.draw do
     get :reset_password
     get :health_check
     get :style_guide, constraints: AdminConstraint.new
-    get :overview
   end
 
   # 11. Grade Schemes
@@ -670,6 +669,12 @@ Rails.application.routes.draw do
 
   # 23. Subscriptions
   resources :subscriptions, only: :index
+
+  # 24. Overview
+  resources :overview, only: :index
+
+  get "overview/courses", to: "overview#courses"
+  get "overview/users", to: "overview#users"
 
   # root, bro
   root to: "home#index"

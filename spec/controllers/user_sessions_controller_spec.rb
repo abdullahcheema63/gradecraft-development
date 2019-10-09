@@ -25,7 +25,7 @@ describe UserSessionsController do
       it "redirects to overview if the current user is not an observer" do
         allow(subject).to receive(:current_user_is_observer?).and_return false
         expect(post :create, params: { user: student.attributes }).to redirect_to \
-          overview_path
+          overview_index_path
       end
 
       it "redirects to assignments show page if the current user is an observer" do
@@ -60,7 +60,7 @@ describe UserSessionsController do
       let(:params) { OmniAuth::AuthHash.new("extra" => { "raw_info" => { "roles" => "" }}) }
 
       it "redirects to overview" do
-        expect(post :lti_create, params: params).to redirect_to overview_path
+        expect(post :lti_create, params: params).to redirect_to overview_index_path
       end
     end
 
@@ -68,7 +68,7 @@ describe UserSessionsController do
       let(:params) { OmniAuth::AuthHash.new("extra" => { "raw_info" => { "roles" => "instructor" }}) }
 
       it "redirects to overview" do
-        expect(post :lti_create, params: params).to redirect_to overview_path
+        expect(post :lti_create, params: params).to redirect_to overview_index_path
       end
     end
 

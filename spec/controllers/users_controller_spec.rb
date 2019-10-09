@@ -173,7 +173,7 @@ describe UsersController do
       it "successfully updates the users profile" do
         params = { time_zone: "Chihuahua" }
         post :update_profile, params: { id: professor.id, user: params }
-        expect(response).to redirect_to(overview_path)
+        expect(response).to redirect_to(overview_index_path)
         expect(professor.reload.time_zone).to eq("Chihuahua")
       end
     end
@@ -242,7 +242,7 @@ describe UsersController do
 
       it "redirects to overview if referer url is not present" do
         put :manually_activate, params:{id:unactivated_user.id}
-        expect(response).to redirect_to(overview_path)
+        expect(response).to redirect_to(overview_index_path)
       end
     end
 
@@ -262,7 +262,7 @@ describe UsersController do
 
       it "redirects to overview if referer url is not present" do
         get :resend_activation_email, params:{ id: unactivated_user.id }
-        expect(response).to redirect_to(overview_path)
+        expect(response).to redirect_to(overview_index_path)
       end
     end
   end
@@ -308,7 +308,7 @@ describe UsersController do
         end
 
         it "logs the user in" do
-          expect(response).to redirect_to overview_path
+          expect(response).to redirect_to overview_index_path
         end
       end
 
@@ -377,14 +377,14 @@ describe UsersController do
       it "successfully updates the users profile" do
         params = { password: "", password_confirmation: "", time_zone: "Chihuahua" }
         post :update_profile, params: { id: student.id, user: params }
-        expect(response).to redirect_to(overview_path)
+        expect(response).to redirect_to(overview_index_path)
         expect(student.reload.time_zone).to eq("Chihuahua")
       end
 
       it "successfully updates the user's password" do
         params = { password: "test", password_confirmation: "test" }
         post :update_profile, params: { id: student.id, user: params }
-        expect(response).to redirect_to(overview_path)
+        expect(response).to redirect_to(overview_index_path)
         expect(User.authenticate(student.email, "test")).to eq student
       end
     end

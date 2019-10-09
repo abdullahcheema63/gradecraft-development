@@ -1,7 +1,7 @@
 class BreadcrumbTrail < Croutons::BreadcrumbTrail
 
   def home_overview
-    breadcrumb('Home', overview_path)
+    breadcrumb('Home', overview_index_path)
   end
 
   def dashboard

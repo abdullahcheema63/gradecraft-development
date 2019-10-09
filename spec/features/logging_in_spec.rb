@@ -10,7 +10,7 @@ feature "logging in"  do
     scenario "with a password successfully" do
       LoginPage.new(user).submit({ password: password })
 
-      expect(current_path).to eq overview_path
+      expect(current_path).to eq overview_index_path
     end
 
     scenario "with an invalid email and password combination" do

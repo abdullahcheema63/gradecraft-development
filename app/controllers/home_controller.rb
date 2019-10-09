@@ -45,6 +45,6 @@ class HomeController < ApplicationController
   private
 
   def redirect_if_logged_in!
-    redirect_to overview_path and return if logged_in?
+    redirect_to overview_index_path and return if logged_in?
   end
 end

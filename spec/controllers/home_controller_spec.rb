@@ -7,7 +7,7 @@ describe HomeController do
     it "redirects to dashboard if the user is logged in" do
       login_user user
       get :index
-      expect(response).to redirect_to overview_path
+      expect(response).to redirect_to overview_index_path
     end
   end
 end
