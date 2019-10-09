@@ -10,15 +10,15 @@ class StudentSampleExporter
   private
 
   def user_headers
-    ["First Name", "Last Name", "Username", "Email", "Team Name"].freeze
+    ["First Name", "Last Name", "Email", "Team Name"].freeze
   end
 
   def user_a_details
-    ["John", "Doe", "johnd", "johnd@school.edu", "Team Doe"].freeze
+    ["John", "Doe", "johnd@school.edu", "Team Doe"].freeze
   end
 
   def user_b_details
-    ["Jane", "Doe", "janed", "janed@school.edu", "Team Doe"].freeze
+    ["Jane", "Doe", "janed@school.edu", "Team Doe"].freeze
   end
   
 end
