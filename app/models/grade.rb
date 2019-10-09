@@ -156,20 +156,6 @@ class Grade < ApplicationRecord
         end
       end
     end
-    if self.course.is_a_condition?
-      puts "course is a condition after grade is saved "
-      self.course.unlock_keys.map(&:unlockable).each do |unlockable|
-        puts(unlockable.inspect)
-        unlockable.unlock!(student) do |unlock_state|
-          puts "inside unlock:"
-          puts unlock_state
-          check_for_auto_awarded_badge(unlock_state)
-          if student.email_badge_awards?(course)
-            send_email_on_unlock(unlockable)
-          end
-        end
-      end
-    end
     if course.uses_learning_objectives? && student_visible?
       assignment
         .learning_objectives
