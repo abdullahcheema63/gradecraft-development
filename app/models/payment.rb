@@ -15,9 +15,24 @@ class Payment < ApplicationRecord
 
   def charge_customer
     customer_id = self.subscription.customer_id
-    intent = create_payment_intent(customer_id)
 
-    
+    customer = Stripe::Customer.retrieve(customer_id)
+
+    self.payment_method_id = customer.invoice_settings.default_payment_method
+
+    if !payment_method_id
+      customer
+      response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
+      payment_methods = response.data
+
+      self.payment_method_id = payment_methods.first
+      #check this logic / method
+    end
+
+    intent = create_payment_intent(customer_id, payment_method_id)
+    puts "intent: #{intent}"
+
+    # do something with response
 
   end
 

@@ -562,7 +562,7 @@ Rails.application.routes.draw do
     resources :subscriptions, only: [:index, :create, :billing_scheme_tiers, :all_subscriptions] do
       get :billing_scheme_tiers, on: :collection
       get :all_subscriptions, on: :collection
-      patch :update, on: :collection
+      post :update, on: :collection
       put :edit, on: :collection
       post :add_card, on: :collection
       post :make_payment_method_default, on: :collection

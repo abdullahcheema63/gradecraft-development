@@ -488,7 +488,7 @@ const store = new Vuex.Store({
       },
       updateSubscription: async function({ commit }, subscribingCourses){
         const resp = await fetch("/api/subscriptions", {
-          method: 'PATCH',
+          method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -498,6 +498,17 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(subscribingCourses),
         });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
       },
       updateLicensePayment: async function({ commit }, payment){
         const resp = await fetch("/api/subscriptions", {

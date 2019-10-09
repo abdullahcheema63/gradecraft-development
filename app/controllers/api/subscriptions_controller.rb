@@ -135,7 +135,7 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
-  # PATCH api/subscriptions
+  # PUT api/subscriptions
   def update
     @subscription = current_user.subscription
     @billing_schemes = BillingScheme.all
@@ -201,11 +201,17 @@ class API::SubscriptionsController < ApplicationController
         billing_scheme_id: new_billing_scheme.id,
         subscription_id: @subscription.id,
       })
+
+      puts "about to call create charge"
+      @subscription.create_charge(payment)
+
+      #not sure how to successfully return
+      render "api/subscriptions/index", success: true, status: 200
+
       return render_error payment.errors.messages, payment.errors.messages unless payment.valid?
       begin
         puts("inside payment.valid? quest area")
         #@subscription.renew! payment
-        @subscription.create_charge(payment)
 
         if courses_to_unsubscribe.length
           unsubscribe_courses(courses_to_unsubscribe)
@@ -221,9 +227,6 @@ class API::SubscriptionsController < ApplicationController
         render_error e.message, e
       else
         #subscription was successfully updated
-
-        #not sure how to successfully return
-        render "api/subscriptions/index", success: true, status: 200
 
 
         #BELOW IS FROM JAMES's work
