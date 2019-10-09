@@ -42,15 +42,10 @@ module.exports = {
       if (this.dropDownViz) {
         window.addEventListener('click', this.closeDropdowns);
       };
-      console.log(e);
-
       e.stopPropagation();
     },
     closeDropdowns(e) {
       if(!this.$refs.clickAway.contains(e.target)){
-        console.log(e.target);
-        console.log(this.$refs.clickAway);
-
         this.dropDownViz = false;
         window.removeEventListener('click', this.closeDropdowns);
       }
