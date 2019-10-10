@@ -17,6 +17,12 @@ var _rollbarConfig = {
   captureUnhandledRejections: true,
   payload: {
     environment: _environment,
-    person: _person
+    person: _person,
+    client: {
+      javascript: {
+        source_map_enabled: true,
+        code_version: "3.12.1"
+      }
+    }
   }
 };
