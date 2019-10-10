@@ -135,7 +135,7 @@
 
 <script lang='coffee'>`
 module.exports = {
-  name: 'new-activity',
+  name: 'index',
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
@@ -146,6 +146,10 @@ module.exports = {
       currentPageItemMin: 0,
       currentPageItemMax: 10,
     }
+  },
+  created: function() {
+    this.$store.dispatch("getAllCourses");
+    this.$store.dispatch("getAllInstructors");
   },
   computed: {
     allInstructors(){

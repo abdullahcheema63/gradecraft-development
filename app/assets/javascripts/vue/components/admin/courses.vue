@@ -134,10 +134,13 @@
 
 <script lang='coffee'>`
 module.exports = {
-  name: 'all-course-table',
+  name: 'courses',
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
+  },
+  created: function() {
+    this.$store.dispatch("getAllCourses");
   },
   data() {
     return {

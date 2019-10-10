@@ -97,10 +97,13 @@
 
 <script lang='coffee'>`
 module.exports = {
-  name: 'all-instructor-table',
+  name: 'instructors',
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
+  },
+  created: function() {
+    this.$store.dispatch("getAllInstructors");
   },
   data() {
     return {

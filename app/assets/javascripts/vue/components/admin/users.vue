@@ -81,9 +81,12 @@
 
 <script lang='coffee'>`
 module.exports = {
-  name: 'all-user-table',
+  name: 'users',
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
+  },
+  created: function() {
+    this.$store.dispatch("getAllUsers");
   },
   data() {
     return {

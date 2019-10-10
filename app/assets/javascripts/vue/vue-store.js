@@ -145,7 +145,7 @@ const store = new Vuex.Store({
         commit('addCourses', final);
       },
       getAllCourses: async function({ commit }){
-        const resp = await fetch("api/courses");
+        const resp = await fetch("/api/courses");
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -202,7 +202,7 @@ const store = new Vuex.Store({
         commit('addAllSubscriptions', final)
       },
       getAllInstitutions: async function({ commit }){
-        const resp = await fetch("api/institutions");
+        const resp = await fetch("/api/institutions");
         if (resp.status === 404){
           console.log(resp.status);
         }

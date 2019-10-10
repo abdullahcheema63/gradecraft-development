@@ -675,6 +675,8 @@ Rails.application.routes.draw do
 
   get "overview/courses", to: "overview#courses"
   get "overview/users", to: "overview#users"
+  get "overview/instructors", to: "overview#instructors"
+  get "overview/institutions", to: "overview#institutions"
 
   # root, bro
   root to: "home#index"
