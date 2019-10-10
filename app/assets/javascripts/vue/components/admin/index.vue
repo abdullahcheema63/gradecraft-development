@@ -4,7 +4,7 @@
 
     <div class="content_block intro">
         <!-- Note to E from S: conditional for adding App or U-M depending on the database side  -->
-        <h1>My _App / U-M_ Dashboard</h1>
+        <h1>My _App _or_ U-M_ Dashboard</h1>
 
         <guideMessage>
           <p>Welcome back, {{ getUserFirstName }}! </p>
@@ -55,7 +55,7 @@
       <h2>New Courses</h2>
       <p>Here are all the courses created in the past 10 days.</p>
       <div class="table_container">
-        <!-- <table>
+        <table>
           <thead>
             <tr>
               <th>Course # </th>
@@ -101,7 +101,7 @@
               </td>
             </tr>
           </tbody>
-        </table> -->
+        </table>
       </div>
       <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
       <a class="button action next" href="courses/new">Add a new course</a>
