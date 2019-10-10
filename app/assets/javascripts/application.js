@@ -12,7 +12,6 @@
 //= require jquery.omniselect
 //= require autonumeric
 //= require moment.min
-//= require s3_direct_upload
 //= require underscore
 //= require jquery.dynatable
 //= require dynatable

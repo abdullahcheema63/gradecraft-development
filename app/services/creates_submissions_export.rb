@@ -8,7 +8,6 @@ require_relative "creates_submissions_export/create_submission_files"
 require_relative "creates_submissions_export/remove_empty_submitter_directories"
 require_relative "creates_submissions_export/generate_error_log"
 require_relative "creates_submissions_export/archive_exported_files"
-require_relative "creates_submissions_export/upload_archive_to_s3"
 require_relative "creates_submissions_export/notify_on_completion"
 
 module Services
@@ -28,7 +27,6 @@ module Services
           Actions::GenerateErrorLog
         ]),
         Actions::ArchiveExportedFiles,
-        Actions::UploadArchiveToS3,
         Actions::NotifyOnCompletion
       )
     end

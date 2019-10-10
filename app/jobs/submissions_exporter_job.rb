@@ -7,7 +7,7 @@ class SubmissionsExporterJob
   attr_reader :errors
 
   def initialize
-    S3fs.ensure_tmpdir # make sure the s3fs tmpdir exists
+    puts "submissions exporter job initialized"
   end
 
   def perform(submission_export_id)

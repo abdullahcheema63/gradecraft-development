@@ -28,6 +28,6 @@ module SubmissionsExporterJob::GenerateExport
   end
 
   def tmp_dir
-    @tmp_dir ||= S3fs.mktmpdir
+    @tmp_dir ||= FileManager.make_temp_directories
   end
 end

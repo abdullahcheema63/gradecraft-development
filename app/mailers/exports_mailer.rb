@@ -73,7 +73,7 @@ class ExportsMailer < ApplicationMailer
     mail_message_with_subject "Submissions export for #{@course.assignment_term.downcase} #{@assignment.name} #{message}"
   end
 
-  def mail_team_submissions_export(message, professor, assignment, team)
+  def mail_team_submissions_export( professor, assignment, team)
     cache_team_submission_attrs(professor, assignment, team)
     mail_message_with_subject "Submissions export for #{@course.team_term.downcase} #{@team.name} #{message}"
   end

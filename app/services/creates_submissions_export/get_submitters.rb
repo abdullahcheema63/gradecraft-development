@@ -10,6 +10,10 @@ module Services
 
         context.submitters = submitters(submissions_export)
         context.submitter_directory_names = submitter_directory_names(context.submitters)
+
+        puts "~~~~~~inside GetSubmitters~~~~~~\n\n"
+        puts "context.submitter_directory_name: #{context.submitter_directory_name}"
+        puts "context.submitters: #{context.submitters}"
       end
 
       def self.submitters(submissions_export)

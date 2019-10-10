@@ -5,6 +5,7 @@ module Services
       expects :submissions_export, :submitter_directory_names, :archive_root_dir
 
       executed do |context|
+        puts "~~~~INSIDE CreateSubmissionFiles~~~~~~ \n\n"
         submissions_export = context.submissions_export
         submitter_directory_names = context.submitter_directory_names
         archive_root_dir = context.archive_root_dir
@@ -13,7 +14,6 @@ module Services
       end
 
       def self.create_submission_files(submissions_export, submitter_directory_names, archive_root_dir)
-        s3_manager = submissions_export.s3_manager || S3Manager::Manager.new
 
         submissions(submissions_export).each do |submission|
           # write the text file for the submission into the student export directory
@@ -23,7 +23,7 @@ module Services
 
           if submission.submission_files.present?
             submission.process_unconfirmed_files if submission.submission_files.unconfirmed.count > 0
-            create_binary_files_for_submission(submission, s3_manager, submitter_directory_names, archive_root_dir)
+            create_binary_files_for_submission(submission, submitter_directory_names, archive_root_dir)
           end
         end
       end
@@ -79,10 +79,12 @@ module Services
         end
       end
 
-      def self.create_binary_files_for_submission(submission, s3_manager, submitter_directory_names, archive_root_dir)
+      def self.create_binary_files_for_submission(submission, submitter_directory_names, archive_root_dir)
         submission.submission_files.present.each_with_index do |submission_file, index|
-          file_path = submission_binary_file_path(submitter, submission_file, index, submitter_directory_names, archive_root_dir)
-          stream_s3_file_to_disk(submission_file, file_path, s3_manager)
+
+          destination_file_path = submission_binary_file_path(submitter, submission_file, index, submitter_directory_names, archive_root_dir)
+          source_file_path = "#{Rails.root}/#{submission_file.file.to_s}"
+          FileUtils.cp(source_file_path, destination_file_path)
         end
       end
 
@@ -98,14 +100,6 @@ module Services
 
       def self.submitter_directory_path(submitter, submitter_directory_names, archive_root_dir)
         File.expand_path(submitter_directory_names[submitter.id], archive_root_dir)
-      end
-
-      def self.stream_s3_file_to_disk(submission_file, target_file_path, s3_manager)
-        begin
-          s3_manager.write_s3_object_to_disk(submission_file.s3_object_file_key, target_file_path)
-        rescue Aws::S3::Errors::NoSuchKey
-          submission_file.mark_file_missing
-        end
       end
     end
   end
