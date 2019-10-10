@@ -1,6 +1,17 @@
 <template>
-  <div>
-    <div class="content_block bg-blue_2 flex-4" id="admin_new_activity">
+  <div class="main_content">
+    <guideControl></guideControl>
+    <div class="content_block intro">
+        <!-- Note to E from S: conditional for adding App or U-M depending on the database side  -->
+        <h1>My _App / U-M_ Dashboard</h1>
+
+        <guideMessage>
+          <p>Welcome back, {{ getUserFirstName }}! </p>
+          <p>As an Awesome Admin, you probably don’t need much guidance from me. Nevertheless, I’m here to help orient you, and you can see what I say to instructors and students. </p>
+        </guideMessage>
+    </div>
+
+    <div class="content_block bg-green_mint_2 flex-4" id="admin_new_activity">
       <div>
         <h2>New Activity</h2>
         <p>In the past 10 days: </p>
@@ -24,7 +35,7 @@
         </div>
       </div>
       <div>
-        <h3 class="lining_figures app_licenses">16?</h3>
+        <h3 class="lining_figures app">16?</h3>
         <div>
           <h4>Subscriptions</h4>
           <p>
@@ -39,7 +50,63 @@
       </div>
     </div>
 
-    <accordionComponent>
+    <div class="content_block">
+      <h2>New Courses</h2>
+      <p>Here are all the courses created in the past 10 days.</p>
+      <div class="table_container">
+        <!-- <table>
+          <thead>
+            <tr>
+              <th>Course # </th>
+              <th>Course Name </th>
+              <th>Subscribed </th>
+              <th>Active </th>
+              <th>Published </th>
+              <th>Copied </th>
+              <th>Instructor(s) </th>
+              <th>Semester </th>
+              <th>Year </th>
+              <th>Created </th>
+              <th>Actions </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="course in allNewCourses" :key="course.id">
+              <td><a href="#">{{course.id}}</a> </td>
+              <td><a href="#">{{course.name}}</a> </td>
+              <td><span :class="{checked: course.licensed}"></span> </td>
+              <td><span :class="{checked: course.active}"></span> </td>
+              <td><span :class="{checked: course.published}"></span> </td>
+              <td><span :class="{checked: course.copied}"></span> </td>
+              <td>
+                <ul>
+                  <li v-for="instructor in course.instructors" :key="instructor.id">
+                    <a :href="instructor.url">{{instructor.text}}</a>
+                  </li>
+                </ul>
+              </td>
+              <td>{{course.term}}</td>
+              <td>{{course.year}}</td>
+              <td>{{course.created}}</td>
+              <td>
+                <buttonDropdown>
+                  <template slot="button_text">Options</template>
+                  <template slot="content">
+                    <ul>
+                      <li><a :href="course.editURL">Edit</a></li>
+                    </ul>
+                  </template>
+                </buttonDropdown>
+              </td>
+            </tr>
+          </tbody>
+        </table> -->
+      </div>
+      <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
+      <a class="button action next" href="courses/new">Add a new course</a>
+    </div>
+
+    <!-- <accordionComponent>
       <template slot="heading">New courses</template>
       <template slot="content">
         <p>Courses created in the past 10 days</p>
@@ -95,8 +162,9 @@
         <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
         <a class="button action next" href="courses/new">Add a new course</a>
       </template>
-    </accordionComponent>
-    <accordionComponent>
+    </accordionComponent> -->
+
+    <!-- <accordionComponent>
       <template slot="heading">Subscription expiration</template>
       <template slot="content">
         <p>Subscriptions that will expire within 30 days from today</p>
@@ -129,7 +197,7 @@
           </table>
         </div>
       </template>
-    </accordionComponent>
+    </accordionComponent> -->
   </div>
 </template>
 
@@ -140,6 +208,8 @@ module.exports = {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
     accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
+    guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
+    guideControl: () => VComponents.get('vue/components/guideControl'),
   },
   data() {
     return {
@@ -152,6 +222,9 @@ module.exports = {
     this.$store.dispatch("getAllInstructors");
   },
   computed: {
+    getUserFirstName(){
+      return this.$store.state.user.firstName;
+    },
     allInstructors(){
       return this.$store.state.allInstructors
     },

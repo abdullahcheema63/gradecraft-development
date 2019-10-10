@@ -67,6 +67,10 @@ body
   overflow-x: hidden
   transition: 0.3s all
 
+  // &:after
+  //   content: ''
+  //   clear: both
+
   &.guide-showing
     background: white url(asset_path("icon-guide.svg")) no-repeat center left 8px
     background-size: auto 28px
@@ -476,7 +480,8 @@ body
     right: 5%
     top: 0
     display: flex
-    @media (max-width: $media-650)
+
+    @include mobile-xl
       right: 3%
 
   #free_trial_user
@@ -585,14 +590,11 @@ body
       top: calc(50% - 4px)
       width: 0
       height: 0
-      border-left: 8px solid transparent
-      border-right: 8px solid transparent
-      border-top: 8px solid $blue_dark
+      border-left: 6px solid transparent
+      border-right: 6px solid transparent
+      border-top: 6px solid $blue_dark
       transition: 0.4s
       @include mobile-xl
-        border-left: 6px solid transparent
-        border-right: 6px solid transparent
-        border-top: 6px solid $blue_dark
         top: calc(50% + 2px)
 
     @include mobile-xl

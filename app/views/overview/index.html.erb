@@ -1,9 +1,44 @@
-<div class='wrapper dashboard'>
-  <guide-control data-component></guide-control>
+<% if @user_role != "admin"%>
+  <div class="wrapper dashboard">
+    <guide-control data-component></guide-control>
 
-  <% if @user_role != "admin"%>
     <overview-container data-component></overview-container>
-  <% else %>
-    <admin-index data-component></admin-index>
-  <% end %>
-</div>
+  </div>
+
+<% else %>
+  <div class="wrapper dashboard">
+    <!-- <guide-control data-component></guide-control> -->
+
+    <div class="content_wrapper">
+      <!-- <div class="side_nav bg-blue">
+        <div class="nav-icon">
+          <div></div>
+        </div>
+
+        <div>
+          <p class="active">
+            <a>Dashboard</a>
+          </p>
+          <p>
+            <a>Courses</a>
+          </p>
+          <p>
+            <a>Users</a>
+          </p>
+          <p>
+            <a>Subscriptions</a>
+          </p>
+          <p>
+            <a>Institutions</a>
+          </p>
+          <p>
+            <a>Utilities</a>
+          </p>
+        </div>
+      </div> -->
+      <sidenav data-component></sidenav>
+
+      <admin-index data-component></admin-index>
+    </div>
+  </div>
+<% end %>
