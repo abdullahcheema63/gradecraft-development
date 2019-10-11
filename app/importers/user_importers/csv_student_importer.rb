@@ -15,21 +15,21 @@ class CSVStudentImporter
     @unsuccessful = []
   end
 
-  def team_exists?(course_id, team_name)
-    Team.where("course_id = ? AND lower(name) = ?", course_id, team_name.downcase).any?
-  end
+  def find_team_if_exists(course_id, team_name)
+    team = Team.where("course_id = ? AND lower(name) = ?", course_id, team_name.downcase)
 
-  def find_team(course_id, team_name)
-    Team.where("course_id = ? AND lower(name) = ?", course_id, team_name.downcase).first
+    return team.first if team.any?
+
+    return nil
   end
 
   def find_or_create_teams(course_id, team_name)
-    if team_exists?(course_id, team_name)
-        team = find_team(course_id, team_name)
-    else
-        team = Team.new(course_id: course_id, name: team_name)
-        team.save!
-    end
+    team = find_team_if_exists(course_id, team_name)
+
+    return team if team.present?
+
+    team = Team.new(course_id: course_id, name: team_name)
+    team.save!
 
     team
   end
