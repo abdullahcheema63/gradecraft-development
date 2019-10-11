@@ -10,9 +10,6 @@ describe ExportsMailer do
   # include SubmissionsExport-specific shared examples
   include Toolkits::Mailers::ExportsMailerToolkit::SharedExamples
 
-  # include the #secure_downloads_url so we can test that it's being included
-  include SecureTokenHelper
-
   let(:professor) { create(:user) }
   let(:assignment) { create(:assignment, course: course) }
   let(:course) { create(:course, assignment_term: "DECEPTION", team_term: "ASCENSION") }

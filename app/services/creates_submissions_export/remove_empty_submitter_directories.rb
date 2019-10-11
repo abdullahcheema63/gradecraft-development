@@ -5,7 +5,6 @@ module Services
       expects :submitters, :submitter_directory_names, :archive_root_dir
 
       executed do |context|
-        puts "~~~~~~~~ INSIDE Remove Empty Submitter Directories ~~~~~~\n\n"
         submitters = context.submitters
         submitter_directory_names = context.submitter_directory_names
         archive_root_dir = context.archive_root_dir

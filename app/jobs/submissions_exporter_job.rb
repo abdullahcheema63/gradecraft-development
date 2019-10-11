@@ -6,10 +6,6 @@ class SubmissionsExporterJob
 
   attr_reader :errors
 
-  def initialize
-    puts "submissions exporter job initialized"
-  end
-
   def perform(submission_export_id)
     Services::CreatesSubmissionsExport.call submission_export_id
   end

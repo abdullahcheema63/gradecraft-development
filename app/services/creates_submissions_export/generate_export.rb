@@ -8,8 +8,6 @@ module Services
         submissions_export = context.submissions_export
         csv_file_path = context.csv_file_path
 
-        puts "~~~~~~inside GenerateExport~~~~~~"
-        puts "csv_file_path: #{csv_file_path}"
 
         generate(submissions_export, csv_file_path)
         context.fail_and_return!("Failed to create export!") \

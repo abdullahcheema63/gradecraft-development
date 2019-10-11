@@ -5,11 +5,10 @@ module Services
       expects :submissions_export, :submitter_directory_names, :archive_root_dir
 
       executed do |context|
-        puts "~~~~INSIDE CreateSubmissionFiles~~~~~~ \n\n"
         submissions_export = context.submissions_export
         submitter_directory_names = context.submitter_directory_names
         archive_root_dir = context.archive_root_dir
-
+        
         create_submission_files(submissions_export, submitter_directory_names, archive_root_dir)
       end
 
@@ -82,7 +81,7 @@ module Services
       def self.create_binary_files_for_submission(submission, submitter_directory_names, archive_root_dir)
         submission.submission_files.present.each_with_index do |submission_file, index|
 
-          destination_file_path = submission_binary_file_path(submitter, submission_file, index, submitter_directory_names, archive_root_dir)
+          destination_file_path = submission_binary_file_path(submission.submitter, submission_file, index, submitter_directory_names, archive_root_dir)
           source_file_path = "#{Rails.root}/#{submission_file.file.to_s}"
           FileUtils.cp(source_file_path, destination_file_path)
         end

@@ -8,6 +8,7 @@ require_relative "creates_submissions_export/create_submission_files"
 require_relative "creates_submissions_export/remove_empty_submitter_directories"
 require_relative "creates_submissions_export/generate_error_log"
 require_relative "creates_submissions_export/archive_exported_files"
+require_relative "creates_submissions_export/copy_to_local"
 require_relative "creates_submissions_export/notify_on_completion"
 
 module Services
@@ -27,6 +28,7 @@ module Services
           Actions::GenerateErrorLog
         ]),
         Actions::ArchiveExportedFiles,
+        Actions::CopyToLocal,
         Actions::NotifyOnCompletion
       )
     end

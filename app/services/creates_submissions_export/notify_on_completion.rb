@@ -6,7 +6,6 @@ module Services
 
       executed do |context|
 
-        puts "~~~~~ Inside NotifyOnCompletion ~~~~~\n\n"
         submissions_export = context.submissions_export
         team = submissions_export.team
 
@@ -14,9 +13,9 @@ module Services
         assignment = submissions_export.assignment
 
         zip_file_path = "#{Rails.root}/#{submissions_export.local_file_path}"
-        puts "zip_file_path: #{zip_file_path}"
 
         if File.file?(zip_file_path)
+          submissions_export.update_attributes(last_export_completed_at: DateTime.now)
           deliver_archive_success_mailer(submissions_export, professor, assignment, team)
         else
           deliver_archive_failed_mailer(submissions_export, professor, assignment)
@@ -24,7 +23,6 @@ module Services
       end
 
       def self.deliver_archive_success_mailer(submissions_export, professor, assignment, team)
-        secure_token = submissions_export.generate_secure_token
 
         if team
           ExportsMailer.mail_team_submissions_export(

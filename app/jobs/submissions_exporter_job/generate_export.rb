@@ -28,6 +28,14 @@ module SubmissionsExporterJob::GenerateExport
   end
 
   def tmp_dir
-    @tmp_dir ||= FileManager.make_temp_directories
+    @tmp_dir ||= make_temp_directories
+  end
+
+  def self.make_temp_directories
+    FileUtils.mkdir_p(self.tmp_dir_prefix).first
+  end
+
+  def self.tmp_dir_prefix
+    "/tmp"
   end
 end

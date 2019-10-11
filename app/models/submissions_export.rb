@@ -24,13 +24,6 @@ class SubmissionsExport < ApplicationRecord
   validates :course_id, presence: true
   validates :assignment_id, presence: true
 
-  # this should be moved into the Exports::Model module, or a new
-  # SecureToken::Target module, but since SecureToken still lives in /app/models
-  # it feels weird to have to include an app resource to test /lib
-  #
-  def generate_secure_token
-    SecureToken.create user_id: professor.id, course_id: course.id, target: self
-  end
 
   def local_file_path_prefix
     "files/exports/courses/#{course_id}/assignments/#{assignment_id}/" \
