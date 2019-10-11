@@ -11,6 +11,8 @@ module BadgesHelper
     end
 
     def is_auto_awarded(badge_feedback)
+        return false if badge_feedback.nil?
+        
         badge_feedback = badge_feedback.split("Auto-awarded on ")
 
         if badge_feedback.length == 2 && badge_feedback[0].length == 0 && is_formatted_date_time(badge_feedback[1])
