@@ -30,10 +30,11 @@ describe API::LearningObjectives::LevelsController do
     end
 
     describe "DELETE destroy" do
-      it "deletes the level" do
+      it "does not delete the level if there are less than 2" do
         level
-        expect{ delete :destroy, params: { objective_id: objective.id, id: level.id }, format: :json }.to \
-          change(LearningObjectiveLevel, :count).by -1
+        delete :destroy, params: { objective_id: objective.id, id: level.id }, format: :json
+        expect(LearningObjectiveLevel.count).to eq(1)
+        expect(JSON.parse(response.body)).to eq("message"=>"Cannot delete levels as there should be at least two levels for a learning objective.", "success"=>false)
       end
     end
 
