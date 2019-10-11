@@ -29,7 +29,7 @@ class SubmissionExportPerformer < ResqueJob::Performer
   end
 
   def fetch_csv_data(course)
-    @csv_data = SubmissionExporter.new.export(course)
+    @csv_data = SubmissionExporter.new.export(course, Date.strptime(@attrs[:start_date], "%Y-%m-%d"), Date.strptime(@attrs[:end_date], "%Y-%m-%d"), @attrs[:field])
   end
 
   def notify_submission_export

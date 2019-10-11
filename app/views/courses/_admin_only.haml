@@ -12,4 +12,8 @@
     .form-item
       = f.input :disable_grade_emails, label: "Disable Grade Emails?", hint: " Emails are not sent to students upon the release of a grade"
     .form-item
+      = f.input :export_date_range_enabled, label: "Enable Export Date Range Selection?", hint: " Are certain exports in the Course Data Exports page allowed to be exported using a specified date range in this course? (This option currently applies to: Assignment Submissions Exports)"
+    .form-item
+      = f.input :export_date_range_days, label: "Set the maximum number of days in the date range selected for which a Course Data Export can be exported", hint: "This option only applies to Course Data Exports for which exporting using a date range is possible"
+    .form-item
       = f.association :institution, collection: Institution.all, prompt: "Select an institution"

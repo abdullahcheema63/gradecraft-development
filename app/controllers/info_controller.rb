@@ -124,9 +124,44 @@ class InfoController < ApplicationController
     @teams = current_course.teams
   end
 
+  def start_end_dates(course)
+    date_range = {}
+
+    previous_days_permitted = course.export_date_range_days
+
+    begin
+      date_range[:end_date] =  params.key?(:end_date) ? Date.strptime(params[:end_date], "%Y-%m-%d") : Date.today
+      date_range[:start_date] = params.key?(:start_date) ? Date.strptime(params[:start_date], "%Y-%m-%d") : date_range[:end_date] - previous_days_permitted
+    rescue ArgumentError
+      puts "Invalid date"
+      date_range[:start_date] = Date.today - previous_days_permitted
+      date_range[:end_date] = Date.today
+    end
+
+    puts "Start: #{date_range[:start_date]}"
+    puts "End: #{date_range[:end_date]}"
+
+    if date_range[:start_date] > date_range[:end_date]
+      date_range[:start_date] = date_range[:end_date] - previous_days_permitted
+    end
+
+    if date_range[:end_date] - date_range[:start_date] > previous_days_permitted
+      date_range[:start_date] = date_range[:end_date] - previous_days_permitted
+    end
+
+
+    puts "Start: #{date_range[:start_date]}"
+    puts "End: #{date_range[:end_date]}"
+
+    return date_range
+  end
+
   def submissions
+    field = params.key?(:field) && SubmissionExporter.field_for_export?(params[:field]) ? params[:field] : "created_at"
     course = current_user.courses.find_by(id: params[:id])
-    @submission_export_job = SubmissionExportJob.new(user_id: current_user.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv")
+    date_range = start_end_dates(course)
+
+    @submission_export_job = SubmissionExportJob.new(user_id: current_user.id, course_id: course.id, filename: "#{ course.name } Submissions Export - #{ Date.today }.csv", start_date: date_range[:start_date], end_date: date_range[:end_date], field: field)
     @submission_export_job.enqueue
 
     flash[:notice]="Your request to export submissions from course \"#{ course.name }\" is currently being processed. We will email you the data shortly."
