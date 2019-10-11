@@ -15,12 +15,32 @@ class CSVStudentImporter
     @unsuccessful = []
   end
 
+  def find_team_if_exists(course_id, team_name)
+    team = Team.where("course_id = ? AND lower(name) = ?", course_id, team_name.downcase)
+
+    return team.first if team.any?
+
+    return nil
+  end
+
+  def find_or_create_teams(course_id, team_name)
+    team = find_team_if_exists(course_id, team_name)
+
+    return team if team.present?
+
+    team = Team.new(course_id: course_id, name: team_name)
+    team.save!
+
+    team
+  end
+
   def import
     if file
       CSV.foreach(file, headers: true, skip_blanks: true, encoding: "iso-8859-1:utf-8") do |line|
         strip_whitespace line
         row = UserRow.new line
-        team = Team.find_or_create_by(course_id: course.id, name: row.team_name) unless row.team_name.blank?
+
+        team = find_or_create_teams(course.id, row.team_name) if row.team_name.present?
 
         if team.present? && !team.valid?
           append_unsuccessful row, team.errors.full_messages.join(", ")
