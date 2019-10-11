@@ -18,7 +18,7 @@ describe Services::Actions::CreateSubmitterDirectories do
   describe "#execute" do
     it "creates a directory for each submitter" do
       allow(described_class).to receive(:valid_directories?).and_return true
-      expect(FileUtils).to receive(:mkdir_p).twice
+      expect(FileUtils).to receive(:mkdir_p).thrice
       described_class.execute context
     end
 

@@ -224,7 +224,7 @@ RSpec.describe SubmissionsExportsController, type: :controller do
 
     it "instantiates a new submissions export job" do
       expect{ get :create, params: { id: course.id, assignment_id: assignment.id } }.to \
-        change(SubmissionListExporterJob.jobs, :size).by 1
+        change(SubmissionsExporterJob.jobs, :size).by 1
     end
 
     it "caches the submissions export job" do

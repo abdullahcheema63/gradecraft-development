@@ -35,7 +35,7 @@ describe ExportsMailer do
   describe "#submissions_export_success" do
     let(:deliver_email) do
       ExportsMailer
-        .submissions_export_success(professor, assignment, submissions_export, secure_token)
+        .submissions_export_success(professor, assignment, submissions_export)
         .deliver_now
     end
 
