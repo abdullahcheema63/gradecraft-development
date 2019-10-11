@@ -56,6 +56,20 @@ class CourseMembershipsController < ApplicationController
     end
   end
 
+  def check_group_membership(course_membership)
+    user = course_membership.user
+    groups = user.groups
+
+    groups.where(course_id: course_membership.course_id).each do |group|
+      deleted_group_size = group.students.length - 1
+
+      if group.assignments.pluck("min_group_size").max > deleted_group_size
+        return { deletable: false, group: group, assignment: group.assignments.where("min_group_size > ?", deleted_group_size).first }
+      end
+    end
+
+    return { deletable: true }
+    
   def remove_leaders_from_teams(course_membership)
     staff_member = course_membership.user
 
@@ -70,6 +84,17 @@ class CourseMembershipsController < ApplicationController
 
   def destroy
     course_membership = current_course.course_memberships.find(params[:id])
+
+    group_membership_conditions = check_group_membership(course_membership)
+
+    if !group_membership_conditions[:deletable] && !current_user.is_admin?(current_course)
+      message = "#{course_membership.user.name} could not be removed as their group #{group_membership_conditions[:group].name} is in the assignment #{group_membership_conditions[:assignment].name} which has a minimum group size of #{group_membership_conditions[:assignment].min_group_size}"
+      
+      render json: { errors:  message },
+        status: 500
+
+      return
+    end
     
     if course_membership.user.is_staff?(course_membership.course)
       remove_leaders_from_teams(course_membership)
@@ -79,7 +104,7 @@ class CourseMembershipsController < ApplicationController
    
     respond_to do |format|
       format.html { redirect_to session[:return_to], notice: "#{course_membership.user.name} was successfully removed from course." }
-      format.json { head :ok }
+      format.json {  head :ok }
     end
   end
 
