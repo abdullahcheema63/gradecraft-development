@@ -34,7 +34,8 @@ class API::InlineImagesController < ActionController::Base
       if File.file?(file_path)
         send_data File.read(file_path), :disposition => "attachment"
       else
-        render :nothing => true
+        raise ActionController::RoutingError.new('Not Found')
+        return
       end
     end
 
