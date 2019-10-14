@@ -170,23 +170,19 @@ puts "Children must be taught how to think, not what to think. ― Margaret Mead
   end
 end
 
-p = Payment.new({
-  first_name: "Albus",
-  last_name: "Dumbledore",
-  organization: "Hogwarts University",
-  phone: "555-555-5555",
-  addr1: "1234 Hoggy Ln",
-  city: "Mumblescrud",
-  country: "UK",
-  amount_usd: 0.0,
-  source: "Freebie"
-})
-
 subscription = Subscription.new({
   billing_scheme_id: BillingScheme.first.id,
   user_id: User.find_by(username: "albus").id,
+  renewal_date: DateTime.current + 1.month
 })
-subscription.start! p
+
+p = Payment.new({
+  amount_usd: 0.0,
+  source: "Freebie",
+  billing_scheme_id: BillingScheme.first.id,
+  subscription_id: subscription.id
+})
+
 subscription.create_stripe_customer("dumbledore@hogwarts.edu")
 
 # create a hash on each course config to store assignment types and assignments
@@ -316,27 +312,22 @@ User.create! do |u|
   end
 end.activate!
 
-p = Payment.new({
-  first_name: "Snippity",
-  last_name: "Snapington",
-  organization: "College of Hogwarts",
-  phone: "555-555-5555",
-  addr1: "1234 Stalker Dr.",
-  city: "Nob End",
-  country: "UK",
-  amount_usd: 50.0,
-  source: "NotStripe"
-})
-
 subscription = Subscription.new({
   billing_scheme_id: BillingScheme.first.id,
   user_id: User.find_by(username: "severus").id,
+  renewal_date: DateTime.current + 1.month,
   courses: [
     @courses[:leaderboards_team_challenges][:course],
     @courses[:power_ups_locks_weighting_config][:course],
   ]
 })
-subscription.start! p
+
+p = Payment.new({
+  amount_usd: 0.0,
+  source: "SampleDB",
+  billing_scheme_id: BillingScheme.first.id,
+  subscription_id: subscription.id
+})
 subscription.create_stripe_customer("snape@hogwarts.edu")
 
 # Generate sample GSI
