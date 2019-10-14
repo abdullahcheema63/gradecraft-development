@@ -173,7 +173,6 @@ end
 subscription = Subscription.new({
   billing_scheme_id: BillingScheme.first.id,
   user_id: User.find_by(username: "albus").id,
-  renewal_date: DateTime.current + 1.month
 })
 
 p = Payment.new({
@@ -315,7 +314,6 @@ end.activate!
 subscription = Subscription.new({
   billing_scheme_id: BillingScheme.first.id,
   user_id: User.find_by(username: "severus").id,
-  renewal_date: DateTime.current + 1.month,
   courses: [
     @courses[:leaderboards_team_challenges][:course],
     @courses[:power_ups_locks_weighting_config][:course],

@@ -34,11 +34,8 @@ class API::SubscriptionsController < ApplicationController
       return render json: { data: current_user.subscription, errors: [ "Subscription already exists!" ] }, status: 409
     end
 
-    @subscription = Subscription.new({
-      billing_scheme_id: BillingScheme.find_by(min_courses: 0).id,
-      user_id: current_user.id,
-      renewal_date: DateTime.yesterday
-    })
+    @subscription = create_new_subscription
+    
     if @subscription.save!
       puts("Created a subscription! #{@subscription.inspect}")
       redirect_back(fallback_location: fallback_location)
@@ -54,7 +51,8 @@ class API::SubscriptionsController < ApplicationController
     puts "inside ADD_CARD subscriptions api controller"
     @subscription = current_user.subscription
     if !@subscription
-      return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
+      @subscription = create_new_subscription
+      @subscription.save!
     end
     if !@subscription.customer_id
       @subscription.create_stripe_customer(current_user.email)
@@ -242,6 +240,13 @@ class API::SubscriptionsController < ApplicationController
   end
 
   private
+
+  def create_new_subscription
+    @subscription = Subscription.new({
+      billing_scheme_id: BillingScheme.find_by(min_courses: 0).id,
+      user_id: current_user.id
+    })
+  end
 
   def set_card_as_default(customer_id, pm_id)
     puts "setting card as default"
