@@ -52,7 +52,7 @@
     </div>
 
     <div class="content_block">
-      <h2>New Courses</h2>
+      <h2 class="unspace-top">New Courses</h2>
       <p>Here are all the courses created in the past 10 days.</p>
       <div class="table_container">
         <table>
