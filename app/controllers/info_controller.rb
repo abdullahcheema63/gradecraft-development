@@ -74,7 +74,7 @@ class InfoController < ApplicationController
 
   def learning_objectives_outcomes_file
     course = current_user.courses.find_by(id: params[:id])
-    LearningObjectivesOutcomesExporterJob
+    LearningObjectiveOutcomesExporterJob
       .perform_async(
         current_user.id,
         course.id,
