@@ -1,22 +1,23 @@
 <template>
-  <div>
-    <h2>Search for users across all courses and account types </h2>
-    <h3>Search by: </h3>
+  <div class="content_block">
+    <p>Search for users across all courses and account types. </p>
+
+    <h2>Search by:</h2>
     <form>
       <div class="form_elem">
-        <input type="text" id="name_contains" v-model="searchName" placeholder="Name contains..." />
+        <input type="search" id="name_contains" v-model="searchName" placeholder="Name contains..." />
         <label for="name_contains">Name contains</label>
       </div>
       <div class="form_elem">
-        <input type="text" id="username_contains" v-model="searchUsername" placeholder="Username contains..." />
+        <input type="search" id="username_contains" v-model="searchUsername" placeholder="Username contains..." />
         <label for="username_contains">Username contains</label>
       </div>
       <div class="form_elem">
-        <input type="text" id="email_contains" v-model="searchEmail" placeholder="Email contains..." />
+        <input type="search" id="email_contains" v-model="searchEmail" placeholder="Email contains..." />
         <label for="email_contains">Email contains</label>
       </div>
     </form>
-    <h3>Search Results:</h3>
+    <h2>Search Results:</h2>
     <div v-if="currentPageAllUsers.length">
       <div class="table_container">
         <table>
@@ -72,9 +73,13 @@
         </table>
       </div>
       <tablePagination :items="filteredAllUsers" @paginate="paginateItems"></tablePagination>
+      <button type="button" class="action secondary">Export this table view</button>
+      <p style="background: aquamarine;">
+        ^ Not done
+      </p>
     </div>
     <div v-else>
-      <h3>No users found with the filters applied </h3>
+      <h4 class="pink_text">No users found with those search parameters. </h4>
     </div>
   </div>
 </template>

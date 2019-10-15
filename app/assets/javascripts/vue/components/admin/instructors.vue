@@ -1,16 +1,10 @@
 <template>
-  <div>
-    <h2>All Instructor Users</h2>
-    <p>Manage instructor users and their subscribed accounts.</p>
-    <form>
-      <div class="form_elem">
-        <input type="text" id="name_contains" v-model="searchName" placeholder="Name contains..." />
-        <label for="name_contains">Name contains</label>
-      </div>
-    </form>
+  <div class="content_block">
+    <p>Manage and view all instructor accounts. </p>
+
     <div class="table_functions">
       <div class="filter_box">
-        <p>Select which filters you want to apply to the table below: </p>
+        <p><b>Select which filters you want to apply:</b> </p>
         <div>
           <span>
             <input id="subscribed_acccounts" type="checkbox" value="subscribed" v-model="showSubscribed" />
@@ -25,6 +19,14 @@
             <label for="active_accounts">In Active Course</label>
           </span>
         </div>
+      </div>
+      <div class="search_box">
+        <form>
+          <div class="form_elem">
+            <input type="search" id="name_contains" v-model="searchName" placeholder="Search by instructor name" />
+            <label for="name_contains">Search instructors</label>
+          </div>
+        </form>
       </div>
     </div>
     <div v-if="currentPageAllInstructors.length">
@@ -88,9 +90,13 @@
         </table>
       </div>
       <tablePagination :items="filteredAllInstructors" @paginate="paginateItems"></tablePagination>
+      <button type="button" class="action secondary">Export this table view</button>
+      <p style="background: aquamarine;">
+        ^ Not done
+      </p>
     </div>
     <div v-else>
-      <h3>No instructors found with the filters applied </h3>
+      <h4 class="pink_text">No users found with those search parameters. </h4>
     </div>
   </div>
 </template>

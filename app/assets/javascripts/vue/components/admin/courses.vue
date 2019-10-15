@@ -2,6 +2,9 @@
   <div class="main_content">
     <div class="content_block intro">
       <h1>_App _or_ U-M_ Courses</h1>
+      <p style="background: aquamarine;">
+        Note to E from S: the “App” vs “U-M” part of the heading above is conditional, based on which data side the admin is logged into.
+      </p>
       <p>
         Manage and view all courses.
       </p>
@@ -39,14 +42,6 @@
                     <label for="unpublished">Unpublished</label>
                   </span>
                   <span>
-                    <input id="active" type="checkbox" value="active" v-model="showActive" />
-                    <label for="active">Active</label>
-                  </span>
-                  <span>
-                    <input id="inactive" type="checkbox" value="inactive" v-model="showInactive" />
-                    <label for="inactive">Inactive</label>
-                  </span>
-                  <span>
                     <input id="subscribed" type="checkbox" value="subscribed" v-model="showSubscribed" />
                     <label for="subscribed">Subscribed</label>
                   </span>
@@ -81,27 +76,26 @@
                 <table>
                   <thead>
                     <tr>
-                      <th>Course ID </th>
+                      <th>ID </th>
+                      <th>Course # </th>
                       <th>Course Name </th>
-                      <th>Subscribed </th>
-                      <th>Active </th>
                       <th>Published</th>
+                      <th>Subscribed </th>
                       <th>Instructor(s)</th>
                       <th># Students </th>
                       <th>Semester </th>
                       <th>Year </th>
                       <th>Created </th>
-                      <th>Exports </th>
-                      <th>Options </th>
+                      <th>Actions </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="course in currentPageAllCourses">
-                      <td>{{course.id}}</td>
+                      <td><a :href="course.url">{{course.id}}</a></td>
+                      <td><a :href="course.url">{{course.number}}</a></td>
                       <td><a class="table_truncate" :href="course.url">{{course.name}}</a></td>
-                      <td><span :class="{checked: course.licensed}">&nbsp;</span></td>
-                      <td><span :class="{checked: course.active}">&nbsp;</span></td>
                       <td><span :class="{checked: course.published}">&nbsp;</span></td>
+                      <td><span :class="{checked: course.licensed}">&nbsp;</span></td>
                       <td>
                         <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
                       </td>
@@ -109,7 +103,7 @@
                       <td>{{course.term}}</td>
                       <td>{{course.year}}</td>
                       <td>{{course.created}}</td>
-                      <td>
+                      <td class="no_wrap">
                         <buttonDropdown>
                           <template slot="button_text">Export</template>
                           <template slot="content">
@@ -126,8 +120,7 @@
                             </ul>
                           </template>
                         </buttonDropdown>
-                      </td>
-                      <td>
+
                         <buttonDropdown>
                           <template slot="button_text">Options</template>
                           <template slot="content">
@@ -147,14 +140,17 @@
                 </table>
               </div>
               <tablePagination :items="filteredAllCourses" :paginateBy="currentPageItemMax" @paginate="paginateItems"></tablePagination>
-              <button type="button" class="action">Export this table view</button>Not done
+              <button type="button" class="action secondary">Export this table view</button>
+              <p style="background: aquamarine;">
+                ^ Not done
+              </p>
             </div>
             <div v-else>
               <h4 class="pink_text">No courses were found with the selected filters. </h4>
             </div>
-
           </div>
         </div>
+
         <div v-if="tabSection[0]==='Archived'">
           <div class="content_block">
             <p>Manage and view all archived courses. </p>
