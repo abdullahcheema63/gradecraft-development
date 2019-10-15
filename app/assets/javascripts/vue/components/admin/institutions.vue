@@ -1,48 +1,62 @@
 <template>
-  <div>
-    <h2>All Institutions</h2>
-    <form>
-      <div class="form_elem">
-        <input type="text" id="name_contains" v-model="searchName" placeholder="Name contains..." />
-        <label for="name_contains">Name contains</label>
-      </div>
-    </form>
-    <div v-if="currentPageAllInstitutions.length">
-      <div class="table_container">
-        <table>
-          <thead>
-            <tr>
-              <th>Name </th>
-              <th>Has Site License?</th>
-              <th>Type</th>
-              <th>Options</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="institution in currentPageAllInstitutions" :key="institution.id">
-              <td>{{institution.name}}</td>
-              <td><span :class="{checked: institution.hasSiteLicense}"></span> </td>
-              <td>{{institution.institutionType}}</td>
-              <td>
-                <buttonDropdown>
-                  <template slot="button_text">Options</template>
-                  <template slot="content">
-                    <ul>
-                      <li><a :href="institution.editURL">Edit</a> </li>
-                    </ul>
-                  </template>
-                </buttonDropdown>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <tablePagination :items="filteredAllInstitutions" @paginate="paginateItems"></tablePagination>
+  <div class="main_content">
+    <div class="content_block intro">
+      <h1>_App _or_ U-M_ Institutions</h1>
+      <p style="background: aquamarine;">
+        Note to E from S: the “App” vs “U-M” part of the heading above is conditional, based on which data side the admin is logged into.
+      </p>
+      <p>
+        Manage and view all institutions.
+      </p>
     </div>
-    <div v-else>
-      <h3>No institutions found with the filters applied</h3>
+
+    <div class="content_block">
+      <div class="table_functions">
+        <div class="filter_box">
+          <a class="button action secondary next" href="institutions/new">Add an institution</a>
+        </div>
+        <div class="search_box">
+          <form>
+            <div class="form_elem">
+              <input type="search" id="name_contains" v-model="searchName" placeholder="Search by institution name" />
+              <label for="name_contains">Search Institutions</label>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div v-if="currentPageAllInstitutions.length">
+        <div class="table_container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name </th>
+                <th>Has Site License?</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="institution in currentPageAllInstitutions" :key="institution.id">
+                <td>{{institution.name}}</td>
+                <td><span :class="{checked: institution.hasSiteLicense}"></span> </td>
+                <td>{{institution.institutionType}}</td>
+                <td>
+                  <a class="button secondary" :href="institution.editURL">Edit</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <tablePagination :items="filteredAllInstitutions" @paginate="paginateItems"></tablePagination>
+        <button type="button" class="action secondary">Export this table view</button>
+        <p style="background: aquamarine;">
+          ^ Not done
+        </p>
+      </div>
+      <div v-else>
+        <h4 class="pink_text">No institutions found with those search parameters. </h4>
+      </div>
     </div>
-    <a class="button action next" href="institutions/new">Add a new institution</a>
   </div>
 </template>
 
@@ -51,7 +65,6 @@ module.exports = {
   name: 'institutions',
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
-    buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
   },
   created: function() {
     this.$store.dispatch("getAllInstitutions");
