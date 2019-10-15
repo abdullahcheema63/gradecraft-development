@@ -677,6 +677,8 @@ Rails.application.routes.draw do
   get "overview/users", to: "overview#users"
   get "overview/instructors", to: "overview#instructors"
   get "overview/institutions", to: "overview#institutions"
+  get "overview/subscriptions", to: "overview#subscriptions"
+  get "overview/utilities", to: "overview#utilities"
 
   # root, bro
   root to: "home#index"
