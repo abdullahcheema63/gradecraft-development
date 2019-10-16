@@ -35,7 +35,7 @@ class API::SubscriptionsController < ApplicationController
     end
 
     @subscription = create_new_subscription
-    
+
     if @subscription.save!
       puts("Created a subscription! #{@subscription.inspect}")
       redirect_back(fallback_location: fallback_location)
@@ -168,17 +168,17 @@ class API::SubscriptionsController < ApplicationController
 
       else
         puts("Removing subscription from: #{courses_to_unsubscribe}")
-        unsubscribe_courses(courses_to_unsubscribe)
+        @subscription.unsubscribe_courses(courses_to_unsubscribe)
 
         puts("adding subscription to: #{courses_to_subscribe}")
-        subscribe_courses(courses_to_subscribe, @subscription.id)
+        @subscription.subscribe_courses(courses_to_subscribe)
       end
 
     elsif new_subscribed_courses_count < current_subscribed_courses_count
       #remove a subscription from a course
 
       puts("Removing subscription from: #{courses_to_unsubscribe}")
-      unsubscribe_courses(courses_to_unsubscribe)
+      @subscription.unsubscribe_courses(courses_to_unsubscribe)
       change_billing_scheme(new_subscribed_courses_count)
 
     else
@@ -201,23 +201,20 @@ class API::SubscriptionsController < ApplicationController
       })
 
       puts "about to call create charge"
-      @subscription.create_charge(payment)
-
-      #not sure how to successfully return
-      render "api/subscriptions/index", success: true, status: 200
+      if @subscription.create_charge(payment)
+        puts "create_charge called and returned true ? inside successful payment"
+        if courses_to_unsubscribe.length
+          @subscription.unsubscribe_courses(courses_to_unsubscribe)
+        end
+        if courses_to_subscribe.length
+          @subscription.subscribe_courses(courses_to_subscribe)
+        end
+        change_billing_scheme(new_subscribed_courses_count)
+      end
 
       return render_error payment.errors.messages, payment.errors.messages unless payment.valid?
       begin
-        puts("inside payment.valid? quest area")
-        #@subscription.renew! payment
-
-        if courses_to_unsubscribe.length
-          unsubscribe_courses(courses_to_unsubscribe)
-        end
-        if courses_to_subscribe.length
-          subscribe_courses(courses_to_subscribe, @subscription.id)
-        end
-        change_billing_scheme(new_subscribed_courses_count)
+        puts("inside payment.valid? begin rescue condition")
 
       rescue Stripe::CardError => e
         return render_error e.message, e.message, 500
@@ -256,20 +253,6 @@ class API::SubscriptionsController < ApplicationController
         invoice_settings: { default_payment_method: pm_id }
       }
     )
-  end
-
-  def unsubscribe_courses(course_ids)
-    course_ids.each do |id|
-      course = Course.find(id)
-      course.unsubscribe
-    end
-  end
-
-  def subscribe_courses(course_ids, subscription_id)
-    course_ids.each do |id|
-      course = Course.find(id)
-      course.subscribe(subscription_id)
-    end
   end
 
   def determine_billing_scheme(course_count)

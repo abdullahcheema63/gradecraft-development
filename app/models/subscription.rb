@@ -13,15 +13,11 @@ class Subscription < ApplicationRecord
   accepts_nested_attributes_for :payments
 
   def is_expired?
-    renewal_date < DateTime.now if renewal_date
+    renewal_date < DateTime.current if renewal_date
   end
 
   def create_charge(payment)
-    #renewal date is being set to yesterday if there subsription is just created?
-    # ^ maybe let this be nil?
-
-    #duration ||= DateTime.now + 1.month
-    #self.renewal_date = duration
+    #renewal date is being set to null if there subsription is just created?
 
     add_payment! payment
   end
@@ -61,6 +57,20 @@ class Subscription < ApplicationRecord
     end
   end
 
+  def unsubscribe_courses(course_ids)
+    course_ids.each do |id|
+      course = Course.find(id)
+      course.unsubscribe
+    end
+  end
+
+  def subscribe_courses(course_ids)
+    course_ids.each do |id|
+      course = Course.find(id)
+      course.subscribe(self.id)
+    end
+  end
+
   private
 
   def payment_note
@@ -70,15 +80,31 @@ class Subscription < ApplicationRecord
   end
 
   def add_payment!(payment)
-    charge = payment.charge_customer
-    
-    # Force save immediately to ensure that a failed save invalidates the charge.
-    begin
+    intent = payment.charge_customer
+    puts "\n\n\n intent: #{intent}"
+    payment.payment_intent_id = intent.charges.data.first.id
+    payment.save
+
+    if intent.charges.data.first.status === "succeeded"
+      puts "!!! Payment was a success !!!"
+      if self.renewal_date.nil? || self.renewal_date < DateTime.current
+        self.renewal_date = DateTime.current + 1.month
+      else
+        self.renewal_date = self.renewal_date + 1.month
+      end
       save!
       NotificationMailer.payment_received(payment).deliver_now
-    rescue => e
-      payment.refund!
-      raise
+    else
+      puts "payment did not work ): "
     end
+
+    # # Force save immediately to ensure that a failed save invalidates the charge.
+    # begin
+    #   save!
+    #   NotificationMailer.payment_received(payment).deliver_now
+    # rescue => e
+    #   payment.refund!
+    #   raise
+    # end
   end
 end

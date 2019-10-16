@@ -21,18 +21,7 @@ class Payment < ApplicationRecord
       payment_method_id = payment_methods.first
       #check this logic / method
     end
-
-    intent = create_payment_intent(customer_id, payment_method_id)
-    puts "\n\n\n intent: #{intent}"
-
-    self.payment_intent_id = intent.charges.data.first.id
-
-    if intent.charges.data.first.status === "succeeded"
-      puts "!!! Payment was a success!!! "
-      self.save!
-    else
-      "payment did not work ): "
-    end
+    create_payment_intent(customer_id, payment_method_id)
   end
 
   def refund!
