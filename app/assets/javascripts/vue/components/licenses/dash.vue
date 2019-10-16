@@ -72,7 +72,7 @@
           <template slot="heading">Add a new payment method</template>
           <template slot="content">
             <form>
-              <licenses-payment-inputs :stripePk="stripePk" :stripeSk="stripeSk" />
+              <licenses-payment-inputs :stripePk="stripePk" />
             </form>
           </template>
         </buttonModal>
@@ -202,7 +202,6 @@ module.exports = {
   },
   props: {
     stripePk: String,
-    stripeSk: String,
   },
   computed: {
     activeBillingRecord(){

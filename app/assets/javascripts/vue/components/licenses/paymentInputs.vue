@@ -71,8 +71,7 @@ module.exports = {
     }
   },
   props: {
-    stripePk: String,
-    stripeSk: String,
+    stripePk: String
   },
   methods: {
     addCard: async function() {

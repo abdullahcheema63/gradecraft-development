@@ -13,7 +13,7 @@ class Subscription < ApplicationRecord
   accepts_nested_attributes_for :payments
 
   def is_expired?
-    renewal_date < DateTime.now
+    renewal_date < DateTime.now if renewal_date
   end
 
   def create_charge(payment)
