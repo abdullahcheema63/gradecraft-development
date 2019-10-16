@@ -22,7 +22,6 @@ json.included do
     json.attributes do
       json.id                                 payment.id.to_s
       json.amount_usd                         payment.amount_usd
-      json.source                             payment.source
     end
   end
   json.array! @payment_methods do |payment_method|

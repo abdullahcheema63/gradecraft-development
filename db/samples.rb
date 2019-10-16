@@ -177,7 +177,6 @@ subscription = Subscription.new({
 
 p = Payment.new({
   amount_usd: 0.0,
-  source: "Freebie",
   billing_scheme_id: BillingScheme.first.id,
   subscription_id: subscription.id
 })
@@ -322,7 +321,6 @@ subscription = Subscription.new({
 
 p = Payment.new({
   amount_usd: 0.0,
-  source: "SampleDB",
   billing_scheme_id: BillingScheme.first.id,
   subscription_id: subscription.id
 })

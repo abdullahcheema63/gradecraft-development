@@ -28,7 +28,6 @@ json.included do
 
       json.attributes do
         json.id payment.id.to_s
-        json.source payment.source
         json.amount_usd payment.amount_usd
         json.first_name payment.first_name
         json.last_name payment.last_name

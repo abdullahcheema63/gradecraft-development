@@ -71,8 +71,7 @@ class Subscription < ApplicationRecord
 
   def add_payment!(payment)
     charge = payment.charge_customer
-
-    # charge = payment.charge! self.user.email, payment_note
+    
     # Force save immediately to ensure that a failed save invalidates the charge.
     begin
       save!
