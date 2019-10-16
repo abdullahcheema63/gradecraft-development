@@ -2,7 +2,6 @@ require_relative "../../services/creates_many_grades"
 
 class Assignments::GradesController < ApplicationController
   before_action :ensure_staff?, except: [:self_log, :delete_self_logged]
-  before_action :ensure_student?, only: [:self_log, :delete_self_logged]
   before_action :find_assignment, only: [:mass_edit, :mass_update, :self_log, :delete_self_logged, :delete_all]
   before_action :use_current_course, only: [:mass_edit, :mass_update, :delete_self_logged]
 
@@ -160,8 +159,13 @@ class Assignments::GradesController < ApplicationController
     ScoreRecalculatorJob.new(user_id: current_student.id,
                              course_id: current_course.id).enqueue
 
+
+    message = "#{current_student.first_name} #{current_student.last_name}'s' self logged grade for this assignment has been deleted."
+
+    message = "Your grade for this assignment has been deleted." if current_user.is_student?(current_course)
+
     redirect_to assignments_path,
-          notice: "Your grade for this assignment has been deleted."
+          notice: message
   end
 
   private
