@@ -69,7 +69,8 @@ class CourseMembershipsController < ApplicationController
     end
 
     return { deletable: true }
-    
+  end
+  
   def remove_leaders_from_teams(course_membership)
     staff_member = course_membership.user
 
