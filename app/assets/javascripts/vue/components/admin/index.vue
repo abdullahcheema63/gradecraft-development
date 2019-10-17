@@ -1,5 +1,5 @@
 <template>
-  <div class="main_content">
+  <div class="main_content" :class="maincontentClass">
     <guideControl></guideControl>
 
     <div class="content_block intro">
@@ -58,6 +58,7 @@
         <table>
           <thead>
             <tr>
+              <th>ID </th>
               <th>Course # </th>
               <th>Course Name </th>
               <th>Subscribed </th>
@@ -73,8 +74,9 @@
           </thead>
           <tbody>
             <tr v-for="course in allNewCourses" :key="course.id">
-              <td><a href="#">{{course.id}}</a> </td>
-              <td><a href="#">{{course.name}}</a> </td>
+              <td><a :href="course.url">{{course.id}}</a> </td>
+              <td><a :href="course.url">{{course.number}}</a></td>
+              <td><a :href="course.url" class="table_truncate" :title="course.name">{{course.name}}</a> </td>
               <td><span :class="{checked: course.licensed}"></span> </td>
               <td><span :class="{checked: course.active}"></span> </td>
               <td><span :class="{checked: course.published}"></span> </td>
@@ -106,105 +108,13 @@
       <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
       <a class="button action next" href="courses/new">Add a new course</a>
     </div>
-
-    <!-- <accordionComponent>
-      <template slot="heading">New courses</template>
-      <template slot="content">
-        <p>Courses created in the past 10 days</p>
-        <div class="table_container">
-          <table>
-            <thead>
-              <tr>
-                <th>Course # </th>
-                <th>Course Name </th>
-                <th>Subscribed </th>
-                <th>Active </th>
-                <th>Published </th>
-                <th>Copied </th>
-                <th>Instructor(s) </th>
-                <th>Semester </th>
-                <th>Year </th>
-                <th>Created </th>
-                <th>Actions </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="course in allNewCourses" :key="course.id">
-                <td><a href="#">{{course.id}}</a> </td>
-                <td><a href="#">{{course.name}}</a> </td>
-                <td><span :class="{checked: course.licensed}"></span> </td>
-                <td><span :class="{checked: course.active}"></span> </td>
-                <td><span :class="{checked: course.published}"></span> </td>
-                <td><span :class="{checked: course.copied}"></span> </td>
-                <td>
-                  <ul>
-                    <li v-for="instructor in course.instructors" :key="instructor.id">
-                      <a :href="instructor.url">{{instructor.text}}</a>
-                    </li>
-                  </ul>
-                </td>
-                <td>{{course.term}}</td>
-                <td>{{course.year}}</td>
-                <td>{{course.created}}</td>
-                <td>
-                  <buttonDropdown>
-                    <template slot="button_text">Options</template>
-                    <template slot="content">
-                      <ul>
-                        <li><a :href="course.editURL">Edit</a></li>
-                      </ul>
-                    </template>
-                  </buttonDropdown>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
-        <a class="button action next" href="courses/new">Add a new course</a>
-      </template>
-    </accordionComponent> -->
-
-    <!-- <accordionComponent>
-      <template slot="heading">Subscription expiration</template>
-      <template slot="content">
-        <p>Subscriptions that will expire within 30 days from today</p>
-        <div class="table_container" v-if="expiringLicenseInstructors.length">
-          <table>
-            <thead>
-              <tr>
-                <th>First Name </th>
-                <th>Last Name </th>
-                <th>Renewal Date </th>
-                <th>Payment Method </th>
-                <th># Active Courses </th>
-                <th>Actions </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="instructor in expiringLicenseInstructors" :key="instructor.id">
-                <td><a href="#">{{instructor.firstName}}</a> </td>
-                <td><a href="#">{{instructor.lastName}}</a> </td>
-                <td>{{instructor.licenseExpires}} </td>
-                <td>{{instructor.paymentMethod}} </td>
-                <td>{{instructor.activeCoursesNumber}} </td>
-                <td>
-                  <div class="button-container">
-                    <a class="button secondary" :href="'mailto:' + instructor.email" >Send email</a>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </template>
-    </accordionComponent> -->
   </div>
 </template>
 
 <script lang='coffee'>`
 module.exports = {
   name: 'index',
+  props: ['maincontentClass'],
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
@@ -214,6 +124,7 @@ module.exports = {
   },
   data() {
     return {
+      active: false,
       currentPageItemMin: 0,
       currentPageItemMax: 10,
     }
@@ -260,6 +171,10 @@ module.exports = {
     }
   },
   methods: {
+    shiftContent() {
+      this.active = !this.active;
+      this.$emit('shiftContent', this.active)
+    },
     filterExpiringInstructors(instructor){
       var now = new Date();
       var expirationMax = now.setDate(now.getDate() + 30);

@@ -1,5 +1,5 @@
 <template>
-  <div class="main_content">
+  <div class="main_content" :class="maincontentClass">
     <div class="content_block intro">
       <h1>_App _or_ U-M_ Users</h1>
       <p style="background: aquamarine;">
@@ -32,6 +32,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'userspage',
+  props: ['maincontentClass'],
   components: {
     tabContainer: () => VComponents.get('vue/components/structure/tabContainer'),
     users: () => VComponents.get('vue/components/admin/users'),
@@ -42,6 +43,7 @@ module.exports = {
   },
   data() {
     return {
+      active: false,
       tabSection: ["Instructors"],
       searchName: "",
       searchUsername: "",
@@ -67,6 +69,10 @@ module.exports = {
     },
   },
   methods: {
+    shiftContent() {
+      this.active = !this.active;
+      this.$emit('shiftContent', this.active)
+    },
     filterAllUsers(user){
       if(this.searchName){
         var name = user.firstName + " " + user.lastName

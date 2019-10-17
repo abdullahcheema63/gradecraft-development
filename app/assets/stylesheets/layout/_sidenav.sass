@@ -4,21 +4,25 @@
 /* New Vue-based side navigation */
 .new_style
   .content_wrapper
-    display: flex
     min-height: 100vh
-    border: 1px solid tomato
 
   .side_nav
-    flex: 0 0 180px
     padding-top: 5em
     font-size: 0.9em
+    position: fixed
+    height: 100vh
+    width: 185px
+    box-sizing: border-box
     transition: 0.2s all
 
     @include mobile-xl
       padding-top: 3.5em
 
     &.is-closed
-      flex: 0 0 35px
+      width: 35px
+
+    &.is-open
+      width: 185px
 
     p
       margin: 0
@@ -44,17 +48,6 @@
       border-bottom: 0px solid transparent
       display: block
       padding: 0.25em 1em
-
-    .positioning
-      position: fixed
-      top: 5em
-      width: 35px
-      transition: 0.2s all
-
-      &.is-open
-        width: 180px
-        bottom: 0
-        overflow-y: scroll
 
     .nav_icon
       padding: 1em 5px
@@ -92,7 +85,13 @@
         z-index: -100
 
   .main_content
-    flex: 1
+    transition: 0.2s all
+
+    &.sidenav-closed
+      margin-left: 35px
+
+    &.sidenav-open
+      margin-left: 185px
 
     .content_block
       padding-right: 1em

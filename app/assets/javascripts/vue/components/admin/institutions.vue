@@ -1,5 +1,5 @@
 <template>
-  <div class="main_content">
+  <div class="main_content" :class="maincontentClass">
     <div class="content_block intro">
       <h1>_App _or_ U-M_ Institutions</h1>
       <p style="background: aquamarine;">
@@ -63,6 +63,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'institutions',
+  props: ['maincontentClass'],
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
   },
@@ -71,6 +72,7 @@ module.exports = {
   },
   data() {
     return {
+      active: false,
       searchName: "",
       currentPageItemMin: 0,
       currentPageItemMax: 10,
@@ -89,6 +91,10 @@ module.exports = {
     }
   },
   methods: {
+    shiftContent() {
+      this.active = !this.active;
+      this.$emit('shiftContent', this.active)
+    },
     filterAllInstitutions(institution){
       if(this.searchName){
         var name = institution.name
