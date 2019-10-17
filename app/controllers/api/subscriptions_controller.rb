@@ -161,11 +161,6 @@ class API::SubscriptionsController < ApplicationController
       #check if courses are the same / swap courses, won't need to update Billing Scheme id
       if (selected_course_ids - subscribed_course_ids).empty?
         puts("courses subscribed are the same as courses selected ")
-
-        respond_to do |format|
-          format.json { head :ok }
-        end
-
       else
         puts("Removing subscription from: #{courses_to_unsubscribe}")
         @subscription.unsubscribe_courses(courses_to_unsubscribe)
@@ -200,7 +195,6 @@ class API::SubscriptionsController < ApplicationController
         subscription_id: @subscription.id,
       })
 
-      puts "about to call create charge"
       if @subscription.create_charge(payment)
         puts "create_charge called and returned true ? inside successful payment"
         if courses_to_unsubscribe.length
@@ -208,6 +202,7 @@ class API::SubscriptionsController < ApplicationController
         end
         if courses_to_subscribe.length
           @subscription.subscribe_courses(courses_to_subscribe)
+          payment.course_ids = courses_to_subscribe
         end
         change_billing_scheme(new_subscribed_courses_count)
       end
