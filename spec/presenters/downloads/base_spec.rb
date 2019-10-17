@@ -24,24 +24,6 @@ describe Presenters::Downloads::Base do
     end
   end
 
-  describe "#course_analytics_exports" do
-    let(:export) { create :course_analytics_export }
-    let(:user) { export.owner }
-
-    it "gets the ordered exports from the course" do
-      expect(course).to receive_message_chain \
-        :course_analytics_exports,
-        :order,
-        :includes
-
-      subject.course_analytics_exports
-    end
-
-    it "includes exports from the course" do
-      expect(subject.course_analytics_exports).to include export
-    end
-  end
-
   it "has the current course" do
     expect(subject.current_course).to eq course
   end

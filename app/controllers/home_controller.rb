@@ -1,5 +1,3 @@
-require "mongoid"
-
 # rubocop:disable AndOr
 class HomeController < ApplicationController
   skip_before_action :require_login
@@ -25,8 +23,7 @@ class HomeController < ApplicationController
 
   def health_check
     begin
-      @mongo_status = Mongoid.default_client.command(ping: 1).documents.first == {"ok"=>1.0} ? "Connected" : "Error"
-      @redis_status = Resque.redis.redis.call("ping") == "PONG" ? "Connected" : "Error"
+      @redis_status = Redis.redis.call("ping") == "PONG" ? "Connected" : "Error"
     rescue StandardError => e
       @error = e.message
       raise

@@ -82,7 +82,7 @@ class Assignments::GradesController < ApplicationController
 
     Gradebook.new(@assignment, students).existing_grades.each do |grade|
       grade.destroy
-      ScoreRecalculatorJob.new(user_id: grade.student_id, course_id: current_course.id).enqueue
+      ScoreRecalculatorJob.perform_async(grade.student_id, current_course.id)
     end
 
     redirect_to assignment_path(@assignment), flash: {
@@ -120,8 +120,7 @@ class Assignments::GradesController < ApplicationController
       )
 
       if @grade.save
-        grade_updater_job = GradeUpdaterJob.new(grade_id: @grade.id)
-        grade_updater_job.enqueue
+        grade_updater_job = GradeUpdaterJob.perform_async(@grade.id)
 
         redirect_to assignments_path,
           notice: "Nice job! Thanks for logging your grade!"
@@ -156,8 +155,7 @@ class Assignments::GradesController < ApplicationController
 
     @grade.destroy
 
-    ScoreRecalculatorJob.new(user_id: current_student.id,
-                             course_id: current_course.id).enqueue
+    ScoreRecalculatorJob.perform_async(current_student.id, current_course.id)
 
 
     message = "#{current_student.first_name} #{current_student.last_name}'s' self logged grade for this assignment has been deleted."
@@ -186,7 +184,7 @@ class Assignments::GradesController < ApplicationController
 
   # Schedule the `GradeUpdater` for all grades provided
   def enqueue_multiple_grade_update_jobs(grade_ids)
-    grade_ids.each { |id| GradeUpdaterJob.new(grade_id: id).enqueue }
+    grade_ids.each { |id| GradeUpdaterJob.perform_async(id) }
   end
 
   def find_assignment

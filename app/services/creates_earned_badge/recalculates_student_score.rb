@@ -7,9 +7,7 @@ module Services
 
       executed do |context|
         if context.earned_badge.badge.full_points?
-          ScoreRecalculatorJob.new(user_id: context.earned_badge.student_id,
-                                   course_id: context.earned_badge.course_id)
-            .enqueue
+          ScoreRecalculatorJob.perform_async(context.earned_badge.student_id, context.earned_badge.course_id)
         end
       end
     end

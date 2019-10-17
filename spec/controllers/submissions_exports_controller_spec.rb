@@ -25,18 +25,10 @@ RSpec.describe SubmissionsExportsController, type: :controller do
 
     describe "enqueuing the submissions export job" do
       context "the submissions export job is enqueued" do
-        before { allow(controller).to receive_message_chain(:submissions_export_job, :enqueue) { true } }
+        before { allow(controller).to receive_message_chain(:submissions_export_job, :success) }
         it "sets the job success flash message" do
           subject
           expect(flash[:success]).to match(/Your submissions export is being prepared/)
-        end
-      end
-
-      context "submissions export job is not enqueued" do
-        before { allow(controller).to receive_message_chain(:submissions_export_job, :enqueue) { false } }
-        it "sets the job failure flash message" do
-          subject
-          expect(flash[:alert]).to match(/Your submissions export failed to build/)
         end
       end
     end
@@ -224,21 +216,20 @@ RSpec.describe SubmissionsExportsController, type: :controller do
   end
 
   describe "#submissions_export_job" do
-    subject { controller.instance_eval { submissions_export_job } }
-    let(:submissions_export_job_attrs) {{ submissions_export_id: submissions_export.id }}
+    subject { controller.instance_eval { submissions_export } }
 
     before do
       controller.instance_variable_set(:@submissions_export, submissions_export)
     end
 
     it "instantiates a new submissions export job" do
-      expect(SubmissionsExportJob).to receive(:new).with(submissions_export_job_attrs)
-      subject
+      expect{ get :create, params: { id: course.id, assignment_id: assignment.id } }.to \
+        change(SubmissionsExporterJob.jobs, :size).by 1
     end
 
     it "caches the submissions export job" do
       subject
-      expect(SubmissionsExportJob).not_to receive(:new)
+      expect(SubmissionListExporterJob).not_to receive(:new)
       subject
     end
   end

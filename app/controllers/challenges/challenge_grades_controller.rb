@@ -18,7 +18,7 @@ class Challenges::ChallengeGradesController < ApplicationController
     if @challenge_grade.save
 
       if ChallengeGradeProctor.new(@challenge_grade).viewable?
-        ChallengeGradeUpdaterJob.new(challenge_grade_id: @challenge_grade.id).enqueue
+        ChallengeGradeUpdaterJob.perform_async(@challenge_grade.id)
       end
 
       redirect_to challenge_path(@challenge),
@@ -48,7 +48,7 @@ class Challenges::ChallengeGradesController < ApplicationController
         end
       end
 
-      challenge_grade_ids.each { |id| ChallengeGradeUpdaterJob.new(challenge_grade_id: id).enqueue }
+      challenge_grade_ids.each { |id| ChallengeGradeUpdaterJob.perform_async(id) }
 
       redirect_to challenge_path(@challenge),
         notice: "#{@challenge.name} #{term_for :challenge} successfully graded"

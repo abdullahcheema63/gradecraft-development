@@ -23,7 +23,7 @@ class API::GradesController < ApplicationController
     if result
       # Only send notifications etc. when handling the form submission
       if params[:submit] && grade.reload.student_visible?
-        GradeUpdaterJob.new(grade_id: grade.id).enqueue
+        GradeUpdaterJob.perform_async(grade.id)
       end
       @grade = result.grade
       render "api/grades/show", success: true, status: 200

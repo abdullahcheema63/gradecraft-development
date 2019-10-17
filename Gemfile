@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 ruby '2.5.3'
 
 gem 'rails', '~> 5.2.2.1'
-gem 'resque'
 gem 'activerecord-import'
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
@@ -19,7 +18,6 @@ gem 'autonumeric-rails'
 gem 'autoprefixer-rails', '~> 8.0'
 gem 'aws-sdk', '~> 2'
 gem 'bootsnap'
-gem 's3_direct_upload'
 gem 'cancancan'
 gem 'carrierwave'
 gem 'coffee-rails'
@@ -47,7 +45,6 @@ gem 'light-service'
 
 gem 'multi_json'
 gem 'mini_magick', '~> 4.9.4'
-gem 'mongoid', '~> 6.0.0'
 gem 'namae'
 gem 'ng-rails-csrf'
 gem 'nokogiri'
@@ -73,22 +70,6 @@ gem 'rdiscount'
 gem 'redis', '~> 4.0'
 gem 'copy_carrierwave_file'
 
-# retry dsl for resque
-gem 'resque-retry'
-
-# handles deferrence of Resque jobs to a later time
-# ex: Resque.enqueue_in(5.hours, @worker_object)
-#
-# A fix for a long-standing issue will address some of the warnings on start up
-# NOTE: https://github.com/resque/resque-scheduler/issues/600
-gem 'resque-scheduler', require: 'resque/scheduler'
-
-# slightly more mature rate limiter plugin for resque
-# gem 'resque-waiting-room'
-
-# limits the number of jobs that are run per unit of time on a given queue
-# ex: Resque.rate_limit(:my_queue, :at => 10, :per => 60)
-gem 'resque-throttler', require: 'resque/throttler'
 
 gem 'responders'
 # when updating, version MUST be compatible with ng-rollbar and rollbar.js dependencies
@@ -101,6 +82,8 @@ gem 'sassc-rails'
 gem 'scrypt', '3.0.6'
 
 gem 'select2-rails'
+gem 'sidekiq'
+gem 'sidekiq-scheduler'
 gem 'simple_form'
 gem 'sorcery'
 gem 'uglifier', '~> 3.2'
@@ -138,8 +121,6 @@ group :test do
   gem 'launchy'
   gem 'rails-controller-testing', require: false
   gem 'rspec-rails'
-  # add spec helpers for testing Resque objects and resque scheduler
-  gem 'resque_spec', git: 'https://github.com/leshill/resque_spec.git', branch: 'master'
   gem 'rspec-html-matchers'
   gem 'simplecov'
   gem 'webmock'
