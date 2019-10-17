@@ -85,7 +85,6 @@
 //= require jquery.collapse_storage
 //= require jquery.collapse_cookie_storage
 //= require datetimepicker
-//= require uploads
 //= require downloads
 //= require course_switch
 //= require course_settings
