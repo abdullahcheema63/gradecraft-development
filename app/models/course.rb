@@ -131,10 +131,6 @@ class Course < ApplicationRecord
     end
   end
 
-  def uses_learning_objectives?
-    allows_learning_objectives? && has_learning_objectives?
-  end
-
   def save_copy_logs(lookups)
     copy_log = CopyLog.new(course: self)
     copy_log.parse_log(lookups.lookup_hash)
