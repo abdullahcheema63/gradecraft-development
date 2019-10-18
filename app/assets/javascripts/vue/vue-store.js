@@ -656,7 +656,7 @@ const store = new Vuex.Store({
             subscribed: course.licensed,
             semester: course.semester,
             year: course.year,
-            courseNumber: course.course_number,
+            number: course.course_number,
             studentCount: course.student_count,
             created: course.formatted_created_at,
             instructors: {...course.staff}

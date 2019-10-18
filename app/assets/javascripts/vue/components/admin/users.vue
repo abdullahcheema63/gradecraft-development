@@ -44,7 +44,7 @@
                 <td>
                   <ul>
                     <li v-for="course in user.courses" :key="course.id">
-                      <a :href="course.url" class="table_truncate">{{course.name}}</a>
+                      <a :href="course.url" class="table_truncate" :title="course.name">{{course.name}}</a>
                     </li>
                   </ul>
                 </td>

@@ -1,5 +1,5 @@
 <template>
-  <div class="main_content">
+  <div class="main_content" :class="maincontentClass">
     <guideControl></guideControl>
 
     <div class="content_block intro">
@@ -58,6 +58,7 @@
         <table>
           <thead>
             <tr>
+              <th>ID </th>
               <th>Course # </th>
               <th>Course Name </th>
               <th>Subscribed </th>
@@ -73,8 +74,9 @@
           </thead>
           <tbody>
             <tr v-for="course in newCourses" :key="course.id">
-              <td>{{course.id}}</a> </td>
-              <td><a :href="course.url">{{course.name}}</a> </td>
+              <td><a :href="course.url">{{course.id}}</a> </td>
+              <td><a :href="course.url">{{course.number}}</a></td>
+              <td><a :href="course.url" class="table_truncate" :title="course.name">{{course.name}}</a> </td>
               <td><span :class="{checked: course.subscribed}"></span> </td>
               <td><span :class="{checked: course.active}"></span> </td>
               <td><span :class="{checked: course.published}"></span> </td>
@@ -112,6 +114,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'index',
+  props: ['maincontentClass'],
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
@@ -120,6 +123,7 @@ module.exports = {
   },
   data() {
     return {
+      active: false,
       currentPageItemMin: 0,
       currentPageItemMax: 10,
     }
@@ -164,6 +168,10 @@ module.exports = {
     }
   },
   methods: {
+    shiftContent() {
+      this.active = !this.active;
+      this.$emit('shiftContent', this.active)
+    },
     filterExpiringInstructors(instructor){
       var now = new Date();
       var expirationMax = now.setDate(now.getDate() + 30);

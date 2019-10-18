@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
   for (k in VComponents) {
     const sanitizedKey = k
       .replace("vue/components/", "")
+      .replace("vue/views/", "")
       .replace("/", "-");
     const v = VComponents[k];
     components[sanitizedKey] = v;

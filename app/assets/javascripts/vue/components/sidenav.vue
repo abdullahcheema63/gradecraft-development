@@ -1,30 +1,28 @@
 <template>
   <div class="side_nav bg-blue" :class="sidenavClass">
-    <div class="positioning" :class="sidenavClass">
-      <div class="nav_icon" :class="{open:active}" @click="toggleActive">
-        <div></div>
-      </div>
-      <div class="nav_links" :class="sidenavClass">
-        <!-- Note to E from S: conditional ACTIVE class goes on the active side nav page link -->
-        <p class="active">
-          <a>Dashboard</a>
-        </p>
-        <p>
-          <a>Courses</a>
-        </p>
-        <p>
-          <a>Users</a>
-        </p>
-        <p>
-          <a>Subscriptions</a>
-        </p>
-        <p>
-          <a>Institutions</a>
-        </p>
-        <p>
-          <a>Utilities</a>
-        </p>
-      </div>
+    <div class="nav_icon" :class="{open:active}" @click="toggleActive">
+      <div></div>
+    </div>
+    <div class="nav_links" :class="sidenavClass">
+      <!-- Note to E from S: conditional ACTIVE class goes on the active side nav page link -->
+      <p class="active">
+        <a href="/overview/">Dashboard</a>
+      </p>
+      <p>
+        <a href="/overview/courses/">Courses</a>
+      </p>
+      <p>
+        <a href="/overview/users/">Users</a>
+      </p>
+      <p>
+        <a href="/overview/subscriptions/">Subscriptions</a>
+      </p>
+      <p>
+        <a href="/overview/institutions/">Institutions</a>
+      </p>
+      <p>
+        <a href="/overview/utilities/">Utilities</a>
+      </p>
     </div>
   </div>
 
@@ -34,7 +32,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'sidenav',
-  props: ['sidenav_class'],
+  props: ['sidenavClass'],
   data() {
     return {
       active: false
@@ -42,15 +40,8 @@ module.exports = {
   },
   methods: {
     toggleActive() {
-      this.active = !this.active
-    }
-  },
-  computed: {
-    sidenavClass() {
-      if (this.active) {
-        return 'is-open';
-      }
-      return 'is-closed';
+      this.active = !this.active;
+      this.$emit('toggleActive', this.active)
     }
   }
 }

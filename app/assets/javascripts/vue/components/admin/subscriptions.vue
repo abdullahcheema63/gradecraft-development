@@ -1,5 +1,5 @@
 <template>
-  <div class="main_content">
+  <div class="main_content" :class="maincontentClass">
     <div class="content_block intro">
       <h1>Subscriptions</h1>
       <p>
@@ -53,7 +53,7 @@
                   <td>
                     <ul>
                       <li v-for="course in instructor.courses" :key="course.id">
-                        <a :href="course.changeCoursePath" class="table_truncate">{{course.name}}</a>
+                        <a :href="course.changeCoursePath" class="table_truncate" :title="course.name">{{course.name}}</a>
                       </li>
                     </ul>
                   </td>
@@ -91,6 +91,7 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'instructors',
+  props: ['maincontentClass'],
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
   },
@@ -99,6 +100,7 @@ module.exports = {
   },
   data() {
     return {
+      active: false,
       currentPageItemMin: 0,
       currentPageItemMax: 10,
       searchName: "",
@@ -120,6 +122,10 @@ module.exports = {
     }
   },
   methods: {
+    shiftContent() {
+      this.active = !this.active;
+      this.$emit('shiftContent', this.active)
+    },
     filterAllInstructors(instructor){
       if(this.searchName){
         var name = instructor.firstName + " " + instructor.lastName
