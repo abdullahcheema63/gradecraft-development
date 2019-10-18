@@ -7,7 +7,7 @@
         <h1>My _App _or_ U-M_ Dashboard</h1>
 
         <guideMessage>
-          <p>Welcome back, {{ getUserFirstName }}! </p>
+          <p>Welcome back, {{ userFirstName }}! </p>
           <p>As an Awesome Admin, you probably don’t need much guidance from me. Nevertheless, I’m here to help orient you, and you can see what I say to instructors and students. </p>
         </guideMessage>
     </div>
@@ -18,13 +18,13 @@
         <p>In the past 10 days: </p>
       </div>
       <div>
-        <h3 class="lining_figures">{{allNewInstructors.length}}</h3>
+        <h3 class="lining_figures">{{newInstructorsCount}}</h3>
         <div>
           <h4>New Instructor Accounts</h4>
         </div>
       </div>
       <div>
-        <h3 class="lining_figures">{{allNewCourses.length}}</h3>
+        <h3 class="lining_figures">{{newCourses.length}}</h3>
         <div>
           <h4>New Courses</h4>
           <p><strong>{{this.newPublishedCoursesCount}}</strong>
@@ -36,15 +36,15 @@
         </div>
       </div>
       <div>
-        <h3 class="lining_figures app">16?</h3>
+        <h3 class="lining_figures app">{{newSubscriptionsCount}}</h3>
         <div>
           <h4>Subscriptions</h4>
           <p>
             <strong>10?</strong>
-            renewed
+            renewed / continued / what goes here?
           </p>
           <p>
-            <strong>6?</strong>
+            <strong>{{newSubscriptionsCount}}</strong>
             new
           </p>
         </div>
@@ -72,21 +72,21 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="course in allNewCourses" :key="course.id">
-              <td><a href="#">{{course.id}}</a> </td>
-              <td><a href="#">{{course.name}}</a> </td>
-              <td><span :class="{checked: course.licensed}"></span> </td>
+            <tr v-for="course in newCourses" :key="course.id">
+              <td>{{course.id}}</a> </td>
+              <td><a :href="course.url">{{course.name}}</a> </td>
+              <td><span :class="{checked: course.subscribed}"></span> </td>
               <td><span :class="{checked: course.active}"></span> </td>
               <td><span :class="{checked: course.published}"></span> </td>
               <td><span :class="{checked: course.copied}"></span> </td>
               <td>
                 <ul>
                   <li v-for="instructor in course.instructors" :key="instructor.id">
-                    <a :href="instructor.url">{{instructor.text}}</a>
+                    <a :href="instructor.url">{{instructor.name}}</a>
                   </li>
                 </ul>
               </td>
-              <td>{{course.term}}</td>
+              <td>{{course.semester}}</td>
               <td>{{course.year}}</td>
               <td>{{course.created}}</td>
               <td>
@@ -103,102 +103,9 @@
           </tbody>
         </table>
       </div>
-      <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
+      <tablePagination :items="newCourses" @paginate="paginateItems"></tablePagination>
       <a class="button action next" href="courses/new">Add a new course</a>
     </div>
-
-    <!-- <accordionComponent>
-      <template slot="heading">New courses</template>
-      <template slot="content">
-        <p>Courses created in the past 10 days</p>
-        <div class="table_container">
-          <table>
-            <thead>
-              <tr>
-                <th>Course # </th>
-                <th>Course Name </th>
-                <th>Subscribed </th>
-                <th>Active </th>
-                <th>Published </th>
-                <th>Copied </th>
-                <th>Instructor(s) </th>
-                <th>Semester </th>
-                <th>Year </th>
-                <th>Created </th>
-                <th>Actions </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="course in allNewCourses" :key="course.id">
-                <td><a href="#">{{course.id}}</a> </td>
-                <td><a href="#">{{course.name}}</a> </td>
-                <td><span :class="{checked: course.licensed}"></span> </td>
-                <td><span :class="{checked: course.active}"></span> </td>
-                <td><span :class="{checked: course.published}"></span> </td>
-                <td><span :class="{checked: course.copied}"></span> </td>
-                <td>
-                  <ul>
-                    <li v-for="instructor in course.instructors" :key="instructor.id">
-                      <a :href="instructor.url">{{instructor.text}}</a>
-                    </li>
-                  </ul>
-                </td>
-                <td>{{course.term}}</td>
-                <td>{{course.year}}</td>
-                <td>{{course.created}}</td>
-                <td>
-                  <buttonDropdown>
-                    <template slot="button_text">Options</template>
-                    <template slot="content">
-                      <ul>
-                        <li><a :href="course.editURL">Edit</a></li>
-                      </ul>
-                    </template>
-                  </buttonDropdown>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <tablePagination :items="allNewCourses" @paginate="paginateItems"></tablePagination>
-        <a class="button action next" href="courses/new">Add a new course</a>
-      </template>
-    </accordionComponent> -->
-
-    <!-- <accordionComponent>
-      <template slot="heading">Subscription expiration</template>
-      <template slot="content">
-        <p>Subscriptions that will expire within 30 days from today</p>
-        <div class="table_container" v-if="expiringLicenseInstructors.length">
-          <table>
-            <thead>
-              <tr>
-                <th>First Name </th>
-                <th>Last Name </th>
-                <th>Renewal Date </th>
-                <th>Payment Method </th>
-                <th># Active Courses </th>
-                <th>Actions </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="instructor in expiringLicenseInstructors" :key="instructor.id">
-                <td><a href="#">{{instructor.firstName}}</a> </td>
-                <td><a href="#">{{instructor.lastName}}</a> </td>
-                <td>{{instructor.licenseExpires}} </td>
-                <td>{{instructor.paymentMethod}} </td>
-                <td>{{instructor.activeCoursesNumber}} </td>
-                <td>
-                  <div class="button-container">
-                    <a class="button secondary" :href="'mailto:' + instructor.email" >Send email</a>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </template>
-    </accordionComponent> -->
   </div>
 </template>
 
@@ -208,7 +115,6 @@ module.exports = {
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
     buttonDropdown: () => VComponents.get('vue/components/structure/buttonDropdown'),
-    accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     guideControl: () => VComponents.get('vue/components/guideControl'),
   },
@@ -219,44 +125,42 @@ module.exports = {
     }
   },
   created: function() {
-    this.$store.dispatch("getAllCourses");
-    this.$store.dispatch("getAllInstructors");
+    this.$store.dispatch("getNewActivity");
   },
   computed: {
-    getUserFirstName(){
+    userFirstName(){
       return this.$store.state.user.firstName;
     },
-    allInstructors(){
-      return this.$store.state.allInstructors
+    newActivity(){
+      return this.$store.getters.newActivity
     },
-    allNewInstructors(){
-      var allInstructors = this.allInstructors;
-      return allInstructors.filter(this.filterNewInstructors)
+    newCourses(){
+      return this.newActivity.courses
     },
-    expiringLicenseInstructors(){
-      var allInstructors = this.allInstructors;
-      return allInstructors.filter(this.filterExpiringInstructors)
+    newInstructorsCount(){
+      return this.newActivity.newInstructorsCount
     },
-    allCourses(){
-      return this.$store.state.allCourses;
-    },
-    allNewCourses(){
-      return this.filterNewCourses(this.allCourses)
+    newSubscriptionsCount(){
+      return this.newActivity.newSubscriptionsCount
     },
     allSubscriptions(){
       return this.$store.state.allSubscriptions;
     },
     newTrialCoursesCount(){
-      var count = this.allNewCourses.reduce(function(n, course){
-        return n + (course.licensed === false);
-      }, 0);
-      return count
+      if(this.newCourses.length >= 0){
+        var count = this.newCourses.reduce(function(n, course){
+          return n + (course.subscribed === false);
+        }, 0);
+        return count
+      }
     },
     newPublishedCoursesCount(){
-      var count = this.allNewCourses.reduce(function(n, course){
-        return n + (course.published === true);
-      }, 0);
-      return count
+      if(this.newCourses.length >= 0){
+        var count = this.newCourses.reduce(function(n, course){
+          return n + (course.published === true);
+        }, 0);
+        return count
+      }
     }
   },
   methods: {
@@ -272,20 +176,6 @@ module.exports = {
       }
       instructor.licenseExpires = formattedInstructorExpiration
       return instructor
-    },
-    filterNewInstructors(instructor){
-      var tenDaysAgo = new Date();
-      tenDaysAgo.setDate(tenDaysAgo.getDate() - 100);
-      if( instructor.createdAt < tenDaysAgo ) {return false}
-      return instructor
-    },
-    filterNewCourses(allCourses){
-      var tenDaysAgo = new Date();
-      tenDaysAgo.setDate(tenDaysAgo.getDate() - 100);
-      return allCourses.filter( course => {
-        if( course.created < tenDaysAgo ){return false}
-        return course
-      })
     },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;

@@ -64,6 +64,11 @@ const store = new Vuex.Store({
     courseUnarchiveError: "",
     allUsers: [],
     allCourses: [],
+    newActivity: {
+      courses: {},
+      newInstructorsCount: 0,
+      newSubscriptionsCount: 0
+    },
     allInstructors: [],
     allInstitutions: [],
     allBillingSchemes: [],
@@ -143,6 +148,24 @@ const store = new Vuex.Store({
         const json = await resp.json();
         const final = apiResponseToData(json);
         commit('addCourses', final);
+      },
+      getNewActivity: async function({ commit }){
+        const resp = await fetch("/api/dashboard/admin_new_activity");
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log("json: (before apiResponseToData)", json)
+        var newInstructorsCount = json.instructors_count
+        console.log("newInstructorsCount: ", newInstructorsCount)
+        var newSubscriptionsCount = json.subscriptions_count
+        console.log("newSubscriptionsCount: ", newSubscriptionsCount)
+        const courses = apiResponseToData(json);
+        console.log("final: (after apiResponseToData)", courses)
+        commit('addNewActivity', {courses, newSubscriptionsCount, newInstructorsCount});
       },
       getAllCourses: async function({ commit }){
         const resp = await fetch("/api/courses");
@@ -621,6 +644,27 @@ const store = new Vuex.Store({
         state.previouslySubscribedCourses = subscribedCourses
 
       },
+      addNewActivity(state, { courses, newSubscriptionsCount, newInstructorsCount}){
+        state.newActivity.courses = courses.map(course => {
+          return {
+            id: course.id,
+            name: course.name,
+            url: course.change_course_path,
+            editURL: course.edit_course_path,
+            active: course.active,
+            published: course.published,
+            subscribed: course.licensed,
+            semester: course.semester,
+            year: course.year,
+            courseNumber: course.course_number,
+            studentCount: course.student_count,
+            created: course.formatted_created_at,
+            instructors: {...course.staff}
+          }
+        })
+        state.newActivity.newSubscriptionsCount = newSubscriptionsCount
+        state.newActivity.newInstructorsCount = newInstructorsCount
+      },
       addAdminCourses(state, courses){
         //console.log("inside addAdminCourses mutation")
         console.log("course:", courses)
@@ -781,6 +825,9 @@ const store = new Vuex.Store({
     getters: {
       user: state => {
         return state.user
+      },
+      newActivity: state => {
+        return state.newActivity
       },
       removedSubscribedCourses: state => {
         return state.previouslySubscribedCourses.filter(course =>
