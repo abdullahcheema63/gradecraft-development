@@ -88,20 +88,17 @@ class CSVStudentImporter
       data[1]
     end
 
-    def username
+
+    def email
       data[2]
     end
 
-    def email
+    def team_name
       data[3]
     end
 
-    def team_name
-      data[4]
-    end
-
     def password
-      data[5]
+      data[4]
     end
 
     def to_s
@@ -113,7 +110,6 @@ class CSVStudentImporter
         first_name: first_name,
         last_name: last_name,
         email: email,
-        username: username,
         password: password
       }
     end
