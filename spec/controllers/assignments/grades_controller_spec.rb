@@ -1,4 +1,4 @@
-describe Assignments::GradesController, :focus => true do
+describe Assignments::GradesController do
   let(:course) { build(:course) }
   let(:professor) { create(:course_membership, :professor, course: course).user }
   let!(:student) { create(:course_membership, :student, course: course).user }
