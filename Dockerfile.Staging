@@ -56,7 +56,7 @@ RUN cp ./secrets/puma.rb /gradecraft/config/puma.rb
 RUN cp ./secrets/Procfile /gradecraft/Procfile
 RUN cp ./secrets/default /etc/nginx/sites-available/default
 
-RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=staging \nln -s /s3mnt ./files\nservice nginx start\npuma\nelse \n RAILS_ENV=staging bundle exec sidekiq \nfi" > /gradecraft/start.sh
+RUN cp ./secrets/start.sh /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
 RUN crontab /etc/cron.d/trim-cron
 CMD cron && tail -f /var/log/cron.log
