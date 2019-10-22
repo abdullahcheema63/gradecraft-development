@@ -101,25 +101,6 @@
         </template>
       </dropdownDotsComponent>
     </div>
-
-    <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
-      <template slot="heading">Set Course Status</template>
-      <template slot="content">
-        <h2>Set the status of {{ course.number }} {{ course.name }} {{ course.term.name }} {{ course.term.year }}</h2>
-        <form>
-          <div class="form_options">
-            <input :id="'trial-' + course.id" v-model="licenseStatus" value="trial" :name="'license-' + course.id" type="radio">
-            <label :for="'trial-' + course.id">Trial course</label>
-          </div>
-          <div class="form_options">
-            <input checked="checked" :id="'license-' + course.id" v-model="licenseStatus" value="license" :name="'license-' + course.id" type="radio">
-            <label :for="'license-' + course.id">Licensed course</label>
-          </div>
-          <br>
-          <button class="action" type="button" @click="toggleCourseLicense(); toggleModalState()">Update status</button>
-        </form>
-      </template>
-    </modalComponent>
   </div>
 
   <div v-else-if="status=='unpublished'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
@@ -156,25 +137,6 @@
         </template>
       </dropdownDotsComponent>
     </div>
-
-    <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
-      <template slot="heading">Set Course Status</template>
-      <template slot="content">
-        <h2>Set the status of {{ course.number }} {{ course.name }} {{ course.term.name }} {{ course.term.year }}</h2>
-        <form>
-          <div class="form_options">
-            <input type="radio" :id="'trial-' + course.id" v-model="licenseStatus" value="trial" :name="'course-' + course.id">
-            <label :for="'trial-' + course.id">Trial course</label>
-          </div>
-          <div class="form_options">
-            <input type="radio" :id="'license-' + course.id" v-model="licenseStatus" value="license" :name="'course-' + course.id">
-            <label :for="'license-' + course.id">Licensed course</label>
-          </div>
-          <br>
-          <button class="action" type="button" @click="toggleCourseLicense(); toggleModalState()">Update status</button>
-        </form>
-      </template>
-    </modalComponent>
   </div>
 
   <div v-else-if="status=='past'" class="course_card past" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
@@ -246,14 +208,10 @@ module.exports = {
   name: 'courseCard',
   props: ['course', 'status'],
   components: {
-    modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
     dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },
   data() {
     return {
-      modalState: false,
-      licenseStatus: this.course.licensed ? "license" : "trial",
-      dropdownState: false,
       copyingCourse: false,
       deletingCourse: false,
     }
@@ -263,8 +221,8 @@ module.exports = {
       return this.course.role === 'professor' || this.course.role === 'gsi';
     },
     user_card_class() {
-      if( this.is_staff ){ return 'instructor' }
-      else { return 'student'}
+      if( this.is_staff ){ return 'Instructor' }
+      else { return 'Student'}
     },
     paid_course_class() {
       if( this.course.licensed ){ return 'paid' }
@@ -289,20 +247,10 @@ module.exports = {
     formatDate(date){
       return moment(String(date)).format('LLLL')
     },
-    toggleModalState(){
-      this.modalState = !this.modalState
-    },
-    toggleDropdownState(){
-      this.dropdownState = !this.dropdownState
-    },
     assignment_status(assignment){
       if (assignment.graded){ return "graded" }
       if (assignment.submitted){ return "submitted" }
       if (assignment.planned){ return "planned" }
-    },
-    toggleCourseLicense(){
-      if (this.licenseStatus === "license"){this.$store.dispatch('licenseCourse', this.course.id)}
-      if (this.licenseStatus === "trial"){this.$store.dispatch('unLicenseCourse', this.course.id)}
     },
     copyCourse(courseID){
       this.copyingCourse = true
