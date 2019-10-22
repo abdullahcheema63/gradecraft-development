@@ -233,9 +233,8 @@
 
         <div v-if="tabSection[0]==='Past'">
           <div class="content_block">
-            <h2>Past Courses</h2>
             <p>
-              This section has all your past courses that you were a <strong>student, auditor, observer, or GSI</strong> in. You can’t make changes to past courses but you can review them.
+              This section includes any course in which you had a role of student, observer, or GSI. You can’t make changes to past courses but you can review them.
             </p>
 
             <div v-if="pastCourses.length">
