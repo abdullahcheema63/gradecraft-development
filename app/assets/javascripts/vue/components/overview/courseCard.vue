@@ -11,7 +11,7 @@
     <div class="course_status">
       <p>{{ user_card_class }}</p>
       <div v-if="course.role === 'professor' && paid_course_class">
-        <p>Paid</p>
+        <p>Subscribed</p>
       </div>
     </div>
 
@@ -131,7 +131,7 @@
     <div class="course_status">
       <p>{{user_card_class}}</p>
       <div v-if="paid_course_class" >
-        <p @click="toggleModalState">Paid</p>
+        <p @click="toggleModalState">Subscribed</p>
       </div>
     </div>
 
@@ -187,7 +187,7 @@
       <p>{{course.role}}</p>
       <div>
         <p :class="'licensed'" v-if="is_licensed">
-          Licensed
+          Was Subscribed
         </p>
       </div>
     </div>
@@ -206,7 +206,7 @@
       <p>{{course.role}}</p>
       <div>
         <p :class="'licensed'" v-if="is_licensed">
-          Licensed
+          Was subscribed
         </p>
       </div>
     </div>

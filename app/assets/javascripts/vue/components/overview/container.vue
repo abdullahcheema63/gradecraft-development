@@ -3,13 +3,16 @@
     <div class="content_block intro">
       <h1>My Dashboard</h1>
 
-      <guideMessage v-if="!getUserOnboardingStatus">
-        <p>Hello, {{ getUserFirstName }}, and welcome to your GradeCraft dashboard! </p>
-        <p>As your Guide, I’m here to help orient you in the many opportunities this tool offers. Look for my messages if you want some tips on how to use our features! </p>
-      </guideMessage>
-      <guideMessage v-else>
-        <p>Welcome back to your GradeCraft dashboard, {{ getUserFirstName }}!</p>
-        <p>As your Guide, I’m here to help orient you in the many opportunities this tool offers. Look for my messages if you want some tips on how to use our features! </p>
+      <guideMessage>
+        <p>
+          Welcome <span v-if="!getUserOnboardingStatus">back</span> to your GradeCraft dashboard, {{ getUserFirstName }}!
+        </p>
+        <p v-if="userIsInstructor">
+          I’m here to help you as you set up your course. Look for my messages if you want some tips on how to use GradeCraft features!
+        </p>
+        <p v-else>
+          Look for my messages if you want some tips on how to use GradeCraft features!
+        </p>
       </guideMessage>
     </div>
 
@@ -95,24 +98,32 @@
             </div>
           </div>
 
-          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor">
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor || userIsGSI">
             <template slot="heading">Published Courses</template>
             <template slot="content">
+              <p class="unspace-bottom">
+                <br />
+                Published courses are visible to all users added to each course.
+              </p>
               <div class="course_box" v-if="publishedCourses.length">
                 <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
               </div>
 
               <div class="course_box" v-else>
                 <div class="course_card empty">
-                  <p><em>You don't have any published, active courses!</em></p>
+                  <p><em>You don't have any published courses right now!</em></p>
                 </div>
               </div>
             </template>
           </accordionComponent>
 
-          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor">
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor || userIsGSI">
             <template slot="heading">Unpublished Courses</template>
             <template slot="content">
+              <p class="unspace-bottom">
+                <br />
+                Unpublished courses are hidden from students and observers, but visible to and editable by GSIs and instructors.
+              </p>
               <div v-if="userIsInstructor && unpublishedCourses.length">
                 <div class="course_box" v-if="unpublishedCourses.length">
                   <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
@@ -120,7 +131,7 @@
               </div>
               <div class="course_box" v-else>
                 <div class="course_card empty">
-                  <p><em>You don't have any unpublished courses</em></p>
+                  <p><em>You don't have any unpublished courses right now!</em></p>
                 </div>
               </div>
             </template>
@@ -129,14 +140,20 @@
 
         <div v-if="tabSection[0]==='Archived'">
           <div class="content_block">
-            <h2>Archived Courses</h2>
             <p>
-              This section has all your archived courses, including those that other instructors or course managers may have shared with you.
-              <b>You can’t make changes to archived courses.</b>
+              Your archive includes any course in which you had a role of instructor.
             </p>
-            <p>
-              If you like how a course was set up, you can copy it. You can choose to show or hide courses from students and observers. If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a> or <em>“Request to Unarchive.”</em>
-            </p>
+            <ul class="pink_dots">
+              <li>
+                <b>You can’t make changes to archived courses. </b>
+              </li>
+              <li>
+                If you like how a course was set up and want to re-use it, you can copy it.
+              </li>
+              <li>
+                If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a> or <em>“Request to Unarchive”
+              </li>
+            </ul>
             <div v-if="archivedCourses.length">
               <div class="table_functions">
                 <div class="filter_box">
@@ -205,7 +222,7 @@
             </div>
             <div class="course_box" v-else>
               <div class="course_card empty">
-                <p><em>You don't have any archived courses to view</em></p>
+                <p><em>You don’t have any archived courses to view</em></p>
               </div>
             </div>
           </div>
@@ -585,6 +602,12 @@ module.exports = {
         return course.role
       })
       return courseRoles.includes('Student')
+    },
+    userIsGSI(){
+      var courseRoles = this.$store.state.user.courseMembership.map( course => {
+        return course.role
+      })
+      return courseRoles.includes('gsi')
     },
     licenseInfo(){
       return this.$store.getters.userLicenseInfo
