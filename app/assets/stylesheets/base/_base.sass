@@ -296,6 +296,14 @@ body
           background: $pink_2 url(asset_path("icon-arrow_next_action.svg")) no-repeat center right 0.6em
           background-size: 1.1em auto
 
+      &.disabled, &:disabled
+        background: $grey_1 url(asset_path("icon-arrow_next-disabled.svg")) no-repeat center right 0.6em
+        background-size: 1.1em auto
+
+        &:hover
+          background: $grey_1 url(asset_path("icon-arrow_next-disabled.svg")) no-repeat center right 0.6em
+          background-size: 1.1em auto
+
     &.secondary
       background: white
       color: $blue-medium_1

@@ -111,13 +111,24 @@
 
     <div class="course_status">
       <p>{{user_card_class}}</p>
-      <div v-if="paid_course_class" >
-        <p @click="toggleModalState">Subscribed</p>
+      <div v-if="paid_course_class">
+        <p>Subscribed</p>
       </div>
     </div>
 
+    <div class="bg-blue_2" v-if="!is_staff">
+      <h4>
+        Under Construction!
+      </h4>
+      <p>
+        Your instructor is working on this course right now. Please check back later.
+      </p>
+    </div>
+
     <div class="button_box">
-      <a class="button next" v-bind:href="course.url">View course</a>
+      <a class="button next" :href="course.url" v-if="is_staff">View course</a>
+      <button type="button" disabled="disabled" class="next" v-if="!is_staff">View course</button>
+
       <dropdownDotsComponent v-if="is_staff">
         <template slot="content">
           <ul>
