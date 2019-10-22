@@ -93,6 +93,9 @@
             <div class="course_box">
               <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
             </div>
+            <div class="course_box" v-if="unpublishedCourses.length">
+              <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
+            </div>
           </div>
 
           <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor">

@@ -97,32 +97,6 @@ module.exports = {
     user(){
       return this.$store.getters.user
     },
-  },
-
-  methods: {
-    addCourse(){
-      var response = this.formResponse[0];
-      if( response == "Create a new course"){
-        var errors = this.checkAddCourseForm()
-
-        if(!errors.length){
-          this.$store.dispatch('addNewCourse', this.newCourse)
-          this.$refs.buttonModal_add.toggleModalState()
-        }
-      }
-      else{
-        this.$store.dispatch('licenseCourse', this.courseToLicense)
-        this.$refs.buttonModal_add.toggleModalState()
-      }
-    },
-    checkAddCourseForm(){
-      this.newCourseErrors = []
-
-      if(!this.newCourse.name || !this.newCourse.number){
-        this.newCourseErrors.push("Missing input for required fields")
-      }
-      return this.newCourseErrors
-    },
   }
 }
 `</script>

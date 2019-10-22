@@ -586,12 +586,6 @@ const store = new Vuex.Store({
         const subscription = apiResponseToDataDataItem(body)
         commit('updateUserSubscription', subscription)
       },
-      licenseCourse({ commit }, course_id){
-        commit('updateLicense', {course_id: course_id, status: true})
-      },
-      unLicenseCourse({ commit }, course_id){
-        commit('updateLicense', {course_id: course_id, status: false})
-      },
       toggleGuideControl({ commit }){
         console.log("toggled guide control action")
         commit('toggleGuide')
@@ -777,14 +771,6 @@ const store = new Vuex.Store({
       addUserSubscription (state, subscriptionObj){
         console.log("addUserSubscription", subscriptionObj)
         state.userSubscription = subscriptionObj
-      },
-      updateLicense (state, {course_id, status}){
-        var course_ids = state.user.courseMembership.map( course => course.id)
-        var membershipIndex = course_ids.indexOf(course_id)
-        if (membershipIndex >= 0){
-          var course = state.user.courseMembership[membershipIndex]
-          course.licensed = status
-        }
       },
       toggleGuide (state){
         state.user.showGuide = !state.user.showGuide
