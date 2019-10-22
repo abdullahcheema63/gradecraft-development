@@ -182,15 +182,14 @@
             <li>
               <a @click="copyCourse(course.id)">Copy</a>
             </li>
-            <!-- Note to Erik from Sophia: The "hide" and "show" list item options are conditional based on if the course is hidden from users or not -->
-            <li>
-              <a>Hide</a>
+            <li v-if="course.published">
+              <a @click="unpublishCourse(course.id)">Hide</a>
+            </li>
+            <li v-if="!course.published">
+              <a @click="publishCourse(course.id)">Show</a>
             </li>
             <li>
-              <a>Show</a>
-            </li>
-            <li>
-              <a>Delete</a>
+              <a @click="deleteCourse(course.id)">Delete</a>
             </li>
             <li>
               <a>Request to Unarchive</a>
@@ -234,7 +233,7 @@ module.exports = {
       if( this.course.createdByAnotherUser ){ return 'another_user_created' }
     },
     hidden_from_students() {
-      if( this.course.hiddenFromStudents ){ return 'hidden_from_students' }
+      if( !this.course.published ){ return 'hidden_from_students' }
     },
     request_pending() {
       if( this.course.requestPending ){ return 'request_pending' }

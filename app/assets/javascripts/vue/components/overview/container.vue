@@ -154,7 +154,7 @@
                 If you like how a course was set up and want to re-use it, you can copy it.
               </li>
               <li>
-                If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a> or <em>“Request to Unarchive”
+                If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a> or <em>“Request to Unarchive”</em>
               </li>
             </ul>
             <div v-if="archivedCourses.length">

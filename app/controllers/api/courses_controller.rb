@@ -109,6 +109,11 @@ class API::CoursesController < ApplicationController
       authorize! :publish, @course
       @course.update(published: true)
     end
+    if @course && !@course.active?
+      authorize! :update, @course
+      authorize! :publish, @course
+      @course.update(published: true)
+    end
   end
 
   def archive
