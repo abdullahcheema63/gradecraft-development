@@ -1,8 +1,5 @@
 <template>
   <div v-if="status=='published'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
-    <div v-if="copyingCourse">
-      <h1>yes you're actually able to copy a course</h1>
-    </div>
     <h4 :title="course.name">
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
@@ -86,7 +83,18 @@
         <template slot="content">
           <ul>
             <li>
-              <a @click="copyCourse(course.id)">Copy</a>
+              <buttonModal button_class="action" ref="buttonModal_copy">
+                <template slot="button-text">Copy</template>
+                <template slot="heading">Copy this course</template>
+                <template slot="content">
+                  <h2>Let’s add a new course!</h2>
+                  <div v-if="copyingCourse">
+                    <h1>yes you're actually able to copy a course</h1>
+                    <p>fun spinning yeti goes here (: </p>
+                  </div>
+                  <p @click="copyCourse(course.id)">Copy</p>
+                </template>
+              </buttonModal>
             </li>
             <li>
               <a @click="unpublishCourse(course.id)">Unpublish</a>
@@ -131,7 +139,7 @@
               <a @click="archiveCourse(course.id)">Archive</a>
             </li>
             <li>
-              <a>Delete</a>
+              <a @click="deleteCourse(course.id)">Delete</a>
             </li>
           </ul>
         </template>
@@ -204,7 +212,8 @@ module.exports = {
   name: 'courseCard',
   props: ['course', 'status'],
   components: {
-    dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
+    dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent'),
+    buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
   },
   data() {
     return {
