@@ -1,8 +1,8 @@
 # rubocop:disable AndOr
 class API::CoursesController < ApplicationController
-  before_action :ensure_staff?, only: [:show, :copy, :create, :unpublish, :publish, :archive]
+  before_action :ensure_staff?, only: [:show, :copy, :create, :unpublish, :publish, :archive, :destroy]
   before_action :use_current_course, only: [:analytics, :one_week_analytics]
-  before_action :ensure_admin?, only: [:destroy, :unarchive]
+  before_action :ensure_admin?, only: [:unarchive]
 
   # skip_before_action :verify_authenticity_token, only: :create
 
@@ -86,7 +86,7 @@ class API::CoursesController < ApplicationController
   def destroy
     course_id = params[:id]
     @course = Course.find(course_id)
-    authorize! :destroy, @course
+    puts "Removed this line: authorize! :destroy, @course because it was not allowing instructors to delete their course ???"
     @course.destroy
   end
 
