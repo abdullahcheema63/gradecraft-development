@@ -4,10 +4,10 @@
 
     <div class="content_block intro">
         <!-- Note to E from S: conditional for adding App or U-M depending on the database side  -->
-        <h1>My _App _or_ U-M_ Dashboard</h1>
+        <h1>My {{environmentName}} Dashboard</h1>
 
         <guideMessage>
-          <p>Welcome back, {{ userFirstName }}! </p>
+          <p>Welcome back, {{ user.firstName }}! </p>
           <p>As an Awesome Admin, you probably don’t need much guidance from me. Nevertheless, I’m here to help orient you, and you can see what I say to instructors and students. </p>
         </guideMessage>
     </div>
@@ -132,8 +132,13 @@ module.exports = {
     this.$store.dispatch("getNewActivity");
   },
   computed: {
-    userFirstName(){
-      return this.$store.state.user.firstName;
+    user(){
+      return this.$store.getters.user;
+    },
+    environmentName(){
+      if (this.user.environment === 'development'){return "Local"}
+      if (this.user.environment === 'production'){return "Umich"}
+      if (this.user.environment === 'beta'){return "App"}
     },
     newActivity(){
       return this.$store.getters.newActivity

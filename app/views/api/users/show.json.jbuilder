@@ -14,5 +14,6 @@ json.data do @user
     json.admin @user.admin
     json.current_course_id @user.current_course_id
     json.account_url edit_profile_users_path
+    json.environment Rails.env
   end
 end

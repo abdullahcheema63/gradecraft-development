@@ -79,6 +79,7 @@ const store = new Vuex.Store({
     previouslySubscribedCourses: [],
     user: {
       id: null,
+      environment: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -797,6 +798,7 @@ const store = new Vuex.Store({
         state.user.lastLogout = user.last_logout
         state.user.createdAt = user.created_at
         state.user.showGuide = user.show_guide
+        state.user.environment = user.environment
       },
       updateUserSubscription (state, subscription){
         state.userSubscription = subscription;
