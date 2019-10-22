@@ -191,9 +191,6 @@
             <li>
               <a @click="deleteCourse(course.id)">Delete</a>
             </li>
-            <li>
-              <a>Request to Unarchive</a>
-            </li>
           </ul>
         </template>
       </dropdownDotsComponent>

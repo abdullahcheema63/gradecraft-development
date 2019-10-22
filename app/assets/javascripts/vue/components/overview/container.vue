@@ -154,7 +154,7 @@
                 If you like how a course was set up and want to re-use it, you can copy it.
               </li>
               <li>
-                If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a> or <em>“Request to Unarchive”</em>
+                If you need to unarchive a course, please email us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>
               </li>
             </ul>
             <div v-if="archivedCourses.length">
@@ -184,43 +184,6 @@
 
               <div class="course_box">
                 <courseCard v-for="course in archivedCourses" :key="course.id" :course="course" status="archived"></courseCard>
-
-                <div class="course_card archived instructor hidden_from_students">
-                  <h4>
-                    <span>123 STATIC Hidden From Students</span>
-                    <span>Fall 2019</span>
-                  </h4>
-                  <div class="course_status">
-                    <p>Instructor</p>
-                  </div>
-                  <div class="button_box">
-                    <a class="button next">View course</a>
-                  </div>
-                </div>
-                <div class="course_card archived instructor request_pending">
-                  <h4>
-                    <span>123 STATIC Pending Unarchive Request</span>
-                    <span>Fall 2019</span>
-                  </h4>
-                  <div class="course_status">
-                    <p>Instructor</p>
-                  </div>
-                  <div class="button_box">
-                    <a class="button next">View course</a>
-                  </div>
-                </div>
-                <div class="course_card archived instructor hidden_from_students request_pending">
-                  <h4>
-                    <span>123 STATIC Hidden AND Pending Unarchive Request</span>
-                    <span>Fall 2019</span>
-                  </h4>
-                  <div class="course_status">
-                    <p>Instructor</p>
-                  </div>
-                  <div class="button_box">
-                    <a class="button next">View course</a>
-                  </div>
-                </div>
               </div>
             </div>
             <div class="course_box" v-else>
