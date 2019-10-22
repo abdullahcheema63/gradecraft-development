@@ -505,6 +505,7 @@ Rails.application.routes.draw do
 
     resources :dashboard, only: [] do
       get :due_this_week, on: :collection
+      get :admin_new_activity, on: :collection
     end
 
     resources :earned_badges, only: [:create, :update, :destroy]
