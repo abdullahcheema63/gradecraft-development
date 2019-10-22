@@ -3,7 +3,7 @@
     <div v-if="copyingCourse">
       <h1>yes you're actually able to copy a course</h1>
     </div>
-    <h4>
+    <h4 :title="course.name">
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
     </h4>

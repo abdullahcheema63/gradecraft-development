@@ -22,11 +22,10 @@
       </template>
       <template slot="tabSections">
         <div v-if="tabSection[0]==='Current'">
-          <div class="content_block">
-            <h2>Current Courses</h2>
-            <div class="p_button" v-if="userIsInstructor">
+          <div class="content_block" v-if="userIsInstructor">
+            <div class="p_button">
               <p>
-                This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course at any time. You can also manage your courses to publish or unpublish courses, and apply or remove course licenses.
+                This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course, publish or unpublish courses, and change your course subscriptions at any time.
               </p>
               <buttonModal button_class="action" ref="buttonModal_add">
                 <template slot="button-text">Add a course</template>
@@ -87,7 +86,16 @@
             </div>
           </div>
 
-          <accordionComponent accordion_content="bg-grey_barely" :open_default="true">
+          <div class="content_block" v-if="userIsStudent">
+            <p>
+              This section includes your current courses.
+            </p>
+            <div class="course_box">
+              <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
+            </div>
+          </div>
+
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor">
             <template slot="heading">Published Courses</template>
             <template slot="content">
               <div class="course_box" v-if="publishedCourses.length">
@@ -102,7 +110,7 @@
             </template>
           </accordionComponent>
 
-          <accordionComponent accordion_content="bg-grey_barely" :open_default="true">
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor">
             <template slot="heading">Unpublished Courses</template>
             <template slot="content">
               <div v-if="userIsInstructor && unpublishedCourses.length">
@@ -117,7 +125,6 @@
               </div>
             </template>
           </accordionComponent>
-
         </div>
 
         <div v-if="tabSection[0]==='Archived'">
