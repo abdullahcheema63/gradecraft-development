@@ -28,7 +28,7 @@
           <div class="content_block" v-if="userIsInstructor">
             <div class="p_button">
               <p>
-                This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course, publish or unpublish courses, and change your course subscriptions at any time.
+                This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course, and publish or unpublish courses at any time.
               </p>
               <buttonModal button_class="action" ref="buttonModal_add">
                 <template slot="button-text">Add a course</template>
