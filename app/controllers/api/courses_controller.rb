@@ -86,7 +86,7 @@ class API::CoursesController < ApplicationController
   def destroy
     course_id = params[:id]
     @course = Course.find(course_id)
-    puts "Removed this line: authorize! :destroy, @course because it was not allowing instructors to delete their course ???"
+    authorize! :destroy, @course
     @course.destroy
   end
 

@@ -27,6 +27,6 @@ class CourseProctor
 
   def destroyable?(user)
     return false if course.nil? || user.nil?
-    user.is_admin?(course)
+    user.is_admin?(course) || user.is_professor?(course)
   end
 end
