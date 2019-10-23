@@ -83,27 +83,16 @@
         <template slot="content">
           <ul>
             <li>
-              <buttonModal button_class="action" ref="buttonModal_copy">
-                <template slot="button-text">Copy</template>
-                <template slot="heading">Copy this course</template>
-                <template slot="content">
-                  <h2>Let’s add a new course!</h2>
-                  <div v-if="copyingCourse">
-                    <h1>yes you're actually able to copy a course</h1>
-                    <p>fun spinning yeti goes here (: </p>
-                  </div>
-                  <p @click="copyCourse(course.id)">Copy</p>
-                </template>
-              </buttonModal>
+              <a @click="$emit('copyCourseForm', course)">Copy</a>
             </li>
             <li>
-              <a @click="unpublishCourse(course.id)">Unpublish</a>
+              <a @click="$emit('unpublishCourseModal',course)">Unpublish</a>
             </li>
             <li>
-              <a @click="archiveCourse(course.id)">Archive</a>
+              <a @click="$emit('archiveCourseModal', course)">Archive</a>
             </li>
             <li>
-              <a @click="deleteCourse(course.id)">Delete</a>
+              <a @click="$emit('openDeleteCourseModal', course)">Delete</a>
             </li>
           </ul>
         </template>

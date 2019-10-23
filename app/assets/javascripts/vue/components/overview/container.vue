@@ -109,7 +109,9 @@
                 Published courses are visible to all users added to each course.
               </p>
               <div class="course_box" v-if="publishedCourses.length">
-                <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
+                <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"
+                v-on:copyCourseForm='openCopyCourseForm($event)' v-on:openDeleteCourseModal='openDeleteCourseModal($event)'
+                v-on:archiveCourseModal='openArchiveCourseModal($event)' v-on:unpublishCourseModal='openUnpublishCourseModal($event)'></courseCard>
               </div>
 
               <div class="course_box" v-else>
@@ -119,6 +121,31 @@
               </div>
             </template>
           </accordionComponent>
+
+          <modalComponent v-if="copyCourseForm" :modalState="modalState" @close="toggleModalState" class="component_container">
+            <template slot="heading">Copy</template>
+            <template slot="content">love me</template>
+            <template slot="submit-button">luv</template>
+          </modalComponent>
+
+          <modalComponent v-if="deleteCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+            <template slot="heading">Delete</template>
+            <template slot="content">hate me</template>
+            <template slot="submit-button">hate</template>
+          </modalComponent>
+
+          <modalComponent v-if="archiveCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+            <template slot="heading">Archive</template>
+            <template slot="content">respect me</template>
+            <template slot="submit-button">respect</template>
+          </modalComponent>
+
+          <modalComponent v-if="unpublishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+            <template slot="heading">Unpublish</template>
+            <template slot="content">fear me</template>
+            <template slot="submit-button">fear</template>
+          </modalComponent>
+
 
           <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor || userIsGSI">
             <template slot="heading">Unpublished Courses</template>
@@ -251,6 +278,7 @@ module.exports = {
     pastCourse: () => VComponents.get('vue/components/pastCourse'),
     guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
+    modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
     accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     formContainer: () => VComponents.get('vue/components/formContainer'),
     tabContainer: () => VComponents.get('vue/components/structure/tabContainer'),
@@ -265,6 +293,11 @@ module.exports = {
         dateFormat: "D, M d, Y at h:i K",
         static: true,
       },
+      copyCourseForm: false,
+      deleteCourseModal: false,
+      archiveCourseModal: false,
+      unpublishCourseModal: false,
+      modalState: true,
       copyingCourse: false,
       creatingCourse: false,
       newCourseStartDate: null,
@@ -382,9 +415,35 @@ module.exports = {
     },
     courseCreationError(){
       return this.$store.state.courseCreationError
+    },
+    modalClass() {
+      if (this.modalState) {
+        return 'is-open';
+      }
+      return 'is-closed';
     }
   },
   methods: {
+    openCopyCourseForm(course){
+      console.log("copy course form course: ", course)
+      this.copyCourseForm = true
+      this.modalState = true
+    },
+    openDeleteCourseModal(course){
+      console.log("delete course form course: ", course)
+      this.deleteCourseModal = true
+      this.modalState = true
+    },
+    openArchiveCourseModal(course){
+      console.log("archive course form course: ", course)
+      this.archiveCourseModal = true
+      this.modalState = true
+    },
+    openUnpublishCourseModal(course){
+      console.log("unpublish course form course: ", course)
+      this.unpublishCourseModal = true
+      this.modalState = true
+    },
     addCourse(){
       var errors = this.checkAddCourseForm()
 
@@ -392,6 +451,16 @@ module.exports = {
         this.creatingCourse = true
         this.$store.dispatch('addNewCourse', this.newCourse)
       }
+    },
+    close() {
+      this.toggleModalState()
+    },
+    toggleModalState(){
+      this.modalState = !this.modalState
+      this.copyCourseForm = false
+      this.deleteCourseModal = false
+      this.archiveCourseModal = false
+      this.unpublishCourseModal = false
     },
     checkAddCourseForm(){
       this.newCourseErrors = []
