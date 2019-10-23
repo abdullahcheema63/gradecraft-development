@@ -185,12 +185,23 @@ class API::SubscriptionsController < ApplicationController
       #Need to make a new function to pro-rate the days for amount to pay
       amount_to_pay = courses_to_pay_for_count * new_billing_scheme.price_per_course
 
-      puts("Cost to pay today: #{amount_to_pay}")
+      now = DateTime.now # or should it be current ? maybe the Time class is better for timezones??
+      days_in_month = now.end_of_month.day
+      remaing_days_in_month = days_in_month - now.day
+
+      price_per_day = amount_to_pay / days_in_month
+      prorated_total = price_per_day * remaing_days_in_month
+
+
+      puts("Cost to pay today: #{prorated_total}")
+      puts("price_per_day: #{price_per_day}")
+      puts("days_in_month: #{days_in_month}")
+      puts("remaingDaysInMonth: #{remaing_days_in_month}")
       puts("Removing subscription from: #{courses_to_unsubscribe}")
       puts("adding subscription to: #{courses_to_subscribe}")
 
       payment = Payment.new({
-        amount_usd: amount_to_pay,
+        amount_usd: prorated_total,
         billing_scheme_id: new_billing_scheme.id,
         subscription_id: @subscription.id,
       })

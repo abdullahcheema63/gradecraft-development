@@ -22,7 +22,7 @@
 
       <div class="payment_today" v-if="newCost > 0">
         <h3>Today’s payment total:</h3>
-        <h3><span class="lining_figures"><sup>$</sup>{{newCost}}</span></h3>
+        <h3><span class="lining_figures"><sup>$</sup>{{proratedTotal}}</span></h3>
       </div>
 
       <p>
@@ -145,7 +145,7 @@
               <div v-if="newCost > 0">
                 <h3>Selected Payment Method</h3>
                 <p>
-                  Visa **** **** **** 4242 (expires 04/2024)
+                  static -- ? Visa **** **** **** 4242 (expires 04/2024)
                 </p>
               </div>
               <div class="total">
@@ -153,7 +153,7 @@
                   <h3 class="teal_text">Today’s payment total</h3>
                 </div>
                 <div class="today">
-                  <h3><span class="lining_figures"><sup>$</sup>{{ newCost }}</span></h3>
+                  <h3><span class="lining_figures"><sup>$</sup>{{ proratedTotal }}</span></h3>
                 </div>
               </div>
               <div class="total">
@@ -221,6 +221,13 @@ module.exports = {
     },
     newCost(){
       return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * this.newSubscribingCourses.length - this.subtractedCost : 0;
+    },
+    proratedTotal(){
+      var now = new Date();
+      var daysInThisMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+      var remaingDaysInMonth = daysInThisMonth - now.getDate()
+      var pricePerDay = this.newCost / daysInThisMonth
+      return pricePerDay * remaingDaysInMonth
     },
     subtractedCost(){
       let originalCourseCount = this.previouslySubscribedCourses.length;
