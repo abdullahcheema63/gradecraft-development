@@ -1,10 +1,7 @@
 <template>
   <div class="main_content" :class="maincontentClass">
     <div class="content_block intro">
-      <h1>_App _or_ U-M_ Institutions</h1>
-      <p style="background: aquamarine;">
-        Note to E from S: the “App” vs “U-M” part of the heading above is conditional, based on which data side the admin is logged into.
-      </p>
+      <h1>{{environmentName}} Institutions</h1>
       <p>
         Manage and view all institutions.
       </p>
@@ -88,7 +85,15 @@ module.exports = {
     },
     currentPageAllInstitutions(){
       return this.filteredAllInstitutions.slice(this.currentPageItemMin, this.currentPageItemMax)
-    }
+    },
+    user(){
+      return this.$store.getters.user;
+    },
+    environmentName(){
+      if (this.user.environment === 'development'){return "crazy"}
+      if (this.user.environment === 'production'){return "Umich"}
+      if (this.user.environment === 'beta'){return "App"}
+    },
   },
   methods: {
     shiftContent() {

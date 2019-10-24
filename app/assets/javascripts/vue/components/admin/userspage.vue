@@ -1,10 +1,7 @@
 <template>
   <div class="main_content" :class="maincontentClass">
     <div class="content_block intro">
-      <h1>_App _or_ U-M_ Users</h1>
-      <p style="background: aquamarine;">
-        Note to E from S: the “App” vs “U-M” part of the heading above is conditional, based on which data side the admin is logged into.
-      </p>
+      <h1>{{environmentName}} Users</h1>
       <p>
         Manage and view all users.
       </p>
@@ -66,6 +63,14 @@ module.exports = {
     },
     currentPageAllUsers(){
       return this.filteredAllUsers.slice(this.currentPageItemMin, this.currentPageItemMax);
+    },
+    user(){
+      return this.$store.getters.user;
+    },
+    environmentName(){
+      if (this.user.environment === 'development'){return "Lovely"}
+      if (this.user.environment === 'production'){return "Umich"}
+      if (this.user.environment === 'beta'){return "App"}
     },
   },
   methods: {
