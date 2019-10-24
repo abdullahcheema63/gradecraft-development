@@ -57,7 +57,7 @@
 ```
 
 module.exports = {
-  name: "licenses-course-selector",
+  name: "subscriptions-course-selector",
   data() {
     return {
 

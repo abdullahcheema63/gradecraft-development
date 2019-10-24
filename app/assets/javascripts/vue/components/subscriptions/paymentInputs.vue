@@ -52,7 +52,7 @@ let stripe;
 var card;
 
 module.exports = {
-  name: "licenses-payment-inputs",
+  name: "subscriptions-payment-inputs",
   data: function() {
     return {
       errors: [],

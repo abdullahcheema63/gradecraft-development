@@ -1,7 +1,7 @@
 <template>
   <div>
-    <licenses-course-selector>
-    </licenses-course-selector>
+    <subscriptions-course-selector>
+    </subscriptions-course-selector>
 
     <div class="content_block bg-green_mint_2">
       <h2>My Subscription Cost</h2>
@@ -73,7 +73,7 @@
           <template slot="heading">Add a new payment method</template>
           <template slot="content">
             <form>
-              <licenses-payment-inputs :stripePk="stripePk" />
+              <subscriptions-payment-inputs :stripePk="stripePk" />
             </form>
           </template>
         </buttonModal>
@@ -185,10 +185,10 @@ const data = {
 };
 
 module.exports = {
-  name: "licenses-dash",
+  name: "subscriptions-dash",
   components: {
-    "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/paymentInputs"),
-    "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),
+    "subscriptions-payment-inputs": () => VComponents.get("vue/components/subscriptions/paymentInputs"),
+    "subscriptions-course-selector": () => VComponents.get("vue/components/subscriptions/courseSelector"),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },
