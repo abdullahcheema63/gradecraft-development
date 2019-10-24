@@ -102,21 +102,6 @@ module.exports = {
       return this.licensedCourses
         && this.licensedCourses.some(c => c.id === course.id);
     },
-    updateCourses(courseIds) {
-      this.$store.dispatch("updateCourseLicense", courseIds)
-    },
-    addCourse(course) {
-      const newList = this.licensedCourses
-        .map(c => c.id);
-      newList.push(course.id);
-      this.updateCourses(newList);
-    },
-    removeCourse(course) {
-      const newList = this.licensedCourses
-        .map(c => c.id)
-        .filter(id => id !== course.id);
-      this.updateCourses(newList);
-    },
     updateCurrentSubscribedCourse(courseId) {
       console.log("Update Subscribed", courseID);
       (this.$store.state.newSubscribingCourses.includes(courseID)

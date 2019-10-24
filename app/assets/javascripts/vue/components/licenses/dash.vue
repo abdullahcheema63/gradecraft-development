@@ -187,8 +187,6 @@ module.exports = {
   name: "licenses-dash",
   components: {
     "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/paymentInputs"),
-    "licenses-buy-form": () => VComponents.get("vue/components/licenses/buyForm"),
-    "licenses-renew-form": () => VComponents.get("vue/components/licenses/renewForm"),
     "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),
     "licenses-details": () => VComponents.get("vue/components/licenses/details"),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
@@ -241,12 +239,6 @@ module.exports = {
     billingSchemeTiers(){
       return this.$store.state.allBillingSchemes
     },
-    userLicense(){
-      return this.$store.state.userLicense
-    },
-    hasLicense(){
-      return !!this.userLicense;
-    },
     userCourses(){
       return this.$store.getters.userCourseMemberships
     },
@@ -273,7 +265,13 @@ module.exports = {
     },
     userSubscription(){
       return this.$store.state.userSubscription;
-    }
+    },
+    hasErrors(){
+      console.log(this.$refs);
+      return !!this.errors.length
+        || (this.$refs.paymentInputs && this.$refs.paymentInputs.errors.length)
+        || (this.$refs.paymentInputs && this.$refs.paymentInputs.cardError);
+    },
   },
   methods: {
     toggleRenew() {
@@ -284,9 +282,6 @@ module.exports = {
     },
     makePaymentMethodDefault(pID){
       this.$store.dispatch('makePaymentMethodDefault', pID)
-    },
-    updateLicense(){
-      this.$refs.buttonModal_license.toggleModalState()
     },
     updateSubscription(){
       this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)

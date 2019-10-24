@@ -461,32 +461,6 @@ const store = new Vuex.Store({
         state.courseUnarchiveError = resp
         console.log("inside unarchiveCourse action", resp)
       },
-      newLicensePayment: async function({ commit }, payment){
-        const resp = await fetch("/api/subscriptions", {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify(payment),
-        });
-        const body = await resp.json();
-        if (!resp.ok) {
-          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
-            ? body.errors
-            : Object.entries(body.errors); //Need polyfill
-          console.error("resp not ok!");
-          console.error(this);
-          console.error(resp);
-          console.error(body);
-          return;
-        }
-        subscription = apiResponseToDataDataItem(body)
-        commit('updateUserSubscription', subscription)
-      },
       createSubscription: async function({ commit }){
         const resp = await fetch("/api/subscriptions", {
           method: 'POST',
@@ -533,59 +507,6 @@ const store = new Vuex.Store({
           console.error(body);
           return;
         }
-      },
-      updateLicensePayment: async function({ commit }, payment){
-        const resp = await fetch("/api/subscriptions", {
-          method: 'PATCH',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify(payment),
-        });
-        const body = await resp.json();
-        if (!resp.ok) {
-          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
-            ? body.errors
-            : Object.entries(body.errors); //Need polyfill
-          console.error("resp not ok!");
-          console.error(this);
-          console.error(resp);
-          console.error(body);
-          return;
-        }
-
-        subscription = apiResponseToDataDataItem(body)
-        commit('updateUserSubscription', subscription)
-      },
-      updateCourseLicense: async function({ commit }, courseIds){
-        const resp = await fetch("/api/subscriptions/edit", {
-          method: "PUT",
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify({ courses: courseIds }),
-        });
-        const body = await resp.json();
-        if (!resp.ok) {
-          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
-            ? body.errors
-            : Object.entries(body.errors); //Need polyfill
-          console.error("resp not ok!");
-          console.error(this);
-          console.error(resp);
-          console.error(body);
-          return;
-        }
-        const subscription = apiResponseToDataDataItem(body)
-        commit('updateUserSubscription', subscription)
       },
       toggleGuideControl({ commit }){
         console.log("toggled guide control action")
@@ -799,9 +720,6 @@ const store = new Vuex.Store({
         state.user.createdAt = user.created_at
         state.user.showGuide = user.show_guide
         state.user.environment = user.environment
-      },
-      updateUserSubscription (state, subscription){
-        state.userSubscription = subscription;
       },
       addUserPaymentMethods (state, paymentMethods){
         state.userSubscription.paymentMethods = paymentMethods;
