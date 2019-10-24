@@ -123,9 +123,17 @@
           </accordionComponent>
 
           <modalComponent v-if="copyCourseForm" :modalState="modalState" @close="toggleModalState" class="component_container">
-            <template slot="heading">Copy</template>
-            <template slot="content">love me</template>
-            <template slot="submit-button">luv</template>
+            <template slot="heading">Copy a course</template>
+            <template slot="content">
+              <h2>You’re about to copy __Course #, Name, Semester + Yr__</h2>
+              <h4>Essential Course Info</h4>
+              <p>
+                You can update this info now or do so later:
+              </p>
+            </template>
+            <template slot="submit-button">
+              <button type="button" class="action">Copy</button>
+            </template>
           </modalComponent>
 
           <modalComponent v-if="deleteCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
