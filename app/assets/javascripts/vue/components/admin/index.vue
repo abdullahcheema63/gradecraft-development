@@ -181,13 +181,13 @@ module.exports = {
       var now = new Date();
       var expirationMax = now.setDate(now.getDate() + 30);
       var formattedDate = new Date(expirationMax);
-      var formattedInstructorExpiration = new Date(instructor.licenseExpires);
-      if (!instructor.licenseExpires) {
+      var formattedInstructorExpiration = new Date(instructor.subscriptionExpires);
+      if (!instructor.subscriptionExpires) {
         return false
-      } else if (new Date(instructor.licenseExpires) >= formattedDate) {
+      } else if (new Date(instructor.subscriptionExpires) >= formattedDate) {
         return false
       }
-      instructor.licenseExpires = formattedInstructorExpiration
+      instructor.subscriptionExpires = formattedInstructorExpiration
       return instructor
     },
     paginateItems(itemRange){

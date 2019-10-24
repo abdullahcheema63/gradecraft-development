@@ -36,6 +36,7 @@
         You will be <strong>billed on the X of every month.</strong>
         Courses you pay for between billing cycles will be prorated by day.
         <a href="https://gradecraft.com/licenses/" target="_blank">Review our subscription price options</a>
+        (make sure this link gets changed to /subscriptions on the public facing pages)
       </p>
     </div>
 
@@ -188,7 +189,6 @@ module.exports = {
   components: {
     "licenses-payment-inputs": () => VComponents.get("vue/components/licenses/paymentInputs"),
     "licenses-course-selector": () => VComponents.get("vue/components/licenses/courseSelector"),
-    "licenses-details": () => VComponents.get("vue/components/licenses/details"),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },

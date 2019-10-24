@@ -7,7 +7,7 @@
         currentCourses: <%= @current_user.subscription.courses.length %>,
         expires: "<%= @current_user.subscription.renewal_date %>"
       }
-      store.dispatch("addUserLicenseInfo", userSubscription)
+      store.dispatch("addUserSubscriptionInfo", userSubscription)
     </script>
   <% end %>
 <% end %>

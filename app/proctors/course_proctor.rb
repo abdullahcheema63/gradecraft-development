@@ -22,7 +22,7 @@ class CourseProctor
   def publishable?(user)
     return true unless Rails.env.beta?
     return true if user.is_admin? @course
-    @course.is_licensed?
+    @course.is_subscribed?
   end
 
   def destroyable?(user)

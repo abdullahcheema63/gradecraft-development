@@ -314,7 +314,7 @@ module.exports = {
       termName: [],
       formQuestion: ["Create a new course", "Copy an existing course", "Convert a trial course"],
       formResponse: ["Create a new course"],
-      courseToLicense: "",
+      courseToSubscribe: "",
       newCourse: {
         name: "",
         number: "",
@@ -325,7 +325,7 @@ module.exports = {
           start: null,
           end: null
         },
-        licensed: false
+        subscribed: false
       },
       newCourseErrors: [],
       copyCourseID: ""

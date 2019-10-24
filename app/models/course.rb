@@ -274,7 +274,7 @@ class Course < ApplicationRecord
     return nonpredictors
   end
 
-  def is_licensed?
+  def is_subscribed?
     !!(self.has_paid || (self.subscription && !self.subscription.is_expired?))
   end
 

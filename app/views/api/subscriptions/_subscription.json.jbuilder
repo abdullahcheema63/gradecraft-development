@@ -6,7 +6,7 @@ json.attributes do
   json.customer_id subscription.customer_id
   json.is_expired subscription.is_expired?
   json.expires subscription.renewal_date
-  json.license_type_id subscription.billing_scheme_id.to_s
+  json.billing_scheme_id subscription.billing_scheme_id.to_s
   json.created_at subscription.created_at
   json.updated_at subscription.updated_at
 end

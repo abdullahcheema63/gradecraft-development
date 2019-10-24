@@ -95,7 +95,7 @@
                       <td><a :href="course.url">{{course.number}}</a></td>
                       <td><a class="table_truncate" :href="course.url">{{course.name}}</a></td>
                       <td><span :class="{checked: course.published}">&nbsp;</span></td>
-                      <td><span :class="{checked: course.licensed}">&nbsp;</span></td>
+                      <td><span :class="{checked: course.subscribed}">&nbsp;</span></td>
                       <td>
                         <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
                       </td>
@@ -220,7 +220,7 @@ module.exports = {
         if(!(name.includes(this.searchCourseName.toLowerCase()))){return false}
       }
       if(this.showSubscribed != this.showUnsubscribed){
-        if(this.showSubscribed != course.licensed){return false}
+        if(this.showSubscribed != course.subscribed){return false}
       }
       if(this.showActive != this.showInactive){
         if (this.showActive != course.active){return false}

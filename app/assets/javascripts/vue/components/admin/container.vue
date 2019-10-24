@@ -69,12 +69,12 @@ module.exports = {
     return {
       tabBarOption: ["Courses", "Instructors", "All Users", "Institutions", "Utilities"],
       tabSection: ["Courses"],
-      courseToLicense: "",
+      courseToSubscribe: "",
       newCourse: {
         id: "",
         name: "",
         number: "",
-        licensed: false,
+        subscribed: false,
         role: "admin",
         term: {
           name: "",

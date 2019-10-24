@@ -5,7 +5,7 @@ json.data @courses do |course|
     json.id course.id
     json.active course.active?
     json.published course.published?
-    json.licensed course.subscription.present?
+    json.subscribed course.subscription.present?
     json.name course.name
     json.semester course.semester
     json.year course.year

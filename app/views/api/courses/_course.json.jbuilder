@@ -8,7 +8,7 @@ json.attributes do
   json.published course.published?
   json.has_badges course.has_badges?
   json.has_teams course.has_teams?
-  json.licensed course.subscription.present?
+  json.subscribed course.subscription.present?
   json.has_sections course.has_teams?
   json.has_learning_objectives course.has_learning_objectives?
   json.student_weighted course.student_weighted?

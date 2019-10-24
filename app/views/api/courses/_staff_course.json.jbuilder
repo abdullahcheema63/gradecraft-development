@@ -32,7 +32,7 @@ json.attributes do
   json.course_path course_path course
   json.change_course_path change_course_path course
   json.grading_status_path grading_status_path
-  json.licensed course.subscription.present?
+  json.subscribed course.subscription.present?
 
   # !! Change these to grading status attributes !!
   json.ungraded Submission.ungraded.where(course: course).count

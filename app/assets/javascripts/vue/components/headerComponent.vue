@@ -5,11 +5,11 @@
       <img class="small-show" src="/assets/logo-monogram.svg" width="110" height="100" alt="Return to your GradeCraft dashboard" />
     </a>
     <div class="header-actions" ref="clickAway">
-      <p id="free_trial_user" v-if="user.subscription" :class="{open:activeFreetrialMsg}" @click="toggleFreetrialMsg">
+      <p id="free_trial_user" v-if="!user.subscription" :class="{open:activeFreetrialMsg}" @click="toggleFreetrialMsg">
         <a class="small-hide">Free Trial Account</a>
         <a class="small-show">Free Trial</a>
       </p>
-      <div v-if="user.license.length == false" :class="freetrialMsgClass" id="trial_msg">
+      <div v-if="user.subscription.length == false" :class="freetrialMsgClass" id="trial_msg">
         <p>
           With your
           <b>free trial account,</b>
@@ -21,8 +21,8 @@
           <li>Import or add other users (such as assistants and students)</li>
         </ul>
         <p>
-          <a href="https://gradecraft.com/licenses/" target="_blank">Learn more about licensing options</a>
-          to see what’s best for you!
+          <a href="https://gradecraft.com/subscriptions/" target="_blank">Learn more about licensing options</a>
+          to see what’s best for you! (MAKE SURE THIS LINK ON THE PUBLIC PAGES IS /subscriptions instead of /licenses)
         </p>
       </div>
 

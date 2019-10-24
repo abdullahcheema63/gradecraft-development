@@ -132,7 +132,7 @@
             <li>
               <a @click="copyCourse(course.id)">Copy</a>
             </li>
-            <li v-if="course.licensed">
+            <li v-if="course.subscribed">
               <a @click="publishCourse(course.id)">Publish</a>
             </li>
             <li>
@@ -156,7 +156,7 @@
     <div class="course_status">
       <p>{{course.role}}</p>
       <div>
-        <p :class="'licensed'" v-if="is_licensed">
+        <p :class="'subscribed'" v-if="is_subscribed">
           Was Subscribed
         </p>
       </div>
@@ -175,7 +175,7 @@
     <div class="course_status">
       <p>{{course.role}}</p>
       <div>
-        <p :class="'licensed'" v-if="is_licensed">
+        <p :class="'subscribed'" v-if="is_subscribed">
           Was subscribed
         </p>
       </div>
@@ -230,7 +230,7 @@ module.exports = {
       else { return 'Student'}
     },
     paid_course_class() {
-      if( this.course.licensed ){ return 'paid' }
+      if( this.course.subscribed ){ return 'paid' }
     },
     paid_by_another() {
       if( this.course.paidByAnotherUser ){ return 'another_user_paid' }
@@ -244,8 +244,8 @@ module.exports = {
     request_pending() {
       if( this.course.requestPending ){ return 'request_pending' }
     },
-    is_licensed() {
-      return this.course.licensed
+    is_subscribed() {
+      return this.course.subscribed
     }
   },
   methods: {

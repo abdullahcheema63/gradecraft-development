@@ -28,11 +28,11 @@
             <td> </td>
           </tr>
           <tr v-for="c of userCourses" :key="c.id">
-            <td v-if="c.licensed && !subscribedByUser(c.id)" class="form_options alt-2">
+            <td v-if="c.subscribed && !subscribedByUser(c.id)" class="form_options alt-2">
               <input type="checkbox" :id="c.id" checked="checked" disabled="disabled" />
               <label :for="c.id"> Subscribed by other user </label>
             </td>
-            <td v-else-if="c.licensed" class="form_options alt-2">
+            <td v-else-if="c.subscribed" class="form_options alt-2">
               <input type="checkbox" :id="c.id" :value="c" v-model="currentSubscribedCourses"/>
               <label :for="c.id">&nbsp; </label>
             </td>
@@ -64,8 +64,8 @@ module.exports = {
     }
   },
   computed: {
-    licensedCourses(){
-      return this.$store.state.userLicense.courses
+    subscribedCourses(){
+      return this.$store.state.userSubscription.courses
     },
     userCourses(){
       return this.$store.getters.userCourseMemberships
@@ -98,9 +98,9 @@ module.exports = {
       return true;
       }
     },
-    isLicensed(course) {
-      return this.licensedCourses
-        && this.licensedCourses.some(c => c.id === course.id);
+    isSubscribed(course) {
+      return this.subscribedCourses
+        && this.subscribedCourses.some(c => c.id === course.id);
     },
     updateCurrentSubscribedCourse(courseId) {
       console.log("Update Subscribed", courseID);

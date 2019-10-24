@@ -89,7 +89,7 @@ const store = new Vuex.Store({
       lastLogin: null,
       lastLogout: null,
       createdAt: null,
-      license: {},
+      subscription: {},
       courseMembership: [{
         id: null,
         name: "",
@@ -119,7 +119,7 @@ const store = new Vuex.Store({
           start: "",
           end: ""
         },
-        licensed: null,
+        subscribed: null,
         published: null,
         active: null
        }]
@@ -515,8 +515,8 @@ const store = new Vuex.Store({
       changeGuide({ commit }){
         console.log("make api request")
       },
-      addUserLicenseInfo({ commit }, licenseInfo){
-        commit('addUserLicenseInfo', licenseInfo)
+      addUserSubscriptionInfo({ commit }, subscriptionInfo){
+        commit('addUserSubscriptionInfo', subscriptionInfo)
       }
     },
     mutations: {
@@ -546,12 +546,12 @@ const store = new Vuex.Store({
               start: course.start_date,
               end: course.end_date
             },
-            licensed: course.licensed,
+            subscribed: course.subscribed,
             published: course.published
            };
         });
         let subscribedCourses = state.user.courseMembership.filter(course => {
-          if(course.licensed) {
+          if(course.subscribed) {
             return course.subscription.user_id === state.user.id
           }
           return false
@@ -569,7 +569,7 @@ const store = new Vuex.Store({
             editURL: course.edit_course_path,
             active: course.active,
             published: course.published,
-            subscribed: course.licensed,
+            subscribed: course.subscribed,
             semester: course.semester,
             year: course.year,
             number: course.course_number,
@@ -601,7 +601,7 @@ const store = new Vuex.Store({
             assignmentStructureURL: course.export_structure_assignments_path,
             gradeSchemeStructureURL: course.export_structure_grade_scheme_elements_path,
             created: course.created_at,
-            licensed: course.licensed,
+            subscribed: course.subscribed,
             active: course.active,
             published: course.published,
             term: course.semester,
@@ -637,7 +637,7 @@ const store = new Vuex.Store({
             email: user.email,
             createdAt: user.created_at,
             url: user.user_url,
-            license: "trial",
+            subscription: "trial",
             courses: user.course_memberships.map(course => ({
               name: course.name,
               role: course.role,
@@ -660,8 +660,8 @@ const store = new Vuex.Store({
             createdAt: instructor.created_at,
             email: instructor.email,
             url: instructor.url,
-            licensed: instructor.licensed,
-            licenseExpires: instructor.license_expires,
+            subscribed: instructor.subscribed,
+            subscriptionExpires: instructor.subscription_expires,
             paymentMethod: instructor.payment_method,
             accountType: instructor.account_type,
             activeCoursesNumber: instructor.active_courses,
@@ -670,7 +670,7 @@ const store = new Vuex.Store({
               name: course.course_name,
               studentCount: course.student_count,
               changeCoursePath: course.change_course_path,
-              licensed: course.licensed,
+              subscribed: course.subscribed,
               active: course.active
             }))
           }
@@ -724,8 +724,8 @@ const store = new Vuex.Store({
       addUserPaymentMethods (state, paymentMethods){
         state.userSubscription.paymentMethods = paymentMethods;
       },
-      addUserLicenseInfo (state, licenseInfo){
-        state.user.license = {...licenseInfo}
+      addUserSubscriptionInfo (state, subscriptionInfo){
+        state.user.subscription = {...subscriptionInfo}
       }
     },
     getters: {
@@ -742,8 +742,8 @@ const store = new Vuex.Store({
       userOnboardingStatus: state => {
         return state.user.hasSeenCourseOnboarding
       },
-      userLicenseInfo: state =>{
-        if(state.user.license) return state.user.license
+      userSubscriptionInfo: state =>{
+        if(state.user.subscription) return state.user.subscription
         return null
       },
       userGuideStatus: state => {

@@ -49,7 +49,7 @@
             <tr v-for="instructor in currentPageAllInstructors" :key="instructor.id">
               <td><a href="#">{{instructor.firstName}}</a> </td>
               <td class="no_wrap"><a href="#">{{instructor.lastName}}</a> </td>
-              <td>{{instructor.licenseExpires}} </td>
+              <td>{{instructor.subscriptionExpires}} </td>
               <td>{{instructor.paymentMethod}} </td>
               <td style="width: 100px;">{{instructor.accountType}} </td>
               <template v-if="instructor.courses.length">
@@ -63,7 +63,7 @@
                 <td>
                   <ul>
                     <li v-for="course in instructor.courses" :key="course.id">
-                      <span :class="{checked: course.licensed}">&nbsp;</span>
+                      <span :class="{checked: course.subscribed}">&nbsp;</span>
                     </li>
                   </ul>
                 </td>
@@ -141,7 +141,7 @@ module.exports = {
         if(!(name.includes(this.searchName.toLowerCase()))) {return false}
       }
       if (this.showSubscribed != this.showUnsubscribed){
-        if(this.showSubscribed != instructor.licensed){return false}
+        if(this.showSubscribed != instructor.subscribed){return false}
       }
       if(this.showInActiveCourse){
         if(this.hasActiveCourse(instructor.courses) != true){return false}
