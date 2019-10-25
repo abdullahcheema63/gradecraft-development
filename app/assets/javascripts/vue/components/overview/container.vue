@@ -283,7 +283,6 @@ module.exports = {
   name: 'container',
   components: {
     courseCard: () => VComponents.get('vue/components/overview/courseCard'),
-    pastCourse: () => VComponents.get('vue/components/pastCourse'),
     guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
@@ -368,6 +367,7 @@ module.exports = {
       });
     },
     pastCourses(){
+      console.log("this computed property pastCourses is the same as archivedCourses CONSOLIDATE THEM")
       return this.$store.state.user.courseMembership.filter( course => {
         return !(course.active)
       })
