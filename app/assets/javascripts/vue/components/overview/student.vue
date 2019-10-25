@@ -25,12 +25,51 @@
             <p>
               This section includes your current courses.
             </p>
-            <div class="course_box">
-              <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
-            </div>
-            <div class="course_box" v-if="unpublishedCourses.length">
-              <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
-            </div>
+          </div>
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsGSI">
+            <template slot="heading">Published Courses</template>
+            <template slot="content">
+              <p class="unspace-bottom">
+                <br />
+                Published courses are visible to all users added to each course.
+              </p>
+              <div class="course_box" v-if="publishedCourses.length">
+                <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
+              </div>
+
+              <div class="course_box" v-else>
+                <div class="course_card empty">
+                  <p><em>You don't have any published courses right now!</em></p>
+                </div>
+              </div>
+            </template>
+          </accordionComponent>
+
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsGSI">
+            <template slot="heading">Unpublished Courses</template>
+            <template slot="content">
+              <p class="unspace-bottom">
+                <br />
+                Unpublished courses are hidden from students and observers, but visible to and editable by GSIs and instructors.
+              </p>
+              <div v-if="unpublishedCourses.length">
+                <div class="course_box" v-if="unpublishedCourses.length">
+                  <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
+                </div>
+              </div>
+              <div class="course_box" v-else>
+                <div class="course_card empty">
+                  <p><em>You don't have any unpublished courses right now!</em></p>
+                </div>
+              </div>
+            </template>
+          </accordionComponent>
+
+          <div class="course_box" v-if="!userIsGSI">
+            <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
+          </div>
+          <div class="course_box" v-if="unpublishedCourses.length && !userIsGSI">
+            <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
           </div>
         </div>
         <div v-if="tabSection[0]==='Past'">
@@ -105,6 +144,12 @@ module.exports = {
     this.$store.dispatch("getCourseMemberships");
   },
   computed: {
+    userIsGSI(){
+      var courseRoles = this.$store.state.user.courseMembership.map( course => {
+        return course.role
+      })
+      return courseRoles.includes('gsi')
+    },
     currentCourses(){
       return this.$store.state.user.courseMembership.filter( course => {
         return course.active

@@ -79,7 +79,7 @@
 
     <div class="button_box">
       <a class="button next" v-bind:href="course.url">View course</a>
-      <dropdownDotsComponent v-if="is_staff">
+      <dropdownDotsComponent v-if="is_instructor">
         <template slot="content">
           <ul>
             <li>
@@ -126,7 +126,7 @@
       <a class="button next" :href="course.url" v-if="is_staff">View course</a>
       <button type="button" disabled="disabled" class="next" v-if="!is_staff">View course</button>
 
-      <dropdownDotsComponent v-if="is_staff">
+      <dropdownDotsComponent v-if="is_instructor">
         <template slot="content">
           <ul>
             <li>
@@ -184,7 +184,7 @@
     <div class="button_box">
       <a class="button next" v-bind:href="course.url">View course</a>
 
-      <dropdownDotsComponent v-if="is_staff">
+      <dropdownDotsComponent v-if="is_instructor">
         <template slot="content">
           <ul>
             <li>
@@ -225,8 +225,15 @@ module.exports = {
     is_staff() {
       return this.course.role === 'professor' || this.course.role === 'gsi';
     },
+    is_instructor() {
+      return this.course.role === 'professor';
+    },
+    is_gsi() {
+      return this.course.role === 'gsi';
+    },
     user_card_class() {
-      if( this.is_staff ){ return 'Instructor' }
+      if( this.is_instructor ){ return 'Instructor' }
+      else if (this.is_gsi){ return 'GSI' }
       else { return 'Student'}
     },
     paid_course_class() {

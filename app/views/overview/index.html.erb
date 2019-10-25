@@ -2,9 +2,6 @@
   <% if current_user.any_course_professor? %>
     <guide-control data-component></guide-control>
     <overview-instructor data-component></overview-instructor>
-  <% elsif current_user.any_course_gsi? %>
-    <guide-control data-component></guide-control>
-    <overview-container data-component></overview-container>
   <% elsif current_user.is_global_admin? %>
     <adminindex data-component></adminindex>
   <% else %>
