@@ -1,7 +1,7 @@
 <div class="wrapper dashboard">
   <% if current_user.any_course_professor? %>
     <guide-control data-component></guide-control>
-    <overview-container data-component></overview-container>
+    <overview-instructor data-component></overview-instructor>
   <% elsif current_user.any_course_gsi? %>
     <guide-control data-component></guide-control>
     <overview-container data-component></overview-container>
@@ -9,6 +9,6 @@
     <adminindex data-component></adminindex>
   <% else %>
     <guide-control data-component></guide-control>
-    <overview-student data-component></overview-student
+    <overview-student data-component></overview-student>
   <% end %>
 </div>

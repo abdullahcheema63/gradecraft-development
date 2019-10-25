@@ -5,13 +5,10 @@
 
       <guideMessage>
         <p>
-          Welcome <span v-if="!getUserOnboardingStatus">back</span> to your GradeCraft dashboard, {{ getUserFirstName }}!
+          Welcome <span v-if="!getUserOnboardingStatus">back</span> to your GradeCraft dashboard, {{ userFirstName }}!
         </p>
-        <p v-if="userIsInstructor">
+        <p>
           I’m here to help you as you set up your course. Look for my messages if you want some tips on how to use GradeCraft features!
-        </p>
-        <p v-else>
-          Look for my messages if you want some tips on how to use GradeCraft features!
         </p>
       </guideMessage>
     </div>
@@ -25,7 +22,7 @@
       </template>
       <template slot="tabSections">
         <div v-if="tabSection[0]==='Current'">
-          <div class="content_block" v-if="userIsInstructor">
+          <div class="content_block">
             <div class="p_button">
               <p>
                 This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course, and publish or unpublish courses at any time.
@@ -89,19 +86,7 @@
             </div>
           </div>
 
-          <div class="content_block" v-if="userIsStudent">
-            <p>
-              This section includes your current courses.
-            </p>
-            <div class="course_box">
-              <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
-            </div>
-            <div class="course_box" v-if="unpublishedCourses.length">
-              <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
-            </div>
-          </div>
-
-          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor || userIsGSI">
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true">
             <template slot="heading">Published Courses</template>
             <template slot="content">
               <p class="unspace-bottom">
@@ -117,6 +102,26 @@
               <div class="course_box" v-else>
                 <div class="course_card empty">
                   <p><em>You don't have any published courses right now!</em></p>
+                </div>
+              </div>
+            </template>
+          </accordionComponent>
+
+          <accordionComponent accordion_content="bg-grey_barely" :open_default="true">
+            <template slot="heading">Unpublished Courses</template>
+            <template slot="content">
+              <p class="unspace-bottom">
+                <br />
+                Unpublished courses are hidden from students and observers, but visible to and editable by GSIs and instructors.
+              </p>
+              <div v-if="unpublishedCourses.length">
+                <div class="course_box" v-if="unpublishedCourses.length">
+                  <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
+                </div>
+              </div>
+              <div class="course_box" v-else>
+                <div class="course_card empty">
+                  <p><em>You don't have any unpublished courses right now!</em></p>
                 </div>
               </div>
             </template>
@@ -153,27 +158,6 @@
             <template slot="content">fear me</template>
             <template slot="submit-button">fear</template>
           </modalComponent>
-
-
-          <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsInstructor || userIsGSI">
-            <template slot="heading">Unpublished Courses</template>
-            <template slot="content">
-              <p class="unspace-bottom">
-                <br />
-                Unpublished courses are hidden from students and observers, but visible to and editable by GSIs and instructors.
-              </p>
-              <div v-if="userIsInstructor && unpublishedCourses.length">
-                <div class="course_box" v-if="unpublishedCourses.length">
-                  <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
-                </div>
-              </div>
-              <div class="course_box" v-else>
-                <div class="course_card empty">
-                  <p><em>You don't have any unpublished courses right now!</em></p>
-                </div>
-              </div>
-            </template>
-          </accordionComponent>
         </div>
 
         <div v-if="tabSection[0]==='Archived'">
@@ -228,71 +212,26 @@
             </div>
           </div>
         </div>
-
-        <div v-if="tabSection[0]==='Past'">
-          <div class="content_block">
-            <p>
-              This section includes any course in which you had a role of student, observer, or GSI. You can’t make changes to past courses but you can review them.
-            </p>
-
-            <div v-if="pastCourses.length">
-              <div class="table_functions">
-                <div class="filter_box">
-                  <p><strong>Select which filters you want to apply:</strong></p>
-                  <div>
-                    <span v-for="year in courseTermYear" :key="year">
-                      <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
-                      <label :for="year">{{year}}</label>
-                    </span>
-                  </div>
-                  <div>
-                    <span v-for="term in courseTermName" :key="term">
-                      <input :id="term" type="checkbox" v-model="termName" :value="term"/>
-                      <label :for="term">{{term}}</label>
-                    </span>
-                  </div>
-                </div>
-                <div class="search_box">
-                  <div class="form_elem">
-                    <input type="search" id="searchPastCourses" placeholder="Search past courses">
-                    <label for="searchPastCourses">Search courses</label>
-                  </div>
-                </div>
-              </div>
-              <div class="course_box" v-if="filteredPastCourses.length">
-                <courseCard v-for="course in filteredPastCourses" :key="course.id" :course="course" status="past"></courseCard>
-              </div>
-            </div>
-            <div class="course_box" v-else>
-              <div class="course_card empty">
-                <p><em>You don't have any past courses to view</em></p>
-              </div>
-            </div>
-          </div>
-        </div>
       </template>
     </tabContainer>
-
   </div>
 </template>
-
-<!-- have to set lang=coffee so rails-vue-loader can work -->
-<!-- adding back ticks ` escapes coffeescript to js -->
 <script lang='coffee'>`
 module.exports = {
-  name: 'container',
+  name: 'instructor',
   components: {
     courseCard: () => VComponents.get('vue/components/overview/courseCard'),
-    guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
+    accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
-    accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     formContainer: () => VComponents.get('vue/components/formContainer'),
     tabContainer: () => VComponents.get('vue/components/structure/tabContainer'),
+    guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     VueFlatpickr
   },
   data() {
     return {
+      tabBarOption: ["Current", "Archived"],
       tabSection: ["Current"],
       config: {
         allowInput: true,
@@ -300,22 +239,13 @@ module.exports = {
         dateFormat: "D, M d, Y at h:i K",
         static: true,
       },
-      copyCourseForm: false,
-      deleteCourseModal: false,
-      archiveCourseModal: false,
-      unpublishCourseModal: false,
-      modalState: true,
-      copyingCourse: false,
-      creatingCourse: false,
       termYear: [],
       termName: [],
-      formQuestion: ["Create a new course", "Copy an existing course", "Convert a trial course"],
-      formResponse: ["Create a new course"],
-      courseToSubscribe: "",
+      newCourseErrors: [],
       newCourse: {
         name: "",
         number: "",
-        role: "Instructor",
+        role: "instructor",
         term: {
           name: "",
           year: "",
@@ -324,26 +254,19 @@ module.exports = {
         },
         subscribed: false
       },
-      newCourseErrors: [],
-      copyCourseID: ""
+      copyCourseForm: false,
+      deleteCourseModal: false,
+      archiveCourseModal: false,
+      unpublishCourseModal: false,
+      modalState: true,
+      copyingCourse: false,
+      creatingCourse: false,
     }
   },
   created: function() {
-    this.$store.dispatch("getCourseMemberships")
+    this.$store.dispatch("getCourseMemberships");
   },
   computed: {
-    tabBarOption(){
-      if (this.userIsStudent) {
-        var options = ["Current", "Past"]
-      }
-      else if ( this.userIsGSI && this.userIsInstructor ){
-        var options = ["Current", "Archived", "Past"]
-      }
-      else {
-        var options = ["Current", "Archived"]
-      }
-      return options
-    },
     currentCourses(){
       return this.$store.state.user.courseMembership.filter( course => {
         return course.active
@@ -364,92 +287,28 @@ module.exports = {
         return !course.active
       });
     },
-    pastCourses(){
-      console.log("this computed property pastCourses is the same as archivedCourses CONSOLIDATE THEM")
-      return this.$store.state.user.courseMembership.filter( course => {
-        return !(course.active)
-      })
-    },
-    currentAndPastCourses(){
-      var courses = this.currentCourses.concat(this.pastCourses);
-      return courses
-    },
-    filteredPastCourses(){
-      var allPastCourses = this.pastCourses;
-      return allPastCourses.filter( course => {
+    filteredArchivedCourses(){
+      var allArchivedCourses = this.archivedCourses;
+      return allArchivedourses.filter( course => {
           if (!(this.termYear.includes(course.term.year)) && this.termYear.length) {return false}
           if (!(this.termName.includes(course.term.name)) && this.termName.length) {return false}
           return true
       })
     },
-    allCourses(){
-      var courses = this.currentAndPastCourses.concat(this.unpublishedCourses);
-      return courses
-    },
     courseTermYear(){
-      return new Set(this.pastCourses.map(courseMembership => courseMembership.term.year))
+      return new Set(this.archivedCourses.map(courseMembership => courseMembership.term.year))
     },
     courseTermName(){
-      return new Set(this.pastCourses.map(courseMembership => courseMembership.term.name))
+      return new Set(this.archivedCourses.map(courseMembership => courseMembership.term.name))
     },
-    getUserFirstName(){
+    userFirstName(){
       return this.$store.state.user.firstName;
     },
     getUserOnboardingStatus(){
       return this.$store.getters.userOnboardingStatus;
     },
-    userIsInstructor(){
-      var courseRoles = this.$store.state.user.courseMembership.map( course => {
-        return course.role
-      })
-      return courseRoles.includes('professor')
-    },
-    userIsStudent(){
-      var courseRoles = this.$store.state.user.courseMembership.map( course => {
-        return course.role
-      })
-      return courseRoles.includes('Student')
-    },
-    userIsGSI(){
-      var courseRoles = this.$store.state.user.courseMembership.map( course => {
-        return course.role
-      })
-      return courseRoles.includes('gsi')
-    },
-    copyError(){
-      return this.$store.state.courseCopyError
-    },
-    courseCreationError(){
-      return this.$store.state.courseCreationError
-    },
-    modalClass() {
-      if (this.modalState) {
-        return 'is-open';
-      }
-      return 'is-closed';
-    }
   },
   methods: {
-    openCopyCourseForm(course){
-      console.log("copy course form course: ", course)
-      this.copyCourseForm = true
-      this.modalState = true
-    },
-    openDeleteCourseModal(course){
-      console.log("delete course form course: ", course)
-      this.deleteCourseModal = true
-      this.modalState = true
-    },
-    openArchiveCourseModal(course){
-      console.log("archive course form course: ", course)
-      this.archiveCourseModal = true
-      this.modalState = true
-    },
-    openUnpublishCourseModal(course){
-      console.log("unpublish course form course: ", course)
-      this.unpublishCourseModal = true
-      this.modalState = true
-    },
     addCourse(){
       var errors = this.checkAddCourseForm()
 
@@ -457,16 +316,6 @@ module.exports = {
         this.creatingCourse = true
         this.$store.dispatch('addNewCourse', this.newCourse)
       }
-    },
-    close() {
-      this.toggleModalState()
-    },
-    toggleModalState(){
-      this.modalState = !this.modalState
-      this.copyCourseForm = false
-      this.deleteCourseModal = false
-      this.archiveCourseModal = false
-      this.unpublishCourseModal = false
     },
     checkAddCourseForm(){
       this.newCourseErrors = []
@@ -476,6 +325,12 @@ module.exports = {
       }
       return this.newCourseErrors
     },
+    close() {
+      this.toggleModalState()
+    },
+    toggleModalState(){
+      this.modalState = !this.modalState
+    }
   }
 }
 `</script>
