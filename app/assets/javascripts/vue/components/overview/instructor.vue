@@ -309,6 +309,26 @@ module.exports = {
     },
   },
   methods: {
+    openCopyCourseForm(course){
+      console.log("copy course form course: ", course)
+      this.copyCourseForm = true
+      this.modalState = true
+    },
+    openDeleteCourseModal(course){
+      console.log("delete course form course: ", course)
+      this.deleteCourseModal = true
+      this.modalState = true
+    },
+    openArchiveCourseModal(course){
+      console.log("archive course form course: ", course)
+      this.archiveCourseModal = true
+      this.modalState = true
+    },
+    openUnpublishCourseModal(course){
+      console.log("unpublish course form course: ", course)
+      this.unpublishCourseModal = true
+      this.modalState = true
+    },
     addCourse(){
       var errors = this.checkAddCourseForm()
 
@@ -330,6 +350,10 @@ module.exports = {
     },
     toggleModalState(){
       this.modalState = !this.modalState
+      this.copyCourseForm = false
+      this.deleteCourseModal = false
+      this.archiveCourseModal = false
+      this.unpublishCourseModal = false
     }
   }
 }
