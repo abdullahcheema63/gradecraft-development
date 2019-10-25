@@ -232,6 +232,18 @@ class User < ApplicationRecord
     is_professor?(course) || is_gsi?(course) || is_admin?(course)
   end
 
+  def is_global_admin?
+    self.course_memberships.first.role == "admin"
+  end
+
+  def any_course_gsi?
+    self.course_memberships.where(role: "gsi").any?
+  end
+
+  def any_course_professor?
+    self.course_memberships.where(role: "professor").any?
+  end
+
   def update_login_at
     self.update_attribute(:last_login_at, DateTime.current)
   end

@@ -2,12 +2,12 @@ require "mongoid"
 
 # rubocop:disable AndOr
 class HomeController < ApplicationController
-  skip_before_action :require_login, except: [:overview]
+  skip_before_action :require_login
   skip_before_action :require_course_membership
   before_action :ensure_admin?, only: :health_check
   before_action :redirect_if_logged_in!, only: [:index, :login]
 
-  layout "blank", only: [:style_guide, :overview]
+  layout "blank", only: [:style_guide]
 
   include ApplicationHelper
 
@@ -33,13 +33,6 @@ class HomeController < ApplicationController
       @error = e.message
       raise
     end
-  end
-
-  def overview
-    # Only checks the current role of the user in the current course they are in
-    # Should really only be used to determine if user is Admin or not
-    @user_role = current_role
-    @title = "Overview"
   end
 
   private

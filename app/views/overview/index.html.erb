@@ -1,11 +1,14 @@
-<% if @user_role != "admin"%>
-  <div class="wrapper dashboard">
+<div class="wrapper dashboard">
+  <% if current_user.any_course_professor? %>
     <guide-control data-component></guide-control>
     <overview-container data-component></overview-container>
-  </div>
-
-<% else %>
-  <div class="wrapper dashboard">
+  <% elsif current_user.any_course_gsi? %>
+    <guide-control data-component></guide-control>
+    <overview-container data-component></overview-container>
+  <% elsif current_user.is_global_admin? %>
     <adminindex data-component></adminindex>
-  </div>
-<% end %>
+  <% else %>
+    <guide-control data-component></guide-control>
+    <overview-container data-component></overview-container>
+  <% end %>
+</div>

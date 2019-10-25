@@ -10,9 +10,6 @@ class OverviewController < ApplicationController
   include ApplicationHelper
 
   def index
-    # Only checks the current role of the user in the current course they are in
-    # Should really only be used to determine if user is Admin or not
-    @user_role = current_role
     @title = "Overview"
   end
 
