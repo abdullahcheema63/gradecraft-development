@@ -279,10 +279,19 @@
     params[term] = article
     params
 
+  _hasLOLevels = (included_article_list) ->
+    included_article_list.some((article) -> 
+                                    if article.type == "levels"
+                                      return true)
+
   _resolve = (promise, article, type, redirectUrl) ->
     promise.then(
       (response) ->
         angular.copy(response.data.data.attributes, article)
+        console.log("in resolve")
+        console.log(response)
+        if response.data.included && _hasLOLevels(response.data.included)
+          GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
         lastUpdated(article.updated_at || new Date())
         article.isCreating = false
         window.location.href = redirectUrl if redirectUrl?
