@@ -5,10 +5,9 @@ class Subscription < ApplicationRecord
   has_many :courses
   has_many :payments, class_name: "Payment"
   belongs_to :user
-  # belongs_to :license_type
-  # belongs_to :billing_scheme // price per course & tier level 1-5 etc...
+  belongs_to :billing_scheme
 
-  validates_presence_of :billing_scheme_id
+  validates_presence_of :billing_scheme_id # is this needed ??
 
   accepts_nested_attributes_for :payments
 
@@ -17,7 +16,7 @@ class Subscription < ApplicationRecord
   end
 
   def create_charge(payment)
-    #renewal date is being set to null if there subsription is just created?
+    #renewal date is being set to nil if there subsription is just created?
 
     add_payment! payment
   end
@@ -26,10 +25,24 @@ class Subscription < ApplicationRecord
     # set duration as default for subscription?
     # Payment is calculated based on duration & pricing teir
     # billing scheme can return price per month
-    # duration stores amount of months they pay for?
-    duration ||= DateTime.now + 1.month
-    self.renewal_date = duration
+
     add_payment! payment
+  end
+
+  def create_off_session_charge(payment)
+    #determine amount to be paied here !
+    #determine courses that are being paid for here
+    if renewal_date && renewal_date.is_expired? && courses.count
+      billing_scheme = determine_billing_scheme(courses.count)
+      self.billing_scheme_id = billing_scheme.id # this should be done before / automatically
+      amount_to_pay = courses.count * billing_scheme.price_per_course
+      payment = Payment.new({
+        amount_usd: amount_to_pay,
+        billing_scheme_id: self.billing_scheme_id,
+        subscription_id: self.id
+      })
+      add_off_session_payment payment
+    end
   end
 
   def renew!(payment, duration=nil)
@@ -71,6 +84,14 @@ class Subscription < ApplicationRecord
     end
   end
 
+  def determine_billing_scheme(course_count)
+    BillingScheme.all.each do |billing_scheme|
+      if billing_scheme.min_courses <= course_count && course_count <= billing_scheme.max_courses
+        return billing_scheme
+      end
+    end
+  end
+
   private
 
   def payment_note
@@ -106,5 +127,21 @@ class Subscription < ApplicationRecord
     #   payment.refund!
     #   raise
     # end
+  end
+
+  def add_off_session_payment(payment)
+    intent = payment.charge_customer_off_session
+    puts "\n\n\n intent: #{intent}"
+    payment.payment_intent_id = intent.charges.data.first.id
+    #Revisit what `intent.charges.data.first.id` is, might want to make a second column for this in the db
+      # so that if a payment fails, the failed intent ID is stored and can be resumed on-session
+      # ? intent.charges.data.first.id --> save to a column `payment_charge_id`
+    payment.save
+
+    # set renewal date to be to the first of the next month
+    # create failure path, and save payment intent ID to the payment so the user can start from the last payment
+    
+
+
   end
 end

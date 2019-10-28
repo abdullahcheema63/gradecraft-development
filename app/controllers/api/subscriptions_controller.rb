@@ -180,7 +180,7 @@ class API::SubscriptionsController < ApplicationController
       # new courses need to be paid for
       puts("more courses selected than currently subscribed, needs payment")
       courses_to_pay_for_count = new_subscribed_courses_count - current_subscribed_courses_count
-      new_billing_scheme = determine_billing_scheme(new_subscribed_courses_count)
+      new_billing_scheme = @subscription.determine_billing_scheme(new_subscribed_courses_count)
 
       #Need to make a new function to pro-rate the days for amount to pay
       amount_to_pay = courses_to_pay_for_count * new_billing_scheme.price_per_course
@@ -261,16 +261,8 @@ class API::SubscriptionsController < ApplicationController
     )
   end
 
-  def determine_billing_scheme(course_count)
-    @billing_schemes.each do |billing_scheme|
-      if billing_scheme.min_courses <= course_count && course_count <= billing_scheme.max_courses
-        return billing_scheme
-      end
-    end
-  end
-
   def change_billing_scheme(course_count)
-    billing_scheme = determine_billing_scheme(course_count)
+    billing_scheme = @subscription.determine_billing_scheme(course_count)
     puts("determined bs: #{billing_scheme.inspect}")
     if @subscription.billing_scheme_id != billing_scheme.id
       @subscription.update_billing_scheme_id(billing_scheme.id)
