@@ -245,7 +245,7 @@ module.exports = {
       newCourse: {
         name: "",
         number: "",
-        role: "instructor",
+        role: "professor",
         term: {
           name: "",
           year: "",

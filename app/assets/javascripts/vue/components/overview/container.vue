@@ -3,17 +3,7 @@
     <div class="content_block intro">
       <h1>My Dashboard</h1>
 
-      <guideMessage>
-        <p>
-          Welcome <span v-if="!getUserOnboardingStatus">back</span> to your GradeCraft dashboard, {{ getUserFirstName }}!
-        </p>
-        <p v-if="userIsInstructor">
-          I’m here to help you as you set up your course. Look for my messages if you want some tips on how to use GradeCraft features!
-        </p>
-        <p v-else>
-          Look for my messages if you want some tips on how to use GradeCraft features!
-        </p>
-      </guideMessage>
+      This componnent has been replaced by student and instructor components for the top level dashboard
     </div>
 
     <tabContainer>
