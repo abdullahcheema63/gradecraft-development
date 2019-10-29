@@ -38,9 +38,9 @@
       <input id="phone" v-model="paymentMethodInfo.phone" type="number" required="required" />
       <label for="phone">Phone</label>
     </div>
-    <div class="form_elem">
+    <div class="form_options alt-2">
       <input id="default" v-model="paymentMethodInfo.default" type="checkbox" value="default"/>
-      <label for="default">Make Default Payment Source</label>
+      <label for="default">Make this my primary payment method</label>
     </div>
     <button class="action" @click.prevent="addCard()" type="submit">+ Add Card</button>
   </div>
