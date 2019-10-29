@@ -8,7 +8,7 @@
           Welcome <span v-if="!getUserOnboardingStatus">back</span> to your GradeCraft dashboard, {{ userFirstName }}!
         </p>
         <p>
-          I’m here to help you as you set up your course. Look for my messages if you want some tips on how to use GradeCraft features!
+          I’m here to help you as you set up your courses. Look for my messages if you want some tips on how to use GradeCraft features!
         </p>
       </guideMessage>
     </div>
@@ -142,21 +142,64 @@
           </modalComponent>
 
           <modalComponent v-if="deleteCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
-            <template slot="heading">Delete</template>
-            <template slot="content">hate me</template>
-            <template slot="submit-button">hate</template>
+            <template slot="heading">Delete Course Confirmation</template>
+            <template slot="content">
+              <h2>Please confirm you want to delete your course</h2>
+              <p>
+                You’re about to delete your course, <span style="background: yellow;">__Course # + Course Name + Semester + Yr __</span>.
+                <br />
+                <strong>This cannot be undone.</strong>
+            </template>
+            <template slot="submit-button">
+              <button type="button" class="action" style="margin-bottom: 1em;">Delete my course</button>
+              <br />
+            </template>
           </modalComponent>
 
           <modalComponent v-if="archiveCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
-            <template slot="heading">Archive</template>
-            <template slot="content">respect me</template>
-            <template slot="submit-button">respect</template>
+            <template slot="heading">Archive Course Confirmation</template>
+            <template slot="content">
+              <h2>Please confirm you want to archive your course</h2>
+              <p>
+                You’re about to archive your course, <span style="background: yellow;">__Course # + Course Name + Semester + Yr __</span>.
+                <br />
+                <strong>You will not be able to unarchive it</strong> without emailing us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>
+              </p>
+              <p>
+                Archiving a course is useful when your term has ended and students are no longer active in GradeCraft.
+              </p>
+            </template>
+            <template slot="submit-button">
+              <button type="button" class="action" style="margin-bottom: 1em;">Archive my course</button>
+              <br />
+            </template>
           </modalComponent>
 
           <modalComponent v-if="unpublishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
-            <template slot="heading">Unpublish</template>
-            <template slot="content">fear me</template>
-            <template slot="submit-button">fear</template>
+            <template slot="heading">Unpublish Course Confirmation</template>
+            <template slot="content">
+              <h2>Please confirm you want to unpublish your course</h2>
+              <p>
+                You’re about to unpublish your course, <span style="background: yellow;">__Course # + Course Name + Semester + Yr __</span>.
+                <br />
+                It will be <strong>hidden from students and observers</strong> in the course, but remain visible to and editable by any GSIs and instructors in the course.
+              </p>
+
+              <p>
+                Unpublishing a course is useful if you need to make significant changes during a term and just need to make it temporarily invisible when students are active in GradeCraft.
+              </p>
+
+              <p style="background: yellow;">
+                To E from S: The following p-tag is v-if conditional, to show for users if they're the one paying for the selected course.
+              </p>
+              <p>
+                Unpublishing a course <strong>does not remove it from your subscription.</strong> You can <a href="/subscriptions">manage your subscription</a> if you want to make this change.
+              </p>
+            </template>
+            <template slot="submit-button">
+              <button type="button" class="action" style="margin-bottom: 1em;">Unpublish my course</button>
+              <br />
+            </template>
           </modalComponent>
         </div>
 
