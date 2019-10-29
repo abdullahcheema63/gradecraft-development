@@ -29,8 +29,8 @@ class CSVStudentImporter
     return team if team.present?
 
     team = Team.new(course_id: course_id, name: team_name)
-    team.save!
-
+    
+    team.save
     team
   end
 
