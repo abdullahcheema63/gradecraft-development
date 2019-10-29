@@ -15,18 +15,9 @@ class Subscription < ApplicationRecord
     renewal_date < DateTime.current if renewal_date
   end
 
-  def create_charge(payment)
-    #renewal date is being set to nil if there subsription is just created?
-
-    add_payment! payment
-  end
-
-  def start!(payment, duration=nil)
-    # set duration as default for subscription?
-    # Payment is calculated based on duration & pricing teir
-    # billing scheme can return price per month
-
-    add_payment! payment
+  def initiate_payment(payment)
+    #Payment used for in-session payments between monthly cycle
+    payment.charge_customer
   end
 
   def initiate_off_session_charge
@@ -100,33 +91,6 @@ class Subscription < ApplicationRecord
 
   end
 
-  def add_payment!(payment)
-    #Payment used for in-session payments between monthly cycle
-    intent = payment.charge_customer
-    puts "\n\n\n intent: #{intent}"
-
-    if intent.status === "succeeded"
-      puts "!!! Payment was a success !!!"
-      payment.confirmation = "succeeded"
-      payment.charge_id = intent.charges.data.first.id
-      payment.save
-      self.extend_renewal_date
-      NotificationMailer.payment_received(payment).deliver_now
-    else
-      puts "payment did not work ): "
-      payment.update_attribute(:payment_intent_id, intent.id)
-    end
-
-    # # Force save immediately to ensure that a failed save invalidates the charge.
-    # begin
-    #   save!
-    #   NotificationMailer.payment_received(payment).deliver_now
-    # rescue => e
-    #   payment.refund!
-    #   raise
-    # end
-  end
-
   def add_off_session_payment(payment)
     intent = payment.charge_customer_off_session
     puts "\n\n\n intent: #{intent}"
@@ -135,14 +99,14 @@ class Subscription < ApplicationRecord
       puts "!!! Payment was a success !!!"
       payment.confirmation = "succeeded"
       payment.charge_id = intent.charges.data.first.id
+      # ^ will the successfull charge be the first in this data array?
+      payment.course_ids = self.course_ids
       payment.save
-        # ^ will the successfull charge be the first in this data array?
       self.extend_renewal_date
       NotificationMailer.payment_received(payment).deliver_now
-
     else
-      payment.update_attribute(:payment_intent_id, intent.id)
       puts "payment failed"
+      payment.update_attribute(:payment_intent_id, intent.id)
     end
   end
 end

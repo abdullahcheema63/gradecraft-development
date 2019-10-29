@@ -206,8 +206,10 @@ class API::SubscriptionsController < ApplicationController
         subscription_id: @subscription.id,
       })
 
-      if @subscription.create_charge(payment)
-        puts "create_charge called and returned true ? inside successful payment"
+      intent = @subscription.initiate_payment(payment)
+
+      if intent.status === "succeeded"
+        puts "!!! Payment was a success !!!"
         if courses_to_unsubscribe.length
           @subscription.unsubscribe_courses(courses_to_unsubscribe)
         end
@@ -215,31 +217,19 @@ class API::SubscriptionsController < ApplicationController
           @subscription.subscribe_courses(courses_to_subscribe)
           payment.course_ids = courses_to_subscribe
         end
+        payment.confirmation = "succeeded"
+        payment.charge_id = intent.charges.data.first.id
+        payment.save
+        NotificationMailer.payment_received(payment).deliver_now
         @subscription.update_billing_scheme
         @subscription.extend_renewal_date
-      end
-
-      return render_error payment.errors.messages, payment.errors.messages unless payment.valid?
-      begin
-        puts("inside payment.valid? begin rescue condition")
-
-      rescue Stripe::CardError => e
-        return render_error e.message, e.message, 500
-      rescue => e
-        render_error e.message, e
       else
-        #subscription was successfully updated
-
-
-        #BELOW IS FROM JAMES's work
-        @billing_schemes = BillingScheme.all
-        #probably wont need this for the API to run ??
-
-        @courses = get_courses_where_professor
-        @payments = @subscription.payments.all
-        render "api/subscriptions/index", success: true, status: 200
+        puts "payment failed ): "
+        puts "failed payment intent: #{intent.inspect}"
       end
 
+      # not sure how to return to the my subscriptions page
+      render "api/subscriptions/index", success: true, status: 200
     end
   end
 
