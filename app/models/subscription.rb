@@ -33,9 +33,8 @@ class Subscription < ApplicationRecord
     #determine amount to be paied here !
     #determine courses that are being paid for here
     if renewal_date && renewal_date.is_expired? && courses.count
-      billing_scheme = determine_billing_scheme(courses.count)
-      self.billing_scheme_id = billing_scheme.id # this should be done before / automatically
-      amount_to_pay = courses.count * billing_scheme.price_per_course
+      self.update_billing_scheme # Should the billing scheme be updated here ??
+      amount_to_pay = courses.count * self.billing_scheme.price_per_course
       payment = Payment.new({
         amount_usd: amount_to_pay,
         billing_scheme_id: self.billing_scheme_id,
@@ -51,10 +50,6 @@ class Subscription < ApplicationRecord
     duration ||= DateTime.now + 1.month
     self.renewal_date = is_expired? ? (duration) : (renewal_date + 1.month)
     add_payment! payment
-  end
-
-  def update_billing_scheme_id(billing_scheme_id)
-    self.update_attribute(:billing_scheme_id, billing_scheme_id)
   end
 
   def create_stripe_customer(email)
@@ -84,12 +79,19 @@ class Subscription < ApplicationRecord
     end
   end
 
-  def determine_billing_scheme(course_count)
-    BillingScheme.all.each do |billing_scheme|
-      if billing_scheme.min_courses <= course_count && course_count <= billing_scheme.max_courses
-        return billing_scheme
+  def update_billing_scheme
+    BillingScheme.all.each do |bs|
+      if bs.min_courses <= courses.count && courses.count <= bs.max_courses
+        if self.billing_scheme_id != bs.id
+          self.update_attribute(:billing_scheme_id, bs.id)
+        end
       end
     end
+  end
+
+  def extend_renewal_date
+    #with Date.today or Date.current this is being stored in the DB as the first @ 04:00:00
+    self.update_attribute(:renewal_date, Date.current.at_beginning_of_month.next_month)
   end
 
   private
@@ -140,7 +142,7 @@ class Subscription < ApplicationRecord
 
     # set renewal date to be to the first of the next month
     # create failure path, and save payment intent ID to the payment so the user can start from the last payment
-    
+
 
 
   end

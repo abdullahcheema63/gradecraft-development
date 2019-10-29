@@ -174,13 +174,13 @@ class API::SubscriptionsController < ApplicationController
 
       puts("Removing subscription from: #{courses_to_unsubscribe}")
       @subscription.unsubscribe_courses(courses_to_unsubscribe)
-      change_billing_scheme(new_subscribed_courses_count)
+      @subscription.update_billing_scheme
 
     else
       # new courses need to be paid for
       puts("more courses selected than currently subscribed, needs payment")
       courses_to_pay_for_count = new_subscribed_courses_count - current_subscribed_courses_count
-      new_billing_scheme = @subscription.determine_billing_scheme(new_subscribed_courses_count)
+      new_billing_scheme = determine_new_billing_scheme(new_subscribed_courses_count)
 
       #Need to make a new function to pro-rate the days for amount to pay
       amount_to_pay = courses_to_pay_for_count * new_billing_scheme.price_per_course
@@ -215,7 +215,8 @@ class API::SubscriptionsController < ApplicationController
           @subscription.subscribe_courses(courses_to_subscribe)
           payment.course_ids = courses_to_subscribe
         end
-        change_billing_scheme(new_subscribed_courses_count)
+        @subscription.update_billing_scheme
+        @subscription.extend_renewal_date
       end
 
       return render_error payment.errors.messages, payment.errors.messages unless payment.valid?
@@ -244,6 +245,14 @@ class API::SubscriptionsController < ApplicationController
 
   private
 
+  def determine_new_billing_scheme(courses_count)
+    BillingScheme.all.each do |billing_scheme|
+      if billing_scheme.min_courses <= courses_count && courses_count <= billing_scheme.max_courses
+        return billing_scheme
+      end
+    end
+  end
+
   def create_new_subscription
     @subscription = Subscription.new({
       billing_scheme_id: BillingScheme.find_by(min_courses: 0).id,
@@ -259,14 +268,6 @@ class API::SubscriptionsController < ApplicationController
         invoice_settings: { default_payment_method: pm_id }
       }
     )
-  end
-
-  def change_billing_scheme(course_count)
-    billing_scheme = @subscription.determine_billing_scheme(course_count)
-    puts("determined bs: #{billing_scheme.inspect}")
-    if @subscription.billing_scheme_id != billing_scheme.id
-      @subscription.update_billing_scheme_id(billing_scheme.id)
-    end
   end
 
   def render_error(message, errors, status=400)
