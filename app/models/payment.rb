@@ -57,7 +57,6 @@ class Payment < ApplicationRecord
       currency: 'usd',
       payment_method: payment_method_id
     })
-    return intent
   end
 
   def create_off_session_payment_intent(customer_id, payment_method_id)

@@ -29,10 +29,8 @@ class Subscription < ApplicationRecord
     add_payment! payment
   end
 
-  def create_off_session_charge(payment)
-    #determine amount to be paied here !
-    #determine courses that are being paid for here
-    if renewal_date && renewal_date.is_expired? && courses.count
+  def initiate_off_session_charge
+    if renewal_date && self.is_expired? && courses.count
       self.update_billing_scheme # Should the billing scheme be updated here ??
       amount_to_pay = courses.count * self.billing_scheme.price_per_course
       payment = Payment.new({
@@ -103,22 +101,20 @@ class Subscription < ApplicationRecord
   end
 
   def add_payment!(payment)
+    #Payment used for in-session payments between monthly cycle
     intent = payment.charge_customer
     puts "\n\n\n intent: #{intent}"
-    payment.payment_intent_id = intent.charges.data.first.id
-    payment.save
 
-    if intent.charges.data.first.status === "succeeded"
+    if intent.status === "succeeded"
       puts "!!! Payment was a success !!!"
-      if self.renewal_date.nil? || self.renewal_date < DateTime.current
-        self.renewal_date = DateTime.current + 1.month
-      else
-        self.renewal_date = self.renewal_date + 1.month
-      end
-      save!
+      payment.confirmation = "succeeded"
+      payment.charge_id = intent.charges.data.first.id
+      payment.save
+      self.extend_renewal_date
       NotificationMailer.payment_received(payment).deliver_now
     else
       puts "payment did not work ): "
+      payment.update_attribute(:payment_intent_id, intent.id)
     end
 
     # # Force save immediately to ensure that a failed save invalidates the charge.
@@ -134,16 +130,19 @@ class Subscription < ApplicationRecord
   def add_off_session_payment(payment)
     intent = payment.charge_customer_off_session
     puts "\n\n\n intent: #{intent}"
-    payment.payment_intent_id = intent.charges.data.first.id
-    #Revisit what `intent.charges.data.first.id` is, might want to make a second column for this in the db
-      # so that if a payment fails, the failed intent ID is stored and can be resumed on-session
-      # ? intent.charges.data.first.id --> save to a column `payment_charge_id`
-    payment.save
 
-    # set renewal date to be to the first of the next month
-    # create failure path, and save payment intent ID to the payment so the user can start from the last payment
+    if intent.status === "succeeded"
+      puts "!!! Payment was a success !!!"
+      payment.confirmation = "succeeded"
+      payment.charge_id = intent.charges.data.first.id
+      payment.save
+        # ^ will the successfull charge be the first in this data array?
+      self.extend_renewal_date
+      NotificationMailer.payment_received(payment).deliver_now
 
-
-
+    else
+      payment.update_attribute(:payment_intent_id, intent.id)
+      puts "payment failed"
+    end
   end
 end
