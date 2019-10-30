@@ -207,6 +207,7 @@ class API::SubscriptionsController < ApplicationController
       })
 
       intent = @subscription.initiate_payment(payment)
+      payment.update_attribute(:payment_intent_id, intent.id)
 
       if intent.status === "succeeded"
         puts "!!! Payment was a success !!!"
@@ -217,15 +218,14 @@ class API::SubscriptionsController < ApplicationController
           @subscription.subscribe_courses(courses_to_subscribe)
           payment.course_ids = courses_to_subscribe
         end
-        payment.confirmation = "succeeded"
-        payment.charge_id = intent.charges.data.first.id
+        payment.status = "succeeded"
         payment.save
         NotificationMailer.payment_received(payment).deliver_now
         @subscription.update_billing_scheme
         @subscription.extend_renewal_date
       else
-        puts "payment failed ): "
         puts "failed payment intent: #{intent.inspect}"
+        payment.update_attribute(:failed, true)
       end
 
       # not sure how to return to the my subscriptions page

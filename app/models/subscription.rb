@@ -16,7 +16,7 @@ class Subscription < ApplicationRecord
   end
 
   def failed_last_payment?
-    payments.last.payment_intent_id.present?
+    payments.last.failed
   end
 
   def initiate_payment(payment)
@@ -24,7 +24,7 @@ class Subscription < ApplicationRecord
     payment.charge_customer
   end
 
-  def initiate_off_session_charge
+  def initiate_off_session_payment
     if renewal_date && self.is_expired? && courses.count
       self.update_billing_scheme # Should the billing scheme be updated here ??
       amount_to_pay = courses.count * self.billing_scheme.price_per_course
@@ -97,20 +97,18 @@ class Subscription < ApplicationRecord
 
   def add_off_session_payment(payment)
     intent = payment.charge_customer_off_session
-    puts "\n\n\n intent: #{intent}"
+    payment.payment_intent_id = intent.id
 
     if intent.status === "succeeded"
       puts "!!! Payment was a success !!!"
-      payment.confirmation = "succeeded"
-      payment.charge_id = intent.charges.data.first.id
-      # ^ will the successfull charge be the first in this data array?
+      payment.status = "succeeded"
       payment.course_ids = self.course_ids
       payment.save
       self.extend_renewal_date
       NotificationMailer.payment_received(payment).deliver_now
     else
-      puts "payment failed"
-      payment.update_attribute(:payment_intent_id, intent.id)
+      puts "failed payment intent: #{intent.inspect}"
+      payment.update_attribute(:failed, true)
     end
   end
 end
