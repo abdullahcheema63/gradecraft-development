@@ -15,6 +15,10 @@ class Subscription < ApplicationRecord
     renewal_date < DateTime.current if renewal_date
   end
 
+  def failed_last_payment?
+    payments.last.payment_intent_id.present?
+  end
+
   def initiate_payment(payment)
     #Payment used for in-session payments between monthly cycle
     payment.charge_customer
