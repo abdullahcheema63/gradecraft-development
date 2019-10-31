@@ -85,7 +85,13 @@
           </label>
         </div>
 
-        <buttonModal button_class="action">
+        <buttonModal button_class="action" v-if="userSubscription.failed_last_payment">
+          <template slot="button-text">Continue with failed payment</template>
+          <template slot="heading">Last Payment</template>
+          <template slot="content"> You failed your last payment</template>
+        </buttonModal>
+
+        <buttonModal button_class="action" v-else>
           <template slot="button-text">Apply changes</template>
           <template slot="heading">Subscription Summary</template>
           <template slot="content">
