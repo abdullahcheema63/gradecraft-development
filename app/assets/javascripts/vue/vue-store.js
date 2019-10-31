@@ -507,6 +507,9 @@ const store = new Vuex.Store({
           console.error(body);
           return;
         }
+        else {
+          window.location.replace(store.state.subscriptionsURL)
+        }
       },
       toggleGuideControl({ commit }){
         console.log("toggled guide control action")

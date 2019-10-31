@@ -33,6 +33,7 @@ class Subscription < ApplicationRecord
         billing_scheme_id: self.billing_scheme_id,
         subscription_id: self.id
       })
+
       add_off_session_payment payment
     end
   end
@@ -96,7 +97,23 @@ class Subscription < ApplicationRecord
   end
 
   def add_off_session_payment(payment)
-    intent = payment.charge_customer_off_session
+    begin
+      intent = payment.charge_customer_off_session
+    rescue Stripe::CardError => e
+      puts "error error: #{e}"
+      payment.status = e.error.code
+    rescue Stripe::RateLimitError => e
+      # Too many requests made to the API too quickly
+    rescue Stripe::AuthenticationError => e
+      # Authentication with Stripe's API failed
+    rescue Stripe::APIConnectionError => e
+      # Network communication with Stripe failed
+    rescue Stripe::StripeError => e
+      # Display a very generic error to the user, and maybe send
+      # yourself an email
+    rescue => e
+      # Something else happened, completely unrelated to Stripe
+    end
 
     if intent && intent.status === "succeeded"
       puts "!!! Payment was a success !!!"

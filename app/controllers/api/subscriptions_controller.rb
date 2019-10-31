@@ -98,6 +98,7 @@ class API::SubscriptionsController < ApplicationController
   end
 
   # PUT api/licenses/edit
+  # ~~~ James Method ~~~ 
   def edit
     @subscription = current_user.subscription
     if !@subscription
@@ -207,9 +208,25 @@ class API::SubscriptionsController < ApplicationController
         subscription_id: @subscription.id,
       })
 
-      intent = @subscription.initiate_payment(payment)
-      
-      if intent.status === "succeeded"
+      begin
+        intent = @subscription.initiate_payment(payment)
+      rescue Stripe::CardError => e
+        puts "error error: #{e}"
+        payment.status = e.error.code
+      rescue Stripe::RateLimitError => e
+        # Too many requests made to the API too quickly
+      rescue Stripe::AuthenticationError => e
+        # Authentication with Stripe's API failed
+      rescue Stripe::APIConnectionError => e
+        # Network communication with Stripe failed
+      rescue Stripe::StripeError => e
+        # Display a very generic error to the user, and maybe send
+        # yourself an email
+      rescue => e
+        # Something else happened, completely unrelated to Stripe
+      end
+
+      if intent && intent.status === "succeeded"
         puts "!!! Payment was a success !!!"
         if courses_to_unsubscribe.length
           @subscription.unsubscribe_courses(courses_to_unsubscribe)
@@ -224,7 +241,6 @@ class API::SubscriptionsController < ApplicationController
         @subscription.update_billing_scheme
         @subscription.extend_renewal_date
       else
-        puts "failed payment intent: #{intent.inspect}"
         payment.update_attribute(:failed, true)
       end
 

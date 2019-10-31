@@ -70,11 +70,9 @@ class Payment < ApplicationRecord
 
   #STRIPE has option for 'recipt_email' --> wondering what is in this email / if we want to use it
   def confirm_payment_intent(payment_method_id)
-    Stripe::PaymentIntent.confirm(
-      self.payment_intent_id,
-      {
-        payment_method: payment_method_id
-      })
+    Stripe::PaymentIntent.confirm( self.payment_intent_id,
+      { payment_method: payment_method_id }
+    )
   end
 
   def confirm_off_session_payment_intent(payment_method_id)
