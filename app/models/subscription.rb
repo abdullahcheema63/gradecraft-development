@@ -73,8 +73,9 @@ class Subscription < ApplicationRecord
   end
 
   def update_billing_scheme
+    courses_count = courses.count
     BillingScheme.all.each do |bs|
-      if bs.min_courses <= courses.count && courses.count <= bs.max_courses
+      if bs.min_courses <= courses_count && courses_count <= bs.max_courses
         if self.billing_scheme_id != bs.id
           self.update_attribute(:billing_scheme_id, bs.id)
         end
@@ -83,7 +84,6 @@ class Subscription < ApplicationRecord
   end
 
   def extend_renewal_date
-    #with Date.today or Date.current this is being stored in the DB as the first @ 04:00:00
     self.update_attribute(:renewal_date, Date.current.at_beginning_of_month.next_month)
   end
 
@@ -91,15 +91,14 @@ class Subscription < ApplicationRecord
 
   def payment_note
     #self.license_type.name + " Exp.: " + self.expires.to_s
-    "Subscription for " + self.courses.last.name + " exp.: " + self.renewal_date.to_s
+    "Subscription for " + self.user.last.name + " exp.: " + self.renewal_date.to_s
 
   end
 
   def add_off_session_payment(payment)
     intent = payment.charge_customer_off_session
-    payment.payment_intent_id = intent.id
 
-    if intent.status === "succeeded"
+    if intent && intent.status === "succeeded"
       puts "!!! Payment was a success !!!"
       payment.status = "succeeded"
       payment.course_ids = self.course_ids
@@ -107,7 +106,8 @@ class Subscription < ApplicationRecord
       self.extend_renewal_date
       NotificationMailer.payment_received(payment).deliver_now
     else
-      puts "failed payment intent: #{intent.inspect}"
+      #puts "failed payment intent: #{intent.inspect}"
+      puts "!~FAILED PAYMETN~!"
       payment.update_attribute(:failed, true)
     end
   end

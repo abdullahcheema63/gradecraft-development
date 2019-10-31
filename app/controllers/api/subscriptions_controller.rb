@@ -187,16 +187,17 @@ class API::SubscriptionsController < ApplicationController
 
       now = DateTime.now # or should it be current ? maybe the Time class is better for timezones??
       days_in_month = now.end_of_month.day
-      remaing_days_in_month = days_in_month - now.day
+      remaining_days_in_month = days_in_month - now.day
+      if remaining_days_in_month === 0 then remaining_days_in_month = 1 end
 
       price_per_day = amount_to_pay / days_in_month
-      prorated_total = price_per_day * remaing_days_in_month
+      prorated_total = price_per_day * remaining_days_in_month
 
 
       puts("Cost to pay today: #{prorated_total}")
       puts("price_per_day: #{price_per_day}")
       puts("days_in_month: #{days_in_month}")
-      puts("remaingDaysInMonth: #{remaing_days_in_month}")
+      puts("remainingDaysInMonth: #{remaining_days_in_month}")
       puts("Removing subscription from: #{courses_to_unsubscribe}")
       puts("adding subscription to: #{courses_to_subscribe}")
 
@@ -207,8 +208,7 @@ class API::SubscriptionsController < ApplicationController
       })
 
       intent = @subscription.initiate_payment(payment)
-      payment.update_attribute(:payment_intent_id, intent.id)
-
+      
       if intent.status === "succeeded"
         puts "!!! Payment was a success !!!"
         if courses_to_unsubscribe.length

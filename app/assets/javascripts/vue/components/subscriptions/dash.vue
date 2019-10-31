@@ -223,9 +223,10 @@ module.exports = {
     proratedTotal(){
       var now = new Date();
       var daysInThisMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-      var remaingDaysInMonth = daysInThisMonth - now.getDate()
+      var remainingDaysInMonth = daysInThisMonth - now.getDate()
+      if (remainingDaysInMonth === 0){ remainingDaysInMonth = 1}
       var pricePerDay = this.newCost / daysInThisMonth
-      return pricePerDay * remaingDaysInMonth
+      return pricePerDay * remainingDaysInMonth
     },
     subtractedCost(){
       let originalCourseCount = this.previouslySubscribedCourses.length;

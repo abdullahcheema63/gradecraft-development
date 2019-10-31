@@ -8,11 +8,18 @@ class Payment < ApplicationRecord
   validates_presence_of :amount_usd
 
   def charge_customer
+    #Used for payments made between monthly subscription charges
     customer_id = self.subscription.customer_id
     customer = Stripe::Customer.retrieve(customer_id)
 
     payment_method_id = get_payment_method_id(customer)
-    create_payment_intent(customer_id, payment_method_id)
+
+    #return here if there are no payment_methods
+
+    intent = create_payment_intent(customer_id)
+    self.update_attribute(:payment_intent_id, intent.id)
+
+    confirm_payment_intent(payment_method_id)
   end
 
   def charge_customer_off_session
@@ -20,10 +27,15 @@ class Payment < ApplicationRecord
     customer = Stripe::Customer.retrieve(customer_id)
 
     payment_method_id = get_payment_method_id(customer)
+    #? return here if there are no payment_methods
 
-    create_off_session_payment_intent(customer_id, payment_method_id)
+    intent = create_payment_intent(customer_id)
+    self.update_attribute(:payment_intent_id, intent.id)
+
+    confirm_off_session_payment_intent(payment_method_id)
   end
 
+  #~~~James Method ~~~
   def refund!
     return nil unless self.payment_intent_id == "Stripe" && self.confirmation
     charge = retrieve_stripe_charge(self.confirmation)
@@ -48,26 +60,30 @@ class Payment < ApplicationRecord
     return payment_method_id
   end
 
-  #STRIPE has option for 'recipt_email' --> wondering what is in this email / if we want to use it
-  def create_payment_intent(customer_id, payment_method_id)
-    intent = Stripe::PaymentIntent.create({
+  def create_payment_intent(customer_id)
+    Stripe::PaymentIntent.create({
       amount: amount_cents,
       customer: customer_id,
-      confirm: true,
       currency: 'usd',
-      payment_method: payment_method_id
     })
   end
 
-  def create_off_session_payment_intent(customer_id, payment_method_id)
-    Stripe::PaymentIntent.create({
-      amount: amount_cents,
-      currency: 'usd',
-      customer: customer_id,
-      confirm: true,
-      off_session: true,
-      payment_method: payment_method_id
-    })
+  #STRIPE has option for 'recipt_email' --> wondering what is in this email / if we want to use it
+  def confirm_payment_intent(payment_method_id)
+    Stripe::PaymentIntent.confirm(
+      self.payment_intent_id,
+      {
+        payment_method: payment_method_id
+      })
+  end
+
+  def confirm_off_session_payment_intent(payment_method_id)
+    Stripe::PaymentIntent.confirm(
+      self.payment_intent_id,
+      {
+        off_session: true,
+        payment_method: payment_method_id
+      })
   end
 
   def create_stripe_charge(customer_id, amount_cents, description)
