@@ -25,7 +25,15 @@
             <p>
               This section includes your current courses.
             </p>
+
+            <div class="course_box" v-if="!userIsGSI">
+              <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
+            </div>
+            <div class="course_box" v-if="unpublishedCourses.length && !userIsGSI">
+              <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
+            </div>
           </div>
+
           <accordionComponent accordion_content="bg-grey_barely" :open_default="true" v-if="userIsGSI">
             <template slot="heading">Published Courses</template>
             <template slot="content">
@@ -65,12 +73,6 @@
             </template>
           </accordionComponent>
 
-          <div class="course_box" v-if="!userIsGSI">
-            <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
-          </div>
-          <div class="course_box" v-if="unpublishedCourses.length && !userIsGSI">
-            <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
-          </div>
         </div>
         <div v-if="tabSection[0]==='Past'">
           <div class="content_block">
