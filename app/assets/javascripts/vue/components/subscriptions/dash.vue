@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="hasErrors" class="alert-box">
+      {{errors}}
+    </div>
     <subscriptions-course-selector>
     </subscriptions-course-selector>
 
@@ -73,7 +76,7 @@
           <template slot="heading">Add a new payment method</template>
           <template slot="content">
             <form>
-              <subscriptions-payment-inputs :stripePk="stripePk" />
+              <subscriptions-payment-inputs ref="paymentInputs" :stripePk="stripePk" />
             </form>
           </template>
         </buttonModal>
@@ -185,11 +188,6 @@
 
 <script lang="coffee">
 ```
-const data = {
-  courses: [],
-  showRenew: false,
-};
-
 module.exports = {
   name: "subscriptions-dash",
   components: {
@@ -201,6 +199,7 @@ module.exports = {
   data: function() {
     return {
         courses: [],
+        errors: [],
         showRenew: false,
       };
   },
@@ -274,7 +273,7 @@ module.exports = {
       return this.$store.state.userSubscription;
     },
     hasErrors(){
-      console.log(this.$refs);
+      console.log("refs", this.$refs);
       return !!this.errors.length
         || (this.$refs.paymentInputs && this.$refs.paymentInputs.errors.length)
         || (this.$refs.paymentInputs && this.$refs.paymentInputs.cardError);

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="hasCardError" class="alert-box">
+      {{cardError}}
+    </div>
     <div>
       <h2>My Payment Information</h2>
       <div id="stripe"></div>
@@ -42,7 +45,7 @@
       <input id="default" v-model="paymentMethodInfo.default" type="checkbox" value="default"/>
       <label for="default">Make this my primary payment method</label>
     </div>
-    <button class="action" @click.prevent="addCard()" type="submit">+ Add Card</button>
+    <button class="action" :disabled="hasCardError" @click.prevent="addCard()" type="submit">+ Add Card</button>
   </div>
 </template>
 
@@ -72,6 +75,11 @@ module.exports = {
   },
   props: {
     stripePk: String
+  },
+  computed: {
+    hasCardError() {
+      return !!this.cardError
+    }
   },
   methods: {
     addCard: async function() {
@@ -123,7 +131,6 @@ module.exports = {
         console.error(self.cardError);
       } else {
         self.cardError = '';
-        console.log("typing into card form")
       }
     });
   },
