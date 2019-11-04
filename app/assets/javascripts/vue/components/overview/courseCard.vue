@@ -108,7 +108,7 @@
 
     <div class="course_status">
       <p>{{user_card_class}}</p>
-      <div v-if="paid_course_class">
+      <div v-if="course.role === 'professor' && paid_course_class">
         <p>Subscribed</p>
       </div>
     </div>
