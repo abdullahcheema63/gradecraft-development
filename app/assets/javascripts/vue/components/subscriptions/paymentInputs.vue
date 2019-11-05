@@ -3,6 +3,9 @@
     <div v-if="hasCardError" class="alert-box">
       {{cardError}}
     </div>
+    <div v-if="hasCreditCardError" class="alert-box">
+      {{creditCardError}}
+    </div>
     <div>
       <h2>My Payment Information</h2>
       <div id="stripe"></div>
@@ -79,6 +82,12 @@ module.exports = {
   computed: {
     hasCardError() {
       return !!this.cardError
+    },
+    hasCreditCardError(){
+      return !!this.creditCardError
+    },
+    creditCardError() {
+      return this.$store.state.creditCardError
     }
   },
   methods: {

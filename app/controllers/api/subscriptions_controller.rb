@@ -62,12 +62,12 @@ class API::SubscriptionsController < ApplicationController
     payment_method_id = params[:payment_method_id]
     make_default = params[:default]
 
-    payment_method = Stripe::PaymentMethod.attach(
-      payment_method_id,
-      {
-        customer: customer_id
-      }
-    )
+    begin
+      payment_method = attachCard(payment_method_id, customer_id)
+    rescue Stripe::CardError => e
+      return render json: { data: nil, errors: e.error.message, success: false }, status: 403
+    end
+
     if make_default
       set_card_as_default(customer_id, payment_method_id)
     end
@@ -98,7 +98,7 @@ class API::SubscriptionsController < ApplicationController
   end
 
   # PUT api/licenses/edit
-  # ~~~ James Method ~~~ 
+  # ~~~ James Method ~~~
   def edit
     @subscription = current_user.subscription
     if !@subscription
@@ -272,6 +272,15 @@ class API::SubscriptionsController < ApplicationController
       customer_id,
       {
         invoice_settings: { default_payment_method: pm_id }
+      }
+    )
+  end
+
+  def attachCard(payment_method_id, customer_id)
+    Stripe::PaymentMethod.attach(
+      payment_method_id,
+      {
+        customer: customer_id
       }
     )
   end

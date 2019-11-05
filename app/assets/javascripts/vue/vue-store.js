@@ -62,6 +62,7 @@ const store = new Vuex.Store({
     coursePublishError: "",
     courseArchiveError: "",
     courseUnarchiveError: "",
+    creditCardError: "",
     allUsers: [],
     allCourses: [],
     newActivity: {
@@ -270,7 +271,7 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addUserPaymentMethods', final)
       },
-      addCardToSubscription: async function({ commit }, paymentMethod) {
+      addCardToSubscription: async function({ commit, state }, paymentMethod) {
         console.log("addCardToSubscription action dispatched")
         const resp = await fetch("/api/subscriptions/add_card", {
           method: 'POST',
@@ -282,12 +283,14 @@ const store = new Vuex.Store({
           },
           credentials: 'same-origin',
           body: JSON.stringify(paymentMethod),
-        }).then((response) => {
-          console.log(response)
-          window.location.replace(store.state.subscriptionsURL)
         })
-        console.log("resp")
-        console.log(resp)
+        if (!resp.ok){
+          const help = await resp.json();
+          console.log("errors?", help.errors)
+          commit('addCreditCardError', help.errors)
+        }
+        else
+          { window.location.replace(store.state.subscriptionsURL) }
       },
       removePaymentMethod: async function({ commit }, paymentMethodID){
         console.log("removePaymentMethod action dispatched")
@@ -729,7 +732,10 @@ const store = new Vuex.Store({
       },
       addUserSubscriptionInfo (state, subscriptionInfo){
         state.user.subscription = {...subscriptionInfo}
-      }
+      },
+      addCreditCardError( state, message){
+        state.creditCardError = message
+      },
     },
     getters: {
       user: state => {
