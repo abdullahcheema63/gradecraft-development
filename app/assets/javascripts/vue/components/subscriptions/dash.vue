@@ -91,7 +91,23 @@
         <buttonModal button_class="action" v-if="userSubscription.failed_last_payment">
           <template slot="button-text">Continue with failed payment</template>
           <template slot="heading">Last Payment</template>
-          <template slot="content"> You failed your last payment</template>
+          <template slot="content"> You failed your last payment
+            <div class="subscription_summary">
+              <h3>Courses to pay for</h3>
+              <ul class="pink_dots">
+                <li v-for="course of failedPayment.courses" :key="course.id">
+                  <p> <strong>{{course.number}} {{course.name}}</strong>
+                    <br />
+                    <template v-if="course.published">Published</template>
+                  </p>
+                  <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
+                  <p><strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
+                </li>
+              </ul>
+            </div>
+
+
+          </template>
         </buttonModal>
 
         <buttonModal button_class="action">

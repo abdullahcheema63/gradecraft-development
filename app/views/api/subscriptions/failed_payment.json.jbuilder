@@ -34,6 +34,7 @@ json.included do
       json.year course.year
       json.semester course.semester
       json.created_at course.created_at
+      json.published course.published
     end
   end
 end
