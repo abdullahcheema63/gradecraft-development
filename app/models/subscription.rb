@@ -33,7 +33,7 @@ class Subscription < ApplicationRecord
         billing_scheme_id: self.billing_scheme_id,
         subscription_id: self.id
       })
-
+      payment.course_ids = self.course_ids
       add_off_session_payment payment
     end
   end
@@ -118,7 +118,6 @@ class Subscription < ApplicationRecord
     if intent && intent.status === "succeeded"
       puts "!!! Payment was a success !!!"
       payment.status = "succeeded"
-      payment.course_ids = self.course_ids
       payment.save
       self.extend_renewal_date
       NotificationMailer.payment_received(payment).deliver_now

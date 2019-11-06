@@ -46,6 +46,13 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
+  # Get api/subscriptions/failed_payment
+  def failed_payment
+    subscription = Subscription.find_by(user_id: current_user.id)
+    return if !subscription.failed_last_payment?
+    @failed_payment = subscription.payments.last
+  end
+
   # POST api/subscriptions/add_card
   def add_card
     puts "inside ADD_CARD subscriptions api controller"
@@ -220,8 +227,7 @@ class API::SubscriptionsController < ApplicationController
       rescue Stripe::APIConnectionError => e
         # Network communication with Stripe failed
       rescue Stripe::StripeError => e
-        # Display a very generic error to the user, and maybe send
-        # yourself an email
+        # Display a very generic error to the user, and maybe send' yourself an email
       rescue => e
         # Something else happened, completely unrelated to Stripe
       end

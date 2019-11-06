@@ -70,6 +70,7 @@ const store = new Vuex.Store({
       newInstructorsCount: 0,
       newSubscriptionsCount: 0
     },
+    failedPayment: {},
     allInstructors: [],
     allInstitutions: [],
     allBillingSchemes: [],
@@ -253,8 +254,26 @@ const store = new Vuex.Store({
         const json = await resp.json();
         console.log("json from user subscription", json);
         const final = apiResponseToDataDataItem(json);
-        console.log(final);
+        console.log("user subscription", final);
+        if (final.failed_last_payment) {
+          console.log("User failed their last payment ")
+          store.dispatch("loadFailedPayment")
+        }
         commit('addUserSubscription', final)
+      },
+      loadFailedPayment: async function({ commit }){
+        const resp = await fetch("/api/subscriptions/failed_payment")
+        if (resp.status === 404){
+          console.log(resp.status);
+        }
+        else if (!resp.ok){
+          throw resp;
+        }
+        const json = await resp.json();
+        console.log("json response from failed payment: ", json);
+        const final = apiResponseToDataDataItem(json);
+        console.log("final data after apiResponseToData:", final);
+        commit('addFailedPayment', final)
       },
       getUserPaymentMethods: async function({commit, state}){
         console.log("getUserPaymentMethods action dispatched")
@@ -726,6 +745,9 @@ const store = new Vuex.Store({
         state.user.createdAt = user.created_at
         state.user.showGuide = user.show_guide
         state.user.environment = user.environment
+      },
+      addFailedPayment (state, failedPayment){
+        state.failedPayment = failedPayment
       },
       addUserPaymentMethods (state, paymentMethods){
         state.userSubscription.paymentMethods = paymentMethods;

@@ -88,7 +88,7 @@
           </label>
         </div>
 
-        <buttonModal button_class="action" v-if="userSubscription.failed_last_payment">
+        <buttonModal button_class="action" v-if="userSubscription.failed_last_payment && failedPayment.length">
           <template slot="button-text">Continue with failed payment</template>
           <template slot="heading">Last Payment</template>
           <template slot="content"> You failed your last payment</template>
@@ -277,6 +277,9 @@ module.exports = {
       return !!this.errors.length
         || (this.$refs.paymentInputs && this.$refs.paymentInputs.errors.length)
         || (this.$refs.paymentInputs && this.$refs.paymentInputs.cardError);
+    },
+    failedPayment(){
+      return this.$store.state.failedPayment
     },
   },
   methods: {
