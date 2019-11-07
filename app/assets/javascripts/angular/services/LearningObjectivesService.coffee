@@ -280,7 +280,7 @@
     params
 
   _hasLOLevels = (included_article_list) ->
-    included_article_list.some((article) -> 
+    included_article_list.some((article) ->
                                     if article.type == "levels"
                                       return true)
 
@@ -288,8 +288,6 @@
     promise.then(
       (response) ->
         angular.copy(response.data.data.attributes, article)
-        console.log("in resolve")
-        console.log(response)
         if response.data.included && _hasLOLevels(response.data.included)
           GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
         lastUpdated(article.updated_at || new Date())
