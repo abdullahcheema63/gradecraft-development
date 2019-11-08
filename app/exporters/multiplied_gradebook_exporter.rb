@@ -8,7 +8,7 @@ class MultipliedGradebookExporter < GradebookExporter
 
   def doubled_assignment_name_columns(course)
     course.assignments.ordered.collect do |assignment|
-      [ assignment.name, assignment.name ]
+      [ "Raw #{assignment.name}", "Weighted #{assignment.name}" ]
     end.flatten
   end
 
