@@ -27,7 +27,7 @@ class AnnouncementsController < ApplicationController
       .merge(course_id: current_course.id, author_id: current_user.id))
     authorize! :create, @announcement
     if @announcement.save
-      #@announcement.deliver!
+      @announcement.deliver!
       redirect_to announcements_path,
         # rubocop:disable AndOr
         notice: "Announcement created and sent." and return
