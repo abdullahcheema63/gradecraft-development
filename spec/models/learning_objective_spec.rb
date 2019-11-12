@@ -109,7 +109,7 @@ describe LearningObjective do
   end
 
   describe "#point_progress_for" do
-    let(:course) { build :course, :uses_learning_objectives, objectives_award_points: true }
+    let(:course) { build :course, :has_learning_objectives, objectives_award_points: true }
     let(:learning_objective) { build :learning_objective, :with_points_to_completion, course: course }
     let(:observed_outcome) do
       create :learning_objective_observed_outcome,
