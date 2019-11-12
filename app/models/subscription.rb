@@ -16,7 +16,7 @@ class Subscription < ApplicationRecord
   end
 
   def failed_last_payment?
-    payments.last.failed
+    payments.last.failed if payments.any?
   end
 
   def initiate_payment(payment)
