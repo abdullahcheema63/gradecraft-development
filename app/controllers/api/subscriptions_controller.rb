@@ -215,6 +215,8 @@ class API::SubscriptionsController < ApplicationController
         subscription_id: @subscription.id,
       })
 
+      payment.course_ids = courses_to_subscribe if courses_to_subscribe.length
+
       begin
         intent = @subscription.initiate_payment(payment)
       rescue Stripe::CardError => e
@@ -239,7 +241,6 @@ class API::SubscriptionsController < ApplicationController
         end
         if courses_to_subscribe.length
           @subscription.subscribe_courses(courses_to_subscribe)
-          payment.course_ids = courses_to_subscribe
         end
         payment.status = "succeeded"
         payment.save
