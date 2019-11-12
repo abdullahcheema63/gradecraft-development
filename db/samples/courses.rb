@@ -68,7 +68,6 @@
     year: Date.today.year,
     status: true,
     has_learning_objectives: false,
-    allows_learning_objectives: false
   }
 }
 
@@ -364,6 +363,5 @@ Dracula",
     has_team_challenges: true,
     teams_visible: true,
     has_learning_objectives: true,
-    allows_learning_objectives: true
   }
 }

@@ -99,7 +99,7 @@ class CoursesController < ApplicationController
 
     begin
       params[:copy_type] = "" if @course.has_learning_objectives?
-      
+
       duplicated = @course.copy(params[:copy_type])
 
       if duplicated.save
@@ -230,7 +230,7 @@ class CoursesController < ApplicationController
       instructors_of_record_ids: [], course_memberships_attributes: [:id, :course_id, :user_id, :instructor_of_record]
     ]
     if current_user_is_admin?
-      params.require(:course).permit(*course_attrs << [:status, :has_paid, :allows_canvas, :allows_learning_objectives, :institution_id, :disable_grade_emails])
+      params.require(:course).permit(*course_attrs << [:status, :has_paid, :allows_canvas, :institution_id, :disable_grade_emails])
     else
       params.require(:course).permit(*course_attrs)
     end
