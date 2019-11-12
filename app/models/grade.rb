@@ -156,7 +156,7 @@ class Grade < ApplicationRecord
         end
       end
     end
-    if course.uses_learning_objectives? && student_visible?
+    if course.has_learning_objectives? && student_visible?
       assignment
         .learning_objectives
         .each { |lo| lo.check_unlockables(student) }
@@ -164,7 +164,7 @@ class Grade < ApplicationRecord
   end
 
   def check_learning_objective_achieved
-    if course.uses_learning_objectives? && student_visible?
+    if course.has_learning_objectives? && student_visible?
       assignment.learning_objectives.each do |learning_objective|
         if learning_objective.first_time_achieved?(student)
           send_learning_objective_email(learning_objective)

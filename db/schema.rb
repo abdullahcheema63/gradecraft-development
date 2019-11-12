@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_30_153844) do
+ActiveRecord::Schema.define(version: 2019_11_12_154738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -371,7 +371,6 @@ ActiveRecord::Schema.define(version: 2019_10_30_153844) do
     t.boolean "has_learning_objectives", default: false, null: false
     t.boolean "objectives_award_points", default: false, null: false
     t.boolean "always_show_objectives", default: false, null: false
-    t.boolean "allows_learning_objectives", default: false, null: false
     t.boolean "disable_grade_emails", default: false
     t.boolean "delete_student_logged_grade", default: true
     t.integer "subscription_id"

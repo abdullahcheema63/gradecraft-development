@@ -65,7 +65,7 @@
           = p.input :email_grade_notifications
           - if current_course.has_team_challenges?
             = p.input :email_challenge_grade_notifications
-          - if current_course.uses_learning_objectives?
+          - if current_course.has_learning_objectives?
             = p.input :email_learning_objective_achieved
 
       - if impersonating?

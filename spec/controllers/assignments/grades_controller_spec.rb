@@ -157,7 +157,7 @@ describe Assignments::GradesController do
     describe "POST self_log" do
       it "redirects back to the root" do
         expect(post :self_log, params: { assignment_id: assignment.id }).to \
-          redirect_to(:root)
+          redirect_to(:dashboard)
       end
     end
 
@@ -199,7 +199,7 @@ describe Assignments::GradesController do
         before(:each) { assignment.update(student_logged: true) }
 
         it "creates a maximum score by the student if present only if raw_points are set" do
-          post :self_log, params: { assignment_id: assignment.id, grade: { raw_points: assignment.full_points } } 
+          post :self_log, params: { assignment_id: assignment.id, grade: { raw_points: assignment.full_points } }
           grade = student.grade_for_assignment(assignment)
           expect(grade.raw_points).to eq assignment.full_points
         end

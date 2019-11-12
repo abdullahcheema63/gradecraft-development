@@ -1,2 +1,2 @@
 .pageContent
-  %assignment-new(data-course-uses-learning-objectives="#{current_course.uses_learning_objectives?}")
+  %assignment-new(data-course-uses-learning-objectives="#{current_course.has_learning_objectives?}" data-first-assignment-type-id="#{current_course.assignment_types.ordered.first.id}")
