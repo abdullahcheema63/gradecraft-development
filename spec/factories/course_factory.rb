@@ -22,8 +22,7 @@ FactoryBot.define do
       association :institution
     end
 
-    trait :uses_learning_objectives do
-      allows_learning_objectives { true }
+    trait :has_learning_objectives do
       has_learning_objectives { true }
     end
 
