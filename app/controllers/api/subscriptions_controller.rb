@@ -243,6 +243,7 @@ class API::SubscriptionsController < ApplicationController
           @subscription.subscribe_courses(courses_to_subscribe)
         end
         payment.status = "succeeded"
+        payment.failed = false
         payment.save
         NotificationMailer.payment_received(payment).deliver_now
         @subscription.update_billing_scheme
@@ -254,6 +255,54 @@ class API::SubscriptionsController < ApplicationController
       # not sure how to return to the my subscriptions page
       render "api/subscriptions/index", success: true, status: 200
     end
+  end
+
+  def retry
+    puts "inside api subscriptions retry method!!! "
+    paymentID = params[:_json]
+
+    payment = Payment.find(paymentID)
+    @subscription = payment.subscription
+
+    if !@subscription || !payment
+      return render json: { data: nil, errors: [ "Subscription or payment not found" ] }, status: 404
+    end
+
+    begin
+      intent = @subscription.initiate_payment(payment)
+    rescue Stripe::CardError => e
+      puts "error error: #{e}"
+      payment.status = e.error.code
+    rescue Stripe::RateLimitError => e
+      # Too many requests made to the API too quickly
+    rescue Stripe::AuthenticationError => e
+      # Authentication with Stripe's API failed
+    rescue Stripe::APIConnectionError => e
+      # Network communication with Stripe failed
+    rescue Stripe::StripeError => e
+      # Display a very generic error to the user, and maybe send' yourself an email
+    rescue => e
+      # Something else happened, completely unrelated to Stripe
+    end
+
+    if intent && intent.status === "succeeded"
+      puts "!!! Payment was a success !!!"
+      # TO DO: make sure the courses marked as subscribed by this payment have been updated to subscribed
+      @subscription.subscribe_courses(payment.courses.ids)
+
+      payment.status = "succeeded"
+      payment.failed = false
+      payment.save
+      NotificationMailer.payment_received(payment).deliver_now
+      @subscription.update_billing_scheme
+      @subscription.extend_renewal_date
+    else
+      payment.update_attribute(:failed, true)
+    end
+
+    # not sure how to return to the my subscriptions page
+    render "api/subscriptions/index", success: true, status: 200
+
   end
 
   private

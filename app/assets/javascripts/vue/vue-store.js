@@ -533,6 +533,33 @@ const store = new Vuex.Store({
           window.location.replace(store.state.subscriptionsURL)
         }
       },
+      retryFailedPayment: async function({ commit }, paymentID){
+        const resp = await fetch("/api/subscriptions/retry", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(paymentID),
+        });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
+        else {
+          window.location.replace(store.state.subscriptionsURL)
+        }
+      },
       toggleGuideControl({ commit }){
         console.log("toggled guide control action")
         commit('toggleGuide')

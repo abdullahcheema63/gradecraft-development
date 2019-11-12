@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="hasErrors" class="alert-box">
-      {{errors}}
+    <div v-if="failedPayment.length" class="alert-box">
+      You failed a payment... {{failedPayment.status}}
     </div>
     <subscriptions-course-selector>
     </subscriptions-course-selector>
@@ -106,7 +106,7 @@
               </ul>
             </div>
 
-
+            <button type="button" class="action" @click="retryFailedPayment()">Submit</button>
           </template>
         </buttonModal>
 
@@ -289,7 +289,6 @@ module.exports = {
       return this.$store.state.userSubscription;
     },
     hasErrors(){
-      console.log("refs", this.$refs);
       return !!this.errors.length
         || (this.$refs.paymentInputs && this.$refs.paymentInputs.errors.length)
         || (this.$refs.paymentInputs && this.$refs.paymentInputs.cardError);
@@ -310,6 +309,9 @@ module.exports = {
     },
     updateSubscription(){
       this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)
+    },
+    retryFailedPayment(){
+      this.$store.dispatch('retryFailedPayment', this.failedPayment.id)
     },
     formatPrice(price){
       return Math.floor(price);
