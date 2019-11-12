@@ -261,7 +261,7 @@ RSpec.describe SubmissionFilesExporter, type: :exporter do
 
   def serialized_submission_files_expectation
     submission_file_doubles.collect do |submission_file|
-      { path: submission_file.url, content_type: submission_file.content_type }
+      { path: submission_file.file.to_s, content_type: submission_file.content_type }
     end
   end
 
@@ -295,10 +295,10 @@ RSpec.describe SubmissionFilesExporter, type: :exporter do
   def submission_file_doubles
     [
       double(:submission_file,
-        url: "http://s3.com/abcde",
+        file: "http://s3.com/abcde",
         content_type: "text/pdf"),
       double(:submission_file,
-        url: "http://s3.com/edcba",
+        file: "http://s3.com/edcba",
         content_type: "text/doc")
     ]
   end

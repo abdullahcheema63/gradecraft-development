@@ -37,6 +37,13 @@ footer
     text-align: center
     max-width: 100%
 
+  a
+    color: $blue
+    border-bottom-color: transparent
+
+    &:hover
+      color: white
+
   .social
     text-align: center
     margin: 1.5em 0
@@ -55,12 +62,28 @@ footer
       height: 1.5em
       width: auto
 
-  a
-    color: $blue
-    border-bottom-color: transparent
+  .legal
+    display: flex
+    justify-content: center
+    font-size: 0.8em
+    position: absolute
+    bottom: 1em
+    left: 0
+    right: 0
 
-    &:hover
-      color: white
+    @include mobile
+      position: static
+      margin-bottom: 5em
+
+    p
+      margin: 0 2em
+
+    a
+      color: $grey-faint
+      font-family: 'ProximaNova_regular', sans-serif
+
+      &:hover
+        color: $blue
 
   @include mobile-xl
     padding: 1em 3%

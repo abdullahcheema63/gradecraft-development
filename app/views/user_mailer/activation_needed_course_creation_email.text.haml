@@ -1,11 +1,8 @@
-Hello, #{@user.first_name}
+Welcome to GradeCraft, #{@user.first_name}!
 
-Welcome to GradeCraft!
-
-In order to complete your new account, please follow the link below to validate your email address and get started creating your new course.
-
+Your new account is almost done! Please confirm your email address with this link:
 #{ activate_user_url(@user.activation_token).html_safe}
+so you can get started creating your new course.
 
-Thanks,
-
+Go gameful!
 GradeCraft

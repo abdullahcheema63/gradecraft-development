@@ -6,7 +6,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   attr_reader :submissions_export, :professor, :course, :errors, :assignment, :team, :submissions
 
   def setup
-    S3fs.ensure_tmpdir # make sure the s3fs tmpdir exists
     @submissions_export = SubmissionsExport.find @attrs[:submissions_export_id]
     fetch_assets
     @submissions_export.update_attributes submissions_export_attributes
@@ -16,10 +15,14 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   # perform() attributes assigned to @attrs in the ResqueJob::Base class
   def do_the_work
     if work_resources_present?
-      run_performer_steps
-      deliver_outcome_mailer
+      begin
+        run_performer_steps
+        deliver_outcome_mailer
 
-      submissions_export.update_export_completed_time
+        submissions_export.update_export_completed_time
+      rescue StandardError => error
+        puts "Submission Export error: #{error}"
+      end
     else
       if logger
         log_error_with_attributes "@assignment.present? and/or" \
@@ -41,8 +44,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
       :remove_empty_submitter_directories,
       :generate_error_log, # write error log for errors that may have occurred during file generation
       :archive_exported_files,
-      :upload_archive_to_s3,
-      :check_s3_upload_success
+      :copy_local_submissions_archive,
+      :check_local_submissions_archive_copy_success
     ]
   end
 
@@ -84,8 +87,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def write_submission_binary_file(submitter, submission_file, index)
-    file_path = submission_binary_file_path(submitter, submission_file, index)
-    stream_s3_file_to_disk(submission_file, file_path)
+    destination_file_path = submission_binary_file_path(submitter, submission_file, index)
+    source_file_path = "#{Rails.root}#{submission_file.file.to_s}"
+    source_path = URI.decode(source_file_path)
+    FileUtils.cp(source_path, destination_file_path)
   end
 
   def create_binary_files_for_submission(submission)
@@ -110,12 +115,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     @submissions = fetch_submissions
   end
 
-  def s3_manager
-    @s3_manager ||= @submissions_export.s3_manager || S3Manager::Manager.new
-  end
-
   def tmp_dir
-    @tmp_dir ||= S3fs.mktmpdir
+    @tmp_dir ||= FileUtils.mkdir_p("/tmp").first
   end
 
   def archive_root_dir
@@ -196,10 +197,8 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     @confirm_export_csv_integrity ||= File.exist?(csv_file_path)
   end
 
-  # final archive concerns
-
   def archive_tmp_dir
-    @archive_tmp_dir ||= S3fs.mktmpdir
+    @archive_tmp_dir ||= FileUtils.mkdir_p("/tmp").first
   end
 
   def expanded_archive_base_path
@@ -357,14 +356,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     File.expand_path filename, submitter_directory_path(student)
   end
 
-  def stream_s3_file_to_disk(submission_file, target_file_path)
-    begin
-      s3_manager.write_s3_object_to_disk(submission_file.s3_object_file_key, target_file_path)
-    rescue Aws::S3::Errors::NoSuchKey
-      submission_file.mark_file_missing
-    end
-  end
-
   def remove_if_exists(file_path)
     File.delete file_path if File.exist? file_path
   end
@@ -383,18 +374,21 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     Archive::Zip.archive("#{expanded_archive_base_path}.zip", archive_root_dir)
   end
 
-  def upload_archive_to_s3
-    @submissions_export.upload_file_to_s3 "#{expanded_archive_base_path}.zip"
+  def copy_local_submissions_archive
+    @submissions_export.copy_from_tmp_to_local
+    return true
   end
 
-  def check_s3_upload_success
-    @check_s3_upload_success ||= submissions_export.s3_object_exists?
+  def check_local_submissions_archive_copy_success
+    File.file?("#{Rails.root}/#{@submissions_export.local_file_path}")
   end
 
   private
 
   def deliver_outcome_mailer
-    if check_s3_upload_success
+    destination_path = ["#{Rails.root}", @submissions_export.local_file_path]
+    destination_path = destination_path.join "/"
+    if check_local_submissions_archive_copy_success
       deliver_archive_success_mailer
     else
       deliver_archive_failed_mailer
@@ -402,25 +396,16 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   end
 
   def deliver_archive_success_mailer
-    if @team
-      deliver_team_export_successful_mailer
-    else
-      deliver_export_successful_mailer
-    end
+    deliver_export_successful_mailer
   end
 
   def deliver_archive_failed_mailer
-    @team ? deliver_team_export_failure_mailer : deliver_export_failure_mailer
+    deliver_export_failure_mailer
   end
 
   def deliver_export_successful_mailer
     ExportsMailer.submissions_export_success(professor, @assignment, \
       @submissions_export, secure_token).deliver_now
-  end
-
-  def deliver_team_export_successful_mailer
-    ExportsMailer.team_submissions_export_success(professor, @assignment, \
-      @team, @submissions_export, secure_token).deliver_now
   end
 
   def secure_token
@@ -430,11 +415,6 @@ class SubmissionsExportPerformer < ResqueJob::Performer
   def deliver_export_failure_mailer
     ExportsMailer.submissions_export_failure(@professor, @assignment)
       .deliver_now
-  end
-
-  def deliver_team_export_failure_mailer
-    ExportsMailer.team_submissions_export_failure(@professor, @assignment, \
-      @team).deliver_now
   end
 
   def expand_messages(messages={})
@@ -514,10 +494,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     })
   end
 
-  def upload_archive_to_s3_messages
+  def copy_local_submissions_archive_messages
     expand_messages ({
-      success: "Successfully uploaded the submissions archive to S3",
-      failure: "Failed to upload the submissions archive to S3"
+      success: "Successfully copied local submissions archive",
+      failure: "Failed to copy local submissions archive"
     })
   end
 
@@ -528,10 +508,10 @@ class SubmissionsExportPerformer < ResqueJob::Performer
     })
   end
 
-  def check_s3_upload_success_messages
+  def check_local_submissions_archive_copy_success_messages
     expand_messages ({
-      success: "Successfully confirmed that the exported archive was uploaded to S3",
-      failure: "Failed to confirm that the exported archive was uploaded to S3. ObjectSummary#exists? failed on the object instance."
+      success: "Successfully confirmed that the exported archive was copied within the exports directory",
+      failure: "Failed to confirm that the exported archive was copied within the exports directory"
     })
   end
 

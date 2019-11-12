@@ -126,13 +126,9 @@ describe SubmissionFile do
   describe "#owner_name" do
 
     context "student submission" do
-      it "returns the formatted student name associated with the submission" do
-        expect(subject.owner_name).to eq("#{student.last_name}-#{student.first_name}")
-      end
-
       it "returns nil if the student has been deleted" do
         allow(submission).to receive(:student).and_return nil
-        expect(subject.owner_name).to be_nil
+        expect(subject.owner_name).to eq ""
       end
     end
 
@@ -141,15 +137,10 @@ describe SubmissionFile do
       let(:group_assignment) { build(:assignment, grade_scope: "Group") }
       let(:group_submission) { build(:submission, course: course, assignment: group_assignment, group: group) }
 
-      it "returns the group name associated with a group submission" do
-        group_file = group_submission.submission_files.new image_file_attrs
-        expect(group_file.owner_name).to eq(group.name)
-      end
-
       it "returns nil if the group has been deleted" do
         group_file = group_submission.submission_files.new image_file_attrs
         allow(group_submission).to receive(:group).and_return nil
-        expect(group_file.owner_name).to be_nil
+        expect(group_file.owner_name).to eq""
       end
     end
   end
@@ -203,27 +194,6 @@ describe SubmissionFile do
       new_submission_file.file = fixture_file("Too long, strange characters, and Spaces (In) Name.jpg", "img/jpg")
       save_submission
       expect(subject).to match(/\d+_too_long__strange_characters__and_spaces_\.jpg/)
-    end
-  end
-
-  describe "url" do
-    subject { new_submission_file.url }
-    before { allow(new_submission_file).to receive_message_chain(:s3_object, :presigned_url) { "http://some.url" }}
-
-    it "returns the presigned amazon url" do
-      expect(subject).to eq("http://some.url")
-    end
-  end
-
-  describe "S3Manager::Carrierwave inclusion" do
-    let(:submission_file) { build(:submission_file) }
-
-    it "can be deleted from s3" do
-      expect(submission_file.respond_to?(:delete_from_s3)).to be_truthy
-    end
-
-    it "can check whether it exists on s3" do
-      expect(submission_file.respond_to?(:exists_on_s3?)).to be_truthy
     end
   end
 end

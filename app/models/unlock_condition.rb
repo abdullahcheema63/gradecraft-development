@@ -268,6 +268,14 @@ class UnlockCondition < ApplicationRecord
   end
 
   def check_course_condition(student)
+    if self.condition_date
+      deadline = self.condition_date
+      earned_by_deadline = DateTime.current <= deadline
+      if !earned_by_deadline
+        return false
+      end
+    end
+
     course_membership = student.course_memberships.where(course_id: condition_id).first
     course_membership.score >= condition_value if course_membership.present?
   end

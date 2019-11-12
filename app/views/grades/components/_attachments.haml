@@ -2,4 +2,4 @@
 %ul#uploaded_files
   - grade.file_uploads.each do |gf|
     %li
-      = link_to gf.filename, gf.url, :target => "_blank"
+      = link_to gf.filename, gf.file.to_s, :target => "_blank"

@@ -26,7 +26,10 @@
     _.find(cumulativeOutcomes, { learning_objective_id: objectiveId })
 
   cumulativeOutcomeForStudent = (objectiveId, studentId) ->
-    _.find(cumulativeOutcomes, { learning_objective_id: objectiveId, user_id: studentId })
+    for outcome in cumulativeOutcomes
+      if parseInt(outcome.learning_objective_id) == parseInt(objectiveId) \
+          && parseInt(outcome.user_id) == parseInt(studentId)
+        return outcome
 
   observedOutcomesFor = (cumulativeOutcomeId, type=null, id=null) ->
     criteria = { learning_objective_cumulative_outcomes_id: cumulativeOutcomeId }
@@ -214,6 +217,7 @@
           GradeCraftAPI.logResponse(response)
         , (response) ->
           GradeCraftAPI.logResponse(response)
+          alert(response.data.message)
       )
 
   updateOrder = (levels, objectiveId) ->
@@ -278,10 +282,17 @@
     params[term] = article
     params
 
+  _hasLOLevels = (included_article_list) ->
+    included_article_list.some((article) ->
+                                    if article.type == "levels"
+                                      return true)
+
   _resolve = (promise, article, type, redirectUrl) ->
     promise.then(
       (response) ->
         angular.copy(response.data.data.attributes, article)
+        if response.data.included && _hasLOLevels(response.data.included)
+          GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
         lastUpdated(article.updated_at || new Date())
         article.isCreating = false
         window.location.href = redirectUrl if redirectUrl?

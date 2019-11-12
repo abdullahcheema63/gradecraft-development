@@ -1,8 +1,25 @@
-%h2{:align => "center"}
-  %strong Hi #{ @professor.first_name },
+%td.hero_img
+  = image_tag "email-hero_Neutral.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
 
-%p{:align => "center"}
-  #{ @student.first_name } #{ @student.last_name } has revised their #{ @course.assignment_term.downcase } "#{ @assignment.name }" for course #{ @course.name }.
+%td
+  %h1
+    Hi, #{ @professor.first_name }
 
-%p{:align => "center"}
-  Please log in to GradeCraft to view the revised submission.
+  %p
+    %strong
+      #{ @student.first_name } #{ @student.last_name }
+    has revised their #{ @course.assignment_term.downcase }
+    %strong
+      #{ @assignment.name } for course
+    %strong
+      #{ @course.name }.
+
+  %p
+    Please log in to GradeCraft to view the revised submission.
+
+  =link_to "View revised submission", dashboard_url, class: "button"
+
+  %p
+    Go gameful!
+    %br
+    GradeCraft

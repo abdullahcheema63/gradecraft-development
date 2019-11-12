@@ -50,32 +50,12 @@ describe AssignmentFile do
     end
   end
 
-  describe "url" do
-    subject { new_assignment_file.url }
-    before { allow(new_assignment_file).to receive_message_chain(:s3_object, :presigned_url) { "http://some.url" }}
-
-    it "returns the presigned amazon url" do
-      expect(subject).to eq("http://some.url")
-    end
-  end
 
   describe "#course" do
     it "returns the associated course" do
       course = create(:course)
       assignment.course = course
       expect(subject.course).to eq(course)
-    end
-  end
-
-  describe "S3Manager::Carrierwave inclusion" do
-    let(:assignment_file) { build(:assignment_file) }
-
-    it "can be deleted from s3" do
-      expect(assignment_file.respond_to?(:delete_from_s3)).to be_truthy
-    end
-
-    it "can check whether it exists on s3" do
-      expect(assignment_file.respond_to?(:exists_on_s3?)).to be_truthy
     end
   end
 end

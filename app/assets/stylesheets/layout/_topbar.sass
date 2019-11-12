@@ -51,6 +51,19 @@ a.site-title
       i
         padding-right: 0
 
+  .nav-pill
+    &.left
+      .course-site
+        padding-top: 13px
+
+        @include desktop
+          span
+            display: inline-block
+            white-space: nowrap
+            overflow-x: hidden
+            text-overflow: ellipsis
+            max-width: 380px
+
 ul.subnav.logged-out
   left: -6.25rem
   background-color: $color-blue-3
@@ -111,18 +124,21 @@ ul.subnav.logged-out
     margin: 0 auto
     font-weight: 300
 
-  .the-nav .nav-pill.right
-    z-index: 100
-    margin-top: 0.2rem
+    .nav-pill
+      &.right
+        z-index: 100
+        margin-top: 0.2rem
 
-    .my-account
-      margin-left: .25rem
+      .my-account
+        margin-left: .25rem
 
-    .course-info-btn
-      margin-right: .25rem
+      .course-info-btn
+        margin-right: .25rem
 
-  .the-nav .nav-pill.left
-    height: 45px
+    .nav-pill
+      &.left
+        height: 45px
+
   .the-nav > .nav
     margin: 0
     padding-left: 0
@@ -137,8 +153,6 @@ ul.subnav.logged-out
     border-bottom-color: $color-grey-5
   .nav > li a
     display: block
-    padding: .5rem
-    //color: $color-white
     text-decoration: none
     .course_name
       margin-left: .25rem
@@ -151,10 +165,6 @@ ul.subnav.logged-out
     .tagline
       margin-left: .5rem
       color: $color-green-2
-
-  .logged-in .the-nav > .nav > li a
-    padding-top: .85rem
-    padding-bottom: .75rem
 
   /* Active State */
   .the-nav > .nav > li:hover > a

@@ -2,14 +2,7 @@ class UploadsController < ApplicationController
   before_action :fetch_upload_with_model, only: :remove
 
   def remove
-    @upload.delete_from_s3
-
-    if @upload.exists_on_s3?
-      flash[:alert] = "File failed to delete from the server."
-    else
-      destroy_upload_with_flash
-    end
-
+    destroy_upload_with_flash
     redirect_back(fallback_location: root_path)
   end
 

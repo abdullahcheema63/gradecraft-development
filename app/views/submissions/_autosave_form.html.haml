@@ -22,10 +22,10 @@
           - if presenter.submission.submission_files.exists?
             %h3.bold Uploaded files
             %ul.file-attachments-list
-              - presenter.submission.submission_files.each do |sf|
+              - presenter.present_submission_files.each_with_index do |sf, index|
                 - if sf.persisted?
                   %li.file-attachment-list-item
-                    = link_to "#{sf.filename}", sf.url, target: "_blank"
+                    = external_link_to "#{sf.filename}", submission_file_download_path(sf, index: index)
                     = link_to "(Remove)", remove_uploads_path(:model => "SubmissionFile", assignment_id: presenter.assignment.id, :upload_id => sf.id)
 
       - if presenter.assignment.accepts_links
