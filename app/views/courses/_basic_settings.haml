@@ -111,13 +111,13 @@
           = f.input :max_assignment_types_weighted, input_html: { data: { autonumeric: true, "m-dec" => "0" }, type: "text" }, :label => "Is there a maximum number of assignment types they can weight?"
           = f.input :weight_term, {:label => "What do you want to call these weights/multipliers?"}
 
-      - if @course.allows_learning_objectives?
-        .form-card
-          .form-card-header
-            = f.label :has_learning_objectives, "Learning Objectives"
-            = f.check_box :has_learning_objectives, {class: "feature-checkbox has-settings-menu"}
-          .form-card-body
-            .feature-description{id: "txtSectionObjectives"} Students can demonstrate proficiency in the course by completing certain objectives.
+      .form-card
+        .form-card-header
+          = f.label :has_learning_objectives, "Learning Objectives"
+          = f.check_box :has_learning_objectives, {class: "feature-checkbox has-settings-menu"}
+        .form-card-body
+          .feature-description{id: "txtSectionObjectives"} Students can demonstrate proficiency in the course by completing certain objectives.
+        - if current_user_is_admin?
           .form-card-advanced-settings
             %button.button-advanced-settings= glyph(:cog) + "Settings"
           .advanced-settings-card
@@ -127,7 +127,5 @@
                 title: "To change this setting, all preexisting learning objectives must first be deleted."}
             -# = f.check_box :always_show_objectives
             -# = f.label :always_show_objectives, "Always show learning objectives for all assignments?"
-      - else
-        .form-card.empty
 
       .form-card.empty

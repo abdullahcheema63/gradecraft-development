@@ -26,7 +26,7 @@ module AuthenticationHelper
   end
 
   def ensure_course_uses_objectives?
-    redirect_to dashboard_path unless current_course.uses_learning_objectives?
+    redirect_to dashboard_path unless current_course.has_learning_objectives?
   end
 
   def ensure_app_environment?

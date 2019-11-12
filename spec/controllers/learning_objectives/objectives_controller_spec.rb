@@ -1,5 +1,5 @@
 describe LearningObjectives::ObjectivesController do
-  let(:course) { create :course, :uses_learning_objectives }
+  let(:course) { create :course, :has_learning_objectives }
 
   before(:each) do
     login_user user

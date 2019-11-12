@@ -1,5 +1,5 @@
 describe API::LearningObjectives::OutcomesController do
-  let(:course) { build :course, :uses_learning_objectives }
+  let(:course) { build :course, :has_learning_objectives }
   let(:learning_objective) { create :learning_objective, :with_linked_assignment, course: course }
   let!(:observed_outcome) { create :student_visible_observed_outcome, cumulative_outcome: cumulative_outcome }
   let(:assignment) { learning_objective.assignments.first }
