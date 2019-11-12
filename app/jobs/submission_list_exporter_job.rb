@@ -6,7 +6,7 @@ class SubmissionListExporterJob
     course = Course.includes(submissions: [:grade, :student, :group, assignment: [:assignment_type]]).find(course_id)
 
     fetch_csv_data(course)
-    notify_submission_export(user, course, filename)
+    notify_submission_list_exporter(user, course, filename)
   end
 
   private
