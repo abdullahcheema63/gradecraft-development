@@ -149,6 +149,7 @@
                 You’re about to delete your course, <span style="background: yellow;">__Course # + Course Name + Semester + Yr __</span>.
                 <br />
                 <strong>This cannot be undone.</strong>
+              </p>
             </template>
             <template slot="submit-button">
               <button type="button" class="action" style="margin-bottom: 1em;">Delete my course</button>
