@@ -98,7 +98,7 @@
                 </div>
                 <div class="search_box">
                   <div class="form_elem">
-                    <input type="search" id="searchPastCourses" placeholder="Search past courses">
+                    <input type="search" v-model="searchPastCourses" id="searchPastCourses" placeholder="Search past courses">
                     <label for="searchPastCourses">Search courses</label>
                   </div>
                 </div>
@@ -138,6 +138,7 @@ module.exports = {
         dateFormat: "D, M d, Y at h:i K",
         static: true,
       },
+      searchPastCourses: "",
       termYear: [],
       termName: [],
     }
@@ -174,17 +175,18 @@ module.exports = {
     },
     filteredPastCourses(){
       var allPastCourses = this.pastCourses;
-      return allPastCourses.filter( course => {
-          if (!(this.termYear.includes(course.term.year)) && this.termYear.length) {return false}
-          if (!(this.termName.includes(course.term.name)) && this.termName.length) {return false}
-          return true
-      })
+      return allPastCourses.filter(this.filterPastCourses)
     },
     courseTermYear(){
-      return new Set(this.pastCourses.map(courseMembership => courseMembership.term.year))
+      return new Set(this.pastCourses.map(course => {
+        if(course.term.year) {return course.term.year }
+      }))
     },
     courseTermName(){
-      return new Set(this.pastCourses.map(courseMembership => courseMembership.term.name))
+      return new Set(this.pastCourses.map(course => {
+        if (course.term.name.length) {
+          return course.term.name}
+      }))
     },
     userFirstName(){
       return this.$store.state.user.firstName;
@@ -194,6 +196,20 @@ module.exports = {
     },
   },
   methods: {
+    filterPastCourses(course){
+      if (this.searchPastCourses){
+        var name = course.name.toLowerCase()
+        var number = course.number.toLowerCase()
+        if(!(name.includes(this.searchPastCourses.toLowerCase()) || number.includes(this.searchPastCourses.toLowerCase())) ){return false}
+      }
+      if(this.termName.length){
+        if (!(this.termName.includes(course.term.name))) {return false}
+      }
+      if(this.termYear.length){
+        if (!(this.termYear.includes(course.term.year))) {return false}
+      }
+      return course
+    },
     close() {
       this.toggleModalState()
     },
