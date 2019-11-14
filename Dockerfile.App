@@ -48,8 +48,6 @@ COPY . /gradecraft
 RUN cp ./secrets/gradecraft_saml_idp.pem /gradecraft/gradecraft_saml_idp.pem
 RUN cp ./secrets/gcsha256.key /gradecraft/gcsha256.key
 RUN cp ./secrets/gcsha256.crt /gradecraft/gcsha256.crt
-#RUN cp ./secrets/www.gradecraft.com.key /gradecraft/www.gradecraft.com.key
-#RUN cp ./secrets/www.gradecraft.com.crt /gradecraft/www.gradecraft.com.crt
 RUN cp ./secrets/app.gradecraft.com.key /gradecraft/app.gradecraft.com.key
 RUN cp ./secrets/app.gradecraft.com.crt /gradecraft/app.gradecraft.com.crt
 RUN cp ./secrets/database.yml /gradecraft/config/database.yml
@@ -59,11 +57,9 @@ RUN cp ./secrets/Procfile /gradecraft/Procfile
 RUN cp ./secrets/default /etc/nginx/sites-available/default
 RUN cp ./secrets/beta.rb /gradecraft/config/environments/beta.rb
 
-#RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=beta  bundle exec rake resque:scheduler &\n/mounts3.sh\nservice nginx stop\ncertbot-auto certonly --verbose --noninteractive  --standalone --agree-tos --email=\"ai-devops@umich.edu\" -d \"beta.gradecraft.com\" --force-renew\nservice nginx start\ncrontab -r\ncrontab -l | { cat; echo \"30 2 * * * certbot-auto renew \"; } | crontab - \npuma\nelse \n RAILS_ENV=beta bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
-RUN printf  "ln -s /s3mnt ./files\nif [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=beta bundle exec rake resque:scheduler &\nservice nginx start\npuma\nelse \n RAILS_ENV=beta bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
+RUN cp ./secrets/start.sh /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
-#RUN crontab /etc/cron.d/trim-cron
-#CMD cron && tail -f /var/log/cron.log
+RUN ln -svf /usr/local/bundle/gems/sidekiq-[0-9]*/web/assets /gradecraft/public/sidekiq
 RUN chgrp -R 1000 /gradecraft /usr
 RUN chmod -R g+rwx /gradecraft /usr
 RUN chmod g+s /gradecraft /usr
