@@ -58,6 +58,7 @@ RUN cp ./secrets/default /etc/nginx/sites-available/default
 
 RUN cp ./secrets/start.sh /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
+RUN ln -svf /usr/local/bundle/gems/sidekiq-[0-9]*/web/assets /gradecraft/public/sidekiq
 RUN crontab /etc/cron.d/trim-cron
 CMD cron && tail -f /var/log/cron.log
 RUN chgrp -R 1000 /gradecraft /usr
