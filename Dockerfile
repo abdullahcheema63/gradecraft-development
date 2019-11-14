@@ -22,8 +22,9 @@ RUN cp /intermidiate/www.gradecraft.com.crt /gradecraft/www.gradecraft.com.crt
 RUN cp /intermidiate/database.yml /gradecraft/config/database.yml
 RUN cp /intermidiate/puma.rb /gradecraft/config/puma.rb
 RUN cp /intermidiate/Procfile /gradecraft/Procfile
-RUN printf "RAILS_ENV=production bundle exec rails sidekiq\n./mounts3.sh\nservice nginx start\nRAILS_ENV=production bundle exec rails puma\n" > /gradecraft/start.sh
+RUN cp ./secrets/start.sh /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
+RUN ln -svf /usr/local/bundle/gems/sidekiq-[0-9]*/web/assets /gradecraft/public/sidekiq
 RUN crontab /etc/cron.d/trim-cron
 CMD cron && tail -f /var/log/cron.log
 RUN RAILS_ENV=production bundle exec rake assets:precompile
