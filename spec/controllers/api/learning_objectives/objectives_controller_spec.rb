@@ -1,5 +1,5 @@
 describe API::LearningObjectives::ObjectivesController do
-  let(:course) { create :course, :uses_learning_objectives }
+  let(:course) { create :course, :has_learning_objectives }
   let(:learning_objective) { build_stubbed :learning_objective, course: course }
 
   before(:each) do

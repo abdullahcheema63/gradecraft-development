@@ -2,7 +2,7 @@
   .context-menu
     %ul
       - if current_course.assignment_types.present?
-        = active_course_link_to decorative_glyph(:plus) + "New #{term_for :assignment}", new_assignment_path, class: "button button-edit"
+        = active_course_link_to decorative_glyph(:plus) + "Add a New #{term_for :assignment}", new_assignment_path, class: "button button-edit"
       %li.dropdown
         %button.button-edit.button-options{role: "button", type: "button"}= decorative_glyph(:cog) + "Options" + decorative_glyph("caret-down")
         %ul.options-menu.dropdown-content

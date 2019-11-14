@@ -120,12 +120,30 @@ class LearningObjective < ApplicationRecord
     end
   end
 
+  def create_default_levels
+    minimum_proficiency = LearningObjectiveLevel.new
+    minimum_proficiency.flagged_value = LearningObjectiveLevel.flagged_values.key(3)
+    minimum_proficiency.name = "Minimum Proficiency Level"
+    minimum_proficiency.description = ""
+    minimum_proficiency.course_id = course_id
+    minimum_proficiency.objective_id = id
+
+    maximum_proficiency = LearningObjectiveLevel.new
+    maximum_proficiency.flagged_value = LearningObjectiveLevel.flagged_values.key(0)
+    maximum_proficiency.name = "Maximum Proficiency Level"
+    maximum_proficiency.description = ""
+    maximum_proficiency.course_id = course_id
+
+    levels.push(minimum_proficiency)
+    levels.push(maximum_proficiency)
+  end
+
   def copy(attributes={}, lookup_store=nil)
     ModelCopier.new(self, lookup_store).copy(
       attributes: attributes,
       associations: [:levels],
       options: { lookups: [:course, :category, :assignments],
-                 overrides: [-> (copy) { copy_category(copy, lookup_store) }, 
+                 overrides: [-> (copy) { copy_category(copy, lookup_store) },
                              -> (copy) { copy_assignment_links(copy, lookup_store) }] }
     )
   end
@@ -178,5 +196,5 @@ class LearningObjective < ApplicationRecord
     NotificationMailer.unlocked_condition(unlockable, student, course).deliver_now
   end
 
- 
+
 end

@@ -1,8 +1,12 @@
 .pageContent
   = render "layouts/alerts"
+  
+  - if !@assignment.groups.any?
+    %p Add groups for this assignment to edit grades.
 
-  %group_mass_edit_form{"data-assignment-id"=>"#{@assignment.id}",
-                  "data-form-action"=>"#{mass_update_assignment_groups_grades_path(@assignment)}",
-                  "data-form-cancel-route"=>"#{assignment_path(@assignment)}",
-                  "data-authenticity-token"=>"#{form_authenticity_token}",
-                  "data-term-for-groups"=>"#{term_for :groups}"}
+  - if @assignment.groups.any?
+    %group_mass_edit_form{"data-assignment-id"=>"#{@assignment.id}",
+                    "data-form-action"=>"#{mass_update_assignment_groups_grades_path(@assignment)}",
+                    "data-form-cancel-route"=>"#{assignment_path(@assignment)}",
+                    "data-authenticity-token"=>"#{form_authenticity_token}",
+                    "data-term-for-groups"=>"#{term_for :groups}"}

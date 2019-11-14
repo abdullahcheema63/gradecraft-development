@@ -70,7 +70,6 @@ class CoursesController < ApplicationController
       change_current_course @course.id
       redirect_to action: :edit, id: @course.id and return
     end
-    @attachments = @course.has_attachments?
     authorize! :update, @course
   end
 
@@ -231,7 +230,7 @@ class CoursesController < ApplicationController
       instructors_of_record_ids: [], course_memberships_attributes: [:id, :course_id, :user_id, :instructor_of_record]
     ]
     if current_user_is_admin?
-      params.require(:course).permit(*course_attrs << [:status, :has_paid, :allows_canvas, :allows_learning_objectives, :institution_id, :disable_grade_emails])
+      params.require(:course).permit(*course_attrs << [:status, :has_paid, :allows_canvas, :institution_id, :disable_grade_emails])
     else
       params.require(:course).permit(*course_attrs)
     end
