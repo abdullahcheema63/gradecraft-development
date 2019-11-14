@@ -1,0 +1,18 @@
+:schedule:
+  notify_created_courses:
+    cron: "0 0 1 * *"
+    class: NotifyCreatedCoursesJob
+    description: "This job triggers an export of all courses created within the \
+                  last month and emails it to a list of recipients as a CSV attachment."
+
+  recalculate_active_course_scores:
+    cron: "0 2 * * *"
+    class: RecalculateActiveCourseScoresJob
+    description: "This job triggers a score recalculation job for every student \
+                  belonging to an active course."
+
+:queues:
+  - high
+  - default
+  - low
+  - rollbar

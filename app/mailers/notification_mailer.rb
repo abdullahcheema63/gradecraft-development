@@ -46,7 +46,7 @@ class NotificationMailer < ApplicationMailer
     @learning_objective = learning_objective
     @student = student
     @course = @learning_objective.course
-    send_student_email "#{@course.course_number} - You've completed the #{@course.learning_objective_term}!"
+    send_student_email "You've completed the #{(@course.learning_objective_term).singularize} #{@learning_objective.name}!"
   end
 
   def group_status_updated(group_member, group)
@@ -55,7 +55,7 @@ class NotificationMailer < ApplicationMailer
     @group = group
 
     @course = @group.course
-    
+
     mail(to: @student.email, subject: "#{@course.course_number} - Group #{@group.approved}") do |format|
       format.text
       format.html
@@ -68,7 +68,7 @@ class NotificationMailer < ApplicationMailer
     @group = group
 
     @course = @group.course
-    
+
     mail(to: @student.email, subject: "#{@course.course_number} - New Group") do |format|
       format.text
       format.html

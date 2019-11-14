@@ -20,11 +20,11 @@ RUN cp /intermidiate/gcsha256.crt /gradecraft/gcsha256.crt
 RUN cp /intermidiate/app.gradecraft.com.key /gradecraft/app.gradecraft.com.key
 RUN cp /intermidiate/app.gradecraft.com.crt /gradecraft/app.gradecraft.com.crt
 RUN cp /intermidiate/database.yml /gradecraft/config/database.yml
-RUN cp /intermidiate/mongoid.yml /gradecraft/config/mongoid.yml
 RUN cp /intermidiate/puma.rb /gradecraft/config/puma.rb
 RUN cp /intermidiate/Procfile /gradecraft/Procfile
-RUN printf  "if [ \$WEBRESQUE = 'WEB' ]\nthen \n RAILS_ENV=beta  bundle exec rake resque:scheduler &\n/mounts3.sh\nservice nginx stop\ncertbot-auto certonly --verbose --noninteractive  --standalone --agree-tos --email=\"ai-devops@umich.edu\" -d \"beta.gradecraft.com\" --force-renew\nservice nginx start\ncrontab -r\ncrontab -l | { cat; echo \"30 2 * * * certbot-auto renew \"; } | crontab - \npuma\nelse \n RAILS_ENV=beta bundle exec rake resque:scheduler & \nbundle exec rake resque:work >> resque.log\nfi" > /gradecraft/start.sh
+RUN cp ./secrets/start.sh /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
+RUN ln -svf /usr/local/bundle/gems/sidekiq-[0-9]*/web/assets /gradecraft/public/sidekiq
 RUN crontab /etc/cron.d/trim-cron
 CMD cron && tail -f /var/log/cron.log
 RUN RAILS_ENV=beta bundle exec rake assets:precompile
