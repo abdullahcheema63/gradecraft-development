@@ -3,19 +3,14 @@ class ExportsMailer < ApplicationMailer
 
   layout "mailers/notification_layout"
 
-  # the SecureTokenHelper brings in the #secure_downloads_url method which we
-  # need for building the secure download method on success emails
-  add_template_helper(SecureTokenHelper)
-
-  def submission_export(course, user, filename, csv_data)
+  def submission_list_exporter(course, user, filename, csv_data)
     set_export_ivars(course, user)
     attachments["#{ course.name } Submissions - #{ Date.today }.csv"] = csv_attachment(csv_data)
     send_export_email "Submission export for #{ course.name } is attached"
   end
 
-  def submissions_export_success(professor, assignment, submissions_export,
-                                 secure_token)
-    cache_success_mailer_attrs(submissions_export, secure_token)
+  def submissions_export_success(professor, assignment, submissions_export)
+    cache_success_mailer_attrs(submissions_export)
     mail_submissions_export("is ready", professor, assignment)
   end
 
@@ -73,7 +68,7 @@ class ExportsMailer < ApplicationMailer
     mail_message_with_subject "Submissions export for #{@course.assignment_term.downcase} #{@assignment.name} #{message}"
   end
 
-  def mail_team_submissions_export(message, professor, assignment, team)
+  def mail_team_submissions_export( professor, assignment, team)
     cache_team_submission_attrs(professor, assignment, team)
     mail_message_with_subject "Submissions export for #{@course.team_term.downcase} #{@team.name} #{message}"
   end
@@ -92,9 +87,8 @@ class ExportsMailer < ApplicationMailer
     }
   end
 
-  def cache_success_mailer_attrs(submissions_export, secure_token)
+  def cache_success_mailer_attrs(submissions_export)
     @submissions_export = submissions_export
-    @secure_token = secure_token
   end
 
   def cache_submission_attrs(professor, assignment)

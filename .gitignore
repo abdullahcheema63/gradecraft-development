@@ -4,7 +4,6 @@
 .env.test
 .sass-cache/
 config/database.yml
-config/mongoid.yml
 db/backups/*
 log/*.log
 public/uploads/*

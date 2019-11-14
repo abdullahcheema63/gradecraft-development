@@ -19,15 +19,6 @@ describe Services::CreatesEarnedBadge do
       }
     end
 
-    before do
-      class FakeJob
-        def initialize(attributes); end
-        def enqueue; end
-      end
-
-      stub_const("ScoreRecalculatorJob", FakeJob)
-    end
-
     it "creates a new earned badge" do
       expect(Services::Actions::CreatesEarnedBadge).to \
         receive(:execute).and_call_original

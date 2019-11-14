@@ -21,7 +21,7 @@ class ChallengeGradesController < ApplicationController
     if @challenge_grade.update_attributes(challenge_grade_params)
       @challenge_grade.update(instructor_modified: true)
       if @challenge_grade.student_visible?
-        ChallengeGradeUpdaterJob.new(challenge_grade_id: @challenge_grade.id).enqueue
+        ChallengeGradeUpdaterJob.perform_async(@challenge_grade.id)
       end
 
       redirect_to challenge_path(@challenge),
@@ -38,9 +38,9 @@ class ChallengeGradesController < ApplicationController
 
     @challenge_grade.destroy
     @team.challenge_grade_score
-    @team.students.collect do |student|
-      ScoreRecalculatorJob.new(user_id: student.id, course_id: current_course.id)
-    end.each(&:enqueue)
+    @team.students.each do |student|
+      ScoreRecalculatorJob.perform_async(student.id, current_course.id)
+    end
     @team.average_score
 
     redirect_to challenge_path(@challenge),

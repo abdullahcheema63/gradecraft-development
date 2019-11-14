@@ -5,16 +5,6 @@ RSpec.describe SubmissionsExport do
     expect(subject).to respond_to :object_key_microseconds
   end
 
-  describe "#generate_secure_token" do
-    it "creates a new secure token with the export data" do
-      token = subject.generate_secure_token
-      expect(token.class).to eq SecureToken
-      expect(token.user_id).to eq subject.professor.id
-      expect(token.course_id).to eq subject.course.id
-      expect(token.target).to eq subject
-    end
-  end
-
   describe "#local_file_path_prefix" do
     before do
       allow(subject).to receive_messages \

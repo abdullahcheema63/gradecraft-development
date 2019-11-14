@@ -1,5 +1,3 @@
-include InQueueHelper # pulled from ResqueSpec
-
 describe Course do
   let(:course1) { create(:course) }
   let(:course2) { create(:course) }
@@ -18,32 +16,15 @@ describe Course do
 
     subject { @course1.recalculate_student_scores }
 
-    before(:each) { ResqueSpec.reset! }
-    let(:score_recalculator_queue) { queue(ScoreRecalculatorJob) }
-    let(:student1_job_attributes) {{ user_id: @student_membership1.user_id, course_id: @course1.id }}
-    let(:student2_job_attributes) {{ user_id: @student_membership2.user_id, course_id: @course1.id }}
-
     context "no student ids are present" do
       it "doesn't increase the queue size" do
         allow(@course1).to receive(:ordered_student_ids) { [] }
-        expect{ subject }.to change { queue(ScoreRecalculatorJob).size }.by(0)
+        expect{ subject }.not_to change(ScoreRecalculatorJob.jobs, :size)
       end
     end
 
     it "increases the queue size by two" do
-      expect{ subject }.to change { queue(ScoreRecalculatorJob).size }.by(2)
-    end
-
-    it "queues the job with the correct arguments" do
-      subject
-      expect(score_recalculator_queue.first[:args]).to eq([student1_job_attributes])
-      expect(score_recalculator_queue.last[:args]).to eq([student2_job_attributes])
-    end
-
-    it "queues the job in the proper queue" do
-      subject
-      expect(score_recalculator_queue.first[:class]).to eq(ScoreRecalculatorJob.to_s)
-      expect(score_recalculator_queue.last[:class]).to eq(ScoreRecalculatorJob.to_s)
+      expect{ subject }.to change(ScoreRecalculatorJob.jobs, :size).by 2
     end
   end
 

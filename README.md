@@ -29,7 +29,6 @@
 ## Pre-reqs:
 * Ruby 2.5.3
 * PostgreSQL
-* MongoDB
 * Redis
 
 ## Installation Notes for running locally
@@ -46,7 +45,6 @@ cd gradecraft-development
 ```sh
 # Note: ensure that you are in the newly cloned /gradecraft-development dir
 cp config/database.yml.sample config/database.yml
-cp config/mongoid.yml.sample config/mongoid.yml
 cp .env.sample .env
 
 # obtain and replace required credentials for .env (AWS, etc.)
@@ -87,7 +85,6 @@ rbenv local 2.5.3 (or rbenv global 2.5.3 if preferred)
 * On MacOS use the following:
 
 ```sh
-brew install mongodb
 brew install redis
 brew install postgresql
 ```
@@ -95,27 +92,17 @@ brew install postgresql
 * On Ubuntu use the following:
 
 ```sh
-sudo apt-get install mongodb
 sudo apt-get install redis
 sudo apt-get install postgresql
 ```
 
-6. Ensure access to `/data/db` write directory for MongodDB
-```sh
-# create the directory, if it does not exist
-sudo mkdir -p /data/db
-sudo chown -R {user} /data/db (replace user; can ls -l to determine value)
-
-# (optional) mongod command should bring up mongodb; close with ctrl+c before proceeding to step 5
-```
-
-7. Install Bundler
+6. Install Bundler
 ```sh
 # install Bundler version specified in Gemfile.lock to avoid conflicts
 gem install bundler -v 1.17.3
 ```
 
-8. Install project dependencies
+7. Install project dependencies
 ```sh
 bundle (or bundle install)
 ```
@@ -130,11 +117,11 @@ sudo apt-get install -y libpam-krb5 libkrb5-dev
 sudo apt-get install libpq-dev
 
 # Ensuring there is an ExecJS runtime
-sudo apt-get install nodejs 
+sudo apt-get install nodejs
 ```
 
 
-9. Start Postgres database and ensure it is running on port `5432` (Optional: Download and run with [Postgres.app](https://postgresapp.com/) for Mac OS)
+8. Start Postgres database and ensure it is running on port `5432` (Optional: Download and run with [Postgres.app](https://postgresapp.com/) for Mac OS)
 
 * Use the following to start Postgres on Ubuntu
 ```sh
@@ -168,7 +155,7 @@ sudo service postgresql restart
 
 To edit the file use the following:
 
-10. Create and populate databases with sample data
+9. Create and populate databases with sample data
 
 ```sh
 bundle exec rails db:create
@@ -177,7 +164,7 @@ bundle exec rails db:create
 bundle exec rails db:sample
 ```
 
-11. Done! Run `foreman start` to begin
+10. Done! Run `foreman start` to begin
 
 ### Additional Notes
 
