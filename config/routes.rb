@@ -2,6 +2,8 @@ require "admin_constraint"
 require "sidekiq/web"
 require 'sidekiq-scheduler/web'
 
+Sidekiq::Web.set :session_secret, Rails.application.credentials[:secret_key_base]
+
 Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -518,7 +520,7 @@ Rails.application.routes.draw do
     post "upload_froala_images", to: "inline_images#upload_froala_image", as: :upload_image
     get "download_froala_object/:name", to: "inline_images#access_file", as: :upload_access_file, name: /.*/
     post "delete_froala_images", to: "inline_images#remove_uploaded_file"
-    
+
     resources :gradebook, only: [] do
       collection do
         get :assignments
