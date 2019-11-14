@@ -1,7 +1,7 @@
 Rails.application.configure do
   config.action_controller.default_url_options = { :host => "staging.gradecraft.com" }
   config.action_controller.perform_caching = true
-  config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
+  #config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
   config.asset_host = ENV["GC_ASSET_HOST"] || "https://staging.gradecraft.com"
   config.action_mailer.default_url_options = { :host => "staging.gradecraft.com" }
 
