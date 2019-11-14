@@ -2,9 +2,6 @@ require "admin_constraint"
 require "sidekiq/web"
 require 'sidekiq-scheduler/web'
 
-Sidekiq::Web.set :session_secret, Rails.application.credentials[:secret_key_base]
-Sidekiq::Web.set :sessions, Rails.application.config.session_options
-
 Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
