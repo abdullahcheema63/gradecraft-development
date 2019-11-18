@@ -92,6 +92,8 @@ gem 'whenever'
 gem 'newrelic_rpm'
 gem 'wysiwyg-rails'
 gem 'ruby-saml'
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'
 
 group :development do
   gem 'haml-rails'

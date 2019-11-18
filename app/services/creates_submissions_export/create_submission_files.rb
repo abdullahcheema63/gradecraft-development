@@ -1,3 +1,6 @@
+require 'nokogiri'
+require 'wicked_pdf'
+
 module Services
   module Actions
     class CreateSubmissionFiles
@@ -12,8 +15,45 @@ module Services
         create_submission_files(submissions_export, submitter_directory_names, archive_root_dir)
       end
 
-      def self.create_submission_files(submissions_export, submitter_directory_names, archive_root_dir)
+      def self.get_submission_text_html(submission_text, submission_course)
+        submission_html = Nokogiri::HTML(submission_text)
+      
+        submission_html.search('img').each do |inline_image_upload|
+          froala_images_url = "/api/download_froala_object/"
+          inline_image_file = (inline_image_upload['src'])[froala_images_url.length..-1]
+          inline_image_file = "#{Rails.root}/files/uploads/#{submission_course}/froala_uploads/#{inline_image_file}"
+          inline_image_upload.replace("<img src=\"#{inline_image_file}\"/>")
+        end
 
+        submission_html.to_s
+      end
+
+      def self.save_pdf_submission(pdf_file_path, submission)
+        submission_pdf_text = "<h1>Submission #{pdf_file_path}</h1>"
+        submitter_name = "#{submission.student.first_name} #{submission.student.last_name}"
+        submission_pdf_text += "<h1>Submission items from #{submitter_name}</h1>"
+
+        if submission.text_comment.present?
+          submission_html = get_submission_text_html(submission.text_comment, submission.course_id)
+          submission_pdf_text += "<p><em>Text Comment from #{submitter_name}</em></p>"
+          submission_pdf_text += submission_html
+        end
+
+        if submission.link.present?
+          submission_pdf_text += "<p>link: <a href=\"#{submission.link}\">#{submission.link}</a>"
+        end
+
+        pdf_from_submission_text = WickedPdf.new.pdf_from_string(submission_pdf_text)
+        
+        save_path = Rails.root.join(pdf_file_path)
+
+        File.open(save_path, 'wb') do |file|
+          file << pdf_from_submission_text
+        end
+      end
+
+      def self.create_submission_files(submissions_export, submitter_directory_names, archive_root_dir)
+        
         submissions(submissions_export).each do |submission|
           # write the text file for the submission into the student export directory
           if submission.text_comment.present? || submission.link.present?
@@ -34,29 +74,22 @@ module Services
           submitter_name = "#{submission.student.last_name}, #{submission.student.first_name}"
         end
 
-        open(submission_text_file_path(submissions_export, submission.submitter, submitter_directory_names, archive_root_dir), "w") do |f|
-          f.puts "Submission items from #{submitter_name}"
+        pdf_file_location = submission_pdf_file_path(submissions_export, submission.submitter, submitter_directory_names, archive_root_dir)
 
-          if submission.text_comment.present?
-            f.puts "\ntext comment: #{submission.text_comment}"
-          end
-
-          if submission.link.present?
-            f.puts "\nlink: #{submission.link}"
-          end
-        end
+        save_pdf_submission(pdf_file_location, submission)
       end
 
-      def self.submission_text_file_path(submissions_export, submitter, submitter_directory_names, archive_root_dir)
-        File.expand_path submission_text_filename(submissions_export, submitter),
+
+      def self.submission_pdf_file_path(submissions_export, submitter, submitter_directory_names, archive_root_dir)
+        File.expand_path submission_pdf_filename(submissions_export, submitter),
           submitter_directory_path(submitter, submitter_directory_names, archive_root_dir)
       end
 
-      def self.submission_text_filename(submissions_export, submitter)
+      def self.submission_pdf_filename(submissions_export, submitter)
         [
           formatted_submitter_name(submitter),
           submissions_export.formatted_assignment_name,
-          "Submission Text.txt"
+          "Submission Text.pdf"
         ].join(" - ")
       end
 
