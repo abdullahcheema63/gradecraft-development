@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div v-if="failedPayment.length" class="alert-box">
-      You failed a payment... {{failedPayment.status}}
+    <div v-if="failedPayment.length" class="inline_alert_msg">
+      <p>
+        You failed a payment... {{failedPayment.status}}        
+      </p>
     </div>
     <subscriptions-course-selector>
     </subscriptions-course-selector>

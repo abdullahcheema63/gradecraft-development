@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div v-if="hasCardError" class="alert-box">
-      {{cardError}}
+    <div v-if="hasCardError" class="inline_alert_msg">
+      <p>
+        {{cardError}}
+      </p>
     </div>
-    <div v-if="hasCreditCardError" class="alert-box">
-      {{creditCardError}}
+    <div v-if="hasCreditCardError" class="inline_alert_msg">
+      <p>
+        {{creditCardError}}
+      </p>
     </div>
     <div>
       <h2>My Payment Information</h2>
