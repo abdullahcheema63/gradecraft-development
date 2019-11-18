@@ -4,5 +4,9 @@ FactoryBot.define do
     association :professor, factory: :user
     association :team
     association :assignment
+
+    trait :use_groups do
+      use_groups { true }
+    end
   end
 end

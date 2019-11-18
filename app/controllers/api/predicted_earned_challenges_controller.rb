@@ -7,7 +7,7 @@ class API::PredictedEarnedChallengesController < ApplicationController
   def create
     @prediction = PredictedEarnedChallenge.new predicted_earned_challenge_params
     if @prediction.save
-      PredictorEventJob.new(data: predictor_event_attrs(@prediction)).enqueue
+      PredictorEventJob.perform_async(predictor_event_attrs(@prediction))
       render "api/predicted_earned_articles/prediction", status: 201
     else
       render "api/predicted_earned_articles/errors", status: 400
@@ -25,7 +25,7 @@ class API::PredictedEarnedChallengesController < ApplicationController
       @prediction.update predicted_earned_challenge_params
 
       if @prediction.save
-        PredictorEventJob.new(data: predictor_event_attrs(@prediction)).enqueue
+        PredictorEventJob.perform_async(predictor_event_attrs(@prediction))
         render "api/predicted_earned_articles/prediction", status: 200
       else
         render "api/predicted_earned_articles/errors", status: 400

@@ -113,7 +113,7 @@ class GradesController < ApplicationController
       grade.id
     end
 
-    grade_ids.each { |id| GradeUpdaterJob.new(grade_id: id).enqueue }
+    grade_ids.each { |id| GradeUpdaterJob.perform_async(id) }
 
     redirect_to grading_status_path, notice: "Grades were successfully released!"
   end
@@ -135,8 +135,7 @@ class GradesController < ApplicationController
   end
 
   def score_recalculator(student)
-    ScoreRecalculatorJob.new(user_id: student.id,
-                           course_id: current_course.id).enqueue
+    ScoreRecalculatorJob.perform_async(student.id, current_course.id)
   end
 
   def path_for_next_grade(grade, team=nil)

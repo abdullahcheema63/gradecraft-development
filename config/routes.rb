@@ -1,10 +1,13 @@
 require "admin_constraint"
+require "sidekiq/web"
+require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  mount Resque::Server, at: "/jobs", constraints: AdminConstraint.new
+  Sidekiq::Web.set :sessions, false
+  mount Sidekiq::Web => '/sidekiq', constraints: AdminConstraint.new
   mount JasmineRails::Engine, at: '/specs', constraints: AdminConstraint.new if defined?(JasmineRails)
 
   get "/files/*all", to: "redocuments#download"
@@ -633,14 +636,6 @@ Rails.application.routes.draw do
   resources :downloads, only: :index
 
   resources :submissions_exports, only: [:create, :destroy] do
-    member do
-      get :download
-      get '/secure_download/:secure_token_uuid/secret_key/:secret_key',
-        action: "secure_download", as: "secure_download"
-    end
-  end
-
-  resources :course_analytics_exports, only: [:create, :destroy] do
     member do
       get :download
       get '/secure_download/:secure_token_uuid/secret_key/:secret_key',

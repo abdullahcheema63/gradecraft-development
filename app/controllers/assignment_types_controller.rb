@@ -56,7 +56,7 @@ class AssignmentTypesController < ApplicationController
     respond_to do |format|
       format.csv do
         send_data AssignmentTypeExporter.new.export_scores(@assignment_type, course, course.students),
-        filename: "#{ course.name } #{ (term_for :assignment_type).titleize } Scores - #{ Date.today }.csv"
+        filename: "#{ course.name } - #{@assignment_type.name.titleize} Scores - #{ Date.today }.csv"
       end
     end
   end

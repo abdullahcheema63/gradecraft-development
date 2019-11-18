@@ -31,17 +31,7 @@ describe AnalyticsController do
     describe "protected routes" do
       [
         :students,
-        :staff,
-        :all_events,
-        :role_events,
-        :login_events,
-        :login_role_events,
-        :all_pageview_events,
-        :all_role_pageview_events,
-        :all_user_pageview_events,
-        :pageview_events,
-        :role_pageview_events,
-        :user_pageview_events
+        :staff
       ].each do |route|
         it "#{route} redirects to root" do
           expect(get route).to redirect_to(:root)

@@ -1,6 +1,5 @@
 require "application_responder"
 require "lull"
-require "./app/event_loggers/login_event"
 
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
@@ -29,7 +28,6 @@ class ApplicationController < ActionController::Base
 
   before_action :require_login, except: [:not_authenticated, :failed_authentication]
   before_action :require_course_membership, except: [:not_authenticated, :failed_authentication]
-  before_action :increment_page_views
   before_action :set_paper_trail_whodunnit
 
   include ApplicationHelper
@@ -73,7 +71,6 @@ class ApplicationController < ActionController::Base
     event_attrs = event_session.merge event_options
     user = event_options.values_at(:user).first
     user.update_course_login_at(user.current_course_id) if user && user.current_course_id
-    EventLoggers::LoginEvent.new.log_later(event_attrs.merge(request: nil))
   end
 
   # Session data used for building attributes hashes in EventLogger classes
@@ -120,13 +117,6 @@ class ApplicationController < ActionController::Base
 
   def current_ability
     @current_ability ||= Ability.new(current_user, current_course)
-  end
-
-  # Tracking page view counts
-  def increment_page_views
-    return unless current_user && request.format.html?
-    PageviewEventLogger.new(event_session)
-                       .enqueue_in_and_check_with_fallback Lull.time_until_next_lull
   end
 
   def time_zone(&block)

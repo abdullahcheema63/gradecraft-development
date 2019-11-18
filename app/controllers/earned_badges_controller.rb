@@ -47,8 +47,7 @@ class EarnedBadgesController < ApplicationController
       earned_badge_params.merge(awarded_by: current_user)
     )
       if @badge.full_points?
-        ScoreRecalculatorJob.new(user_id: @earned_badge.student_id,
-                                 course_id: current_course.id).enqueue
+        ScoreRecalculatorJob.perform_async(@earned_badge.student_id, current_course.id)
       end
       expire_fragment "earned_badges"
       redirect_to badge_path(@badge),
@@ -97,7 +96,7 @@ class EarnedBadgesController < ApplicationController
     @name = "#{@badge.name}"
     @student_name = "#{@earned_badge.student.name}"
     @earned_badge.destroy
-    ScoreRecalculatorJob.new(user_id: @earned_badge.student_id, course_id: @earned_badge.course_id).enqueue
+    ScoreRecalculatorJob.perform_async(@earned_badge.student_id, @earned_badge.course_id)
     expire_fragment "earned_badges"
     redirect_to @badge,
       notice: "The #{@badge.name} #{term_for :badge} has been taken away from #{@student_name}."
@@ -143,8 +142,7 @@ class EarnedBadgesController < ApplicationController
 
   def update_student_point_totals
     @valid_earned_badges.each do |earned_badge|
-      ScoreRecalculatorJob.new(user_id: earned_badge.student.id,
-        course_id: current_course.id).enqueue
+      ScoreRecalculatorJob.perform_async(earned_badge.student.id, current_course.id)
       logger.info "Updated student scores to include EarnedBadge ##{earned_badge[:id]}"
     end
   end

@@ -692,7 +692,7 @@ describe Course do
   describe "#recalculate_student_scores" do
     it "recalculates scores for each student id" do
       allow(subject).to receive(:ordered_student_ids).and_return [1, 2]
-      expect{ subject.recalculate_student_scores }.to change { queue(ScoreRecalculatorJob).size }.by(2)
+      expect{ subject.recalculate_student_scores }.to change(ScoreRecalculatorJob.jobs, :size).by 2
     end
   end
 

@@ -35,7 +35,7 @@ Rails.application.configure do
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = "https://www.gradecraft.com"
+  config.asset_host = "https://umich.gradecraft.com"
 
   config.action_controller.default_url_options = { :host => "umich.gradecraft.com" }
 
@@ -66,7 +66,7 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"], namespace: "gradecraft_production", expires_in: 1.day, compress: true }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
-  # config.active_job.queue_adapter     = :resque
+  # config.active_job.queue_adapter     = :sidekiq
   # config.active_job.queue_name_prefix = "grade_craft_#{Rails.env}"
 
   config.action_mailer.perform_caching = false

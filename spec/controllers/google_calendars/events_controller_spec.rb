@@ -1,6 +1,3 @@
-require "rails_spec_helper"
-require "api_spec_helper"
-
 describe GoogleCalendars::EventsController, type:[:disable_external_api, :controller] do
   let(:provider) { :google_oauth2 }
   let(:course) { build :course }

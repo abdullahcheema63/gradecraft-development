@@ -12,7 +12,6 @@
 //= require jquery.omniselect
 //= require autonumeric
 //= require moment.min
-//= require s3_direct_upload
 //= require underscore
 //= require jquery.dynatable
 //= require dynatable
@@ -86,7 +85,6 @@
 //= require jquery.collapse_storage
 //= require jquery.collapse_cookie_storage
 //= require datetimepicker
-//= require uploads
 //= require course_switch
 //= require course_settings
 //= require background
