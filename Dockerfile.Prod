@@ -1,7 +1,7 @@
 # Gradecraft web application Docker image
 #
 # VERSION       2.0
-# ENVIRONMENT	App
+# ENVIRONMENT	Production UMICH
 
 # ~~~~ Image base ~~~~
 FROM ruby:2.5.3
@@ -24,7 +24,7 @@ RUN chgrp -R 1000 /s3mnt
 RUN chmod -R g+rwx /s3mnt
 
 # ~~~~ Add user for OpenShift sandbox ~~~~
-RUN useradd -l -u 1000170000 -s /bin/bash ocapp
+RUN useradd -l -u 1000170000 -s /bin/bash ocumich
 
 # ~~~~ Add cron jobs ~~~~
 #ADD cron/crontab /etc/cron.d/trim-cron
@@ -37,7 +37,7 @@ EXPOSE 8443
 
 ENV DOCKER_FIX random
 RUN gem install -v 1.17.3 bundler
-RUN mkdir /home/ocapp && chown -R ocapp: /home/ocapp
+RUN mkdir /home/ocumich && chown -R ocumich: /home/ocumich
 RUN mkdir /gradecraft
 WORKDIR /gradecraft/
 ADD Gemfile /gradecraft/Gemfile
@@ -48,14 +48,14 @@ COPY . /gradecraft
 RUN cp ./secrets/gradecraft_saml_idp.pem /gradecraft/gradecraft_saml_idp.pem
 RUN cp ./secrets/gcsha256.key /gradecraft/gcsha256.key
 RUN cp ./secrets/gcsha256.crt /gradecraft/gcsha256.crt
-RUN cp ./secrets/app.gradecraft.com.key /gradecraft/app.gradecraft.com.key
-RUN cp ./secrets/app.gradecraft.com.crt /gradecraft/app.gradecraft.com.crt
+RUN cp ./secrets/umich.gradecraft.com.key /gradecraft/umich.gradecraft.com.key
+RUN cp ./secrets/umich.gradecraft.com.crt /gradecraft/umich.gradecraft.com.crt
 RUN cp ./secrets/database.yml /gradecraft/config/database.yml
 RUN cp ./secrets/mongoid.yml /gradecraft/config/mongoid.yml
 RUN cp ./secrets/puma.rb /gradecraft/config/puma.rb
 RUN cp ./secrets/Procfile /gradecraft/Procfile
 RUN cp ./secrets/default /etc/nginx/sites-available/default
-RUN cp ./secrets/beta.rb /gradecraft/config/environments/beta.rb
+RUN cp ./secrets/production.rb /gradecraft/config/environments/production.rb
 
 RUN cp ./secrets/start.sh /gradecraft/start.sh
 RUN chmod +x /gradecraft/start.sh
@@ -63,11 +63,11 @@ RUN ln -svf /usr/local/bundle/gems/sidekiq-[0-9]*/web/assets /gradecraft/public/
 RUN chgrp -R 1000 /gradecraft /usr
 RUN chmod -R g+rwx /gradecraft /usr
 RUN chmod g+s /gradecraft /usr
-RUN chown -R ocapp:  /gradecraft /usr
+RUN chown -R ocumich:  /gradecraft /usr
 RUN chgrp -R 1000 /s3mnt /run /etc/nginx /tmp /var/log /var/run /var/lib/ /var/cache
 RUN chmod -R g+rwx /s3mnt /run /etc/nginx /tmp /var/log /var/run /var/lib/ /var/cache
-RUN RAILS_ENV=beta bundle exec rake --trace assets:precompile
-RUN RAILS_ENV=beta bundle exec rake db:migrate
+RUN RAILS_ENV=production bundle exec rake --trace assets:precompile
+RUN RAILS_ENV=production bundle exec rake db:migrate
 RUN ls /gradecraft/tmp
 RUN chmod -R 777 /gradecraft/tmp
 RUN chgrp -R 1000 /gradecraft/log
