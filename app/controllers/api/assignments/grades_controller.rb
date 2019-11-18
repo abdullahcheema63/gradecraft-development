@@ -32,6 +32,6 @@ class API::Assignments::GradesController < ApplicationController
   end
 
   def enqueue_grade_update_jobs(grade_ids)
-    grade_ids.each { |id| GradeUpdaterJob.new(grade_id: id).enqueue }
+    grade_ids.each { |id| GradeUpdaterJob.perform_async(id) }
   end
 end

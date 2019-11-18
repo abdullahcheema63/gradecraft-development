@@ -283,7 +283,6 @@ describe CoursesController do
         create(:course_membership, :student, course: another_course, user: student)
         login_user(student)
         session[:course_id] = course.id
-        allow(Resque).to receive(:enqueue).and_return(true)
       end
 
       it "switches the course context" do

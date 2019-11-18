@@ -11,13 +11,6 @@ module Presenters
           .includes(:assignment, :course, :team)
       end
 
-      def course_analytics_exports
-        @course_analytics_exports ||= current_course
-          .course_analytics_exports
-          .order("updated_at DESC")
-          .includes(:course)
-      end
-
       def current_course
         properties[:current_course]
       end

@@ -19,7 +19,7 @@ class API::GradeSchemeElementsController < ApplicationController
       end
 
       @course.students.pluck(:id).each do |id|
-        ScoreRecalculatorJob.new(user_id: id, course_id: @course.id).enqueue
+        ScoreRecalculatorJob.perform_async(id, @course.id)
       end
 
       assign_for_index

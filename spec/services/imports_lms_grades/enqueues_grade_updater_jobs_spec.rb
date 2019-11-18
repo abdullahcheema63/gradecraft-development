@@ -3,34 +3,31 @@ describe Services::Actions::EnqueuesGradeUpdaterJobs do
   let(:second_grade) { create :student_visible_grade }
   let(:grades_import_result) { double(:result, successful: [first_grade, second_grade ]) }
 
-  before { allow_any_instance_of(GradeUpdaterJob).to receive(:enqueue) }
-
   it "expects grade import results" do
     expect { described_class.execute }.to \
       raise_error LightService::ExpectedKeysNotInContextError
   end
 
   it "enqueues the grade updater job for all sucessful imported grades" do
-    expect(GradeUpdaterJob).to receive(:new).with(grade_id: first_grade.id).and_call_original
-    expect(GradeUpdaterJob).to receive(:new).with(grade_id: second_grade.id).and_call_original
+    expect{ described_class.execute grades_import_result: grades_import_result }.to \
+      change(GradeUpdaterJob.jobs, :size).by 2
 
-    described_class.execute grades_import_result: grades_import_result
+    expect(GradeUpdaterJob.jobs.first["args"]).to eq [first_grade.id]
+    expect(GradeUpdaterJob.jobs.last["args"]).to eq [second_grade.id]
   end
 
   it "does not enqueue in progress grades" do
     in_progress_grade = create :grade, status: "In Progress"
     allow(grades_import_result).to receive(:successful).and_return [in_progress_grade]
 
-    expect(GradeUpdaterJob).to_not receive(:new).with(grade_id: second_grade.id)
-
-    described_class.execute grades_import_result: grades_import_result
+    expect{ described_class.execute grades_import_result: grades_import_result }.not_to \
+      change(GradeUpdaterJob.jobs, :size)
   end
 
   it "does not enqueue grades that are not visible to the student" do
     allow_any_instance_of(Grade).to receive(:student_visible?).and_return false
 
-    expect(GradeUpdaterJob).to_not receive(:new)
-
-    described_class.execute grades_import_result: grades_import_result
+    expect{ described_class.execute grades_import_result: grades_import_result }.not_to \
+      change(GradeUpdaterJob.jobs, :size)
   end
 end

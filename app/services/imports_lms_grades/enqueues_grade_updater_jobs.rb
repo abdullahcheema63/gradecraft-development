@@ -1,4 +1,4 @@
-require_relative "../../background_jobs/grade_updater_job"
+require_relative "../../jobs/grade_updater_job"
 
 module Services
   module Actions
@@ -11,9 +11,7 @@ module Services
         result = context.grades_import_result
 
         result.successful.each do |grade|
-          if grade.student_visible?
-            GradeUpdaterJob.new(grade_id: grade.id).enqueue
-          end
+          GradeUpdaterJob.perform_async(grade.id) if grade.student_visible?
         end unless result.nil?
       end
     end
