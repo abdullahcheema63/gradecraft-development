@@ -1,4 +1,3 @@
-require "mongoid"
 
 # rubocop:disable AndOr
 class OverviewController < ApplicationController
