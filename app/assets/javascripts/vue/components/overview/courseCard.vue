@@ -132,7 +132,7 @@
             <li>
               <a @click="$emit('copyCourseForm', course)">Copy</a>
             </li>
-            <li v-if="course.subscribed">
+            <li>
               <a @click="$emit('publishCourseModal', course)">Publish</a>
             </li>
             <li>

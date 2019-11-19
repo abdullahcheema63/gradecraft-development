@@ -194,7 +194,12 @@
             </div>
           </template>
           <template slot="content" v-else>
-            <h2>You’re about to copy {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</h2>
+            <h2>You’re about to copy:
+              <br />
+              <span class="pink_text">
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}
+              </span>
+            </h2>
             <h4>Essential Course Info</h4>
             <p>
               You can update this info now or do so later:
@@ -203,7 +208,7 @@
 
           <template slot="submit-button" v-if="copyingCourse"> </template>
           <template slot="submit-button" v-else>
-            <button type="button" class="action" @click="copyCourse(selectedCourse.id)">Copy</button>
+            <button type="button" class="action" style="margin-bottom: 1em;" @click="copyCourse(selectedCourse.id)">Copy</button>
             <br />
           </template>
           <template slot="cancel-link" v-if="copyingCourse"> &nbsp; </template>
@@ -221,7 +226,8 @@
             <h2>Please confirm you want to delete your course</h2>
             <p>
               You’re about to delete {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
-              <br />
+            </p>
+            <p>
               <strong>This cannot be undone.</strong>
             </p>
           </template>
@@ -236,7 +242,13 @@
 
         <modalComponent v-if="archiveCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
           <template slot="heading">Archive Course Confirmation</template>
-          <template slot="content">
+          <template slot="content" v-if="archivingCourse">
+            <div class="yeti-loading_spin">
+              <div></div>
+              <h4>Your course is archiving!</h4>
+            </div>
+          </template>
+          <template slot="content" v-else>
             <h2>Please confirm you want to archive your course</h2>
             <p>
               You’re about to archive {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
@@ -247,15 +259,24 @@
               Archiving a course is useful when your term has ended and students are no longer active in GradeCraft.
             </p>
           </template>
-          <template slot="submit-button">
+
+          <template slot="submit-button" v-if="archivingCourse"> </template>
+          <template slot="submit-button" v-else>
             <button type="button" class="action" style="margin-bottom: 1em;" @click="archiveCourse(selectedCourse.id)">Archive my course</button>
             <br />
           </template>
+          <template slot="cancel-link" v-if="archivingCourse"> &nbsp; </template>
         </modalComponent>
 
         <modalComponent v-if="unpublishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
           <template slot="heading">Unpublish Course Confirmation</template>
-          <template slot="content">
+          <template slot="content" v-if="unpublishingCourse">
+            <div class="yeti-loading_spin">
+              <div></div>
+              <h4>Your course is unpublishing!</h4>
+            </div>
+          </template>
+          <template slot="content" v-else>
             <h2>Please confirm you want to unpublish your course</h2>
             <p>
               You’re about to unpublish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
@@ -275,28 +296,47 @@
               Unpublishing a course <strong>does not remove it from your subscription.</strong> You can <a href="/subscriptions">manage your subscription</a> if you want to make this change.
             </p>
           </template>
-          <template slot="submit-button">
+          <template slot="submit-button" v-if="unpublishingCourse"> </template>
+          <template slot="submit-button" v-else>
             <button type="button" class="action" style="margin-bottom: 1em;" @click="unpublishCourse(selectedCourse.id)">Unpublish my course</button>
             <br />
           </template>
+          <template slot="cancel-link" v-if="unpublishingCourse"> &nbsp; </template>
         </modalComponent>
 
         <modalComponent v-if="publishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
           <template slot="heading">Publish Course Confirmation</template>
-          <template slot="content">
-            <h2>Please confirm you want to Publish your course</h2>
+          <template slot="content" v-if="selectedCourse.subscribed">
+            <h2>Please confirm you want to publish your course</h2>
             <p>
-              You’re about to Publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              You’re about to publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
               <br />
-              add words for more betterness
-            </p>
-
-            <p>
-              Publishing
+              It will be <strong>visible to all users</strong> in the course, and remain editable by any GSIs and instructors in the course.
             </p>
           </template>
-          <template slot="submit-button">
+          <template slot="content" v-else-if="selectedCourse.subscribed && publishingCourse">
+            <div class="yeti-loading_spin">
+              <div></div>
+              <h4>Your course is publishing! (Super exciting!)</h4>
+            </div>
+          </template>
+          <template slot="content" v-else>
+            <h2>Oops, you can’t publish this course yet!</h2>
+            <p>
+              You’re trying to publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}},
+              but this course has not been paid for.
+            </p>
+            <p>
+              If you’d like to publish it, add this course to your GradeCraft subscription.
+            </p>
+          </template>
+
+          <template slot="submit-button" v-if="selectedCourse.subscribed">
             <button type="button" class="action" style="margin-bottom: 1em;" @click="publishCourse(selectedCourse.id)">Publish my course</button>
+            <br />
+          </template>
+          <template slot="submit-button" v-else>
+            <a class="button action next" style="margin-bottom: 1em;" href="/subscriptions">Go to my subsription</a>
             <br />
           </template>
         </modalComponent>
@@ -348,10 +388,12 @@ module.exports = {
       deleteCourseModal: false,
       deletingCourse: false,
       archiveCourseModal: false,
+      archivingCourse: false,
       unpublishCourseModal: false,
+      unpublishingCourse: false,
       publishCourseModal: false,
+      publishingCourse: false,
       modalState: true,
-      copyingCourse: false,
       creatingCourse: false,
     }
   },
@@ -436,12 +478,15 @@ module.exports = {
       this.$store.dispatch('copyCourse', courseID)
     },
     unpublishCourse(courseID){
+      this.unpublishingCourse = true
       this.$store.dispatch('unpublishCourse', courseID)
     },
     publishCourse(courseID){
+      this.publishingCourse = true
       this.$store.dispatch('publishCourse', courseID)
     },
     archiveCourse(courseID){
+      this.archivingCourse = true
       this.$store.dispatch('archiveCourse', courseID)
     },
     deleteCourse(courseID){
