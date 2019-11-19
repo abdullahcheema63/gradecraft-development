@@ -92,7 +92,7 @@
               <a @click="$emit('archiveCourseModal', course)">Archive</a>
             </li>
             <li>
-              <a @click="$emit('openDeleteCourseModal', course)">Delete</a>
+              <a @click="$emit('deleteCourseModal', course)">Delete</a>
             </li>
           </ul>
         </template>
@@ -130,16 +130,16 @@
         <template slot="content">
           <ul>
             <li>
-              <a @click="copyCourse(course.id)">Copy</a>
+              <a @click="$emit('copyCourseForm', course)">Copy</a>
             </li>
             <li v-if="course.subscribed">
-              <a @click="publishCourse(course.id)">Publish</a>
+              <a @click="$emit('publishCourseModal', course)">Publish</a>
             </li>
             <li>
-              <a @click="archiveCourse(course.id)">Archive</a>
+              <a @click="$emit('archiveCourseModal', course)">Archive</a>
             </li>
             <li>
-              <a @click="deleteCourse(course.id)">Delete</a>
+              <a @click="$emit('deleteCourseModal', course)">Delete</a>
             </li>
           </ul>
         </template>
@@ -188,16 +188,16 @@
         <template slot="content">
           <ul>
             <li>
-              <a @click="copyCourse(course.id)">Copy</a>
+              <a @click="$emit('copyCourseForm', course)">Copy</a>
             </li>
             <li v-if="course.published">
-              <a @click="unpublishCourse(course.id)">Hide</a>
+              <a @click="$emit('unpublishCourseModal',course)">Hide</a>
             </li>
             <li v-if="!course.published">
-              <a @click="publishCourse(course.id)">Show</a>
+              <a @click="$emit('publishCourseModal', course)">Show</a>
             </li>
             <li>
-              <a @click="deleteCourse(course.id)">Delete</a>
+              <a @click="$emit('deleteCourseModal', course)">Delete</a>
             </li>
           </ul>
         </template>

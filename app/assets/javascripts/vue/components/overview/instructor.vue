@@ -95,7 +95,7 @@
               </p>
               <div class="course_box" v-if="publishedCourses.length">
                 <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"
-                v-on:copyCourseForm='openCopyCourseForm($event)' v-on:openDeleteCourseModal='openDeleteCourseModal($event)'
+                v-on:copyCourseForm='openCopyCourseForm($event)' v-on:deleteCourseModal='openDeleteCourseModal($event)'
                 v-on:archiveCourseModal='openArchiveCourseModal($event)' v-on:unpublishCourseModal='openUnpublishCourseModal($event)'></courseCard>
               </div>
 
@@ -116,7 +116,9 @@
               </p>
               <div v-if="unpublishedCourses.length">
                 <div class="course_box" v-if="unpublishedCourses.length">
-                  <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"></courseCard>
+                  <courseCard v-for="course in unpublishedCourses" :key="course.id" :course="course" status="unpublished"
+                  v-on:copyCourseForm='openCopyCourseForm($event)' v-on:deleteCourseModal='openDeleteCourseModal($event)'
+                  v-on:archiveCourseModal='openArchiveCourseModal($event)' v-on:publishCourseModal='openPublishCourseModal($event)'></courseCard>
                 </div>
               </div>
               <div class="course_box" v-else>
@@ -126,82 +128,6 @@
               </div>
             </template>
           </accordionComponent>
-
-          <modalComponent v-if="copyCourseForm" :modalState="modalState" @close="toggleModalState" class="component_container">
-            <template slot="heading">Copy a course</template>
-            <template slot="content">
-              <h2>You’re about to copy __Course #, Name, Semester + Yr__</h2>
-              <h4>Essential Course Info</h4>
-              <p>
-                You can update this info now or do so later:
-              </p>
-            </template>
-            <template slot="submit-button">
-              <button type="button" class="action">Copy</button>
-            </template>
-          </modalComponent>
-
-          <modalComponent v-if="deleteCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
-            <template slot="heading">Delete Course Confirmation</template>
-            <template slot="content">
-              <h2>Please confirm you want to delete your course</h2>
-              <p>
-                You’re about to delete your course, <span style="background: yellow;">__Course # + Course Name + Semester + Yr __</span>.
-                <br />
-                <strong>This cannot be undone.</strong>
-              </p>
-            </template>
-            <template slot="submit-button">
-              <button type="button" class="action" style="margin-bottom: 1em;">Delete my course</button>
-              <br />
-            </template>
-          </modalComponent>
-
-          <modalComponent v-if="archiveCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
-            <template slot="heading">Archive Course Confirmation</template>
-            <template slot="content">
-              <h2>Please confirm you want to archive your course</h2>
-              <p>
-                You’re about to archive your course, <span style="background: yellow;">__Course # + Course Name + Semester + Yr __</span>.
-                <br />
-                <strong>You will not be able to unarchive it</strong> without emailing us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>
-              </p>
-              <p>
-                Archiving a course is useful when your term has ended and students are no longer active in GradeCraft.
-              </p>
-            </template>
-            <template slot="submit-button">
-              <button type="button" class="action" style="margin-bottom: 1em;">Archive my course</button>
-              <br />
-            </template>
-          </modalComponent>
-
-          <modalComponent v-if="unpublishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
-            <template slot="heading">Unpublish Course Confirmation</template>
-            <template slot="content">
-              <h2>Please confirm you want to unpublish your course</h2>
-              <p>
-                You’re about to unpublish your course, <span style="background: yellow;">__Course # + Course Name + Semester + Yr __</span>.
-                <br />
-                It will be <strong>hidden from students and observers</strong> in the course, but remain visible to and editable by any GSIs and instructors in the course.
-              </p>
-
-              <p>
-                Unpublishing a course is useful if you need to make significant changes during a term and just need to make it temporarily invisible when students are active in GradeCraft.
-              </p>
-
-              <p style="background: yellow;">
-                To E from S: The following p-tag is v-if conditional, to show for users if they're the one paying for the selected course.
-              </p>
-              <p>
-                Unpublishing a course <strong>does not remove it from your subscription.</strong> You can <a href="/subscriptions">manage your subscription</a> if you want to make this change.
-              </p>
-            </template>
-            <template slot="submit-button">
-              <button type="button" class="action" style="margin-bottom: 1em;">Unpublish my course</button>
-              <br />
-            </template>
-          </modalComponent>
         </div>
 
         <div v-if="tabSection[0]==='Archived'">
@@ -246,7 +172,9 @@
               </div>
 
               <div class="course_box">
-                <courseCard v-for="course in archivedCourses" :key="course.id" :course="course" status="archived"></courseCard>
+                <courseCard v-for="course in archivedCourses" :key="course.id" :course="course" status="archived"
+                v-on:copyCourseForm='openCopyCourseForm($event)' v-on:deleteCourseModal='openDeleteCourseModal($event)'
+                v-on:publishCourseModal='openPublishCourseModal($event)' v-on:unpublishCourseModal='openUnpublishCourseModal($event)'></courseCard>
               </div>
             </div>
             <div class="course_box" v-else>
@@ -256,6 +184,109 @@
             </div>
           </div>
         </div>
+
+        <modalComponent v-if="copyCourseForm" :modalState="modalState" @close="toggleModalState" class="component_container">
+          <template slot="heading">Copy a course</template>
+          <template slot="content">
+            <div v-if="copyingCourse">
+              <h3> yooo its copy time!! dance yeti dance!! </h3>
+            </div>
+            <h2>You’re about to copy {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</h2>
+            <h4>Essential Course Info</h4>
+            <p>
+              You can update this info now or do so later:
+            </p>
+          </template>
+          <template slot="submit-button">
+            <button type="button" class="action" @click="copyCourse(selectedCourse.id)">Copy</button>
+          </template>
+        </modalComponent>
+
+        <modalComponent v-if="deleteCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+          <template slot="heading">Delete Course Confirmation</template>
+          <template slot="content">
+            <div v-if="deletingCourse">
+              <h3> yooo its chopping time!! dance yeti dance!! bye course!! see ya never!! </h3>
+            </div>
+            <h2>Please confirm you want to delete your course</h2>
+            <p>
+              You’re about to delete {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              <br />
+              <strong>This cannot be undone.</strong>
+            </p>
+          </template>
+          <template slot="submit-button">
+            <button type="button" class="action" style="margin-bottom: 1em;" @click="deleteCourse(selectedCourse.id)">Delete my course</button>
+            <br />
+          </template>
+        </modalComponent>
+
+        <modalComponent v-if="archiveCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+          <template slot="heading">Archive Course Confirmation</template>
+          <template slot="content">
+            <h2>Please confirm you want to archive your course</h2>
+            <p>
+              You’re about to archive {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              <br />
+              <strong>You will not be able to unarchive it</strong> without emailing us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>
+            </p>
+            <p>
+              Archiving a course is useful when your term has ended and students are no longer active in GradeCraft.
+            </p>
+          </template>
+          <template slot="submit-button">
+            <button type="button" class="action" style="margin-bottom: 1em;" @click="archiveCourse(selectedCourse.id)">Archive my course</button>
+            <br />
+          </template>
+        </modalComponent>
+
+        <modalComponent v-if="unpublishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+          <template slot="heading">Unpublish Course Confirmation</template>
+          <template slot="content">
+            <h2>Please confirm you want to unpublish your course</h2>
+            <p>
+              You’re about to unpublish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              <br />
+              It will be <strong>hidden from students and observers</strong> in the course, but remain visible to and editable by any GSIs and instructors in the course.
+            </p>
+
+            <p>
+              Unpublishing a course is useful if you need to make significant changes during a term and just need to make it temporarily invisible when students are active in GradeCraft.
+            </p>
+
+            <!-- <p style="background: yellow;">
+              FUTURE DEV CYCLE
+              To E from S: The following p-tag is v-if conditional, to show for users if they're the one paying for the selected course.
+            </p> -->
+            <p>
+              Unpublishing a course <strong>does not remove it from your subscription.</strong> You can <a href="/subscriptions">manage your subscription</a> if you want to make this change.
+            </p>
+          </template>
+          <template slot="submit-button">
+            <button type="button" class="action" style="margin-bottom: 1em;" @click="unpublishCourse(selectedCourse.id)">Unpublish my course</button>
+            <br />
+          </template>
+        </modalComponent>
+
+        <modalComponent v-if="publishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+          <template slot="heading">Publish Course Confirmation</template>
+          <template slot="content">
+            <h2>Please confirm you want to Publish your course</h2>
+            <p>
+              You’re about to Publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              <br />
+              add words for more betterness
+            </p>
+
+            <p>
+              Publishing
+            </p>
+          </template>
+          <template slot="submit-button">
+            <button type="button" class="action" style="margin-bottom: 1em;" @click="publishCourse(selectedCourse.id)">Publish my course</button>
+            <br />
+          </template>
+        </modalComponent>
       </template>
     </tabContainer>
   </div>
@@ -283,6 +314,7 @@ module.exports = {
         dateFormat: "D, M d, Y at h:i K",
         static: true,
       },
+      selectedCourse: {},
       termYear: [],
       termName: [],
       newCourseErrors: [],
@@ -299,9 +331,12 @@ module.exports = {
         subscribed: false
       },
       copyCourseForm: false,
+      copyingCourse: false,
       deleteCourseModal: false,
+      deletingCourse: false,
       archiveCourseModal: false,
       unpublishCourseModal: false,
+      publishCourseModal: false,
       modalState: true,
       copyingCourse: false,
       creatingCourse: false,
@@ -355,23 +390,50 @@ module.exports = {
   methods: {
     openCopyCourseForm(course){
       console.log("copy course form course: ", course)
+      this.selectedCourse = course
       this.copyCourseForm = true
       this.modalState = true
     },
     openDeleteCourseModal(course){
       console.log("delete course form course: ", course)
+      this.selectedCourse = course
       this.deleteCourseModal = true
       this.modalState = true
     },
     openArchiveCourseModal(course){
       console.log("archive course form course: ", course)
+      this.selectedCourse = course
       this.archiveCourseModal = true
       this.modalState = true
     },
     openUnpublishCourseModal(course){
       console.log("unpublish course form course: ", course)
+      this.selectedCourse = course
       this.unpublishCourseModal = true
       this.modalState = true
+    },
+    openPublishCourseModal(course){
+      console.log("publish course form course: ", course)
+      this.selectedCourse = course
+      this.publishCourseModal = true
+      this.modalState = true
+    },
+    copyCourse(courseID){
+      this.copyingCourse = true
+      this.$store.dispatch('copyCourse', courseID)
+    },
+    unpublishCourse(courseID){
+      this.$store.dispatch('unpublishCourse', courseID)
+    },
+    publishCourse(courseID){
+      this.$store.dispatch('publishCourse', courseID)
+    },
+    archiveCourse(courseID){
+      this.$store.dispatch('archiveCourse', courseID)
+    },
+    deleteCourse(courseID){
+      this.deletingCourse = true
+      this.$store.dispatch('deleteCourse', courseID)
     },
     addCourse(){
       var errors = this.checkAddCourseForm()
