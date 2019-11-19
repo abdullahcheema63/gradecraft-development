@@ -460,6 +460,7 @@ module.exports = {
       this.deleteCourseModal = false
       this.archiveCourseModal = false
       this.unpublishCourseModal = false
+      this.publishCourseModal = false
     }
   }
 }
