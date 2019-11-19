@@ -363,7 +363,7 @@ const store = new Vuex.Store({
         console.log(final);
         commit('addAllBillingSchemes', final)
       },
-      addNewCourse: async function({commit}, course){
+      addNewCourse: async function({commit, state}, course){
         const resp = await fetch("/api/courses", {
           method: 'POST',
           headers: {

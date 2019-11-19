@@ -66,12 +66,6 @@ class API::CoursesController < ApplicationController
     @course = Course.new(course_params)
 
     if @course.save
-      if (course_params["has_paid"])
-        @license = current_user.license
-        @license.courses << @course
-
-        @license.save
-      end
       if !current_user_is_admin?
         @course.course_memberships.create(user_id: current_user.id,
                                           role: current_user.role(current_course))
@@ -170,7 +164,6 @@ class API::CoursesController < ApplicationController
       "year" => term["year"],
       "start_date" => term["start"],
       "end_date" => term["end"],
-      "has_paid" => params["licensed"]
     }
   end
 end
