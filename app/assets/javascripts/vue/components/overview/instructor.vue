@@ -194,7 +194,12 @@
             </div>
           </template>
           <template slot="content" v-else>
-            <h2>You’re about to copy {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</h2>
+            <h2>You’re about to copy:
+              <br />
+              <span class="pink_text">
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}
+              </span>
+            </h2>
             <h4>Essential Course Info</h4>
             <p>
               You can update this info now or do so later:
@@ -203,7 +208,7 @@
 
           <template slot="submit-button" v-if="copyingCourse"> </template>
           <template slot="submit-button" v-else>
-            <button type="button" class="action" @click="copyCourse(selectedCourse.id)">Copy</button>
+            <button type="button" class="action" style="margin-bottom: 1em;" @click="copyCourse(selectedCourse.id)">Copy</button>
             <br />
           </template>
           <template slot="cancel-link" v-if="copyingCourse"> &nbsp; </template>
@@ -283,20 +288,31 @@
 
         <modalComponent v-if="publishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
           <template slot="heading">Publish Course Confirmation</template>
-          <template slot="content">
-            <h2>Please confirm you want to Publish your course</h2>
+          <template slot="content" v-if="selectedCourse.subscribed">
+            <h2>Please confirm you want to publish your course</h2>
             <p>
-              You’re about to Publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              You’re about to publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
               <br />
-              add words for more betterness
-            </p>
-
-            <p>
-              Publishing
+              It will be <strong>visible to all users</strong> in the course, and remain editable by any GSIs and instructors in the course.
             </p>
           </template>
-          <template slot="submit-button">
+          <template slot="content" v-else>
+            <h2>Oops, you can’t publish this course yet!</h2>
+            <p>
+              You’re trying to publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}},
+              but this course has not been paid for.
+            </p>
+            <p>
+              If you’d like to publish it, add this course to your GradeCraft subscription.
+            </p>
+          </template>
+
+          <template slot="submit-button" v-if="selectedCourse.subscribed">
             <button type="button" class="action" style="margin-bottom: 1em;" @click="publishCourse(selectedCourse.id)">Publish my course</button>
+            <br />
+          </template>
+          <template slot="submit-button" v-else>
+            <a class="button action next" style="margin-bottom: 1em;" href="/subscriptions">Go to my subsription</a>
             <br />
           </template>
         </modalComponent>
