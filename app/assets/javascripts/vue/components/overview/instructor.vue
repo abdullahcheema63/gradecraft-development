@@ -187,27 +187,37 @@
 
         <modalComponent v-if="copyCourseForm" :modalState="modalState" @close="toggleModalState" class="component_container">
           <template slot="heading">Copy a course</template>
-          <template slot="content">
-            <div v-if="copyingCourse">
-              <h3> yooo its copy time!! dance yeti dance!! </h3>
+          <template slot="content" v-if="copyingCourse">
+            <div class="yeti-loading_spin">
+              <div></div>
+              <h4>Your course is copying!</h4>
             </div>
+          </template>
+          <template slot="content" v-else>
             <h2>You’re about to copy {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</h2>
             <h4>Essential Course Info</h4>
             <p>
               You can update this info now or do so later:
             </p>
           </template>
-          <template slot="submit-button">
+
+          <template slot="submit-button" v-if="copyingCourse"> </template>
+          <template slot="submit-button" v-else>
             <button type="button" class="action" @click="copyCourse(selectedCourse.id)">Copy</button>
+            <br />
           </template>
+          <template slot="cancel-link" v-if="copyingCourse"> &nbsp; </template>
         </modalComponent>
 
         <modalComponent v-if="deleteCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
           <template slot="heading">Delete Course Confirmation</template>
-          <template slot="content">
-            <div v-if="deletingCourse">
-              <h3> yooo its chopping time!! dance yeti dance!! bye course!! see ya never!! </h3>
+          <template slot="content" v-if="deletingCourse">
+            <div class="yeti-loading_spin">
+              <div></div>
+              <h4>Your course is deleting! (Goodbyyyeee)</h4>
             </div>
+          </template>
+          <template slot="content" v-else>
             <h2>Please confirm you want to delete your course</h2>
             <p>
               You’re about to delete {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
@@ -215,10 +225,13 @@
               <strong>This cannot be undone.</strong>
             </p>
           </template>
-          <template slot="submit-button">
+
+          <template slot="submit-button" v-if="deletingCourse"> </template>
+          <template slot="submit-button" v-else>
             <button type="button" class="action" style="margin-bottom: 1em;" @click="deleteCourse(selectedCourse.id)">Delete my course</button>
             <br />
           </template>
+          <template slot="cancel-link" v-if="deletingCourse"> &nbsp; </template>
         </modalComponent>
 
         <modalComponent v-if="archiveCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">

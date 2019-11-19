@@ -659,6 +659,27 @@ body
     box-shadow: 0 1px 5px rgba(0,0,0,0.2)
 
 
+/* Universal yeti graphics __=^o.o^= */
+.yeti-loading_spin
+  margin: 2em auto
+  text-align: center
+  width: 250px
+
+  & > div
+    background: $bg-blue_2 url(asset_path("yeti_loading.svg")) no-repeat center center
+    background-size: 75% auto
+    width: 250px
+    height: 250px
+    border-radius: 50%
+    margin-bottom: 1.5em
+    animation: yetiSpin 3s linear infinite
+    animation-delay: 0.5s
+    
+@keyframes yetiSpin
+  0%
+    transform: rotate(0)
+  100%
+    transform: rotate(360deg)
 
 
 // REFACTOR -- may need to refactor below code at some point, TBD __=^o.o^=
