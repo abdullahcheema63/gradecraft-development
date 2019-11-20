@@ -197,7 +197,7 @@
             <h2>You’re about to copy:
               <br />
               <span class="pink_text">
-                {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}<span v-if="selectedCourse.term.name || selectedCourse.term.year">, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</span>.
               </span>
             </h2>
             <h4>Essential Course Info</h4>
@@ -264,7 +264,10 @@
           <template slot="content" v-else>
             <h2>Please confirm you want to delete your course</h2>
             <p>
-              You’re about to delete {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              You’re about to delete
+              <strong>
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}<span v-if="selectedCourse.term.name || selectedCourse.term.year">, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</span>.
+              </strong>
             </p>
             <p>
               <strong>This cannot be undone.</strong>
@@ -290,7 +293,10 @@
           <template slot="content" v-else>
             <h2>Please confirm you want to archive your course</h2>
             <p>
-              You’re about to archive {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              You’re about to archive
+              <strong>
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}<span v-if="selectedCourse.term.name || selectedCourse.term.year">, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</span>.
+              </strong>
               <br />
               <strong>You will not be able to unarchive it</strong> without emailing us at <a href="mailto:help@gradecraft.com">help@gradecraft.com</a>
             </p>
@@ -308,18 +314,39 @@
         </modalComponent>
 
         <modalComponent v-if="unpublishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
-          <template slot="heading">Unpublish Course Confirmation</template>
+          <template slot="heading" v-if="selectedCourse.active">Unpublish Course Confirmation</template>
+          <template slot="heading" v-else>Hide Course Confirmation</template>
+
           <template slot="content" v-if="unpublishingCourse">
             <div class="yeti-loading_spin">
               <div></div>
-              <h4>Your course is unpublishing!</h4>
+              <h4 v-if="selectedCourse.active">Your course is unpublishing!</h4>
+              <h4 v-else>Your course is going into hiding!</h4>
             </div>
+          </template>
+          <template slot="content" v-else-if="!selectedCourse.active">
+            <h2>Please confirm you want to hide your course</h2>
+            <p>
+              You’re about to hide
+              <strong>
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}<span v-if="selectedCourse.term.name || selectedCourse.term.year">, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</span>.
+              </strong>
+              <br />
+              It will be <strong>hidden from students, GSIs, and observers</strong> in the course, but remain visible to any instructors in the course.
+            </p>
+            <p>
+              Hiding a course is useful if you only want to allow course instructors to review the past content.
+            </p>
           </template>
           <template slot="content" v-else>
             <h2>Please confirm you want to unpublish your course</h2>
             <p>
-              You’re about to unpublish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
-              <br />
+              You’re about to unpublish
+              <strong>
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              </strong>
+            </p>
+            <p>
               It will be <strong>hidden from students and observers</strong> in the course, but remain visible to and editable by any GSIs and instructors in the course.
             </p>
 
@@ -335,7 +362,12 @@
               Unpublishing a course <strong>does not remove it from your subscription.</strong> You can <a href="/subscriptions">manage your subscription</a> if you want to make this change.
             </p>
           </template>
+
           <template slot="submit-button" v-if="unpublishingCourse"> </template>
+          <template slot="submit-button" v-else-if="!selectedCourse.active">
+            <button type="button" class="action" style="margin-bottom: 1em;" @click="unpublishCourse(selectedCourse.id)">Hide my course</button>
+            <br />
+          </template>
           <template slot="submit-button" v-else>
             <button type="button" class="action" style="margin-bottom: 1em;" @click="unpublishCourse(selectedCourse.id)">Unpublish my course</button>
             <br />
@@ -344,43 +376,69 @@
         </modalComponent>
 
         <modalComponent v-if="publishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
-          <template slot="heading">Publish Course Confirmation</template>
+          <template slot="heading" v-if="selectedCourse.active">Publish Course Confirmation</template>
+          <template slot="heading" v-else>Show Course Confirmation</template>
 
           <template slot="content" v-if="publishingCourse">
             <div class="yeti-loading_spin">
               <div></div>
-              <h4>Your course is publishing!
+              <h4 v-if="selectedCourse.active">Your course is publishing!
                 <br />
                 (So exciting)
               </h4>
+              <h4 v-else>Your course is coming out of hiding!</h4>
             </div>
           </template>
-          <template slot="content" v-else-if="selectedCourse.subscribed">
+          <template slot="content" v-else-if="selectedCourse.subscribed && selectedCourse.active">
             <h2>Please confirm you want to publish your course</h2>
             <p>
-              You’re about to publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
+              You’re about to publish
+              <strong>
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}<span v-if="selectedCourse.term.name || selectedCourse.term.year">, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</span>.
+              </strong>
               <br />
               It will be <strong>visible to all users</strong> in the course, and remain editable by any GSIs and instructors in the course.
             </p>
           </template>
-          <template slot="content" v-else>
+          <template slot="content" v-else-if="!selectedCourse.subscribed && selectedCourse.active">
             <h2>Oops, you can’t publish this course yet!</h2>
             <p>
-              You’re trying to publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}},
+              You’re trying to publish
+              <strong>
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}},
+              </strong>
               but this course has not been paid for.
             </p>
             <p>
               If you’d like to publish it, add this course to your GradeCraft subscription.
             </p>
           </template>
+          <template slot="content" v-else>
+            <h2>Please confirm you want to show your course</h2>
+            <p>
+              You’re about to show
+              <strong>
+                {{this.selectedCourse.number}} {{this.selectedCourse.name}}<span v-if="selectedCourse.term.name || selectedCourse.term.year">, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</span>.
+              </strong>
+              <br />
+              It will be <strong>visible to all users</strong> in the course, but remain uneditable by all.
+            </p>
+            <p>
+              Showing a course is useful if you want to allow all your course users to review the past content.
+            </p>
+          </template>
 
           <template slot="submit-button" v-if="publishingCourse"> </template>
-          <template slot="submit-button" v-else-if="selectedCourse.subscribed">
+          <template slot="submit-button" v-else-if="selectedCourse.subscribed && selectedCourse.active">
             <button type="button" class="action" style="margin-bottom: 1em;" @click="publishCourse(selectedCourse.id)">Publish my course</button>
             <br />
           </template>
-          <template slot="submit-button" v-else="!selectedCourse.subscribed">
+          <template slot="submit-button" v-else-if="!selectedCourse.subscribed && selectedCourse.active">
             <a class="button action next" style="margin-bottom: 1em;" href="/subscriptions">Go to my subsription</a>
+            <br />
+          </template>
+          <template slot="submit-button" v-else>
+            <button type="button" class="action" style="margin-bottom: 1em;" @click="publishCourse(selectedCourse.id)">Show my course</button>
             <br />
           </template>
 
@@ -390,6 +448,7 @@
     </tabContainer>
   </div>
 </template>
+
 <script lang='coffee'>`
 module.exports = {
   name: 'instructor',

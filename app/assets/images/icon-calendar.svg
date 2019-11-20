@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 16 15" style="enable-background:new 0 0 16 15;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#2E70BE;}
-	.st1{fill:none;stroke:#2E70BE;stroke-miterlimit:10;}
-	.st2{fill:#FFFFFF;}
+	.st0{clip-path:url(#SVGID_2_);}
+	.st1{fill:none;stroke:#2E70BE;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st2{fill:#2E70BE;}
 </style>
-<g id="Layer_1">
+<g id="Layer_1_2_">
+	<g id="Layer_1_1_">
+	</g>
 </g>
 <g id="Isolation_Mode">
 	<g>
-		<rect x="0.5" y="2.9" class="st0" width="15" height="11"/>
-		<line class="st1" x1="0.5" y1="1.1" x2="15.5" y2="1.1"/>
-		<rect x="2.2" y="4.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="5.6" y="4.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="8.9" y="4.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="12.2" y="4.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="2.2" y="10.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="5.6" y="10.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="8.9" y="10.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="12.2" y="10.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="2.2" y="7.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="5.6" y="7.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="8.9" y="7.8" class="st2" width="1.5" height="1.5"/>
-		<rect x="12.2" y="7.8" class="st2" width="1.5" height="1.5"/>
+		<defs>
+			<rect id="SVGID_1_" x="0.4" y="0.5" width="15.1" height="14"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+		</clipPath>
+		<g class="st0">
+			<rect x="0.9" y="1.9" class="st1" width="14.1" height="12.1"/>
+			<line class="st1" x1="0.9" y1="5.4" x2="14.8" y2="5.4"/>
+			<line class="st1" x1="11.5" y1="1" x2="11.5" y2="3.4"/>
+			<line class="st1" x1="4.5" y1="1" x2="4.5" y2="3.4"/>
+			<g>
+				<circle class="st2" cx="4.5" cy="8" r="0.9"/>
+				<circle class="st2" cx="8" cy="8" r="0.9"/>
+				<circle class="st2" cx="11.5" cy="8" r="0.9"/>
+			</g>
+			<g>
+				<circle class="st2" cx="4.5" cy="11.2" r="0.9"/>
+				<circle class="st2" cx="8" cy="11.2" r="0.9"/>
+				<circle class="st2" cx="11.5" cy="11.2" r="0.9"/>
+			</g>
+		</g>
 	</g>
 </g>
 </svg>
