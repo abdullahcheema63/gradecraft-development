@@ -375,13 +375,14 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(course)
         }).then((response) => {
+          console.log("should this go to their new course page? ")
           window.location.replace(store.state.overviewURL)
           console.log("inside add resp action" , response)
         })
         state.courseCreationError = resp
         console.log("inside addNewCourse action" , resp)
       },
-      copyCourse: async function({commit, state}, courseID ){
+      copyCourse: async function({commit, state}, course){
         const resp = await fetch("/api/courses/copy", {
           method: 'POST',
           headers: {
@@ -391,8 +392,9 @@ const store = new Vuex.Store({
             'X-Requested-With': 'XMLHttpRequest',
           },
           credentials: 'same-origin',
-          body: JSON.stringify(courseID)
+          body: JSON.stringify(course)
         }).then((response) => {
+          console.log("should this go to their new course page? ")
           window.location.replace(store.state.overviewURL)
         })
         state.courseCopyError = resp

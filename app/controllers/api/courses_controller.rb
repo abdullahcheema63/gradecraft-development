@@ -39,16 +39,15 @@ class API::CoursesController < ApplicationController
   # POST /api/courses/copy
   #instructor's use in overview
   def copy
-    puts("inside api/courses/copy")
-    course_id = params[:_json] #not sure how/why the variable is _json
-    #see vuestore action `copyCourse`
-    @course = Course.find(course_id)
+    course_params = format_course_params(params)
+    course_id = params["id"]
 
+    @course = Course.find(course_id)
     authorize! :read, @course
 
     begin
       duplicated = @course.copy(course_id)
-
+      duplicated.update(course_params)
       duplicated.published = false
       if duplicated.save
         if !current_user_is_admin? && current_user.role(duplicated).nil?

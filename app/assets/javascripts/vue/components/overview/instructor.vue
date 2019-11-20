@@ -204,6 +204,45 @@
             <p>
               You can update this info now or do so later:
             </p>
+            <div class="flex-2 form_pair">
+              <div class="form_elem">
+                <input type="text" v-model="newCopiedCourse.number" id="course_number" required="required" placeholder="Your course number" />
+                <label for="course_number">Course #</label>
+              </div>
+              <div class="form_elem">
+                <input type="text" v-model="newCopiedCourse.name" id="course_name" required="required" placeholder="Your course name" />
+                <label for="course_name">Course name</label>
+              </div>
+              <div class="form_elem">
+                <flat-pickr v-model="newCopiedCourse.term.start" :config="config" placeholder="Course start date" id="course_start" class="calendar" autocomplete="off"></flat-pickr>
+                <label for="course_start">Course start date</label>
+              </div>
+              <div class="form_elem">
+                <flat-pickr v-model="newCopiedCourse.term.end" :config="config" placeholder="Course end date" id="course_end" class="calendar" autocomplete="off"></flat-pickr>
+                <label for="course_end">Course end date</label>
+              </div>
+
+              <div class="form_elem">
+                <select id="course_semester" v-model="newCopiedCourse.term.name">
+                  <option value="" selected="selected" disabled="disabled">Semester</option>
+                  <option :value="'Fall'">Fall</option>
+                  <option :value="'Winter'">Winter</option>
+                  <option :value="'Spring'">Spring</option>
+                  <option :value="'Summer'">Summer</option>
+                </select>
+                <label for="course_semester">Semester</label>
+              </div>
+              <div class="form_elem">
+                <select id="course_year" v-model="newCopiedCourse.term.year">
+                  <option value="" selected="selected" disabled="disabled">Year</option>
+                  <option :value="2020">2020</option>
+                  <option :value="2019">2019</option>
+                  <option :value="2018">2018</option>
+                  <option :value="2017">2017</option>
+                </select>
+                <label for="course_year">Year</label>
+              </div>
+            </div>
           </template>
 
           <template slot="submit-button" v-if="copyingCourse"> </template>
@@ -381,7 +420,18 @@ module.exports = {
           start: null,
           end: null
         },
-        subscribed: false
+      },
+      newCopiedCourse: {
+        id: null,
+        name: "",
+        number: "",
+        role: "professor",
+        term: {
+          name: "",
+          year: "",
+          start: null,
+          end: null
+        },
       },
       copyCourseForm: false,
       copyingCourse: false,
@@ -446,6 +496,9 @@ module.exports = {
     openCopyCourseForm(course){
       console.log("copy course form course: ", course)
       this.selectedCourse = course
+      this.newCopiedCourse.id = course.id
+      this.newCopiedCourse.number = course.number
+      this.newCopiedCourse.name = "Copy of " + course.name
       this.copyCourseForm = true
       this.modalState = true
     },
@@ -475,7 +528,8 @@ module.exports = {
     },
     copyCourse(courseID){
       this.copyingCourse = true
-      this.$store.dispatch('copyCourse', courseID)
+      this.newCopiedCourse.id = courseID
+      this.$store.dispatch('copyCourse', this.newCopiedCourse)
     },
     unpublishCourse(courseID){
       this.unpublishingCourse = true
