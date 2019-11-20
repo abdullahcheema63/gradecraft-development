@@ -28,6 +28,7 @@ class SubmissionsController < ApplicationController
 
     if submission.save
       submission.check_and_set_late_status!
+      ahoy.track "Submission Event", assignment: @assignment
 
       associate_grade_with_submission(@assignment, submission)
 

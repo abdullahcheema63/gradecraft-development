@@ -25,7 +25,6 @@ class StudentsController < ApplicationController
   def recalculate
     @student = current_course.students.find_by(id: params[:id])
 
-    # @mz TODO: add specs
     ScoreRecalculatorJob.perform_async(@student.id, current_course.id)
 
     flash[:notice]="Your request to recalculate #{@student.name}'s grade is being processed. Check back shortly!"

@@ -66,6 +66,7 @@ class UserSessionsController < ApplicationController
 
   def destroy
     logout
+    ahoy.track "Logout Event"
     redirect_to root_url, notice: "You are now logged out. Thanks for playing!"
   end
 

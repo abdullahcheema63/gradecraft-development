@@ -55,13 +55,14 @@ class User < ApplicationRecord
   scope :accounts_not_activated, ->(course_id) { includes(:course_memberships).where(course_memberships: { course_id: course_id }, activation_state: 'pending')}
 
   scope :active_students, ->(course_id) { includes(:course_memberships).where(course_memberships: {course_id: course_id, active: true }) }
-  
+
   mount_uploader :avatar_file_name, AvatarUploader
 
   has_many :authorizations, class_name: "UserAuthorization", dependent: :destroy
   has_many :course_memberships, dependent: :destroy, inverse_of: :user
   has_many :courses, through: :course_memberships
   has_many :course_users, through: :courses, source: "users"
+  has_many :messages, class_name: "Ahoy::Message", as: :user
   accepts_nested_attributes_for :courses
   accepts_nested_attributes_for :course_memberships, allow_destroy: true
 

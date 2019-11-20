@@ -6,6 +6,9 @@ class ApplicationMailer < ActionMailer::Base
 
   default from: SENDER
 
+  track extra: -> { {course_id: params[:course].id} }
+  track open: true, click: true # use only/except to limit actions
+
   private
 
   def default_layout(mailer)
