@@ -45,6 +45,13 @@ const loadMany = function(modelArray, response, options, filter) {
 
 const csrftoken = document.head.querySelector("[name='csrf-token']").attributes.content.value;
 
+const requestHeaders = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+  'X-CSRF-Token': csrftoken,
+  'X-Requested-With': 'XMLHttpRequest',
+}
+
 const apiResponseToData = (responseJson) =>
   loadMany(responseJson.data, responseJson, { include: ["courses", "assignments", "course_memberships", "staff", "payments", "subscriptions", "billing_schemes"] });
 
@@ -294,12 +301,7 @@ const store = new Vuex.Store({
         console.log("addCardToSubscription action dispatched")
         const resp = await fetch("/api/subscriptions/add_card", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(paymentMethod),
         })
@@ -315,12 +317,7 @@ const store = new Vuex.Store({
         console.log("removePaymentMethod action dispatched")
         const resp = await fetch("/api/subscriptions/remove_card", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(paymentMethodID),
         }).then((response) => {
@@ -333,12 +330,7 @@ const store = new Vuex.Store({
       makePaymentMethodDefault: async function({ commit }, paymentMethodID){
         const resp = await fetch("/api/subscriptions/make_payment_method_default", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(paymentMethodID),
         }).then((response) => {
@@ -366,12 +358,7 @@ const store = new Vuex.Store({
       addNewCourse: async function({commit, state}, course){
         const resp = await fetch("/api/courses", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(course)
         }).then((response) => {
@@ -385,12 +372,7 @@ const store = new Vuex.Store({
       copyCourse: async function({commit, state}, course){
         const resp = await fetch("/api/courses/copy", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(course)
         }).then((response) => {
@@ -404,12 +386,7 @@ const store = new Vuex.Store({
         var api = "/api/courses/" + courseID
         const resp = await fetch(api, {
           method: 'DELETE',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(courseID)
         }).then((response) => {
@@ -420,12 +397,7 @@ const store = new Vuex.Store({
       unpublishCourse: async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/unpublish", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(courseID),
         }).then((response) => {
@@ -437,12 +409,7 @@ const store = new Vuex.Store({
       publishCourse: async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/publish", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(courseID),
         }).then((response) => {
@@ -454,12 +421,7 @@ const store = new Vuex.Store({
       archiveCourse: async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/archive", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(courseID),
         }).then((response) => {
@@ -471,12 +433,7 @@ const store = new Vuex.Store({
       unarchiveCourse :async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/unarchive", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(courseID),
         }).then((response) => {
@@ -488,12 +445,7 @@ const store = new Vuex.Store({
       createSubscription: async function({ commit }){
         const resp = await fetch("/api/subscriptions", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin'
         });
         const body = await resp.json();
@@ -511,12 +463,7 @@ const store = new Vuex.Store({
       updateSubscription: async function({ commit }, subscribingCourses){
         const resp = await fetch("/api/subscriptions", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(subscribingCourses),
         });
@@ -538,12 +485,7 @@ const store = new Vuex.Store({
       retryFailedPayment: async function({ commit }, paymentID){
         const resp = await fetch("/api/subscriptions/retry", {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrftoken,
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(paymentID),
         });
