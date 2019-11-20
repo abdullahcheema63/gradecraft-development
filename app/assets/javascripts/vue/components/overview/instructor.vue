@@ -345,19 +345,23 @@
 
         <modalComponent v-if="publishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
           <template slot="heading">Publish Course Confirmation</template>
-          <template slot="content" v-if="selectedCourse.subscribed">
+
+          <template slot="content" v-if="publishingCourse">
+            <div class="yeti-loading_spin">
+              <div></div>
+              <h4>Your course is publishing!
+                <br />
+                (So exciting)
+              </h4>
+            </div>
+          </template>
+          <template slot="content" v-else-if="selectedCourse.subscribed">
             <h2>Please confirm you want to publish your course</h2>
             <p>
               You’re about to publish {{this.selectedCourse.number}} {{this.selectedCourse.name}}, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}.
               <br />
               It will be <strong>visible to all users</strong> in the course, and remain editable by any GSIs and instructors in the course.
             </p>
-          </template>
-          <template slot="content" v-else-if="selectedCourse.subscribed && publishingCourse">
-            <div class="yeti-loading_spin">
-              <div></div>
-              <h4>Your course is publishing! (Super exciting!)</h4>
-            </div>
           </template>
           <template slot="content" v-else>
             <h2>Oops, you can’t publish this course yet!</h2>
@@ -370,14 +374,17 @@
             </p>
           </template>
 
-          <template slot="submit-button" v-if="selectedCourse.subscribed">
+          <template slot="submit-button" v-if="publishingCourse"> </template>
+          <template slot="submit-button" v-else-if="selectedCourse.subscribed">
             <button type="button" class="action" style="margin-bottom: 1em;" @click="publishCourse(selectedCourse.id)">Publish my course</button>
             <br />
           </template>
-          <template slot="submit-button" v-else>
+          <template slot="submit-button" v-else="!selectedCourse.subscribed">
             <a class="button action next" style="margin-bottom: 1em;" href="/subscriptions">Go to my subsription</a>
             <br />
           </template>
+
+          <template slot="cancel-link" v-if="publishingCourse"> &nbsp; </template>
         </modalComponent>
       </template>
     </tabContainer>
