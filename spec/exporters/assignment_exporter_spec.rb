@@ -2,7 +2,7 @@ describe AssignmentExporter do
   let(:course) { create(:course) }
   let(:user) { build_stubbed :user }
   let(:assignment) { create(:assignment, course: course ) }
-  subject { AssignmentExporter.new user, course }
+  subject { AssignmentExporter.new user, course, "http://app.gradecraft.com/" }
 
   describe "#export(course)" do
     it "generates an empty CSV if there are no assignments" do

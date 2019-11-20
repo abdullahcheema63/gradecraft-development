@@ -1,9 +1,12 @@
+require 'nokogiri'
+
 class AssignmentExporter
   attr_accessor :user, :course
 
-  def initialize(current_user, course)
+  def initialize(current_user, course, host_url="")
     @course = course
     @user = current_user
+    @host_url = host_url
   end
 
   # This format is shared with Assignment import views and functions
@@ -26,8 +29,8 @@ class AssignmentExporter
           a.name,
           a.assignment_type.name,
           a.full_points,
-          a.description,
-          a.purpose,
+          remove_froala_html(a.description),
+          remove_froala_html(a.purpose),
           formatted_date(a.open_at),
           formatted_date(a.due_at),
           a.accepts_submissions,
@@ -63,5 +66,16 @@ class AssignmentExporter
     return "Visible" if assignment.visible
       
     return "Hidden"
+  end
+
+  def remove_froala_html(assignment_structure_details)
+    assignment_structure_details_html = Nokogiri::HTML(assignment_structure_details)
+    
+    assignment_structure_details_html.search('img').each do |inline_image_upload|
+      image_upload_link = @host_url + inline_image_upload['src']
+      inline_image_upload.replace("<p> [ image inserted here can be accessed at #{image_upload_link} ] </p>")
+    end
+
+    assignment_structure_details_html.xpath("//text()").to_s
   end
 end
