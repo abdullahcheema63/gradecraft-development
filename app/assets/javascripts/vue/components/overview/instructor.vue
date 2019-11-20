@@ -262,6 +262,7 @@
             </div>
           </template>
           <template slot="content" v-else>
+            <div v-if="deleteCourseError">{{deleteCourseError}}</div>
             <h2>Please confirm you want to delete your course</h2>
             <p>
               You’re about to delete
@@ -272,6 +273,10 @@
             <p>
               <strong>This cannot be undone.</strong>
             </p>
+            <div class="form_elem">
+              <input type="text" id="course_deletion_confirmation" v-model="deleteConfirmation" required="required" placeholder="I DARE YOU" />
+              <label for="course_deletion_confirmation">Delete me, PUNK!</label>
+            </div>
           </template>
 
           <template slot="submit-button" v-if="deletingCourse"> </template>
@@ -503,6 +508,8 @@ module.exports = {
       copyingCourse: false,
       deleteCourseModal: false,
       deletingCourse: false,
+      deleteConfirmation: "",
+      deleteCourseError: "",
       archiveCourseModal: false,
       archivingCourse: false,
       unpublishCourseModal: false,
@@ -610,8 +617,13 @@ module.exports = {
       this.$store.dispatch('archiveCourse', courseID)
     },
     deleteCourse(courseID){
-      this.deletingCourse = true
-      this.$store.dispatch('deleteCourse', courseID)
+      if(this.deleteConfirmation === 'DELETE'){
+        this.deletingCourse = true
+        this.$store.dispatch('deleteCourse', courseID)
+      }
+      else {
+        this.deleteCourseError = "Are you sure you want to delete this ??"
+      }
     },
     addCourse(){
       var errors = this.checkAddCourseForm()
