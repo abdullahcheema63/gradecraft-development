@@ -585,6 +585,7 @@ module.exports = {
     openDeleteCourseModal(course){
       console.log("delete course form course: ", course)
       this.selectedCourse = course
+      this.deleteCourseError = ""
       this.deleteCourseModal = true
       this.modalState = true
     },
