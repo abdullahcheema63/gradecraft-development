@@ -267,8 +267,12 @@
             </div>
           </template>
           <template slot="content" v-else>
-            <div v-if="deleteCourseError">{{deleteCourseError}}</div>
-            <h2>Please confirm you want to delete your course</h2>
+            <div class="inline_alert_msg" v-if="deleteCourseError">
+              <p>
+                If you want to delete this course, you must type “DELETE” to confirm.
+              </p>
+            </div>
+            <h2 class="pink_text">Are you sure you want to delete your course?</h2>
             <p>
               You’re about to delete
               <strong>
@@ -277,10 +281,12 @@
             </p>
             <p>
               <strong>This cannot be undone.</strong>
+              <br />
+              Please type <strong>DELETE</strong> to confirm.
             </p>
             <div class="form_elem">
-              <input type="text" id="course_deletion_confirmation" v-model="deleteConfirmation" required="required" placeholder="I DARE YOU" />
-              <label for="course_deletion_confirmation">Delete me, PUNK!</label>
+              <input type="text" id="course_deletion_confirmation" v-model="deleteConfirmation" required="required" placeholder="Type DELETE to confirm" />
+              <label for="course_deletion_confirmation">Confirm Deletion</label>
             </div>
           </template>
 
