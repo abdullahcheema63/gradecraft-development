@@ -579,6 +579,7 @@ module.exports = {
       this.newCopiedCourse.number = course.number
       this.newCopiedCourse.name = "Copy of " + course.name
       this.copyCourseForm = true
+      this.copyCourseErrors = false
       this.modalState = true
     },
     openDeleteCourseModal(course){
