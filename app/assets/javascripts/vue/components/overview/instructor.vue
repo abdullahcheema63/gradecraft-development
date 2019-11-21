@@ -34,7 +34,7 @@
                   <h2>Let’s add a new course!</h2>
                   <h4>Essential Course Info</h4>
                   <form>
-                    <div v-if="newCourseErrors.length" class="inline_alert_msg">
+                    <div v-if="newCourseErrors" class="inline_alert_msg">
                       <p>
                         Please fill out the <b>required fields</b> below if you want to create a new course.
                       </p>
@@ -204,6 +204,11 @@
             <p>
               You can update this info now or do so later:
             </p>
+            <div v-if="copyCourseErrors"  class="inline_alert_msg">
+              <p>
+                Please fill out the <b>required fields</b> below if you want to copy your course.
+              </p>
+            </div>
             <div class="flex-2 form_pair">
               <div class="form_elem">
                 <input type="text" v-model="newCopiedCourse.number" id="course_number" required="required" placeholder="Your course number" />
@@ -480,7 +485,7 @@ module.exports = {
       selectedCourse: {},
       termYear: [],
       termName: [],
-      newCourseErrors: [],
+      newCourseErrors: false,
       newCourse: {
         name: "",
         number: "",
@@ -492,6 +497,7 @@ module.exports = {
           end: null
         },
       },
+      copyCourseErrors: false,
       newCopiedCourse: {
         id: null,
         name: "",
@@ -600,9 +606,20 @@ module.exports = {
       this.modalState = true
     },
     copyCourse(courseID){
-      this.copyingCourse = true
-      this.newCopiedCourse.id = courseID
-      this.$store.dispatch('copyCourse', this.newCopiedCourse)
+      this.checkCopyCourseForm()
+
+      if(!this.copyCourseErrors){
+        this.copyingCourse = true
+        this.newCopiedCourse.id = courseID
+        this.$store.dispatch('copyCourse', this.newCopiedCourse)
+      }
+    },
+    checkCopyCourseForm(){
+      this.copyCourseErrors = false
+
+      if(!this.newCopiedCourse.name || !this.newCopiedCourse.number){
+        this.copyCourseErrors = true
+      }
     },
     unpublishCourse(courseID){
       this.unpublishingCourse = true
@@ -626,20 +643,19 @@ module.exports = {
       }
     },
     addCourse(){
-      var errors = this.checkAddCourseForm()
+      this.checkAddCourseForm()
 
-      if(!errors.length){
+      if(!this.newCourseErrors){
         this.creatingCourse = true
         this.$store.dispatch('addNewCourse', this.newCourse)
       }
     },
     checkAddCourseForm(){
-      this.newCourseErrors = []
+      this.newCourseErrors = false
 
       if(!this.newCourse.name || !this.newCourse.number){
-        this.newCourseErrors.push("Missing input for required fields")
+        this.newCourseErrors = true
       }
-      return this.newCourseErrors
     },
     close() {
       this.toggleModalState()
