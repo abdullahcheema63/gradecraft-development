@@ -521,7 +521,7 @@ module.exports = {
       deleteCourseModal: false,
       deletingCourse: false,
       deleteConfirmation: "",
-      deleteCourseError: "",
+      deleteCourseError: false,
       archiveCourseModal: false,
       archivingCourse: false,
       unpublishCourseModal: false,
@@ -591,7 +591,7 @@ module.exports = {
     openDeleteCourseModal(course){
       console.log("delete course form course: ", course)
       this.selectedCourse = course
-      this.deleteCourseError = ""
+      this.deleteCourseError = false
       this.deleteCourseModal = true
       this.modalState = true
     },
@@ -647,7 +647,7 @@ module.exports = {
         this.$store.dispatch('deleteCourse', courseID)
       }
       else {
-        this.deleteCourseError = "Are you sure you want to delete this ??"
+        this.deleteCourseError = true
       }
     },
     addCourse(){
