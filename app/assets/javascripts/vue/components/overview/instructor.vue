@@ -165,16 +165,19 @@
                 </div>
                 <div class="search_box">
                   <div class="form_elem">
-                    <input type="search" id="searchArchivedCourses" placeholder="Search archived courses">
+                    <input type="search" v-model="searchArchivedCourses" id="searchArchivedCourses" placeholder="Search archived courses">
                     <label for="searchArchivedCourses">Search courses</label>
                   </div>
                 </div>
               </div>
 
-              <div class="course_box">
-                <courseCard v-for="course in archivedCourses" :key="course.id" :course="course" status="archived"
+              <div class="course_box" v-if="filteredArchivedCourses.length">
+                <courseCard v-for="course in filteredArchivedCourses" :key="course.id" :course="course" status="archived"
                 v-on:copyCourseForm='openCopyCourseForm($event)' v-on:deleteCourseModal='openDeleteCourseModal($event)'
                 v-on:publishCourseModal='openPublishCourseModal($event)' v-on:unpublishCourseModal='openUnpublishCourseModal($event)'></courseCard>
+              </div>
+              <div>
+                <p>Empty state goes here >.< </p>
               </div>
             </div>
             <div class="course_box" v-else>
@@ -491,6 +494,7 @@ module.exports = {
       selectedCourse: {},
       termYear: [],
       termName: [],
+      searchArchivedCourses: "",
       newCourseErrors: false,
       newCourse: {
         name: "",
@@ -558,11 +562,8 @@ module.exports = {
     },
     filteredArchivedCourses(){
       var allArchivedCourses = this.archivedCourses;
-      return allArchivedourses.filter( course => {
-          if (!(this.termYear.includes(course.term.year)) && this.termYear.length) {return false}
-          if (!(this.termName.includes(course.term.name)) && this.termName.length) {return false}
-          return true
-      })
+
+      return allArchivedCourses.filter(this.filterArchivedCourses)
     },
     courseTermYear(){
       return new Set(this.archivedCourses.map(courseMembership => courseMembership.term.year))
@@ -578,6 +579,20 @@ module.exports = {
     },
   },
   methods: {
+    filterArchivedCourses(course){
+      if (this.searchArchivedCourses.length){
+        var name = course.name.toLowerCase()
+        var number = course.number.toLowerCase()
+        if(!(name.includes(this.searchArchivedCourses.toLowerCase()) || number.includes(this.searchArchivedCourses.toLowerCase()))){return false}
+      }
+      if(this.termName.length){
+        if(!(this.termName.includes(course.term.name))) {return false}
+      }
+      if(this.termYear.length){
+        if (!(this.termYear.includes(course.term.year))){return false}
+      }
+      return course
+    },
     openCopyCourseForm(course){
       console.log("copy course form course: ", course)
       this.selectedCourse = course
