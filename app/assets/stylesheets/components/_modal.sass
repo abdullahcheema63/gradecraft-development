@@ -13,12 +13,16 @@
   &.is-closed
     opacity: 0
     z-index: -100
-    transition: all linear 0.4s
+    transition: opacity linear 0.4s
+    width: 0px
+    height: 0px
 
   &.is-open
     z-index: 110
     opacity: 1
-    transition: all linear 0.2s
+    transition: opacity linear 0.2s
+    width: 100vw
+    height: 100vh
 
 .modal
   position: fixed
@@ -88,6 +92,14 @@
 
   button:last-child
     margin: 1.5em 1em 0 0
+
+
+/* Onboarding modal styling */
+.onboarding
+  .modal_content
+    padding: 0
+    background: lavender
+
 
 /* When the modal is open, prevent scrolling on content behind it */
 .wrapper
