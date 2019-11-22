@@ -22,7 +22,7 @@
                 Manage and view all current courses.
               </p>
               <div>
-                <button class="action secondary next">Add a course</button>
+                <a class="button action secondary next" href="courses/new">Add a course</a>
               </div>
             </div>
 
@@ -99,7 +99,7 @@
                       <td>{{course.studentNumber}}</td>
                       <td>{{course.term}}</td>
                       <td>{{course.year}}</td>
-                      <td>{{course.created}}</td>
+                      <td>{{formatDate(course.created)}}</td>
                       <td class="no_wrap">
                         <buttonDropdown>
                           <template slot="button_text">Export</template>
@@ -214,6 +214,9 @@ module.exports = {
     },
   },
   methods: {
+    formatDate(date){
+      return moment(String(date)).format('LLLL')
+    },
     shiftContent() {
       this.active = !this.active;
       this.$emit('shiftContent', this.active)

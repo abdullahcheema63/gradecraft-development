@@ -38,6 +38,7 @@ json.included do
         json.id course.id.to_s
         json.course_name course.name
         json.subscribed course.subscription.present?
+        json.published course.published
         json.student_count course.student_count
         json.change_course_path change_course_path(course)
         json.active course.active?

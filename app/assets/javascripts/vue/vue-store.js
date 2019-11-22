@@ -584,6 +584,7 @@ const store = new Vuex.Store({
           return {
             id: course.id,
             name: course.name,
+            number: course.course_number,
             url: course.change_course_path,
             editURL: course.edit_course_path,
             copyStudentsURL: course.copy_courses_with_students_path,
@@ -666,6 +667,7 @@ const store = new Vuex.Store({
               name: course.course_name,
               studentCount: course.student_count,
               changeCoursePath: course.change_course_path,
+              published: course.published,
               subscribed: course.subscribed,
               active: course.active
             }))

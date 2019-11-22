@@ -37,9 +37,8 @@
               <th>First Name </th>
               <th>Last Name </th>
               <th>Subscription Renewal Date </th>
-              <th>Payment Method </th>
-              <th>Billing Scheme</th>
-              <th>Active Courses </th>
+              <th>Current Courses </th>
+              <th>Published Course </th>
               <th>Subscribed Course </th>
               <th># Students in Course </th>
               <th>Actions </th>
@@ -50,13 +49,18 @@
               <td><a href="#">{{instructor.firstName}}</a> </td>
               <td class="no_wrap"><a href="#">{{instructor.lastName}}</a> </td>
               <td>{{instructor.subscriptionExpires}} </td>
-              <td>{{instructor.paymentMethod}} </td>
-              <td style="width: 100px;">{{instructor.accountType}} </td>
               <template v-if="instructor.courses.length">
                 <td>
                   <ul>
                     <li v-for="course in instructor.courses" :key="course.id">
                       <a :href="course.changeCoursePath" class="table_truncate" :title="course.name">{{course.name}}</a>
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li v-for="course in instructor.courses" :key="course.id">
+                      <span :class="{checked: course.published}">&nbsp;</span>
                     </li>
                   </ul>
                 </td>

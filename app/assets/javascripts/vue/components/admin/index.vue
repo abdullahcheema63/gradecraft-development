@@ -106,7 +106,7 @@
         </table>
       </div>
       <tablePagination :items="newCourses" @paginate="paginateItems"></tablePagination>
-      <a class="button action next" href="courses/new">Add a new course</a>
+      <a class="button action next" href="courses/new">Add a course</a>
     </div>
   </div>
 </template>
