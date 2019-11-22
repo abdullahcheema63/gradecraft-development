@@ -491,7 +491,8 @@ module.exports = {
     formContainer: () => VComponents.get('vue/components/formContainer'),
     tabContainer: () => VComponents.get('vue/components/structure/tabContainer'),
     guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
-    VueFlatpickr
+    VueFlatpickr,
+    vueSlickCarousel
   },
   data() {
     return {
