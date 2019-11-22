@@ -101,25 +101,51 @@
 
 .onboarding_slides
   background-color:  $grey-barely
-  margin-bottom: 50px
 
   button.slick-arrow
     position: absolute
-    bottom: -50px
+    bottom: -40px
     min-width: unset
     margin: 0
     padding: 0
     z-index: 10
+    width: 1.5em
+    height: 1.5em
+    border: 0px solid white
+    background: url(asset_path("icon-arrow_next.svg")) no-repeat center center
+    background-size: contain
 
     &.slick-prev
       left: 1em
+      transform: rotate(180deg)
 
     &.slick-next
       right: 1em
 
+  .slick-dots
+    bottom: -38px
+
+    li
+      button
+        &:before
+          font-size: 20px
+
+        &:hover
+          background: transparent
+
+      &.slick-active
+        button
+          &:before
+            color: $blue
+            opacity: 1
+
   .slides
     min-height: 400px
     display: flex !important
+
+    @include tablet
+      display: block !important
+      min-height: unset
 
     & > div
       background-position: center center
@@ -130,10 +156,18 @@
         flex: auto
         width: 500px
 
+        @include tablet
+          width: 100%
+          height: 300px
+
       &:last-of-type
         width: 45%
         padding: 1em 70px 1em 1em
         box-sizing: border-box
+
+        @include tablet
+          width: 100%
+          padding: 1em
 
     &.instructor_1
       & > div:first-child
@@ -153,6 +187,23 @@
     &.instructor_6
       & > div:first-child
         background-image: url(asset_path("onboarding-instructor_6.svg"))
+
+    &.student_1
+      & > div:first-child
+        background-image: url(asset_path("onboarding-student_1.svg"))
+    &.student_2
+      & > div:first-child
+        background-image: url(asset_path("onboarding-student_2.svg"))
+    &.student_3
+      & > div:first-child
+        background-image: url(asset_path("onboarding-student_3.svg"))
+    &.student_4
+      & > div:first-child
+        background-image: url(asset_path("onboarding-student_4.svg"))
+    &.student_5
+      & > div:first-child
+        background-image: url(asset_path("onboarding-student_5.svg"))
+
 
 /* When the modal is open, prevent scrolling on content behind it */
 .wrapper

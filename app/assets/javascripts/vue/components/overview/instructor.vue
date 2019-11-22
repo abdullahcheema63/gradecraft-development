@@ -3,18 +3,6 @@
     <div class="content_block intro">
       <h1>My Dashboard</h1>
 
-      <div class="onboarding-slides">
-        <div>
-          <p>test 1</p>
-        </div>
-        <div>
-          <p>test 2</p>
-        </div>
-        <div>
-          <p>test 3</p>
-        </div>
-      </div>
-
       <guideMessage>
         <p>
           Welcome <span v-if="!getUserOnboardingStatus">back</span> to your GradeCraft dashboard, {{ userFirstName }}!
