@@ -40,9 +40,6 @@
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container onboarding">
       <template slot="heading">Welcome to GradeCraft!</template>
       <template slot="content">
-        <!-- <p style="background: yellow">
-          To E from S: This onboarding div is for instructors
-        </p> -->
         <vue-slick v-if="userIsInstructor" :options="slickOptions" class="onboarding_slides instructor">
           <div class="slides instructor_1">
             <div></div>
@@ -60,11 +57,11 @@
               <p>
                 GradeCraft is a learning management system that helps you build gameful courses.
               </p>
-              <!-- <ul class="pink_dots">
+              <ul class="pink_dots">
                 <li>Supports personalized learning through assessment choice</li>
                 <li>The Grade Predictor promotes student agency by enabling them to make choices and set goals
                 <li>Analytics displays help students keep track of how they’re doing</li>
-              </ul> -->
+              </ul>
             </div>
           </div>
           <div class="slides instructor_3">
@@ -105,9 +102,6 @@
           </div>
         </vue-slick>
 
-        <!-- <p style="background: yellow">
-          and this onboarding div is for students/GSIs/not-instructors
-        </p> -->
         <vue-slick v-else :options="slickOptions" class="onboarding_slides student">
           <div class="slides student_1">
             <div></div>
