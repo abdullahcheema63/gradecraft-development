@@ -265,6 +265,7 @@ Rails.application.routes.draw do
     get :gradebook_file
     get :multiplied_gradebook
     get :multiplier_choices
+    get :assignment_structure_export
     get :per_assign
     get :research_gradebook
     get :syllabus
