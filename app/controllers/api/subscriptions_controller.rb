@@ -316,7 +316,7 @@ class API::SubscriptionsController < ApplicationController
   end
 
   def create_new_subscription
-    @subscription = Subscription.new({
+    Subscription.new({
       billing_scheme_id: BillingScheme.find_by(min_courses: 0).id,
       user_id: current_user.id
     })
