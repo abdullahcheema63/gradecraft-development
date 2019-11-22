@@ -52,28 +52,28 @@
               <template v-if="instructor.courses.length">
                 <td>
                   <ul>
-                    <li v-for="course in instructor.courses" :key="course.id">
+                    <li v-for="course in userActiveCourses(instructor.courses)" :key="course.id">
                       <a :href="course.changeCoursePath" class="table_truncate" :title="course.name">{{course.name}}</a>
                     </li>
                   </ul>
                 </td>
                 <td>
                   <ul>
-                    <li v-for="course in instructor.courses" :key="course.id">
+                    <li v-for="course in userActiveCourses(instructor.courses)" :key="course.id">
                       <span :class="{checked: course.published}">&nbsp;</span>
                     </li>
                   </ul>
                 </td>
                 <td>
                   <ul>
-                    <li v-for="course in instructor.courses" :key="course.id">
+                    <li v-for="course in userActiveCourses(instructor.courses)" :key="course.id">
                       <span :class="{checked: course.subscribed}">&nbsp;</span>
                     </li>
                   </ul>
                 </td>
                 <td>
                   <ul>
-                    <li v-for="course in instructor.courses" :key="course.id">
+                    <li v-for="course in userActiveCourses(instructor.courses)" :key="course.id">
                       {{course.studentCount}}
                     </li>
                   </ul>
@@ -155,6 +155,9 @@ module.exports = {
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;
       this.currentPageItemMax = itemRange.max;
+    },
+    userActiveCourses(courses){
+      return courses.filter(course => course.active)
     },
     hasActiveCourse(courses){
       var isActive = false
