@@ -756,5 +756,8 @@ const store = new Vuex.Store({
       userCourseMemberships: state => {
         return state.user.courseMembership;
       },
+      userActiveCourseMemberships: state => {
+        return state.user.courseMembership.filter(course => course.active)
+      },
     }
 })

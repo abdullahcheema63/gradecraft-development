@@ -68,7 +68,7 @@ module.exports = {
       return this.$store.state.userSubscription.courses
     },
     userCourses(){
-      return this.$store.getters.userCourseMemberships
+      return this.$store.getters.userActiveCourseMemberships
     },
     subscribedCourseIds(){
       return this.$store.state.previouslySubscribedCourses.map(course => course.id)
