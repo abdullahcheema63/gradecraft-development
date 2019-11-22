@@ -43,60 +43,79 @@
         <!-- <p style="background: yellow">
           To E from S: This onboarding div is for instructors
         </p> -->
-        <div class="onboarding_slides instructor">
-          <div>
-            <h2>Hey there, {{user.firstName}}!</h2>
-            <p>
-              Welcome to GradeCraft! This quick tour will introduce you to GradeCraft, a learning management system that supports gameful courses.
-            </p>
+        <vue-slick class="onboarding_slides instructor">
+          <div class="slides instructor_1">
+            <div></div>
+            <div>
+              <h2>Hey there, {{user.firstName}}!</h2>
+              <p>
+                Welcome to GradeCraft! This quick tour will introduce you to GradeCraft, a learning management system that supports gameful courses.
+              </p>
+            </div>
           </div>
-          <div>
-            <h2>What is GradeCraft?</h2>
-            <p>
-              GradeCraft is a learning management system that helps you build gameful courses.
-            </p>
-            <ul class="pink_dots">
-              <li>Supports personalized learning through assessment choice</li>
-              <li>The Grade Predictor promotes student agency by enabling them to make choices and set goals
-              <li>Analytics displays help students keep track of how they’re doing</li>
-            </ul>
+          <div class="slides instructor_2">
+            <div></div>
+            <div>
+              <h2>What is GradeCraft?</h2>
+              <p>
+                GradeCraft is a learning management system that helps you build gameful courses.
+              </p>
+              <ul class="pink_dots">
+                <li>Supports personalized learning through assessment choice</li>
+                <li>The Grade Predictor promotes student agency by enabling them to make choices and set goals
+                <li>Analytics displays help students keep track of how they’re doing</li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <h2>Cross-platform Integration</h2>
-            <p>
-              Easily import data from other platforms and tools, such as Canvas.
-            </p>
+          <div class="slides instructor_3">
+            <div></div>
+            <div>
+              <h2>Cross-platform Integration</h2>
+              <p>
+                Easily import data from other platforms and tools, such as Canvas.
+              </p>
+            </div>
           </div>
-          <div>
-            <h2>Extensive Customization</h2>
-            <p>
-              You have freedom to tailor and personalize features, course settings, and language based on your unique scenarios and needs.
-            </p>
+          <div class="slides instructor_4">
+            <div></div>
+            <div>
+              <h2>Extensive Customization</h2>
+              <p>
+                You have freedom to tailor and personalize features, course settings, and language based on your unique scenarios and needs.
+              </p>
+            </div>
           </div>
-          <div>
-            <h2>Class Analytics</h2>
-            <p>
-              Course and assignment analytics help students make sense of their progress and plan for success.
-            </p>
+          <div class="slides instructor_5">
+            <div></div>
+            <div>
+              <h2>Class Analytics</h2>
+              <p>
+                Course and assignment analytics help students make sense of their progress and plan for success.
+              </p>
+            </div>
           </div>
-          <div>
-            <h2>Build Motivation</h2>
-            <p>
-              Employ special features to motivate students, such as unlocks, badges, and dynamic grading schemes.
-            </p>
+          <div class="slides instructor_6">
+            <div></div>
+            <div>
+              <h2>Build Motivation</h2>
+              <p>
+                Employ special features to motivate students, such as unlocks, badges, and dynamic grading schemes.
+              </p>
+            </div>
           </div>
-        </div>
+        </vue-slick>
 
         <!-- <p style="background: yellow">
           and this onboarding div is for students/GSIs/not-instructors
         </p> -->
-        <div class="onboarding_slides student">
+        <!-- <div class="onboarding_slides student">
           <div>
             <h2>Hey there, {{user.firstName}}!</h2>
             <p>
               Welcome to GradeCraft! This quick tour will show you how GradeCraft works.
+            </p>
           </div>
-        </div>
+        </div> -->
       </template>
       <template slot="cancel-link"> &nbsp; </template>
     </modalComponent>
@@ -107,7 +126,8 @@
 module.exports = {
   name: 'header-component',
   components: {
-    modalComponent: () => VComponents.get('vue/components/structure/modalComponent')
+    modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
+    vueSlickCarousel
   },
   props: {
     userId: String,

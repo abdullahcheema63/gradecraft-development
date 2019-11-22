@@ -189,7 +189,7 @@
                 v-on:publishCourseModal='openPublishCourseModal($event)' v-on:unpublishCourseModal='openUnpublishCourseModal($event)'></courseCard>
               </div>
               <div>
-                <p>Empty state goes here >.< </p>
+                <p style="background: yellow;">To S from E: EMPTY STATE FOR WHEN THERE ARE NO FILTERED RESULTS</p>
               </div>
             </div>
             <div class="course_box" v-else>

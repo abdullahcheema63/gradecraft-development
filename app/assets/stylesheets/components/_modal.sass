@@ -98,8 +98,61 @@
 .onboarding
   .modal_content
     padding: 0
-    background: lavender
 
+.onboarding_slides
+  background-color:  $grey-barely
+  margin-bottom: 50px
+
+  button.slick-arrow
+    position: absolute
+    bottom: -50px
+    min-width: unset
+    margin: 0
+    padding: 0
+    z-index: 10
+
+    &.slick-prev
+      left: 1em
+
+    &.slick-next
+      right: 1em
+
+  .slides
+    min-height: 400px
+    display: flex !important
+
+    & > div
+      background-position: center center
+      background-repeat: no-repeat
+      background-size: contain
+
+      &:first-of-type
+        flex: auto
+        width: 500px
+
+      &:last-of-type
+        width: 45%
+        padding: 1em 70px 1em 1em
+        box-sizing: border-box
+
+    &.instructor_1
+      & > div:first-child
+        background-image: url(asset_path("onboarding-instructor_1.svg"))
+    &.instructor_2
+      & > div:first-child
+        background-image: url(asset_path("onboarding-instructor_2.svg"))
+    &.instructor_3
+      & > div:first-child
+        background-image: url(asset_path("onboarding-instructor_3.svg"))
+    &.instructor_4
+      & > div:first-child
+        background-image: url(asset_path("onboarding-instructor_4.svg"))
+    &.instructor_5
+      & > div:first-child
+        background-image: url(asset_path("onboarding-instructor_5.svg"))
+    &.instructor_6
+      & > div:first-child
+        background-image: url(asset_path("onboarding-instructor_6.svg"))
 
 /* When the modal is open, prevent scrolling on content behind it */
 .wrapper
