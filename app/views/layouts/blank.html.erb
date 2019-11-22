@@ -12,7 +12,7 @@
     <%= stylesheet_link_tag "application", media: "all" %>
 
     <%= favicon_link_tag "favicon.ico", rel: "shortcut icon", type: "image/x-icon" %>
-    
+
     <%= javascript_include_tag "https://cdn.statuspage.io/se-v2.js" %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
@@ -23,6 +23,10 @@
   <%= render partial: "layouts/stripe" %>
   <%= javascript_include_tag "application", "data-turbolinks-track": true %>
   <%= yield(:scripts) %>
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-slick@1.1.15/dist/slickCarousel.umd.js"></script>
+  <!-- not sure if the last line is needed top two brings in requirements for vue-slick ( requires jquery & slick-carousel ) -->
 
   <header-component data-component user-id=<%= current_user.id %>></header-component>
 </html>
