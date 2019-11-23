@@ -43,7 +43,7 @@
         <!-- <p style="background: yellow">
           To E from S: This onboarding div is for instructors
         </p> -->
-        <vue-slick v-if="userIsInstructor" class="onboarding_slides instructor" :options="slickOptions">
+        <vue-slick v-if="userIsInstructor" class="onboarding_slides student" :options="slickOptions">
           <div class="slides instructor_1">
             <div></div>
             <div>
@@ -139,6 +139,15 @@
               <h2>Tangible Feedback</h2>
               <p>
                 Experience the learning process in real time. Easily keep track of progress through comprehensive grade analytics.
+              </p>
+            </div>
+          </div>
+          <div class="slides student_5">
+            <div></div>
+            <div>
+              <h2>Plan Your Grade</h2>
+              <p>
+                Plan out variable assignment pathways with the Grade Predictor and use it to maximize your freedom of choice. Achieve the goals you want on your terms.
               </p>
             </div>
           </div>
