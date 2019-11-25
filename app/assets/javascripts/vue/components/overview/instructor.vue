@@ -2,7 +2,6 @@
   <div>
     <div class="content_block intro">
       <h1>My Dashboard</h1>
-
       <guideMessage>
         <p>
           Welcome <span v-if="!getUserOnboardingStatus">back</span> to your GradeCraft dashboard, {{ userFirstName }}!

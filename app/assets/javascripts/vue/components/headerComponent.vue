@@ -40,7 +40,10 @@
     <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container onboarding">
       <template slot="heading">Welcome to GradeCraft!</template>
       <template slot="content">
-        <vue-slick v-if="userIsInstructor" :options="slickOptions" class="onboarding_slides instructor">
+        <!-- <p style="background: yellow">
+          To E from S: This onboarding div is for instructors
+        </p> -->
+        <vue-slick v-if="userIsInstructor" class="onboarding_slides student" :options="slickOptions">
           <div class="slides instructor_1">
             <div></div>
             <div>
@@ -117,7 +120,7 @@
             <div>
               <h2>Start From Zero</h2>
               <p>
-                Everyone starts from zero, and earns points by completing assignments. Your final grade is completely independent from your peers’ performances.
+                Everyone starts from zero, and earns points by completing assignments. Your final grade is completely independent from your peers' performances.
               </p>
             </div>
           </div>
@@ -148,7 +151,17 @@
               </p>
             </div>
           </div>
+          <div class="slides student_5">
+            <div></div>
+            <div>
+              <h2>Plan Your Grade</h2>
+              <p>
+                Plan out variable assignment pathways with the Grade Predictor and use it to maximize your freedom of choice. Achieve the goals you want on your terms.
+              </p>
+            </div>
+          </div>
         </vue-slick>
+
       </template>
       <template slot="cancel-link"> &nbsp; </template>
     </modalComponent>
@@ -167,6 +180,11 @@ module.exports = {
   },
   data() {
     return {
+      slickOptions: {
+        dots: true,
+        prevArrow: '<button class="slick-prev" aria-label="Previous" type="button"> </button>',
+        nextArrow: '<button class="slick-next" aria-label="Next" type="button"> </button>',
+      },
       prevScrollPos: null,
       activeUsername: false,
       activeFreetrialMsg: false,
