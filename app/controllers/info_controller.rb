@@ -133,7 +133,7 @@ class InfoController < ApplicationController
   def assignment_structure_export
     course = current_user.courses.find_by(id: params[:id])
     host_url = "#{root_url}"
-    csv_file = "/tmp/#{ course.name } #{ (term_for :assignment).titleize } Structure - #{ Date.today }.csv"
+    csv_file = "#{ course.name } #{ (term_for :assignment).titleize } Structure - #{ Date.today }.csv"
     @assignment_structure_export_job = AssignmentStructureExporterJob.perform_async(current_user.id, course.id, host_url, csv_file)
 
     flash[:notice] = "Your request to export assignment structures from course \"#{course.name}\" is currently being processed. We will email you the data shortly."

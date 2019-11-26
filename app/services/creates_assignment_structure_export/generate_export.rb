@@ -3,12 +3,13 @@ module Services
     class GenerateExport
       extend LightService::Action
       expects :course_id, :user_id, :host_url, :csv_file
+      promises :course, :current_user, :images_directory
 
       executed do |context|
-        current_user = User.find(context.user_id)
-        course = Course.find(context.course_id)
-        assignment_structure_export = AssignmentExporter.new(current_user, course, context.host_url).export 
-
+        context.current_user = User.find(context.user_id)
+        context.course = Course.find(context.course_id)
+        assignment_structure_export = AssignmentExporter.new(context.current_user, context.course, context.host_url).export 
+        
         open(context.csv_file, "w") do |f|
           f.puts assignment_structure_export
         end

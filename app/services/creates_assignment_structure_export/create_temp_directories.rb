@@ -5,22 +5,23 @@ module Services
     class CreateTempDirectories
       extend LightService::Action
 
-      expects :submissions_export
-      promises :expanded_archive_base_path, :archive_root_dir, :csv_file_path
+      expects :course_id, :user_id, :host_url, :csv_file
+      promises :export_name, :export_directory, :csv_file, :course_id, :user_id, :host_url, :csv_file, :images_directory
 
       executed do |context|
-        submissions_export = context.submissions_export
-        context.expanded_archive_base_path = File.expand_path(submissions_export.export_file_basename, self.make_temp_directories)
-        context.archive_root_dir = FileUtils.mkdir_p(archive_root_dir_path(submissions_export)).first
-        context.csv_file_path = File.expand_path("_grade_import_template.csv", context.archive_root_dir)
+        context.export_name = context.csv_file.delete_suffix(".csv")
+        context.export_directory = [self.tmp_dir_prefix, context.export_name].join('/')
+        context.images_directory = [context.export_directory, "images"].join('/')
+        context.csv_file = [context.export_directory, context.csv_file].join('/')
+        
+        self.make_temp_directories(context)
+        
       end
 
-      def self.archive_root_dir_path(submissions_export)
-        File.expand_path(submissions_export.export_file_basename, self.make_temp_directories)
-      end
-
-      def self.make_temp_directories
-        FileUtils.mkdir_p(self.tmp_dir_prefix).first
+      def self.make_temp_directories(context)
+        FileUtils.mkdir_p(self.tmp_dir_prefix)
+        FileUtils.mkdir_p(context.export_directory)
+        FileUtils.mkdir_p(context.images_directory)
       end
 
       def self.tmp_dir_prefix
