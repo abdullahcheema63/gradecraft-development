@@ -43,7 +43,7 @@
         <!-- <p style="background: yellow">
           To E from S: This onboarding div is for instructors
         </p> -->
-        <vue-slick v-if="userIsInstructor" class="onboarding_slides student" :options="slickOptions">
+        <vue-slick v-if="userIsInstructor" class="onboarding_slides" :options="slickOptions">
           <div class="slides instructor_1">
             <div></div>
             <div>
@@ -105,7 +105,7 @@
           </div>
         </vue-slick>
 
-        <vue-slick v-else :options="slickOptions" class="onboarding_slides student">
+        <vue-slick v-else :options="slickOptions" class="onboarding_slides">
           <div class="slides student_1">
             <div></div>
             <div>

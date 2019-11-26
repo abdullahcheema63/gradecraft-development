@@ -24,27 +24,35 @@ a.site-title
 .navbar
   position: fixed
   top: 0 !important
-  z-index: 99
+  z-index: 100
   height: 45px !important
   font-size: 0.9em
+  background-color: white
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2)
+  padding: 0 1em
+  box-sizing: border-box
+
+  a
+    color: $blue_dark
+
+    &:hover
+      color: $blue_dark
 
   .course-site
     a
-      font-family: 'ProximaNova_regular', sans-serif
       border: 0px solid transparent
-      color: white
 
 .logged-out
   .navbar
-    background-color: $color-blue-1
+    background-color: $blue_dark
 
 .the-nav
-  background-color: $blue_dark
   height: 45px
 
   .nav-button
     border: 0px solid transparent
     margin-top: 0.15em
+    color: $blue_dark
 
     &.announcement
       position: relative
@@ -108,6 +116,20 @@ ul.subnav.logged-out
 .btn-public-nav
   display: none
 
+.logo_monogram
+  background: url(asset_path("logo-monogram.svg")) no-repeat left center
+  background-size: 35px auto
+  width: 45px
+  height: 45px
+  float: left
+  cursor: pointer
+
+  a
+    display: block
+    width: 100%
+    height: 100%
+    border-bottom: 0px solid transparent
+
 /* Med Screen Styles*/
 @media (min-width: $media-small-max)
   .the-nav .nav-pill.right.public-nav
@@ -139,83 +161,72 @@ ul.subnav.logged-out
       &.left
         height: 45px
 
-  .the-nav > .nav
-    margin: 0
-    padding-left: 0
-    line-height: normal
-    .my-account
-      min-width: 120px
+    & > .nav
+      margin: 0
+      padding-left: 0
+      line-height: normal
 
-  .the-nav > .nav > li .caret
-    margin-top: 8px
-    margin-left: 2px
-    border-top-color: $color-grey-5
-    border-bottom-color: $color-grey-5
-  .nav > li a
-    display: block
-    text-decoration: none
-    .course_name
-      margin-left: .25rem
-    .course_semester
-      margin-left: .5rem
-      color: $color-blue-5
-      text-transform: uppercase
-    &.button
-      color: $color-white
-    .tagline
-      margin-left: .5rem
-      color: $color-green-2
+      .my-account
+        min-width: 120px
 
-  /* Active State */
-  .the-nav > .nav > li:hover > a
-    color: $color-blue-5
-  .the-nav > .nav > li:hover > a.no-hover
-    background-color: transparent
-    color: $color-white
+      & > li
+        .caret
+          margin-top: 8px
+          margin-left: 2px
+          border-top-color: $grey_1
+          border-bottom-color: $grey_1
 
-  /* Subnav */
-  .nav > li > .subnav
-    display: none
-    position: absolute
-    top: 40px
-    right: 0
-    z-index: 20
-    margin: 0
-    padding: 0
-    min-width: 160px
-    font-size: 0.9em
-    background: $bg-blue
-    border: 2px solid $blue_dark
-    //border-bottom-left-radius: $global-radius
-    //border-bottom-right-radius: $global-radius
-    &.class-info
-      min-width: 260px
-  .nav > li > .subnav > li
-    margin-bottom: 0
-    padding: 0
-  .nav > li > .subnav > li.not-a-link
-    padding: 6px 10px
-  .nav > li > .subnav > li a
-    //color: $color-black
-    padding: 6px 10px
-    transition: all .2s
-    border: 0px solid transparent
-  .nav > li > .subnav > li a:hover
-    background: $color-blue-2
-    color: $color-white
+        a
+          display: block
+          text-decoration: none
 
-  .nav > li > .subnav > li:last-of-type a:hover
-    border-bottom-left-radius: $global-radius
-    border-bottom-right-radius: $global-radius
+          .course_name
+            margin-left: .25em
+          .course_semester
+            margin-left: .5em
+            color: $blue
+            text-transform: uppercase
+          &.button
+            color: white
+          .tagline
+            margin-left: .5rem
+            color: $teal_bright
+
+        /* Subnav */
+        & > .subnav
+          display: none
+          position: absolute
+          top: 43px
+          right: 0
+          z-index: 20
+          margin: 0
+          padding: 0
+          min-width: 160px
+          background: $blue_dark
+          border: 2px solid $blue_dark
+
+          & > li
+            margin-bottom: 0
+            padding: 0
+
+            &.not-a-link
+              padding: 6px 10px
+
+            a
+              padding: 1em
+              transition: all .2s
+              color: white
+              border-bottom: 1px solid white
+
+            &:last-of-type
+              a
+                border-bottom: 0px solid transparent
 
 
 /* Mobile Styles */
 @media (max-width: $media-medium-max)
   .logged-in .navbar .nav-collapse
     display: none
-
-  .navbar
-    background-color: $color-blue-1
 
   .nav.nav-pill
     padding: 0
@@ -283,11 +294,11 @@ ul.subnav.logged-out
   .btn-public-nav
     display: inline-block
     float: right
-    color: $color-blue-5
+    color: $blue
     margin-top: 1em
     margin-right: 1em
     &:hover
-      color: $color-blue-5
+      color: $blue
 
 .noscroll
   overflow: hidden

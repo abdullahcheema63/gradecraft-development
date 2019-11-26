@@ -9,6 +9,9 @@
         = link_to "Skip to main content", "#main-content"
       .navbar.container
         %nav.the-nav.nav-collapse{class: ("preview-mode" if impersonating?), role: "navigation"}
+          .logo_monogram
+            = link_to " ", overview_index_path
+
           %ul.nav.nav-pill.left
             %li.course-site
               %a.no-hover.site-title{:href => dashboard_path}
