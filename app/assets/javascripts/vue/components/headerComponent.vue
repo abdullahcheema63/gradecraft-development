@@ -31,140 +31,11 @@
         <ul>
           <li><a :href="user.accountURL">My Account</a></li>
           <li v-if="user.environment != 'production' "><a href="/subscriptions">My Subscription</a></li>
-          <li><a @click.prevent="toggleModalState">View Tour</a></li>
           <li><a href="/logout">Logout</a></li>
         </ul>
       </div>
     </div>
 
-    <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container onboarding">
-      <template slot="heading">Welcome to GradeCraft!</template>
-      <template slot="content">
-        <!-- <p style="background: yellow">
-          To E from S: This onboarding div is for instructors
-        </p> -->
-        <vue-slick v-if="userIsInstructor" class="onboarding_slides" :options="slickOptions">
-          <div class="slides instructor_1">
-            <div></div>
-            <div>
-              <h2>Hey there, {{user.firstName}}!</h2>
-              <p>
-                Welcome to GradeCraft! This quick tour will introduce you to GradeCraft, a learning management system that supports gameful courses.
-              </p>
-            </div>
-          </div>
-          <div class="slides instructor_2">
-            <div></div>
-            <div>
-              <h2>What is GradeCraft?</h2>
-              <p>
-                GradeCraft is a learning management system that helps you build gameful courses.
-              </p>
-              <ul class="pink_dots">
-                <li>Supports personalized learning through assessment choice</li>
-                <li>The Grade Predictor promotes student agency by enabling them to make choices and set goals
-                <li>Analytics displays help students keep track of how they’re doing</li>
-              </ul>
-            </div>
-          </div>
-          <div class="slides instructor_3">
-            <div></div>
-            <div>
-              <h2>Cross-platform Integration</h2>
-              <p>
-                Easily import data from other platforms and tools, such as Canvas.
-              </p>
-            </div>
-          </div>
-          <div class="slides instructor_4">
-            <div></div>
-            <div>
-              <h2>Extensive Customization</h2>
-              <p>
-                You have freedom to tailor and personalize features, course settings, and language based on your unique scenarios and needs.
-              </p>
-            </div>
-          </div>
-          <div class="slides instructor_5">
-            <div></div>
-            <div>
-              <h2>Class Analytics</h2>
-              <p>
-                Course and assignment analytics help students make sense of their progress and plan for success.
-              </p>
-            </div>
-          </div>
-          <div class="slides instructor_6">
-            <div></div>
-            <div>
-              <h2>Build Motivation</h2>
-              <p>
-                Employ special features to motivate students, such as unlocks, badges, and dynamic grading schemes.
-              </p>
-            </div>
-          </div>
-        </vue-slick>
-
-        <vue-slick v-else :options="slickOptions" class="onboarding_slides">
-          <div class="slides student_1">
-            <div></div>
-            <div>
-              <h2>Hey there, {{user.firstName}}!</h2>
-              <p>
-                Welcome to GradeCraft! This quick tour will show you how GradeCraft works.
-              </p>
-            </div>
-          </div>
-          <div class="slides student_2">
-            <div></div>
-            <div>
-              <h2>Start From Zero</h2>
-              <p>
-                Everyone starts from zero, and earns points by completing assignments. Your final grade is completely independent from your peers' performances.
-              </p>
-            </div>
-          </div>
-          <div class="slides student_3">
-            <div></div>
-            <div>
-              <h2>High Autonomy</h2>
-              <p>
-                You have the freedom to decide what kind of work you want to do and when. Find out what best aligns with your interest and take control of the outcome.
-              </p>
-            </div>
-          </div>
-          <div class="slides student_4">
-            <div></div>
-            <div>
-              <h2>Tangible Feedback</h2>
-              <p>
-                Experience the learning process in real time. Easily keep track of progress through comprehensive grade analytics.
-              </p>
-            </div>
-          </div>
-          <div class="slides student_5">
-            <div></div>
-            <div>
-              <h2>Plan Your Grade</h2>
-              <p>
-                Plan out variable assignment pathways with the Grade Predictor and use it to maximize your freedom of choice. Achieve the goals you want on your terms.
-              </p>
-            </div>
-          </div>
-          <div class="slides student_5">
-            <div></div>
-            <div>
-              <h2>Plan Your Grade</h2>
-              <p>
-                Plan out variable assignment pathways with the Grade Predictor and use it to maximize your freedom of choice. Achieve the goals you want on your terms.
-              </p>
-            </div>
-          </div>
-        </vue-slick>
-
-      </template>
-      <template slot="cancel-link"> &nbsp; </template>
-    </modalComponent>
   </div>
 </template>
 
@@ -180,20 +51,10 @@ module.exports = {
   },
   data() {
     return {
-      slickOptions: {
-        dots: true,
-        prevArrow: '<button class="slick-prev" aria-label="Previous" type="button"> </button>',
-        nextArrow: '<button class="slick-next" aria-label="Next" type="button"> </button>',
-      },
       prevScrollPos: null,
       activeUsername: false,
       activeFreetrialMsg: false,
       modalState: false,
-      slickOptions: {
-        dots: true,
-        prevArrow: '<button class="slick-prev" aria-label="Previous" type="button"> </button>',
-        nextArrow: '<button class="slick-next" aria-label="Next" type="button"> </button>',
-      },
     }
   },
   computed: {

@@ -9,8 +9,64 @@
         </p>
         <p>
           Look for my messages if you want some tips on how to use GradeCraft features!
+          You can also <a @click.prevent="toggleModalState">review our onboarding slides</a> at any time.
         </p>
       </guideMessage>
+
+      <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container onboarding">
+        <template slot="heading">Welcome to GradeCraft!</template>
+        <template slot="content">
+          <vue-slick :options="slickOptions" class="onboarding_slides">
+            <div class="slides student_1">
+              <div></div>
+              <div>
+                <h2>Hey there, {{userFirstName}}!</h2>
+                <p>
+                  Welcome to GradeCraft! This quick tour will show you how GradeCraft works.
+                </p>
+              </div>
+            </div>
+            <div class="slides student_2">
+              <div></div>
+              <div>
+                <h2>Start From Zero</h2>
+                <p>
+                  Everyone starts from zero, and earns points by completing assignments. Your final grade is completely independent from your peers' performances.
+                </p>
+              </div>
+            </div>
+            <div class="slides student_3">
+              <div></div>
+              <div>
+                <h2>High Autonomy</h2>
+                <p>
+                  You have the freedom to decide what kind of work you want to do and when. Find out what best aligns with your interest and take control of the outcome.
+                </p>
+              </div>
+            </div>
+            <div class="slides student_4">
+              <div></div>
+              <div>
+                <h2>Tangible Feedback</h2>
+                <p>
+                  Experience the learning process in real time. Easily keep track of progress through comprehensive grade analytics.
+                </p>
+              </div>
+            </div>
+            <div class="slides student_5">
+              <div></div>
+              <div>
+                <h2>Plan Your Grade</h2>
+                <p>
+                  Plan out variable assignment pathways with the Grade Predictor and use it to maximize your freedom of choice. Achieve the goals you want on your terms.
+                </p>
+              </div>
+            </div>
+          </vue-slick>
+
+        </template>
+        <template slot="cancel-link"> &nbsp; </template>
+      </modalComponent>
     </div>
     <tabContainer>
       <template slot="tabBarNav">
@@ -127,9 +183,16 @@ module.exports = {
     accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     tabContainer: () => VComponents.get('vue/components/structure/tabContainer'),
     guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
+    modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
+    vueSlickCarousel
   },
   data() {
     return {
+      slickOptions: {
+        dots: true,
+        prevArrow: '<button class="slick-prev" aria-label="Previous" type="button"> </button>',
+        nextArrow: '<button class="slick-next" aria-label="Next" type="button"> </button>',
+      },
       tabBarOption: ["Current", "Past"],
       tabSection: ["Current"],
       config: {
@@ -141,6 +204,7 @@ module.exports = {
       searchPastCourses: "",
       termYear: [],
       termName: [],
+      modalState: true,
     }
   },
   created: function() {

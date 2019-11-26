@@ -8,8 +8,79 @@
         </p>
         <p>
           I’m here to help you as you set up your courses. Look for my messages if you want some tips on how to use GradeCraft features!
+          You can also <a @click.prevent="toggleModalState">review our onboarding slides</a> at any time.
         </p>
       </guideMessage>
+
+      <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container onboarding">
+        <template slot="heading">Welcome to GradeCraft!</template>
+        <template slot="content">
+          <vue-slick class="onboarding_slides" :options="slickOptions">
+            <div class="slides instructor_1">
+              <div></div>
+              <div>
+                <h2>Hey there, {{userFirstName}}!</h2>
+                <p>
+                  Welcome to GradeCraft! This quick tour will introduce you to GradeCraft, a learning management system that supports gameful courses.
+                </p>
+              </div>
+            </div>
+            <div class="slides instructor_2">
+              <div></div>
+              <div>
+                <h2>What is GradeCraft?</h2>
+                <p>
+                  GradeCraft is a learning management system that helps you build gameful courses.
+                </p>
+                <ul class="pink_dots">
+                  <li>Supports personalized learning through assessment choice</li>
+                  <li>The Grade Predictor promotes student agency by enabling them to make choices and set goals
+                  <li>Analytics displays help students keep track of how they’re doing</li>
+                </ul>
+              </div>
+            </div>
+            <div class="slides instructor_3">
+              <div></div>
+              <div>
+                <h2>Cross-platform Integration</h2>
+                <p>
+                  Easily import data from other platforms and tools, such as Canvas.
+                </p>
+              </div>
+            </div>
+            <div class="slides instructor_4">
+              <div></div>
+              <div>
+                <h2>Extensive Customization</h2>
+                <p>
+                  You have freedom to tailor and personalize features, course settings, and language based on your unique scenarios and needs.
+                </p>
+              </div>
+            </div>
+            <div class="slides instructor_5">
+              <div></div>
+              <div>
+                <h2>Class Analytics</h2>
+                <p>
+                  Course and assignment analytics help students make sense of their progress and plan for success.
+                </p>
+              </div>
+            </div>
+            <div class="slides instructor_6">
+              <div></div>
+              <div>
+                <h2>Build Motivation</h2>
+                <p>
+                  Employ special features to motivate students, such as unlocks, badges, and dynamic grading schemes.
+                </p>
+              </div>
+            </div>
+          </vue-slick>
+
+        </template>
+        <template slot="cancel-link"> &nbsp; </template>
+      </modalComponent>
+
     </div>
 
     <tabContainer>
@@ -483,6 +554,11 @@ module.exports = {
   },
   data() {
     return {
+      slickOptions: {
+        dots: true,
+        prevArrow: '<button class="slick-prev" aria-label="Previous" type="button"> </button>',
+        nextArrow: '<button class="slick-next" aria-label="Next" type="button"> </button>',
+      },
       tabBarOption: ["Current", "Archived"],
       tabSection: ["Current"],
       config: {
