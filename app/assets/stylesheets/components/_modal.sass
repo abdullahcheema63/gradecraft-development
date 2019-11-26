@@ -16,6 +16,7 @@
     transition: opacity linear 0.4s
     width: 0px
     height: 0px
+    pointer-events: none
 
   &.is-open
     z-index: 110
@@ -23,6 +24,7 @@
     transition: opacity linear 0.2s
     width: 100vw
     height: 100vh
+    pointer-events: auto
 
 .modal
   position: fixed
@@ -38,11 +40,13 @@
     opacity: 0
     z-index: -100
     transition: all linear 0.2s
+    pointer-events: none
 
   &.is-open
     z-index: 120
     opacity: 1
     transition: all linear 0.2s
+    pointer-events: auto
 
   &.getting_started
     #alert
