@@ -1,0 +1,17 @@
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+
+%td
+  %h1
+    Good news, #{ @user.first_name }!
+
+  %p
+    Your requested assignment structure export for
+    %strong
+      #{ @course.name }
+    is attached.
+
+  %p
+    Thanks for being gameful!
+    %br
+    GradeCraft

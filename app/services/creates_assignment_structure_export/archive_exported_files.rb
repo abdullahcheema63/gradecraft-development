@@ -2,14 +2,13 @@ module Services
   module Actions
     class ArchiveExportedFiles
       extend LightService::Action
-      expects :submissions_export, :archive_root_dir, :expanded_archive_base_path
+      expects :images_directory, :course, :current_user
+      promises :course, :has_images, :current_user, :export_archive_path
 
       executed do |context|
-        submissions_export = context.submissions_export
-        archive_root_dir = context.archive_root_dir
-        expanded_archive_base_path = context.expanded_archive_base_path
+        context.export_archive_path = "#{context.images_directory}.zip"
 
-        Archive::Zip.archive("#{expanded_archive_base_path}.zip", archive_root_dir)
+        Archive::Zip.archive(context.export_archive_path, context.images_directory)
       end
     end
   end

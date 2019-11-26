@@ -5,8 +5,9 @@ module Services
   module Actions
     class CopyImages
       extend LightService::Action
-      expects :course, :images_directory
 
+      expects :course, :current_user, :images_directory
+      promises :has_images, :course, :current_user
 
       executed do |context|
         images_paths = []
@@ -28,8 +29,15 @@ module Services
           puts image_path.path, image_path.name
         end
 
-        self.copy_images(images_paths, context.images_directory)
+        context.has_images = false
 
+        context.has_images = true if images_paths.length > 0
+
+        if context.has_images
+          self.copy_images(images_paths, context.images_directory)
+        else
+          self.remove_images_directory(context.images_directory)
+        end
       end
 
       def self.named_image_paths(assignment_structure_details, course_id, common_name)
@@ -66,6 +74,10 @@ module Services
           image_destination = [images_directory, image_path.name].join('/')
           FileUtils.cp(image_source, image_destination)
         end
+      end
+
+      def self.remove_images_directory(images_directory)
+        FileUtils.rm_rf(images_directory)
       end
     end
   end

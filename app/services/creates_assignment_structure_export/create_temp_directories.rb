@@ -6,13 +6,12 @@ module Services
       extend LightService::Action
 
       expects :course_id, :user_id, :host_url, :csv_file
-      promises :export_name, :export_directory, :csv_file, :course_id, :user_id, :host_url, :csv_file, :images_directory
+      promises :csv_file, :images_directory, :course_id, :user_id, :host_url
 
       executed do |context|
-        context.export_name = context.csv_file.delete_suffix(".csv")
-        context.export_directory = [self.tmp_dir_prefix, context.export_name].join('/')
-        context.images_directory = [context.export_directory, "images"].join('/')
-        context.csv_file = [context.export_directory, context.csv_file].join('/')
+        images_export_directory_name = "#{context.csv_file.delete_suffix(".csv")} Images "
+        context.images_directory = [self.tmp_dir_prefix, images_export_directory_name].join('/')
+        context.csv_file = [self.tmp_dir_prefix, context.csv_file].join('/')
         
         self.make_temp_directories(context)
         
@@ -20,7 +19,6 @@ module Services
 
       def self.make_temp_directories(context)
         FileUtils.mkdir_p(self.tmp_dir_prefix)
-        FileUtils.mkdir_p(context.export_directory)
         FileUtils.mkdir_p(context.images_directory)
       end
 

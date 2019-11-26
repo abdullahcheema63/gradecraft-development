@@ -18,6 +18,16 @@ class ExportsMailer < ApplicationMailer
     mail_submissions_export("failed to build", professor, assignment)
   end
 
+  def assignment_structure_export(course, user, csv_file, images_archive_path)
+    set_export_ivars(course, user)
+    attachments["#{course.name} Assignment Structure - #{Date.today}.csv"] = open(csv_file).read
+
+    if images_archive_path.present?
+      attachments["#{course.name} Assignment Structure - Images.zip"] = open(images_archive_path).read
+    end
+    send_export_email "Assignment Structure Export for #{course.name} is attached"
+  end
+
   def grade_export(course, user, csv_data)
     set_export_ivars(course, user)
     attachments["#{ course.name } Grades - #{ Date.today }.csv"] = csv_attachment(csv_data)
