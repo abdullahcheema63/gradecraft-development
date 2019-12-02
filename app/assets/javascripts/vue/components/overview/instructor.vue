@@ -21,57 +21,56 @@
               <div>
                 <h2>Hey there, {{userFirstName}}!</h2>
                 <p>
-                  Welcome to GradeCraft! This quick tour will introduce you to GradeCraft, a learning management system that supports gameful courses.
+                  Welcome to GradeCraft! GradeCraft lets you build courses with gameful features such as:
                 </p>
+                <ul class="pink_dots">
+                  <li>Building up points from zero</li>
+                  <li>Offering student choice</li>
+                  <li>Providing immediate feedback</li>
+                  <li>Allowing the freedom to fail</li>
+                  <li>Course transparency</li>
+                </ul>
               </div>
             </div>
             <div class="slides instructor_2">
               <div></div>
               <div>
-                <h2>What is GradeCraft?</h2>
+                <h2>Support Autonomy</h2>
                 <p>
-                  GradeCraft is a learning management system that helps you build gameful courses.
+                  The Points Planner promotes student agency by enabling students to make choices and set goals.
                 </p>
-                <ul class="pink_dots">
-                  <li>Supports personalized learning through assessment choice</li>
-                  <li>The Grade Predictor promotes student agency by enabling them to make choices and set goals
-                  <li>Analytics displays help students keep track of how they’re doing</li>
-                </ul>
               </div>
             </div>
             <div class="slides instructor_3">
               <div></div>
               <div>
-                <h2>Cross-platform Integration</h2>
+                <h2>Shape a Path &amp; Reward Accomplishments</h2>
                 <p>
-                  Easily import data from other platforms and tools, such as Canvas.
+                  Unlocks let you guide students down a path towards mastery by connecting assignments together.
+                </p>
+                <p>
+                  Badges allow you to reward to students for reaching milestones.
                 </p>
               </div>
             </div>
             <div class="slides instructor_4">
               <div></div>
               <div>
-                <h2>Extensive Customization</h2>
+                <h2>Enjoy Easy, Flexible Grading</h2>
                 <p>
-                  You have freedom to tailor and personalize features, course settings, and language based on your unique scenarios and needs.
+                  You can grade using levels, points, rubrics, or a binary “met/not met” scheme.
+                </p>
+                <p>
+                  Quickly identify assignments that need to be graded and share instant feedback with your students. Or, let them grade themselves by following your rubric.
                 </p>
               </div>
             </div>
             <div class="slides instructor_5">
               <div></div>
               <div>
-                <h2>Class Analytics</h2>
+                <h2>Stay Informed with Analytics</h2>
                 <p>
-                  Course and assignment analytics help students make sense of their progress and plan for success.
-                </p>
-              </div>
-            </div>
-            <div class="slides instructor_6">
-              <div></div>
-              <div>
-                <h2>Build Motivation</h2>
-                <p>
-                  Employ special features to motivate students, such as unlocks, badges, and dynamic grading schemes.
+                  Easily keep track of what students are completing in your course and what achievement level they’ve reached. 
                 </p>
               </div>
             </div>
@@ -95,7 +94,7 @@
           <div class="content_block">
             <div class="p_button">
               <p>
-                This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course, and publish or unpublish courses at any time.
+                This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course and publish or unpublish courses at any time.
               </p>
               <buttonModal button_class="action" ref="buttonModal_add">
                 <template slot="button-text">Add a course</template>
@@ -161,7 +160,7 @@
             <template slot="content">
               <p class="unspace-bottom">
                 <br />
-                Published courses are visible to all users added to each course.
+                Published courses are visible to students, observers, teaching assistants, and instructors added to each course.
               </p>
               <div class="course_box" v-if="publishedCourses.length">
                 <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"
@@ -182,7 +181,7 @@
             <template slot="content">
               <p class="unspace-bottom">
                 <br />
-                Unpublished courses are hidden from students and observers, but visible to and editable by GSIs and instructors.
+                Unpublished courses are hidden from students and observers, but can be seen and edited by teaching assistants and instructors.
               </p>
               <div v-if="unpublishedCourses.length">
                 <div class="course_box" v-if="unpublishedCourses.length">

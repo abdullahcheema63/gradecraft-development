@@ -22,8 +22,14 @@
               <div>
                 <h2>Hey there, {{userFirstName}}!</h2>
                 <p>
-                  Welcome to GradeCraft! This quick tour will show you how GradeCraft works.
+                  Welcome to GradeCraft! Make the most of your gameful course:
                 </p>
+                <ul class="pink_dots">
+                  <li>Build up points from zero to the grade you want</li>
+                  <li>Make assignment choices that work for you</li>
+                  <li>Learn from quick, clear feedback and analytics</li>
+                  <li>Let yourself fail and try again</li>
+                </ul>
               </div>
             </div>
             <div class="slides student_2">
@@ -31,39 +37,37 @@
               <div>
                 <h2>Start From Zero</h2>
                 <p>
-                  Everyone starts from zero, and earns points by completing assignments. Your final grade is completely independent from your peers' performances.
-                </p>
+                  Start from zero and earn your way up to the grade you want to get. Your final grade is completely independent from your peers’ grades.
               </div>
             </div>
             <div class="slides student_3">
               <div></div>
               <div>
-                <h2>High Autonomy</h2>
+                <h2>Plan Your Path</h2>
                 <p>
-                  You have the freedom to decide what kind of work you want to do and when. Find out what best aligns with your interest and take control of the outcome.
+                  Plan out your assignments with the Points Planner. Choose assignments that match your goals as well as the skills and topics you're most interested in.
                 </p>
               </div>
             </div>
             <div class="slides student_4">
               <div></div>
               <div>
-                <h2>Tangible Feedback</h2>
+                <h2>Track Your Progress</h2>
                 <p>
-                  Experience the learning process in real time. Easily keep track of progress through comprehensive grade analytics.
+                  Keep track of your progress with analytics and clear, timely, and transparent feedback from your instructors.
                 </p>
               </div>
             </div>
             <div class="slides student_5">
               <div></div>
               <div>
-                <h2>Plan Your Grade</h2>
+                <h2>Fail and Try Again!</h2>
                 <p>
-                  Plan out variable assignment pathways with the Grade Predictor and use it to maximize your freedom of choice. Achieve the goals you want on your terms.
+                  Gameful courses support risk-taking. If you get a low score on an assignment, look for ways to recover points&mdash;like resubmitting assignments multiple times, or choosing extra assignments to earn more points toward your goal.
                 </p>
               </div>
             </div>
           </vue-slick>
-
         </template>
         <template slot="cancel-link"> &nbsp; </template>
       </modalComponent>
@@ -95,7 +99,7 @@
             <template slot="content">
               <p class="unspace-bottom">
                 <br />
-                Published courses are visible to all users added to each course.
+                Published courses are visible to students, observers, assistants, and instructors added to each course.
               </p>
               <div class="course_box" v-if="publishedCourses.length">
                 <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
@@ -114,7 +118,7 @@
             <template slot="content">
               <p class="unspace-bottom">
                 <br />
-                Unpublished courses are hidden from students and observers, but visible to and editable by GSIs and instructors.
+                Unpublished courses are hidden from students and observers, but can be seen and edited by assistants and instructors.
               </p>
               <div v-if="unpublishedCourses.length">
                 <div class="course_box" v-if="unpublishedCourses.length">
