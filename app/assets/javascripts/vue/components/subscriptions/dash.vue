@@ -2,7 +2,7 @@
   <div>
     <div v-if="failedPayment.length" class="inline_alert_msg">
       <p>
-        You failed a payment... {{failedPayment.status}}        
+        You failed a payment... {{failedPayment.status}}
       </p>
     </div>
     <subscriptions-course-selector>
@@ -62,7 +62,7 @@
                     <a @click="makePaymentMethodDefault(paymentMethod.id)">Make Primary</a>
                   </li>
                   <li>
-                    <a>Edit</a>
+                    <a @click="openEditPaymentMethod(paymentMethod)">Edit</a>
                   </li>
                   <li>
                     <a @click="removePaymentMethod(paymentMethod.id)">Delete</a>
@@ -200,6 +200,15 @@
           </template>
         </buttonModal>
       </form>
+      <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
+        <template slot="heading">Edit your payment method</template>
+        <template slot="content">
+          <form>
+            <editPaymentInputs ref="editPaymentInputs" :stripePk="stripePk"/>
+          </form>
+        </template>
+        <template slot="submit-button"> </template>
+      </modalComponent>
     </div>
   </div>
 </template>
@@ -211,6 +220,8 @@ module.exports = {
   components: {
     "subscriptions-payment-inputs": () => VComponents.get("vue/components/subscriptions/paymentInputs"),
     "subscriptions-course-selector": () => VComponents.get("vue/components/subscriptions/courseSelector"),
+    modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
+    editPaymentInputs: () => VComponents.get('vue/components/subscriptions/editPaymentInputs'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },
@@ -219,6 +230,7 @@ module.exports = {
         courses: [],
         errors: [],
         showRenew: false,
+        modalState: false,
       };
   },
   props: {
@@ -302,6 +314,18 @@ module.exports = {
   methods: {
     toggleRenew() {
       this.showRenew = !this.showRenew;
+    },
+    openEditPaymentMethod(paymentMethod){
+      console.log("editing payment method: ", paymentMethod)
+      this.modalState = true
+      this.$refs.editPaymentInputs.selectedCardToEdit(paymentMethod)
+    },
+    close() {
+      this.toggleModalState()
+    },
+    toggleModalState(){
+      this.modalState = !this.modalState
+      this.editPaymentInputs = false
     },
     removePaymentMethod(pID){
       this.$store.dispatch('removePaymentMethod', pID)

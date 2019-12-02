@@ -80,6 +80,32 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
+  # POST api/subscriptions/edit_card
+  def edit_card
+    puts "inside edit_card subscriptions api controller"
+    @subscription = current_user.subscription
+    if !@subscription
+      return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
+    end
+    customer_id = @subscription.customer_id
+    payment_method_id = params[:id]
+    make_default = params[:default]
+
+    puts "Params: #{params}"
+    puts "pm_id: #{payment_method_id}"
+
+    begin
+      editCard(payment_method_id)
+    rescue Stripe::CardError => e
+      return render json: { data: nil, errors: e.error.message, success: false }, status: 403
+    end
+
+    if make_default
+      set_card_as_default(customer_id, payment_method_id)
+    end
+
+  end
+
   def make_payment_method_default
     @subscription = current_user.subscription
     if !@subscription
@@ -337,6 +363,25 @@ class API::SubscriptionsController < ApplicationController
       payment_method_id,
       {
         customer: customer_id
+      }
+    )
+  end
+
+  def editCard(payment_method_id)
+    Stripe::PaymentMethod.update(
+      payment_method_id,
+      {
+        billing_details: {
+          address: {
+            city: params[:city],
+            country: params[:country],
+            line1: params[:addr1],
+            line2: params[:addr2],
+            postal_code: params[:postal_code],
+          },
+          name: params[:full_name],
+          phone: params[:phone]
+        }
       }
     )
   end

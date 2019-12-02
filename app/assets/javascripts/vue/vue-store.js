@@ -313,6 +313,22 @@ const store = new Vuex.Store({
         else
           { window.location.replace(store.state.subscriptionsURL) }
       },
+      editCardInfo: async function({ commit, state }, paymentMethodAndInfo) {
+        console.log("editCardInfo action dispatched")
+        const resp = await fetch("/api/subscriptions/edit_card", {
+          method: 'POST',
+          headers: requestHeaders,
+          credentials: 'same-origin',
+          body: JSON.stringify(paymentMethodAndInfo),
+        })
+        if (!resp.ok){
+          const help = await resp.json();
+          console.log("errors?", help.errors)
+          commit('addCreditCardError', help.errors)
+        }
+        else
+          { window.location.replace(store.state.subscriptionsURL) }
+      },
       removePaymentMethod: async function({ commit }, paymentMethodID){
         console.log("removePaymentMethod action dispatched")
         const resp = await fetch("/api/subscriptions/remove_card", {
