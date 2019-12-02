@@ -1,8 +1,13 @@
 class SubmissionListExporter
-  def export(course)
+  def initialize(course, host_url="")
+    @course = course
+    @host_url = host_url
+  end
+
+  def export
     CSV.generate do |csv|
-      csv << baseline_headers(course)
-      course.submissions.submitted.find_each(batch_size: 500) do |submission|
+      csv << baseline_headers(@course)
+      @course.submissions.submitted.find_each(batch_size: 500) do |submission|
         csv << [
           submission.id,
           submission.assignment.assignment_type.name,
@@ -12,7 +17,7 @@ class SubmissionListExporter
           submission.student_id,
           submission.group&.name,
           find_team_name(submission),
-          submission.text_comment,
+          remove_froala_html(submission.text_comment),
           submission.created_at,
           submission.updated_at,
           submission.grade&.score,
@@ -54,5 +59,22 @@ class SubmissionListExporter
   def find_team_name(submission)
     return unless submission.student.present?
     submission.student.team_for_course(submission.course)&.name
+  end
+
+  def remove_froala_html(comment)
+    comment_html = Nokogiri::HTML(comment)
+
+    comment_html.search('img').each do |inline_image_upload|
+      puts inline_image_upload
+
+      if inline_image_upload.nil?
+        next
+      end
+
+      image_upload_link = @host_url + inline_image_upload['src']
+      inline_image_upload.replace("<p> [ image inserted here can be accessed at #{image_upload_link} ] </p>")
+    end
+
+    comment_html.xpath("//text()").to_s
   end
 end

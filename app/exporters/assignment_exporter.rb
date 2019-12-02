@@ -29,8 +29,8 @@ class AssignmentExporter
           a.name,
           a.assignment_type.name,
           a.full_points,
-          remove_froala_html(a.description),
-          remove_froala_html(a.purpose),
+          remove_froala_html(a.description, "Description", a.name),
+          remove_froala_html(a.purpose, "Purpose", a.name),
           formatted_date(a.open_at),
           formatted_date(a.due_at),
           a.accepts_submissions,
@@ -68,12 +68,15 @@ class AssignmentExporter
     return "Hidden"
   end
 
-  def remove_froala_html(assignment_structure_details)
+  def remove_froala_html(assignment_structure_details, type, assignment_name)
     assignment_structure_details_html = Nokogiri::HTML(assignment_structure_details)
-    
+    count = 0
+
     assignment_structure_details_html.search('img').each do |inline_image_upload|
       image_upload_link = @host_url + inline_image_upload['src']
-      inline_image_upload.replace("<p> [ image inserted here can be accessed at #{image_upload_link} ] </p>")
+      image_name = "#{assignment_name} - #{type} - Image #{count}"
+      count += 1
+      inline_image_upload.replace("<p> [ image inserted here is included as #{image_upload_link} in the archive ] </p>")
     end
 
     assignment_structure_details_html.xpath("//text()").to_s

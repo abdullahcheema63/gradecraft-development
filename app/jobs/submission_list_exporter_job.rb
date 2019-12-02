@@ -1,11 +1,11 @@
 class SubmissionListExporterJob
   include Sidekiq::Worker
 
-  def perform(user_id, course_id, filename=nil)
+  def perform(user_id, course_id, filename=nil, host_url)
     user = User.find(user_id)
     course = Course.includes(submissions: [:grade, :student, :group, assignment: [:assignment_type]]).find(course_id)
 
-    fetch_csv_data(course)
+    fetch_csv_data(course, host_url)
     notify_submission_list_exporter(user, course, filename)
   end
 
@@ -13,8 +13,8 @@ class SubmissionListExporterJob
 
   attr_reader :csv_data
 
-  def fetch_csv_data(course)
-    @csv_data = SubmissionListExporter.new.export(course)
+  def fetch_csv_data(course, host_url)
+    @csv_data = SubmissionListExporter.new(course, host_url).export
   end
 
   def notify_submission_list_exporter(user, course, filename)

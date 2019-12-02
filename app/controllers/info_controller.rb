@@ -124,7 +124,9 @@ class InfoController < ApplicationController
 
   def submissions
     course = current_user.courses.find_by(id: params[:id])
-    @submission_export_job = SubmissionListExporterJob.perform_async(current_user.id, course.id, "#{ course.name } Submissions Export - #{ Date.today }.csv")
+    host_url = "#{root_url}"
+    csv_file = "#{ course.name } Submissions Export - #{ Date.today }.csv"
+    @submission_export_job = SubmissionListExporterJob.perform_async(current_user.id, course.id, csv_file, host_url)
 
     flash[:notice]="Your request to export submissions from course \"#{ course.name }\" is currently being processed. We will email you the data shortly."
     redirect_back_or_default
