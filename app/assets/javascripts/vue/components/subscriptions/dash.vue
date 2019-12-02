@@ -204,7 +204,7 @@
         <template slot="heading">Edit your payment method</template>
         <template slot="content">
           <form>
-            <editPaymentInputs ref="editPaymentInputs" :stripePk="stripePk"/>
+            <subscriptions-payment-inputs ref="editPaymentInputs" :stripePk="stripePk"/>
           </form>
         </template>
         <template slot="submit-button"> </template>
@@ -221,7 +221,6 @@ module.exports = {
     "subscriptions-payment-inputs": () => VComponents.get("vue/components/subscriptions/paymentInputs"),
     "subscriptions-course-selector": () => VComponents.get("vue/components/subscriptions/courseSelector"),
     modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
-    editPaymentInputs: () => VComponents.get('vue/components/subscriptions/editPaymentInputs'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
   },
@@ -325,7 +324,6 @@ module.exports = {
     },
     toggleModalState(){
       this.modalState = !this.modalState
-      this.editPaymentInputs = false
     },
     removePaymentMethod(pID){
       this.$store.dispatch('removePaymentMethod', pID)

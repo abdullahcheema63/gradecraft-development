@@ -12,7 +12,10 @@
     </div>
     <div>
       <h2>My Payment Information</h2>
-      <div id="stripe"></div>
+      <div v-if="!editingBillingInfo" id="stripe"></div>
+      <div v-else>
+        <p>**** **** **** {{paymentMethodInfo.last4}} <span></span> Expires {{paymentMethodInfo.exp_month}}/{{paymentMethodInfo.exp_year}}</p>
+      </div>
     </div>
 
     <h3>Billing Info</h3>
@@ -52,7 +55,8 @@
       <input id="default" v-model="paymentMethodInfo.default" type="checkbox" value="default"/>
       <label for="default">Make this my primary payment method</label>
     </div>
-    <button class="action" :disabled="hasCardError" @click.prevent="addCard()" type="submit">+ Add Card</button>
+    <button v-if="!editingBillingInfo" class="action" :disabled="hasCardError" @click.prevent="addCard()" type="submit">+ Add Card</button>
+    <button v-else class="action" :disabled="hasCardError" @click.prevent="editCardInfo()" type="submit">?words? Apply changes</button>
   </div>
 </template>
 
@@ -67,6 +71,7 @@ module.exports = {
     return {
       errors: [],
       cardError: "",
+      editingBillingInfo: false,
       paymentMethodInfo: {
         full_name: "",
         organization: "",
@@ -77,6 +82,9 @@ module.exports = {
         postal_code: "",
         payment_method_id: "",
         default: false,
+        last4: null,
+        exp_month: null,
+        exp_year: null,
       }
     }
   },
@@ -121,6 +129,16 @@ module.exports = {
         this.paymentMethodInfo.payment_method_id = result.paymentMethod.id
       }
       return this.paymentMethodInfo
+    },
+    editCardInfo: async function() {
+      console.log("inside edit card on payments input, PM info: ", this.paymentMethodInfo)
+      this.$store.dispatch('editCardInfo', this.paymentMethodInfo)
+    },
+    selectedCardToEdit(selectedPaymentMethod) {
+      console.log("inside selectedCardToEdit")
+      console.log("PM passed in the method: ", selectedPaymentMethod)
+      this.editingBillingInfo = true
+      this.paymentMethodInfo = selectedPaymentMethod
     },
   },
   created: function() {
