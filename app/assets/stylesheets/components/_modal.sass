@@ -103,6 +103,9 @@
     padding: 0
 .onboarding_slides
   background-color:  $grey-barely
+  @include tablet
+    background-color: transparent
+
   button.slick-arrow
     position: absolute
     bottom: -40px
@@ -146,6 +149,7 @@
       &:first-of-type
         flex: auto
         width: 500px
+        background-color:  $grey-barely
         @include tablet
           width: 100%
           height: 300px
@@ -153,9 +157,11 @@
         width: 45%
         padding: 1em 70px 1em 1em
         box-sizing: border-box
+        background-color:  $grey-barely
         @include tablet
           width: 100%
-          padding: 1em
+          padding: 1em 1em 1em 1.75em
+          background-color: white
     &.instructor_1
       & > div:first-child
         background-image: url(asset_path("onboarding-yeti_dashboard_instructor.svg"))

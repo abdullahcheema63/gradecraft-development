@@ -38,6 +38,7 @@
                 <h2>Start From Zero</h2>
                 <p>
                   Start from zero and earn your way up to the grade you want to get. Your final grade is completely independent from your peers’ grades.
+                </p>
               </div>
             </div>
             <div class="slides student_3">
