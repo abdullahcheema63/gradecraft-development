@@ -10,6 +10,13 @@
         {{creditCardError}}
       </p>
     </div>
+    <div v-if="errors.length" class="inline_alert_msg">
+      <div v-for="error in errors">
+        <p>
+          {{error}}
+        </p>
+      </div>
+    </div>
     <div>
       <h2>My Payment Information</h2>
       <div v-if="!editingBillingInfo" id="stripe"></div>
