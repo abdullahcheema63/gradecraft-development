@@ -380,7 +380,10 @@ class API::SubscriptionsController < ApplicationController
             postal_code: params[:postal_code],
           },
           name: params[:full_name],
-          phone: params[:phone]
+          phone: params[:phone],
+        },
+        metadata: {
+          nickname: params[:nickname]
         }
       }
     )

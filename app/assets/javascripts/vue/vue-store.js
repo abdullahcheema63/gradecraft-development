@@ -294,7 +294,7 @@ const store = new Vuex.Store({
         const json = await resp.json();
         console.log(json);
         const final = apiResponseToData(json);
-        console.log(final);
+        console.log("getting user payment methods", final);
         commit('addUserPaymentMethods', final)
       },
       addCardToSubscription: async function({ commit, state }, paymentMethod) {

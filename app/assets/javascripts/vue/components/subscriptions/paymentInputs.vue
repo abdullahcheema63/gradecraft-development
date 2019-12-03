@@ -20,12 +20,12 @@
 
     <h3>Billing Info</h3>
     <div class="form_elem">
-      <input id="full_name" v-model="paymentMethodInfo.full_name" type="text" required="required" />
-      <label for="full_name">Full Name as it appears on card</label>
+      <input id="nickname" v-model="paymentMethodInfo.nickname" type="text" />
+      <label for="nickname">Display name</label>
     </div>
     <div class="form_elem">
-      <input id="organization" v-model="paymentMethodInfo.organization" type="text" />
-      <label for="organization">Organization</label>
+      <input id="full_name" v-model="paymentMethodInfo.full_name" type="text" required="required" />
+      <label for="full_name">Full Name as it appears on card</label>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
@@ -43,13 +43,19 @@
         <label for="city">City</label>
       </div>
       <div class="form_elem">
-        <input id="country" v-model="paymentMethodInfo.postal_code" type="text" required="required" />
-        <label for="country">Zip Code (postal code)</label>
+        <input id="country" v-model="paymentMethodInfo.country" type="text" required="required" />
+        <label for="country">Country</label>
       </div>
     </div>
-    <div class="form_elem">
-      <input id="phone" v-model="paymentMethodInfo.phone" type="number" required="required" />
-      <label for="phone">Phone</label>
+    <div class="flex-2 form_pair">
+      <div class="form_elem">
+        <input id="phone" v-model="paymentMethodInfo.phone" type="number" required="required" />
+        <label for="phone">Phone</label>
+      </div>
+      <div class="form_elem">
+        <input id="postal_code" v-model="paymentMethodInfo.postal_code" type="text" required="required" />
+        <label for="postal_code">Zip Code (postal code)</label>
+      </div>
     </div>
     <div class="form_options alt-2">
       <input id="default" v-model="paymentMethodInfo.default" type="checkbox" value="default"/>
@@ -74,12 +80,13 @@ module.exports = {
       editingBillingInfo: false,
       paymentMethodInfo: {
         full_name: "",
-        organization: "",
+        nickname: "",
         phone: "",
         addr1: "",
         addr2: "",
         city: "",
         postal_code: "",
+        country: "",
         payment_method_id: "",
         default: false,
         last4: null,
@@ -109,17 +116,22 @@ module.exports = {
       this.$store.dispatch('addCardToSubscription', paymentMethod)
     },
     createPaymentMethod: async function(){
-      console.log("inside createPaymentMethod")
+      console.log("inside createPaymentMethod", this.paymentMethodInfo.postal_code)
       const result = await stripe.createPaymentMethod('card', card, {
         billing_details: {
           address: {
             city: this.paymentMethodInfo.city,
             line1: this.paymentMethodInfo.addr1,
-            postal_code: this.paymentMethodInfo.postal_code
+            line2: this.paymentMethodInfo.addr2,
+            country: this.paymentMethodInfo.country,
+            postal_code: this.paymentMethodInfo.postal_code,
           },
           phone: this.paymentMethodInfo.phone,
-          name: this.paymentMethodInfo.full_name
+          name: this.paymentMethodInfo.full_name,
         },
+        metadata: {
+          nickname: this.paymentMethodInfo.nickname
+        }
       });
       if (result.error) {
         console.log(result)

@@ -29,10 +29,14 @@ json.included do
     json.id payment_method.id.to_s
     json.attributes do
       json.id payment_method.id.to_s
+      if payment_method.metadata.first
+        json.nickname payment_method.metadata.nickname
+      end
       json.full_name payment_method.billing_details.name
       json.city payment_method.billing_details.address.city
       json.addr1 payment_method.billing_details.address.line1
       json.addr2 payment_method.billing_details.address.line2
+      json.postal_code payment_method.billing_details.address.postal_code
       json.phone payment_method.billing_details.phone
       json.country payment_method.card.country
       json.last4 payment_method.card.last4

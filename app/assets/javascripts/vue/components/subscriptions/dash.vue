@@ -52,6 +52,7 @@
           <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" :checked="paymentMethod.default_payment_method" name="payment_group" />
           <div>
             <p>
+              {{paymentMethod.nickname}}
               <strong>{{paymentMethod.brand}}</strong>
               **** **** **** {{paymentMethod.last4}} <span></span> Expires {{paymentMethod.exp_month}}/{{paymentMethod.exp_year}}
             </p>
