@@ -116,7 +116,7 @@ module.exports = {
       this.$store.dispatch('addCardToSubscription', paymentMethod)
     },
     createPaymentMethod: async function(){
-      console.log("inside createPaymentMethod", this.paymentMethodInfo.postal_code)
+      console.log("inside createPaymentMethod")
       const result = await stripe.createPaymentMethod('card', card, {
         billing_details: {
           address: {

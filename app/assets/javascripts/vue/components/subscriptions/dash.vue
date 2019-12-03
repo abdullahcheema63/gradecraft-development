@@ -174,7 +174,8 @@
               <div v-if="newCost > 0">
                 <h3>Selected Payment Method</h3>
                 <p>
-                  static -- ? Visa **** **** **** 4242 (expires 04/2024)
+                  {{defaultPaymentMethod[0].nickname}} <strong>{{defaultPaymentMethod[0].brand}}</strong>
+                  **** **** **** {{defaultPaymentMethod[0].last4}} <span></span> Expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}
                 </p>
               </div>
               <div class="total">
@@ -310,6 +311,9 @@ module.exports = {
     failedPayment(){
       return this.$store.state.failedPayment
     },
+    defaultPaymentMethod(){
+      return this.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
+    }
   },
   methods: {
     toggleRenew() {
