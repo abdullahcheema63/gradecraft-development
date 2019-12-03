@@ -21,7 +21,12 @@
       <h2>My Payment Information</h2>
       <div v-if="!editingBillingInfo" id="stripe"></div>
       <div v-else>
-        <p>**** **** **** {{paymentMethodInfo.last4}} <span></span> Expires {{paymentMethodInfo.exp_month}}/{{paymentMethodInfo.exp_year}}</p>
+        <h3 class="pink_text">
+          ({{paymentMethodInfo.brand}})
+          **** **** **** {{paymentMethodInfo.last4}} &bull;
+          Expires {{paymentMethodInfo.exp_month}}/{{paymentMethodInfo.exp_year}}
+        </h3>
+        <br />
       </div>
     </div>
 
