@@ -265,6 +265,7 @@ textarea,
       &:checked + div
         border: 3px solid $blue_dark
         font-family: 'ProximaNova_regular', sans-serif
+        margin-left: -2px
 
     .dropdown_dots
       top: 0.7em
@@ -387,21 +388,19 @@ table.form_options-present
   margin: 0.5em 0
 
   & > h3:nth-child(2)
-    margin: 0 0 0 0.5em
+    margin: 0 0 0 0.75em
     font-size: 2em
-    width: 80px
+    width: fit-content
     border-bottom: 3px solid $teal_bright
     text-align: center
     padding: 0 0 4px 0
-
-  span
     position: relative
 
-    sup
-      font-size: 0.6em
-      position: absolute
-      left: -0.55em
-      top: 2px
+  sup
+    font-size: 0.6em
+    position: absolute
+    left: -0.6em
+    top: -4px
 
 .subscription_summary
   & > div
@@ -462,6 +461,9 @@ table.form_options-present
         margin-left: 1.5em
         width: 255px
 
+        @include mobile-xl
+          width: 152px
+
         h3
           margin: 0 0 0 0.5em
           font-size: 2em
@@ -472,33 +474,16 @@ table.form_options-present
           sup
             font-size: 0.6em
             position: absolute
-            left: -0.55em
-            top: 2px
+            left: -0.6em
+            top: 4px
 
       &.today
         position: relative
-        width: 80px
-        height: 80px
-        background-color: $bg-blue_2
-        border-radius: 50%
-        margin-right: 190px
-
-        h3
-          text-align: center
-          line-height: 80px
-          margin-left: 5px
+        color: $teal
 
         span
           sup
             line-height: 1em
-
-        @include mobile-xl
-          width: 70px
-          height: 70px
-          margin-right: 195px
-
-          h3
-            line-height: 70px
 
 #stripe
   max-width: 800px

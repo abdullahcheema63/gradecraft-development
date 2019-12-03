@@ -27,7 +27,7 @@
 
       <div class="payment_today" v-if="newCost > 0">
         <h3>Today’s payment total:</h3>
-        <h3><span class="lining_figures"><sup>$</sup>{{proratedTotal}}</span></h3>
+        <h3><sup>$</sup><span class="lining_figures">{{proratedTotal}}</span></h3>
       </div>
 
       <p>
@@ -174,8 +174,9 @@
               <div v-if="newCost > 0">
                 <h3>Selected Payment Method</h3>
                 <p>
-                  {{defaultPaymentMethod[0].nickname}} <strong>{{defaultPaymentMethod[0].brand}}</strong>
-                  **** **** **** {{defaultPaymentMethod[0].last4}} <span></span> Expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}
+                  {{defaultPaymentMethod[0].nickname}}
+                  ({{defaultPaymentMethod[0].brand}})
+                  **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}
                 </p>
               </div>
               <div class="total">
@@ -203,7 +204,7 @@
         </buttonModal>
       </form>
       <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
-        <template slot="heading">Edit your payment method</template>
+        <template slot="heading">Edit payment card</template>
         <template slot="content">
           <form>
             <subscriptions-payment-inputs ref="editPaymentInputs" :stripePk="stripePk"/>
