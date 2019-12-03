@@ -61,7 +61,7 @@
       </div>
     </div>
     <br />
-    <h3>Payment Method Nickname</h3>
+    <h3>Card Nickname</h3>
     <p>You can give this card an optional nickname as a reference for your own use. This can be beneficial if you have multiple payment cards.</p>
     <div class="form_elem">
       <input id="nickname" v-model="paymentMethodInfo.nickname" type="text" placeholder="Choose an (optional) nickname" />
