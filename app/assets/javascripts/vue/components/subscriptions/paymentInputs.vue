@@ -161,7 +161,9 @@ module.exports = {
     },
     editCardInfo: async function() {
       console.log("inside edit card on payments input, PM info: ", this.paymentMethodInfo)
-      this.$store.dispatch('editCardInfo', this.paymentMethodInfo)
+      if (this.checkRequiredInput() === true) {
+        this.$store.dispatch('editCardInfo', this.paymentMethodInfo)
+      }
     },
     selectedCardToEdit(selectedPaymentMethod) {
       console.log("inside selectedCardToEdit")
