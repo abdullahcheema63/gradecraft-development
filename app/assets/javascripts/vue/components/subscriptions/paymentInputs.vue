@@ -27,49 +27,54 @@
 
     <h3>Billing Info</h3>
     <div class="form_elem">
-      <input id="nickname" v-model="paymentMethodInfo.nickname" type="text" />
-      <label for="nickname">Display name</label>
-    </div>
-    <div class="form_elem">
-      <input id="full_name" v-model="paymentMethodInfo.full_name" type="text" required="required" />
-      <label for="full_name">Full Name as it appears on card</label>
+      <input id="full_name" v-model="paymentMethodInfo.full_name" type="text" required="required" placeholder="Your full name, as it appears on the card" />
+      <label for="full_name">Cardholder name</label>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
-        <input id="addr1" v-model="paymentMethodInfo.addr1" type="text" required="required" />
+        <input id="addr1" v-model="paymentMethodInfo.addr1" type="text" required="required" placeholder="Address, line 1" />
         <label for="addr1">Address Line 1</label>
       </div>
       <div class="form_elem">
-        <input id="addr2" v-model="paymentMethodInfo.addr2" type="text" />
+        <input id="addr2" v-model="paymentMethodInfo.addr2" type="text" placeholder="Address, line 2" />
         <label for="addr2">Address Line 2</label>
       </div>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
-        <input id="city" v-model="paymentMethodInfo.city" type="text" required="required" />
+        <input id="city" v-model="paymentMethodInfo.city" type="text" required="required" placeholder="City" />
         <label for="city">City</label>
       </div>
       <div class="form_elem">
-        <input id="country" v-model="paymentMethodInfo.country" type="text" required="required" />
+        <input id="country" v-model="paymentMethodInfo.country" type="text" required="required" placeholder="Country" />
         <label for="country">Country</label>
       </div>
     </div>
     <div class="flex-2 form_pair">
       <div class="form_elem">
-        <input id="phone" v-model="paymentMethodInfo.phone" type="number" required="required" />
+        <input id="phone" v-model="paymentMethodInfo.phone" type="number" required="required" placeholder="Phone number" />
         <label for="phone">Phone</label>
       </div>
       <div class="form_elem">
-        <input id="postal_code" v-model="paymentMethodInfo.postal_code" type="text" required="required" />
-        <label for="postal_code">Zip Code (postal code)</label>
+        <input id="postal_code" v-model="paymentMethodInfo.postal_code" type="text" required="required" placeholder="ZIP code (postal code)" />
+        <label for="postal_code">Zip Code</label>
       </div>
     </div>
+    <br />
+    <h3>Payment Method Nickname</h3>
+    <p>You can give this card an optional nickname as a reference for your own use. This can be beneficial if you have multiple payment cards.</p>
+    <div class="form_elem">
+      <input id="nickname" v-model="paymentMethodInfo.nickname" type="text" placeholder="Choose an (optional) nickname" />
+      <label for="nickname">Card nickname</label>
+    </div>
+
     <div class="form_options alt-2">
       <input id="default" v-model="paymentMethodInfo.default" type="checkbox" value="default"/>
-      <label for="default">Make this my primary payment method</label>
+      <label for="default">Make this my primary payment card</label>
     </div>
-    <button v-if="!editingBillingInfo" class="action" :disabled="hasCardError" @click.prevent="addCard()" type="submit">+ Add Card</button>
-    <button v-else class="action" :disabled="hasCardError" @click.prevent="editCardInfo()" type="submit">?words? Apply changes</button>
+
+    <button v-if="!editingBillingInfo" class="action add_something" :disabled="hasCardError" @click.prevent="addCard()" type="submit">Add card</button>
+    <button v-else class="action" :disabled="hasCardError" @click.prevent="editCardInfo()" type="submit">Save</button>
   </div>
 </template>
 

@@ -46,7 +46,7 @@
     </div>
 
     <div class="content_block bg-green_mint_2">
-      <h2 class="unspace-top">My Payment Methods</h2>
+      <h2 class="unspace-top">My Payment Cards</h2>
       <form>
         <div v-for="paymentMethod in userSubscription.payment_methods" class="form_options payment_method">
           <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" :checked="paymentMethod.default_payment_method" name="payment_group" />
@@ -75,8 +75,8 @@
         </div>
 
         <buttonModal button_class="secondary function add_something">
-          <template slot="button-text">Add a new payment method</template>
-          <template slot="heading">Add a new payment method</template>
+          <template slot="button-text">Add a new card</template>
+          <template slot="heading">Add a new card</template>
           <template slot="content">
             <form>
               <subscriptions-payment-inputs ref="paymentInputs" :stripePk="stripePk" />
