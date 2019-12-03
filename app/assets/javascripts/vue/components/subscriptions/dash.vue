@@ -53,7 +53,7 @@
           <div>
             <p>
               <strong>{{paymentMethod.nickname}}</strong>
-              {{paymentMethod.brand}}
+              ({{paymentMethod.brand}})
               **** **** **** {{paymentMethod.last4}} <span></span> Expires {{paymentMethod.exp_month}}/{{paymentMethod.exp_year}}
             </p>
             <dropdownDotsComponent>
