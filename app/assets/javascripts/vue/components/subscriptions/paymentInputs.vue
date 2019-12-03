@@ -124,11 +124,16 @@ module.exports = {
   methods: {
     addCard: async function() {
       console.log("inside add card on payments input")
-      const paymentMethod = await this.createPaymentMethod();
-      this.$store.dispatch('addCardToSubscription', paymentMethod)
+      if (this.checkRequiredInput() === true) {
+        const paymentMethod = await this.createPaymentMethod();
+        this.$store.dispatch('addCardToSubscription', paymentMethod)
+      }
     },
     createPaymentMethod: async function(){
       console.log("inside createPaymentMethod")
+      this.errors = []
+      const paymentMethodInfo = Object.assign({}, this.paymentMethodInfo)
+      let nickname = (this.paymentMethodInfo.nickname == "") ? null : this.paymentMethodInfo.nickname
       const result = await stripe.createPaymentMethod('card', card, {
         billing_details: {
           address: {
@@ -142,7 +147,7 @@ module.exports = {
           name: this.paymentMethodInfo.full_name,
         },
         metadata: {
-          nickname: this.paymentMethodInfo.nickname
+          nickname: nickname
         }
       });
       if (result.error) {
@@ -164,6 +169,15 @@ module.exports = {
       this.editingBillingInfo = true
       this.paymentMethodInfo = selectedPaymentMethod
     },
+    checkRequiredInput(){
+      pm = this.paymentMethodInfo
+      if (pm.full_name && pm.phone && pm.addr1 && pm.city && pm.postal_code && pm.country ){
+        return true
+      }
+      else {
+        this.errors = ["?words? -- Please enter all the required fields"]
+      }
+    }
   },
   created: function() {
     console.log("pk stripe key", this.stripePk)
