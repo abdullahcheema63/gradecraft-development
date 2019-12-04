@@ -73,9 +73,14 @@
       <label for="nickname">Card nickname</label>
     </div>
 
-    <div class="form_options alt-2">
-      <input id="default" v-model="paymentMethodInfo.default" type="checkbox" value="default"/>
-      <label for="default">Make this my primary payment card</label>
+    <div v-if="!editingBillingInfo" class="form_options alt-2" >
+      <input id="default" v-model="paymentMethodInfo.default_payment_method" type="checkbox"/>
+      <label for="default">Make this my primary payment card not edting</label>
+    </div>
+
+    <div v-else class="form_options alt-2">
+      <input id="edit_default" v-model="paymentMethodInfo.default_payment_method" type="checkbox"/>
+      <label for="edit_default">Make this my primary payment card</label>
     </div>
 
     <button v-if="!editingBillingInfo" class="action add_something" :disabled="hasCardError" @click.prevent="addCard()" type="submit">Add card</button>
@@ -105,7 +110,7 @@ module.exports = {
         postal_code: "",
         country: "",
         payment_method_id: "",
-        default: false,
+        default_payment_method: null,
         last4: null,
         exp_month: null,
         exp_year: null,

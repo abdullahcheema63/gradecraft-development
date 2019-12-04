@@ -67,7 +67,7 @@ class API::SubscriptionsController < ApplicationController
 
     customer_id = @subscription.customer_id
     payment_method_id = params[:payment_method_id]
-    make_default = params[:default]
+    make_default = params[:default_payment_method]
 
     begin
       payment_method = attachCard(payment_method_id, customer_id)
@@ -89,15 +89,16 @@ class API::SubscriptionsController < ApplicationController
     end
     customer_id = @subscription.customer_id
     payment_method_id = params[:id]
-    make_default = params[:default]
+    make_default = params[:default_payment_method]
 
     puts "Params: #{params}"
-    puts "pm_id: #{payment_method_id}"
 
     begin
       editCard(payment_method_id)
     rescue Stripe::CardError => e
       return render json: { data: nil, errors: e.error.message, success: false }, status: 403
+    rescue => e
+      puts "#{e.inspect}"
     end
 
     if make_default
