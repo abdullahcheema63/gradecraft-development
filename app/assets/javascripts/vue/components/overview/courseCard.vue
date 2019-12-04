@@ -6,7 +6,7 @@
     </h4>
 
     <div class="course_status">
-      <p>{{ user_card_class }}</p>
+      <p class="course_role">{{ user_card_class }}</p>
       <div v-if="course.role === 'professor' && paid_course_class">
         <p>Subscribed</p>
       </div>
@@ -47,11 +47,13 @@
     </div>
 
     <div class="course_assignments">
-      <h4>Upcoming Assignments</h4>
-      <legend v-if="is_staff">
-        <p>Planned</p>
-        <p>Submitted</p>
-      </legend>
+      <div class="assignment_key">
+        <h4>Upcoming Assignments</h4>
+        <legend v-if="is_staff">
+          <p>Planned</p>
+          <p>Submitted</p>
+        </legend>
+      </div>
       <div v-if="course.assignments[0]">
         <div class="assignment" v-for="assignment in course.assignments">
           <div>
@@ -107,7 +109,7 @@
     </h4>
 
     <div class="course_status">
-      <p>{{user_card_class}}</p>
+      <p class="course_role">{{user_card_class}}</p>
       <div v-if="course.role === 'professor' && paid_course_class">
         <p>Subscribed</p>
       </div>
@@ -154,7 +156,7 @@
     </h4>
 
     <div class="course_status">
-      <p>{{course.role}}</p>
+      <p class="course_role">{{course.role}}</p>
       <div>
         <p :class="'subscribed'" v-if="is_subscribed">
           Was Subscribed
@@ -166,6 +168,7 @@
       <a class="button next" v-bind:href="course.url">View course</a>
     </div>
   </div>
+
   <div v-else-if="status=='archived'" class="course_card archived" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another, hidden_from_students, request_pending]">
     <h4>
       <span>{{ course.number }} {{ course.name }}</span>
@@ -173,7 +176,7 @@
     </h4>
 
     <div class="course_status">
-      <p>{{course.role}}</p>
+      <p class="course_role">{{course.role}}</p>
       <div>
         <p :class="'subscribed'" v-if="is_subscribed">
           Was subscribed

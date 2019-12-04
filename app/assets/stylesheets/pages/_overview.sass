@@ -65,6 +65,10 @@
     display: flex
     justify-content: space-between
 
+  .course_role
+    margin-right: 10px
+    @include text_ellipsis
+
   .overview
     & > div
       display: flex
@@ -84,20 +88,23 @@
         margin-top: 0.25em
 
   .course_assignments
-    position: relative
-    // margin-bottom: 4em
+    & > div:first-of-type
+      display: flex
+      justify-content: space-between
+      align-items: flex-end
+      margin-top: 0.25em
 
     h4
-      margin: 0.75em 0
+      @include text_ellipsis
+      flex: 1
+      margin: 0 0 -2px 0
 
     legend
-      position: absolute
-      top: 0.75em
-      right: 0.5em
       font-size: 0.8em
       font-family: 'ProximaNova_regular', sans-serif
       text-transform: uppercase
       text-align: right
+      width: 100px
 
       p
         margin: 0
