@@ -9,7 +9,9 @@
         </p>
         <p>
           Look for my messages if you want some tips on how to use GradeCraft features!
-          You can also <a @click.prevent="toggleModalState">review our onboarding slides</a> at any time.
+          You can also
+          <a @click="toggleModalState">review our onboarding slides</a>
+          at any time.
         </p>
       </guideMessage>
 
@@ -35,16 +37,16 @@
             <div class="slides student_2">
               <div></div>
               <div>
-                <h2>Start From Zero</h2>
+                <h2>Earn up</h2>
                 <p>
-                  Start from zero and earn your way up to the grade you want to get. Your final grade is completely independent from your peers’ grades.
+                  Start from zero and earn your way up to the grade you want to get. Your final grade is independent from your peers’ grades.
                 </p>
               </div>
             </div>
             <div class="slides student_3">
               <div></div>
               <div>
-                <h2>Plan Your Path</h2>
+                <h2>Plan your path</h2>
                 <p>
                   Plan out your assignments with the Points Planner. Choose assignments that match your goals as well as the skills and topics you're most interested in.
                 </p>
@@ -53,7 +55,7 @@
             <div class="slides student_4">
               <div></div>
               <div>
-                <h2>Track Your Progress</h2>
+                <h2>Track your progress</h2>
                 <p>
                   Keep track of your progress with analytics and clear, timely, and transparent feedback from your instructors.
                 </p>
@@ -62,10 +64,12 @@
             <div class="slides student_5">
               <div></div>
               <div>
-                <h2>Fail and Try Again!</h2>
+                <h2>Try, try again!</h2>
                 <p>
                   Gameful courses support risk-taking. If you get a low score on an assignment, look for ways to recover points&mdash;like resubmitting assignments multiple times, or choosing extra assignments to earn more points toward your goal.
                 </p>
+                <h3>Ready to go?</h3>
+                <button @click="toggleModalState" type="button" class="action" style="margin-top: 0.75em;">Let’s get started!</button>
               </div>
             </div>
           </vue-slick>
