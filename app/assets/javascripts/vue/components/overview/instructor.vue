@@ -45,7 +45,7 @@
             <div class="slides instructor_3">
               <div></div>
               <div>
-                <h2>Shape a path &amp; recognize accomplishments</h2>
+                <h2>Paths to recognize accomplishments</h2>
                 <p>
                   Unlocks let you guide students down a path towards mastery by connecting assignments together.
                 </p>
@@ -57,7 +57,7 @@
             <div class="slides instructor_4">
               <div></div>
               <div>
-                <h2>Enjoy easy, flexible grading</h2>
+                <h2>Easy flexible grading</h2>
                 <p>
                   You can grade using levels, points, rubrics, or a binary “met/not met” scheme.
                 </p>
@@ -69,7 +69,7 @@
             <div class="slides instructor_5">
               <div></div>
               <div>
-                <h2>Stay informed with analytics</h2>
+                <h2>Informative analytics</h2>
                 <p>
                   Easily keep track of what students are completing in your course and what competency level they’ve reached.
                 </p>

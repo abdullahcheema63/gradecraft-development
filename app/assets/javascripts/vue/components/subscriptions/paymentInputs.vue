@@ -173,6 +173,7 @@ module.exports = {
       console.log("inside edit card on payments input, PM info: ", this.paymentMethodInfo)
       if (this.checkRequiredInput() === true) {
         this.$store.dispatch('editCardInfo', this.paymentMethodInfo)
+        document.body.style.cursor = "wait"
       }
     },
     selectedCardToEdit(selectedPaymentMethod) {
