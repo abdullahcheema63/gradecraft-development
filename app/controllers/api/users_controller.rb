@@ -20,7 +20,6 @@ class API::UsersController < ApplicationController
 
   # PUT api/users/seen_onboarding
   def seen_onboarding
-    puts "inside users#seen_onboarding "
     current_user.update_attribute(:has_seen_onboarding, true)
   end
 end

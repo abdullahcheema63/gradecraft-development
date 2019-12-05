@@ -75,7 +75,7 @@
 
     <div v-if="!editingBillingInfo" class="form_options alt-2" >
       <input id="default" v-model="paymentMethodInfo.default_payment_method" type="checkbox"/>
-      <label for="default">Make this my primary payment card not edting</label>
+      <label for="default">Make this my primary payment card</label>
     </div>
 
     <div v-else class="form_options alt-2">

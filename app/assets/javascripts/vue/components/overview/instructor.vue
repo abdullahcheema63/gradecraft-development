@@ -783,7 +783,6 @@ module.exports = {
       this.showOnboarding = false
     },
     sawOnboarding(){
-      console.log("HAS SEEN ONBOARDING~!")
       if(!this.hasSeenOnboarding){
         this.$store.dispatch('seenOnboarding')
       }

@@ -300,7 +300,6 @@ module.exports = {
       this.modalState = !this.modalState
     },
     sawOnboarding(){
-      console.log("HAS SEEN ONBOARDING~!")
       if(!this.hasSeenOnboarding){
         this.$store.dispatch('seenOnboarding')
       }
