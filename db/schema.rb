@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_12_154738) do
+ActiveRecord::Schema.define(version: 2019_12_04_172404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -966,6 +966,7 @@ ActiveRecord::Schema.define(version: 2019_11_12_154738) do
     t.string "time_zone", default: "Eastern Time (US & Canada)"
     t.boolean "received_resources", default: false, null: false
     t.boolean "show_guide", default: true
+    t.boolean "has_seen_onboarding", default: false
     t.index ["activation_token"], name: "index_users_on_activation_token"
     t.index ["current_course_id"], name: "index_users_on_current_course_id"
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -94,6 +94,7 @@ const store = new Vuex.Store({
       email: "",
       username: "",
       showGuide: null,
+      hasSeenOnboarding: null,
       accountURL: null,
       lastLogin: null,
       lastLogout: null,
@@ -520,6 +521,27 @@ const store = new Vuex.Store({
           window.location.replace(store.state.subscriptionsURL)
         }
       },
+      seenOnboarding: async function({ commit }){
+        const resp = await fetch("/api/users/seen_onboarding", {
+          method: 'PUT',
+          headers: requestHeaders,
+          credentials: 'same-origin',
+        });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
+        else {
+          store.state.user.hasSeenOnboarding = true
+        }
+      },
       toggleGuideControl({ commit }){
         console.log("toggled guide control action")
         commit('toggleGuide')
@@ -733,6 +755,7 @@ const store = new Vuex.Store({
         state.user.lastLogout = user.last_logout
         state.user.createdAt = user.created_at
         state.user.showGuide = user.show_guide
+        state.user.hasSeenOnboarding = user.has_seen_onboarding
         state.user.environment = user.environment
       },
       addFailedPayment (state, failedPayment){
@@ -759,8 +782,8 @@ const store = new Vuex.Store({
         return state.previouslySubscribedCourses.filter(course =>
           state.currentSubscribedCourses.indexOf(course) === -1)
       },
-      userOnboardingStatus: state => {
-        return state.user.hasSeenCourseOnboarding
+      hasSeenOnboarding: state => {
+        return state.user.hasSeenOnboarding
       },
       userSubscriptionInfo: state =>{
         if(state.user.subscription) return state.user.subscription

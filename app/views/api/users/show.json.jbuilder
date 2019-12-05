@@ -11,6 +11,7 @@ json.data do @user
     json.last_login @user.last_login_at
     json.last_logout @user.last_logout_at
     json.show_guide @user.show_guide
+    json.has_seen_onboarding @user.has_seen_onboarding
     json.admin @user.admin
     json.current_course_id @user.current_course_id
     json.account_url edit_profile_users_path

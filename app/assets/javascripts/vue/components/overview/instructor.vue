@@ -4,15 +4,15 @@
       <h1>My Dashboard</h1>
       <guideMessage>
         <p>
-          Welcome <span v-if="!getUserOnboardingStatus">back</span> to your GradeCraft dashboard, {{ userFirstName }}!
+          Welcome <span v-if="hasSeenOnboarding">back</span> to your GradeCraft dashboard, {{ userFirstName }}!
         </p>
         <p>
           I’m here to help you as you set up your courses. Look for my messages if you want some tips on how to use GradeCraft features!
-          You can also <a @click.prevent="toggleModalState">review our onboarding slides</a> at any time.
+          You can also <a @click.prevent="showOnboardingModal();">review our onboarding slides</a> at any time.
         </p>
       </guideMessage>
 
-      <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container onboarding">
+      <modalComponent v-if="onboarding" :modalState="modalState" @close="toggleModalState(); sawOnboarding();" class="component_container onboarding">
         <template slot="heading">Welcome to GradeCraft!</template>
         <template slot="content">
           <vue-slick class="onboarding_slides" :options="slickOptions">
@@ -70,7 +70,7 @@
               <div>
                 <h2>Stay Informed with Analytics</h2>
                 <p>
-                  Easily keep track of what students are completing in your course and what achievement level they’ve reached. 
+                  Easily keep track of what students are completing in your course and what achievement level they’ve reached.
                 </p>
               </div>
             </div>
@@ -553,6 +553,7 @@ module.exports = {
   },
   data() {
     return {
+      showOnboarding: false,
       slickOptions: {
         dots: true,
         prevArrow: '<button class="slick-prev" aria-label="Previous" type="button"> </button>',
@@ -649,8 +650,19 @@ module.exports = {
     userFirstName(){
       return this.$store.state.user.firstName;
     },
-    getUserOnboardingStatus(){
-      return this.$store.getters.userOnboardingStatus;
+    onboarding(){
+      if(!this.hasSeenOnboarding){
+        return true
+      }
+      else if(this.showOnboarding === false) {
+        return false
+      }
+      else{
+        return true
+      }
+    },
+    hasSeenOnboarding(){
+      return this.$store.getters.hasSeenOnboarding;
     },
   },
   methods: {
@@ -765,6 +777,17 @@ module.exports = {
       this.archiveCourseModal = false
       this.unpublishCourseModal = false
       this.publishCourseModal = false
+      this.showOnboarding = false
+    },
+    sawOnboarding(){
+      console.log("HAS SEEN ONBOARDING~!")
+      if(!this.hasSeenOnboarding){
+        this.$store.dispatch('seenOnboarding')
+      }
+    },
+    showOnboardingModal(){
+      this.modalState = true
+      this.showOnboarding = true
     }
   }
 }
