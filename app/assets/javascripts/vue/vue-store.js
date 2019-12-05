@@ -447,7 +447,7 @@ const store = new Vuex.Store({
         state.courseArchiveError = resp
         console.log("inside archiveCourse action", resp)
       },
-      unarchiveCourse :async function({ commit, state }, courseID){
+      unarchiveCourse: async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/unarchive", {
           method: 'POST',
           headers: requestHeaders,
@@ -546,8 +546,25 @@ const store = new Vuex.Store({
         console.log("toggled guide control action")
         commit('toggleGuide')
       },
-      changeGuide({ commit }){
+      changeGuide: async function({ commit, state }){
         console.log("make api request")
+        const resp = await fetch("/api/users/change_guide", {
+          method: 'PUT',
+          headers: requestHeaders,
+          credentials: 'same-origin',
+          body: JSON.stringify(state.user.showGuide)
+        });
+        const body = await resp.json();
+        if (!resp.ok) {
+          this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
+            ? body.errors
+            : Object.entries(body.errors); //Need polyfill
+          console.error("resp not ok!");
+          console.error(this);
+          console.error(resp);
+          console.error(body);
+          return;
+        }
       },
       addUserSubscriptionInfo({ commit }, subscriptionInfo){
         commit('addUserSubscriptionInfo', subscriptionInfo)

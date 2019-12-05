@@ -616,6 +616,7 @@ Rails.application.routes.draw do
         get :index
         get :instructors
         put :seen_onboarding
+        put :change_guide
         get :show
         resources :importers, only: [], module: :users, param: :provider_id do
           get "/course/:id/users", action: :index, as: :users

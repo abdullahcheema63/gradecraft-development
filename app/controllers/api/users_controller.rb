@@ -22,4 +22,11 @@ class API::UsersController < ApplicationController
   def seen_onboarding
     current_user.update_attribute(:has_seen_onboarding, true)
   end
+
+  def change_guide
+    vue_store_guide_state = params[:_json]
+    if current_user.show_guide != vue_store_guide_state
+      current_user.update_attribute(:show_guide, vue_store_guide_state)
+    end
+  end
 end
