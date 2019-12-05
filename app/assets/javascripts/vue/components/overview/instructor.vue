@@ -8,7 +8,9 @@
         </p>
         <p>
           I’m here to help you as you set up your courses. Look for my messages if you want some tips on how to use GradeCraft features!
-          You can also <a @click.prevent="showOnboardingModal();">review our onboarding slides</a> at any time.
+          You can also
+          <a @click="showOnboardingModal();">review our onboarding slides</a>
+          at any time or visit <a href="https://www.gamefulpedagogy.com/" target="_blank">GamefulPedagogy.com</a> for ideas on how to build your courses more gamefully.
         </p>
       </guideMessage>
 
@@ -24,18 +26,17 @@
                   Welcome to GradeCraft! GradeCraft lets you build courses with gameful features such as:
                 </p>
                 <ul class="pink_dots">
-                  <li>Building up points from zero</li>
-                  <li>Offering student choice</li>
-                  <li>Providing immediate feedback</li>
-                  <li>Allowing the freedom to fail</li>
-                  <li>Course transparency</li>
+                  <li>Offering students choices about their work</li>
+                  <li>Tools to help provide rapid and thorough feedback</li>
+                  <li>Playful elements like badges, unlocks, and leaderboards</li>
+                  <li>Transparent student-facing analytics</li>
                 </ul>
               </div>
             </div>
             <div class="slides instructor_2">
               <div></div>
               <div>
-                <h2>Support Autonomy</h2>
+                <h2>Support for student autonomy</h2>
                 <p>
                   The Points Planner promotes student agency by enabling students to make choices and set goals.
                 </p>
@@ -44,34 +45,36 @@
             <div class="slides instructor_3">
               <div></div>
               <div>
-                <h2>Shape a Path &amp; Reward Accomplishments</h2>
+                <h2>Shape a path &amp; recognize accomplishments</h2>
                 <p>
                   Unlocks let you guide students down a path towards mastery by connecting assignments together.
                 </p>
                 <p>
-                  Badges allow you to reward to students for reaching milestones.
+                  Badges allow you to recognize students’ efforts when they reach milestones.
                 </p>
               </div>
             </div>
             <div class="slides instructor_4">
               <div></div>
               <div>
-                <h2>Enjoy Easy, Flexible Grading</h2>
+                <h2>Enjoy easy, flexible grading</h2>
                 <p>
                   You can grade using levels, points, rubrics, or a binary “met/not met” scheme.
                 </p>
                 <p>
-                  Quickly identify assignments that need to be graded and share instant feedback with your students. Or, let them grade themselves by following your rubric.
+                  Quickly identify assignments that need to be graded and share feedback with your students. Or, let them grade themselves by following your guidelines.
                 </p>
               </div>
             </div>
             <div class="slides instructor_5">
               <div></div>
               <div>
-                <h2>Stay Informed with Analytics</h2>
+                <h2>Stay informed with analytics</h2>
                 <p>
-                  Easily keep track of what students are completing in your course and what achievement level they’ve reached.
+                  Easily keep track of what students are completing in your course and what competency level they’ve reached.
                 </p>
+                <h3>Ready to go?</h3>
+                <button @click="toggleModalState" type="button" class="action" style="margin-top: 0.75em;">Let’s get started!</button>
               </div>
             </div>
           </vue-slick>
