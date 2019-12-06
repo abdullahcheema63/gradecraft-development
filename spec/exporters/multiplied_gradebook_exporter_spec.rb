@@ -10,7 +10,7 @@ describe MultipliedGradebookExporter do
     it "generates an empty CSV if there are no students" do
       @assignment = create(:assignment, course: course, name: "The Flash!")
       csv = subject.gradebook(course)
-      expect(csv).to eq "First Name,Last Name,Email,Username,Team,Earned Badge Score,The Flash!,The Flash!\n"
+      expect(csv).to eq "First Name,Last Name,Email,Username,Team,Earned Badge Score,Raw The Flash!,Weighted The Flash!\n"
     end
 
     it "generates an gradebook CSV if there are students and assignments present" do
