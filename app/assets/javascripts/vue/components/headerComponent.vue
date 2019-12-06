@@ -21,9 +21,6 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'header-component',
-  components: {
-    modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
-  },
   props: {
     userId: String,
   },
