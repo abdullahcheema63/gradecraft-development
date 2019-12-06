@@ -1,6 +1,9 @@
 class UserMailer < ApplicationMailer
   layout "mailers/notification_layout"
 
+  track extra: -> { {course_id: params[:course].id} }
+  track open: true, click: true # use only/except to limit actions
+
   def activation_needed_email(user)
     @user = user
     mail to: @user.email,

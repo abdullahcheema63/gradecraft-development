@@ -3,6 +3,9 @@ class ExportsMailer < ApplicationMailer
 
   layout "mailers/notification_layout"
 
+  track extra: -> { {course_id: params[:course].id} }
+  track open: true, click: true # use only/except to limit actions
+
   def submission_list_exporter(course, user, filename, csv_data)
     set_export_ivars(course, user)
     attachments["#{ course.name } Submissions - #{ Date.today }.csv"] = csv_attachment(csv_data)

@@ -8,6 +8,7 @@ class API::PredictedEarnedGradesController < ApplicationController
     @prediction = PredictedEarnedGrade.new predicted_earned_grade_params
     if @prediction.save
       PredictorEventJob.perform_async(predictor_event_attrs(@prediction))
+      ahoy.track "Grade Predictor Event", prediction: @prediction
       render "api/predicted_earned_articles/prediction", status: 201
     else
       render "api/predicted_earned_articles/errors", status: 400
@@ -26,6 +27,7 @@ class API::PredictedEarnedGradesController < ApplicationController
 
       if @prediction.save
         PredictorEventJob.perform_async(predictor_event_attrs(@prediction))
+        ahoy.track "Grade Predictor Event", prediction: @prediction
         render "api/predicted_earned_articles/prediction", status: 200
       else
         render "api/predicted_earned_articles/errors", status: 400

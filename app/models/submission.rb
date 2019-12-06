@@ -5,6 +5,7 @@ class Submission < ApplicationRecord
   include AutoAwardOnUnlock
 
   has_paper_trail ignore: [:text_comment_draft]
+  visitable :ahoy_visit
 
   belongs_to :assignment
   belongs_to :student, class_name: "User"

@@ -8,6 +8,7 @@ class API::PredictedEarnedChallengesController < ApplicationController
     @prediction = PredictedEarnedChallenge.new predicted_earned_challenge_params
     if @prediction.save
       PredictorEventJob.perform_async(predictor_event_attrs(@prediction))
+      ahoy.track "Challenge Predictor Event", prediction: @prediction
       render "api/predicted_earned_articles/prediction", status: 201
     else
       render "api/predicted_earned_articles/errors", status: 400
@@ -26,6 +27,7 @@ class API::PredictedEarnedChallengesController < ApplicationController
 
       if @prediction.save
         PredictorEventJob.perform_async(predictor_event_attrs(@prediction))
+        ahoy.track "Challenge Predictor Event", prediction: @prediction
         render "api/predicted_earned_articles/prediction", status: 200
       else
         render "api/predicted_earned_articles/errors", status: 400

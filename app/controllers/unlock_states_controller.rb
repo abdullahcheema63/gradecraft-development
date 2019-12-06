@@ -7,12 +7,14 @@ class UnlockStatesController < ApplicationController
 
   def create
     @unlock_state = current_course.unlock_state.new(unlock_condition_params)
+    ahoy.track "Unlock Event", unlock_state: @unlock_state
     @unlock_condition.save
   end
 
   def update
     @unlock_state = current_course.unlock_states.find(params[:id])
     @unlock_state.update_attributes(unlock_condition_params)
+    ahoy.track "Unlock Event", unlock_state: @unlock_state
     respond_with @unlock_state
   end
 

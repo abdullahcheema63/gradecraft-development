@@ -10,6 +10,7 @@
 
 //= require_self
 //= require jquery.omniselect
+//= require ahoy
 //= require autonumeric
 //= require moment.min
 //= require underscore

@@ -8,6 +8,7 @@ class API::PredictedEarnedBadgesController < ApplicationController
     @prediction = PredictedEarnedBadge.new predicted_earned_badge_params
     if @prediction.save
       PredictorEventJob.perform_async(predictor_event_attrs(@prediction))
+      ahoy.track "Badge Predictor Event", prediction: @prediction
       render "api/predicted_earned_articles/prediction", status: 201
     else
       render "api/predicted_earned_articles/errors", status: 400
@@ -26,6 +27,7 @@ class API::PredictedEarnedBadgesController < ApplicationController
 
       if @prediction.save
         PredictorEventJob.perform_async(predictor_event_attrs(@prediction))
+        ahoy.track "Badge Predictor Event", prediction: @prediction
         render "api/predicted_earned_articles/prediction", status: 200
       else
         render "api/predicted_earned_articles/errors", status: 400

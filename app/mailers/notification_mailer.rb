@@ -1,6 +1,9 @@
 class NotificationMailer < ApplicationMailer
   layout "mailers/notification_layout"
 
+  track extra: -> { {course_id: params[:course].id} }
+  track open: true, click: true # use only/except to limit actions
+
   def successful_submission(submission_id)
     send_assignment_email_to_user submission_id, "Submitted"
   end

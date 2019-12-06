@@ -9,6 +9,8 @@ gem 'activerecord-session_store'
 gem 'acts_as_list'
 gem 'addressable'
 gem 'angular-rails-templates'
+gem 'ahoy_matey'
+gem 'ahoy_email'
 
 # zip utility for simple creation of zip files, pure ruby implementation
 # without the GC overhead of the Rubyzip library

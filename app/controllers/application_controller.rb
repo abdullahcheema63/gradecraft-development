@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   around_action :time_zone, if: :current_user
+  after_action :track_action
 
   Rails.env.production? do
     before_action :check_url
@@ -70,6 +71,7 @@ class ApplicationController < ActionController::Base
     return unless request.format.html? || request.format.xml?
     event_attrs = event_session.merge event_options
     user = event_options.values_at(:user).first
+    ahoy.track "Login Event"
     user.update_course_login_at(user.current_course_id) if user && user.current_course_id
   end
 
@@ -84,6 +86,10 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  def track_action
+    ahoy.track "Application Event", request.path_parameters
+  end
 
   def use_current_course
     @course = current_course
