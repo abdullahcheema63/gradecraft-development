@@ -10,10 +10,13 @@
     vmAssignmentNew.assignments = AssignmentService.assignments
     vmAssignmentNew.assignmentTypes = AssignmentTypeService.assignmentTypes
     vmAssignmentNew.termFor = AssignmentTypeService.termFor
+    vmAssignmentNew.assignmentTypeID = @firstAssignmentTypeId
 
     URLQueries = new URLSearchParams(window.location.search)
+    assignment_type_id = parseInt(URLQueries.get("assignment_type_id"))
 
-    vmAssignmentNew.assignmentTypeID = parseInt(URLQueries.get("assignment_type_id"))
+    if !(isNaN(assignment_type_id))
+      vmAssignmentNew.assignmentTypeID = assignment_type_id
 
     services(@courseUsesLearningObjectives).then(() ->
       vmAssignmentNew.loading = false
@@ -42,6 +45,7 @@
     controllerAs: 'vmAssignmentNew'
     templateUrl: 'assignments/assignment_new.html'
     scope:
-      courseUsesLearningObjectives: '='
+      courseUsesLearningObjectives: '=',
+      firstAssignmentTypeId: '@'
   }
 ]
