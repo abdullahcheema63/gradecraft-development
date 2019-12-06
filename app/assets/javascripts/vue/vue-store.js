@@ -598,7 +598,10 @@ const store = new Vuex.Store({
               end: course.end_date
             },
             subscribed: course.subscribed,
-            published: course.published
+            published: course.published,
+            termForAssignments: course.term_for_assignments,
+            termForStudent: course.term_for_student,
+            termForGSI: course.term_for_gsi,
            };
         });
         let subscribedCourses = state.user.courseMembership.filter(course => {

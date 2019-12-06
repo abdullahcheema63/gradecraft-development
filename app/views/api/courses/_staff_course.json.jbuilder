@@ -24,6 +24,10 @@ json.attributes do
   json.start_date course.start_date
   json.end_date course.end_date
 
+  json.term_for_assignments course.assignment_term.pluralize
+  json.term_for_student course.student_term
+  json.term_for_gsi course.team_leader_term
+
   course.created_at.in_time_zone(current_user.time_zone).tap do |created_at|
     json.created_at created_at
     json.formatted_created_at l created_at

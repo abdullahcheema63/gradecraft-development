@@ -48,7 +48,7 @@
 
     <div class="course_assignments">
       <div class="assignment_key">
-        <h4>Upcoming Assignments</h4>
+        <h4>Upcoming {{course.termForAssignments}}</h4>
         <legend v-if="is_staff">
           <p>Planned</p>
           <p>Submitted</p>
@@ -283,6 +283,11 @@ module.exports = {
     deleteCourse(courseID){
       this.deletingCourse = true
       this.$store.dispatch('deleteCourse', courseID)
+    },
+    termForCourseRole(role){
+      if( this.is_instructor ){ return 'Instructor' }
+      else if (this.is_gsi){ return this.course.termForGSI }
+      else { return this.course.termForStudent}
     }
   }
 }
