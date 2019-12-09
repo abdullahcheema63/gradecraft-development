@@ -46,6 +46,11 @@
           %td= link_to glyph("file-excel-o") + "Grading Scheme", export_structure_grade_scheme_elements_path(id: current_course.id, format: "csv")
           %td Level ID, Letter Grade, Level Name, Lowest Points, Highest Points
 
+        - if current_user_is_admin?
+          %tr
+            %td= link_to glyph("file-excel-o") + "Research Grades", research_gradebook_path(id: current_course.id, format: "csv")
+            %td= "Guess and check, I'm a mystery... don't you want to click me and find out?"
+
         - if current_course.has_multipliers?
           %tr
             %td= link_to glyph("file-excel-o") + "Multiplier Choices", export_course_multipliers_path(course_id: current_course, format: "csv")
