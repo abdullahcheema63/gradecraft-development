@@ -110,7 +110,7 @@ class InfoController < ApplicationController
   # downloadable grades for course with  export
   def research_gradebook
     course = current_user.courses.find_by(id: params[:id])
-    @grade_export_job = GradeExportJob.perform_async(current_user.id, course.id, "#{ course.name } Research Gradebook - #{ Date.today }.csv")
+    @grade_export_job = GradeExportJob.perform_async(current_user.id, course.id)
 
     flash[:notice]="Your request to export grade data from course \"#{ course.name }\" is currently being processed. We will email you the data shortly."
     redirect_back_or_default

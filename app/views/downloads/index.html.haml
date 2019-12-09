@@ -43,13 +43,13 @@
             %td= link_to glyph("file-excel-o") + "#{term_for :badges}", export_structure_badges_path(id: current_course.id, format: "csv")
             %td Badge ID, Name, Point Total, Description, Times Earned
         %tr
-          %td= link_to glyph("file-excel-o") + "Grading Scheme", export_structure_grade_scheme_elements_path(id: current_course.id, format: "csv")
+          %td= link_to glyph("file-excel-o") + "Grading Scheme", export_structure_grade_scheme_elements_path(id: current_course.id)
           %td Level ID, Letter Grade, Level Name, Lowest Points, Highest Points
 
         - if current_user_is_admin?
           %tr
-            %td= link_to glyph("file-excel-o") + "Research Grades", research_gradebook_path(id: current_course.id, format: "csv")
-            %td= "Guess and check, I'm a mystery... don't you want to click me and find out?"
+            %td= link_to glyph("file-excel-o") + "Admin Full Gradebook", research_gradebook_path(id: current_course.id, format: "csv")
+            %td Course full gradebook with more information like ID's, scores, graded by, and time stamps.
 
         - if current_course.has_multipliers?
           %tr
