@@ -110,7 +110,7 @@
 
               <div class="course_box" v-else>
                 <div class="course_card empty">
-                  <p><em>You don't have any published courses right now!</em></p>
+                  <p><em>You don’t have any published courses right now!</em></p>
                 </div>
               </div>
             </template>
@@ -130,7 +130,7 @@
               </div>
               <div class="course_box" v-else>
                 <div class="course_card empty">
-                  <p><em>You don't have any unpublished courses right now!</em></p>
+                  <p><em>You don’t have any unpublished courses right now!</em></p>
                 </div>
               </div>
             </template>
@@ -169,10 +169,10 @@
               <div class="course_box" v-if="filteredPastCourses.length">
                 <courseCard v-for="course in filteredPastCourses" :key="course.id" :course="course" status="past"></courseCard>
               </div>
-            </div>
-            <div class="course_box" v-else>
-              <div class="course_card empty">
-                <p><em>You don't have any past courses to view</em></p>
+              <div class="course_box" v-else>
+                <div class="course_card empty">
+                  <p><em>Sorry, there are no matching search results!</em></p>
+                </div>
               </div>
             </div>
           </div>

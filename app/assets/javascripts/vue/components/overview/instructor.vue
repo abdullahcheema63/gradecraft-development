@@ -173,7 +173,7 @@
 
               <div class="course_box" v-else>
                 <div class="course_card empty">
-                  <p><em>You don't have any published courses right now!</em></p>
+                  <p><em>You don’t have any published courses right now!</em></p>
                 </div>
               </div>
             </template>
@@ -195,7 +195,7 @@
               </div>
               <div class="course_box" v-else>
                 <div class="course_card empty">
-                  <p><em>You don't have any unpublished courses right now!</em></p>
+                  <p><em>You don’t have any unpublished courses right now!</em></p>
                 </div>
               </div>
             </template>
@@ -248,13 +248,10 @@
                 v-on:copyCourseForm='openCopyCourseForm($event)' v-on:deleteCourseModal='openDeleteCourseModal($event)'
                 v-on:publishCourseModal='openPublishCourseModal($event)' v-on:unpublishCourseModal='openUnpublishCourseModal($event)'></courseCard>
               </div>
-              <div>
-                <p style="background: yellow;">To S from E: EMPTY STATE FOR WHEN THERE ARE NO FILTERED RESULTS</p>
-              </div>
-            </div>
-            <div class="course_box" v-else>
-              <div class="course_card empty">
-                <p><em>You don’t have any archived courses to view</em></p>
+              <div class="course_box" v-else>
+                <div class="course_card empty">
+                  <p><em>Sorry, there are no matching search results!</em></p>
+                </div>
               </div>
             </div>
           </div>
