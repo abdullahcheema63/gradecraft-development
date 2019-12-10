@@ -70,6 +70,7 @@ const store = new Vuex.Store({
     courseArchiveError: "",
     courseUnarchiveError: "",
     creditCardError: "",
+    creditCardMessage: "",
     allUsers: [],
     allCourses: [],
     newActivity: {
@@ -311,8 +312,11 @@ const store = new Vuex.Store({
           console.log("errors?", help.errors)
           commit('addCreditCardError', help.errors)
         }
-        else
-          { window.location.replace(store.state.subscriptionsURL) }
+        else{
+          store.dispatch("getUserSubscription");
+          let message = "Card added successfully"
+          commit('addCreditCardSuccessMessage', message)
+        }
       },
       editCardInfo: async function({ commit, state }, paymentMethodAndInfo) {
         console.log("editCardInfo action dispatched")
@@ -790,6 +794,9 @@ const store = new Vuex.Store({
       addCreditCardError( state, message){
         state.creditCardError = message
       },
+      addCreditCardSuccessMessage( state, message){
+        state.creditCardMessage = message
+      }
     },
     getters: {
       user: state => {

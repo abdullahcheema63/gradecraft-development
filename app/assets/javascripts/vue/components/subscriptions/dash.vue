@@ -5,6 +5,9 @@
         You failed a payment... {{failedPayment.status}}
       </p>
     </div>
+    <div v-if="creditCardMessage" >
+      <p>{{creditCardMessage}}</p>
+    </div>
     <subscriptions-course-selector>
     </subscriptions-course-selector>
 
@@ -74,7 +77,7 @@
           </div>
         </div>
 
-        <buttonModal button_class="secondary function add_something">
+        <buttonModal ref="paymentInputModal" button_class="secondary function add_something">
           <template slot="button-text">Add a new card</template>
           <template slot="heading">Add a new card</template>
           <template slot="content">
@@ -314,6 +317,16 @@ module.exports = {
     },
     defaultPaymentMethod(){
       return this.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
+    },
+    creditCardMessage(){
+      return this.$store.state.creditCardMessage
+    },
+  },
+  watch: {
+    creditCardMessage(newMessage, oldMessage){
+      if(newMessage.length){
+        this.$refs.paymentInputModal.toggleModalState()
+      }
     }
   },
   methods: {
