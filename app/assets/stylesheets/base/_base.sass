@@ -120,6 +120,61 @@ body
   background-color: $grey-barely
 
 
+// New alert box messages
+#alert_msg
+  background-color: $blue
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  font-family: "ProximaNova_semibold", sans-serif
+  max-height: 200px
+  overflow: hidden
+
+  p
+    margin: 0.75em 5%
+
+    @include mobile-xl
+      margin: 0.5em 3%
+
+    &:first-of-type
+      margin-top: 4.5em
+
+      @include mobile-xl
+        margin-top: 3.25em
+
+  .close
+    --strokeColor: #0e0e51
+    height: 1em
+    width: auto
+    position: absolute
+    right: 1em
+    bottom: 1em
+    cursor: pointer
+
+    @include mobile-xl
+      right: 0.75em
+      bottom: 0.75em
+
+    &:hover
+      --strokeColor: #ffffff
+
+  &.closing
+    max-height: 0
+    transition: max-height 1s
+
+  &.success
+    background-color: $green_lime
+
+.wrapper.has_alert
+  .content_block
+    &.intro
+      padding-top: 8em
+
+      @include mobile-xl
+        padding-top: 5.5em
+
+
 // To accommodate current design
 .pageContent
   .content_block
