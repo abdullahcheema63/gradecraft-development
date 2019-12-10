@@ -6,7 +6,7 @@
     </h4>
 
     <div class="course_status">
-      <p class="course_role">{{ user_card_class }}</p>
+      <p class="course_role">{{ termForCourseRole() }}</p>
       <div v-if="course.role === 'professor' && paid_course_class">
         <p>Subscribed</p>
       </div>
@@ -48,7 +48,7 @@
 
     <div class="course_assignments">
       <div class="assignment_key">
-        <h4>Upcoming {{course.termForAssignments}}</h4>
+        <h4 :title="course.termForAssignments">Upcoming {{course.termForAssignments}}</h4>
         <legend v-if="is_staff">
           <p>Planned</p>
           <p>Submitted</p>
@@ -74,8 +74,10 @@
         </div>
       </div>
       <div class="empty" v-else>
-        <p v-if="is_staff"><em>There aren’t any assignments coming up for this course</em></p>
-        <p v-else><em>You don’t have any assignments coming up for this course</em></p>
+        <p v-if="is_staff"><em>There aren’t any {{course.termForAssignments}} coming up for this course</em></p>
+        <p v-else><em>
+          You don’t have any {{course.termForAssignments}} coming up for this course
+        </em></p>
       </div>
     </div>
 

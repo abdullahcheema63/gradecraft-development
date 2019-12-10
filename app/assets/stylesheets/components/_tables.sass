@@ -31,9 +31,6 @@ thead
   th
     padding: 0.4em
 
-    // a,
-    // a.active,
-    // a.sorted
     a
       color: white
       font-family: 'ProximaNova_regular', sans-serif
@@ -362,6 +359,24 @@ i.missing_grade
       height: 1em
       background: url(asset_path("icon-table_Checked.svg")) no-repeat center center
       background-size: contain
+
+    span.alert
+      display: block
+      width: 1em
+      height: 1em
+      background: url(asset_path("icon-table_Alert.svg")) no-repeat center center
+      background-size: contain
+
+      &:hover
+        transform: scale(10)
+        transition: 1s
+        position: relative
+
+        &:after
+          content: 'hi Erik'
+          position: absolute
+          left: -45px
+          color: $coral_3
 
     &.has_actions
       tbody

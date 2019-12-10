@@ -9,7 +9,7 @@
       <div :class="usernameClass">
         <ul>
           <li><a :href="user.accountURL">My Account</a></li>
-          <li v-if="user.environment != 'production' "><a href="/subscriptions">My Subscription</a></li>
+          <li v-if="user.environment != 'production' && userIsInstructor"><a href="/subscriptions">My Subscription</a></li>
           <li><a href="/logout">Logout</a></li>
         </ul>
       </div>

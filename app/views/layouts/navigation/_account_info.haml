@@ -1,4 +1,4 @@
 %li= link_to "My Account", edit_profile_users_path
-- if current_user_is_staff? || current_user_is_admin?
+- if current_user_is_staff? && !current_user_is_admin?
   %li= link_to "My Subscription", subscriptions_path
 %li= link_to "Logout", :logout

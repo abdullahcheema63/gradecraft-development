@@ -60,7 +60,7 @@
                   <td>
                     <ul>
                       <li v-for="course in instructor.courses" :key="course.id">
-                        <span :class="{checked: course.subscribed}">&nbsp;</span>
+                        <span :class="{alert: !course.published}">&nbsp;</span>
                       </li>
                     </ul>
                   </td>
