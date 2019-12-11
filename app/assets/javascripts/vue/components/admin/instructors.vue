@@ -46,8 +46,11 @@
           </thead>
           <tbody>
             <tr v-for="instructor in currentPageAllInstructors" :key="instructor.id">
-              <td><a href="#">{{instructor.firstName}}</a> </td>
-              <td class="no_wrap"><a href="#">{{instructor.lastName}}</a> </td>
+              <!-- <td><a href="#">{{instructor.firstName}}</a> </td>
+              <td class="no_wrap"><a href="#">{{instructor.lastName}}</a> </td> -->
+              <!-- In the future, we'll make the instructor's names link to an individual profile page -->
+              <td>{{instructor.firstName}} </td>
+              <td class="no_wrap">{{instructor.lastName}} </td>
               <td>{{instructor.subscriptionExpires}} </td>
               <template v-if="instructor.courses.length">
                 <td>
