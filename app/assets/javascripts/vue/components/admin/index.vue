@@ -41,7 +41,8 @@
           <h4>Subscriptions</h4>
           <p>
             <strong>10?</strong>
-            renewed / continued / what goes here?
+            Continued
+            <!-- To E from S: continued courses are the same as renewing your subscription -->
           </p>
           <p>
             <strong>{{newSubscriptionsCount}}</strong>

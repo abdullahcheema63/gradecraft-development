@@ -15,7 +15,7 @@ module.exports = {
   },
   data() {
     return {
-      active: false
+      active: false,
     }
   },
   methods: {
