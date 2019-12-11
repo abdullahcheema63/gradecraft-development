@@ -124,9 +124,12 @@
                             <ul>
                               <li><a :href="course.editURL">Edit</a> </li>
                               <li v-if="course.active"><a @click.prevent="archiveCourse(course.id)">Archive</a> </li>
-                              <li v-if="!course.active"><a @click.prevent="unarchiveCourse(course.id)">Unrchive</a> </li>
+                              <li v-if="!course.active"><a @click.prevent="unarchiveCourse(course.id)">Unarchive</a> </li>
                               <li><a @click.prevent="copyCourse(course.id)">Copy</a> </li>
-                              <li><a :href="course.copyStudentsURL">Copy + Students(remove for course / LO (need API))</a> </li>
+                              <li><a :href="course.copyStudentsURL">
+                                Copy + Students
+                                <!-- (remove for course / LO (need API)) -->
+                              </a> </li>
                               <li><a @click.prevent="deleteCourse(course.id)">Delete</a></li>
                             </ul>
                           </template>
