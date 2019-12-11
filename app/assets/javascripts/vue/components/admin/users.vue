@@ -37,8 +37,11 @@
           <tbody>
             <tr v-for="user in currentPageAllUsers" :key="user.id">
               <td>{{user.id}}</td>
-              <td class="no_wrap"><a :href="user.url">{{user.firstName}}</a> </td>
-              <td class="no_wrap"><a :href="user.url">{{user.lastName}}</a> </td>
+              <!-- <td class="no_wrap"><a :href="user.url">{{user.firstName}}</a> </td>
+              <td class="no_wrap"><a :href="user.url">{{user.lastName}}</a> </td> -->
+              <!-- In the future, the users' name links will work -->
+              <td class="no_wrap">{{user.firstName}} </td>
+              <td class="no_wrap">{{user.lastName}} </td>
               <td class="no_wrap">{{user.email}}</td>
               <template v-if="user.courses.length">
                 <td>
