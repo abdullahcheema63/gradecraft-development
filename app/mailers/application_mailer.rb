@@ -9,15 +9,4 @@ class ApplicationMailer < ActionMailer::Base
   track extra: -> { {course_id: @course.id} }
   track open: true, click: true # use only/except to limit actions
 
-  private
-
-  def default_layout(mailer)
-    puts "ERROR: "
-    # "mailers/" + mailer_name(mailer).gsub(/_mailer/,"_layout")
-    return "mailers/"
-  end
-
-  #def mailer_name(mailer)
-    #mailer.class.name.underscore
-  #end
 end
