@@ -211,7 +211,7 @@ module.exports = {
       return this.$store.getters.user;
     },
     environmentName(){
-      if (this.user.environment === 'development'){return "destructive"}
+      if (this.user.environment === 'development'){return "Local"}
       if (this.user.environment === 'production'){return "Umich"}
       if (this.user.environment === 'beta'){return "App"}
     },

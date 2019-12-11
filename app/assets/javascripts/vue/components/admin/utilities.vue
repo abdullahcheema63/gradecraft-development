@@ -12,6 +12,9 @@
         Unlocks is the only thing we have right now?
       </p>
     </div>
+    <div class="yeti-loading_spin">
+      <div></div>
+    </div>
   </div>
 </template>
 
@@ -48,7 +51,7 @@ module.exports = {
       return this.$store.getters.user;
     },
     environmentName(){
-      if (this.user.environment === 'development'){return "pointless"}
+      if (this.user.environment === 'development'){return "Local"}
       if (this.user.environment === 'production'){return "Umich"}
       if (this.user.environment === 'beta'){return "App"}
     },
