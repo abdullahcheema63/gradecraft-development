@@ -6,7 +6,7 @@
     </h4>
 
     <div class="course_status">
-      <p class="course_role">{{ termForCourseRole() }}</p>
+      <p class="course_role" :title="termForCourseRole()">{{ termForCourseRole() }}</p>
       <div v-if="course.role === 'professor' && paid_course_class">
         <p>Subscribed</p>
       </div>

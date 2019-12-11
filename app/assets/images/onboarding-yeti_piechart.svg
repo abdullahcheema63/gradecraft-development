@@ -13,6 +13,14 @@
 	.st7{fill:none;stroke:#FF9087;stroke-width:7.4442;stroke-miterlimit:10;}
 	.st8{fill:#5AAF6F;}
 	.st9{fill:none;stroke:#6EC1E8;stroke-width:7.4442;stroke-miterlimit:10;}
+
+	.flicker_1 {animation: flicker 4s linear infinite;}
+	.flicker_2 {animation: flicker 2.5s linear infinite;}
+	.flicker_3 {animation: flicker 5s linear infinite;}
+	@keyframes flicker {
+		25% { opacity: 0.2; }
+		75% { opacity: 1; }
+	}
 </style>
 <g id="Layer_1_1_">
 </g>
@@ -45,12 +53,12 @@
 				c-3.4,0.8-14.3-17.4-12.5-15c0,0,1.1,21.6-2.1,22.5c-3.6,0.9-14.6-18-14.6-18s-3.8,19.9-6.8,18.3c-1.4-0.8-3.6-9.3-6.5-16.7
 				c-1.1-2.7-8.7,12.1-9.6,5.9c-0.8-5.5-1-19.7-1-19.7L419.6,155.9z"/>
 		</g>
-		<ellipse class="st5" cx="572.5" cy="389.3" rx="10.5" ry="10.9"/>
-		<ellipse class="st6" cx="243.7" cy="70.5" rx="10.5" ry="10.9"/>
-		<ellipse class="st7" cx="91.9" cy="340" rx="10.8" ry="11.2"/>
-		<ellipse class="st8" cx="436" cy="421.6" rx="10.5" ry="10.9"/>
-		<ellipse class="st8" cx="62.5" cy="167.3" rx="10.5" ry="10.9"/>
-		<ellipse class="st9" cx="537.7" cy="230.5" rx="10.5" ry="10.9"/>
+		<ellipse class="st5 flicker_1" cx="572.5" cy="389.3" rx="10.5" ry="10.9"/>
+		<ellipse class="st6 flicker_3" cx="243.7" cy="70.5" rx="10.5" ry="10.9"/>
+		<ellipse class="st7 flicker_2" cx="91.9" cy="340" rx="10.8" ry="11.2"/>
+		<ellipse class="st8 flicker_3" cx="436" cy="421.6" rx="10.5" ry="10.9"/>
+		<ellipse class="st8 flicker_1" cx="62.5" cy="167.3" rx="10.5" ry="10.9"/>
+		<ellipse class="st9 flicker_2" cx="537.7" cy="230.5" rx="10.5" ry="10.9"/>
 	</g>
 </g>
 </svg>

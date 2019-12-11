@@ -13,21 +13,26 @@
 	.st7{fill:#FFFFFF;}
 	.st8{fill:#2E70BE;}
 	.st9{fill:#FF9087;}
-	
-		.st10{opacity:0.5;fill:none;stroke:#FFFFFF;stroke-width:6.1316;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;enable-background:new    ;}
+	.st10{opacity:0.5;fill:none;stroke:#FFFFFF;stroke-width:6.1316;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;enable-background:new    ;}
+
+	.flicker_1 {animation: flicker 4s linear infinite;}
+	.flicker_2 {animation: flicker 2.5s linear infinite;}
+	.flicker_3 {animation: flicker 5s linear infinite;}
+	@keyframes flicker {
+		25% { opacity: 0.2; }
+		75% { opacity: 1; }
+	}
 </style>
-<g id="Layer_1_1_">
-</g>
 <g id="top_elements">
 	<g>
 		<rect class="st0" width="635" height="500"/>
-		<ellipse transform="matrix(0.9593 -0.2825 0.2825 0.9593 -82.843 175.4483)" class="st1" cx="567" cy="375" rx="10.4" ry="10.8"/>
-		
-			<ellipse transform="matrix(0.9593 -0.2825 0.2825 0.9593 -32.6579 38.0996)" class="st2" cx="115.8" cy="132.3" rx="10.6" ry="11"/>
-		
-			<ellipse transform="matrix(0.9593 -0.2825 0.2825 0.9593 -67.4591 29.3334)" class="st3" cx="68" cy="248.6" rx="10.4" ry="10.8"/>
-		
-			<ellipse transform="matrix(0.9593 -0.2825 0.2825 0.9593 -87.8738 42.9461)" class="st4" cx="105" cy="326.2" rx="10.4" ry="10.8"/>
+		<ellipse transform="matrix(0.9593 -0.2825 0.2825 0.9593 -82.843 175.4483)" class="st1 flicker_3" cx="567" cy="375" rx="10.4" ry="10.8"/>
+
+		<ellipse transform="matrix(0.9593 -0.2825 0.2825 0.9593 -32.6579 38.0996)" class="st2 flicker_2" cx="115.8" cy="132.3" rx="10.6" ry="11"/>
+
+		<ellipse transform="matrix(0.9593 -0.2825 0.2825 0.9593 -67.4591 29.3334)" class="st3 flicker_1" cx="68" cy="248.6" rx="10.4" ry="10.8"/>
+
+		<ellipse transform="matrix(0.9593 -0.2825 0.2825 0.9593 -87.8738 42.9461)" class="st4" cx="105" cy="326.2" rx="10.4" ry="10.8"/>
 		<g>
 			<path class="st5" d="M515.2,175.3H169.7v178.6c0,6.8,5.5,12.3,12.3,12.3h321c6.8,0,12.3-5.5,12.3-12.3L515.2,175.3L515.2,175.3z"
 				/>
