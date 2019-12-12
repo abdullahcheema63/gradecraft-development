@@ -343,10 +343,17 @@ const store = new Vuex.Store({
           headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(paymentMethodID),
-        }).then((response) => {
-          console.log(response)
-          window.location.replace(store.state.subscriptionsURL)
         })
+        if(!resp.ok){
+          console.log("errors from deleting card, response:", resp)
+          let message = "Card was not able to be deleted (?get error message from controller)"
+          commit('addErrorAlertMessage', message)
+        }
+        else{
+          store.dispatch("getUserSubscription");
+          let message = "Card deleted successfully"
+          commit('addSuccessAlertMessage', message)
+        }
         console.log("resp")
         console.log(resp)
       },
@@ -801,8 +808,14 @@ const store = new Vuex.Store({
       },
       addCreditCardSuccessMessage( state, message){
         state.creditCardAddSuccess = true
-        state.successAlertMessages.push("Credit card was added successfully")
-      }
+        state.successAlertMessages.push(message)
+      },
+      addSuccessAlertMessage( state, message){
+        state.successAlertMessages.push(message)
+      },
+      addErrorAlertMessage( state, message){
+        state.errorAlertMessages.push(message)
+      },
     },
     getters: {
       user: state => {
