@@ -28,7 +28,7 @@
 
       <div class="payment_today" v-if="newCost > 0">
         <h3>Today’s payment total:</h3>
-        <h3><sup>$</sup><span class="lining_figures">{{proratedTotal}}</span></h3>
+        <h3><sup>$</sup><span class="lining_figures">{{roundCents(proratedTotal)}}</span></h3>
       </div>
 
       <p>
@@ -189,7 +189,7 @@
                   <h3 class="teal_text">Today’s payment total</h3>
                 </div>
                 <div class="today">
-                  <h3><span class="lining_figures"><sup>$</sup>{{ proratedTotal }}</span></h3>
+                  <h3><span class="lining_figures"><sup>$</sup>{{ roundCents(proratedTotal) }}</span></h3>
                 </div>
               </div>
               <div class="total">
@@ -363,6 +363,12 @@ module.exports = {
     },
     formatPrice(price){
       return Math.floor(price);
+    },
+    roundCents(dollars){
+      console.log("money before rounding: ", dollars)
+      let cents = dollars * 100
+      let roundedCents = Math.round(cents)
+      return (roundedCents / 100)
     }
   },
   created: function() {

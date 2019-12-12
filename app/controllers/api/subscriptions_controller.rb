@@ -226,24 +226,17 @@ class API::SubscriptionsController < ApplicationController
       #Need to make a new function to pro-rate the days for amount to pay
       amount_to_pay = courses_to_pay_for_count * new_billing_scheme.price_per_course
 
-      now = DateTime.now # or should it be current ? maybe the Time class is better for timezones??
-      days_in_month = now.end_of_month.day
-      remaining_days_in_month = days_in_month - now.day
-      if remaining_days_in_month === 0 then remaining_days_in_month = 1 end
+      prorated_total = prorate_total(amount_to_pay)
 
-      price_per_day = amount_to_pay / days_in_month
-      prorated_total = price_per_day * remaining_days_in_month
+      rounded_total = prorated_total.round(2, half: :up)
 
 
-      puts("Cost to pay today: #{prorated_total}")
-      puts("price_per_day: #{price_per_day}")
-      puts("days_in_month: #{days_in_month}")
-      puts("remainingDaysInMonth: #{remaining_days_in_month}")
+      puts("Cost to pay today: #{rounded_total}")
       puts("Removing subscription from: #{courses_to_unsubscribe}")
       puts("adding subscription to: #{courses_to_subscribe}")
 
       payment = Payment.new({
-        amount_usd: prorated_total,
+        amount_usd: rounded_total,
         billing_scheme_id: new_billing_scheme.id,
         subscription_id: @subscription.id,
       })
@@ -339,6 +332,17 @@ class API::SubscriptionsController < ApplicationController
   end
 
   private
+
+  def prorate_total(amount_to_pay)
+    now = DateTime.now # or should it be current ? maybe the Time class is better for timezones??
+    days_in_month = now.end_of_month.day
+    remaining_days_in_month = days_in_month - now.day
+    if remaining_days_in_month === 0 then remaining_days_in_month = 1 end
+
+    price_per_day = amount_to_pay / days_in_month
+    prorated_total = price_per_day * remaining_days_in_month
+    return prorated_total
+  end
 
   def determine_new_billing_scheme(courses_count)
     BillingScheme.all.each do |billing_scheme|
