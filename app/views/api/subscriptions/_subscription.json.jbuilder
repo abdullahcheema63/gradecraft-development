@@ -4,6 +4,7 @@ json.id subscription.id.to_s
 json.attributes do
   json.id subscription.id
   json.customer_id subscription.customer_id
+  json.stripe_connection_error @stripe_connection_error 
   json.is_expired subscription.is_expired?
   json.failed_last_payment subscription.failed_last_payment?
   json.expires subscription.renewal_date

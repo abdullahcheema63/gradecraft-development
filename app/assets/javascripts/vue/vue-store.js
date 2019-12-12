@@ -63,6 +63,8 @@ const store = new Vuex.Store({
     courseDashboardURL: "/dashboard",
     overviewURL: "/overview",
     subscriptionsURL: "/subscriptions",
+    errorAlertMessages: [],
+    successAlertMessages: [],
     courseCopyError: "",
     courseCreationError: "",
     courseUnpublishError: "",
@@ -70,7 +72,7 @@ const store = new Vuex.Store({
     courseArchiveError: "",
     courseUnarchiveError: "",
     creditCardError: "",
-    creditCardMessage: "",
+    creditCardAddSuccess: null,
     allUsers: [],
     allCourses: [],
     newActivity: {
@@ -753,6 +755,9 @@ const store = new Vuex.Store({
       addUserSubscription (state, subscriptionObj){
         console.log("addUserSubscription", subscriptionObj)
         state.userSubscription = subscriptionObj
+        if(subscriptionObj.stripe_connection_error){
+          state.errorAlertMessages.push("Oops! There was an error connecting to stripe")
+        }
       },
       toggleGuide (state){
         state.user.showGuide = !state.user.showGuide
@@ -795,7 +800,8 @@ const store = new Vuex.Store({
         state.creditCardError = message
       },
       addCreditCardSuccessMessage( state, message){
-        state.creditCardMessage = message
+        state.creditCardAddSuccess = true
+        state.successAlertMessages.push("Credit card was added successfully")
       }
     },
     getters: {

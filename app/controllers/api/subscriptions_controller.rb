@@ -1,5 +1,7 @@
 class API::SubscriptionsController < ApplicationController
   skip_before_action :require_course_membership
+  before_action :ensure_app_environment?
+  before_action :ensure_not_impersonating?
   before_action :ensure_admin?, only: [:all_subscriptions]
 
   # GET api/subscriptions
@@ -11,10 +13,14 @@ class API::SubscriptionsController < ApplicationController
 
     if @subscription.customer_id
       customer_id = @subscription.customer_id
-      customer = Stripe::Customer.retrieve(customer_id)
-      @default_payment_method_id = customer.invoice_settings.default_payment_method
-      response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
-      @payment_methods = response.data
+      begin
+        customer = Stripe::Customer.retrieve(customer_id)
+        @default_payment_method_id = customer.invoice_settings.default_payment_method
+        response = Stripe::PaymentMethod.list({customer: customer_id, type: 'card'})
+        @payment_methods = response.data
+      rescue Stripe::StripeError => e
+        @stripe_connection_error = true
+      end
     end
     @courses = get_courses_where_professor
     @payments = @subscription.payments.all

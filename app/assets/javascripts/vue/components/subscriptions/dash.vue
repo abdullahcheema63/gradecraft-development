@@ -1,23 +1,10 @@
 <template>
   <div>
+    <alertComponent></alertComponent>
     <div v-if="failedPayment.length" class="inline_alert_msg">
       <p>
         You failed a payment... {{failedPayment.status}}
       </p>
-    </div>
-    <div v-if="creditCardMessage" id="alert_msg" class="success">
-      <p>{{creditCardMessage}}</p>
-      <svg @click="closeAlert()" version="1.1" class="close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px"
-      	 height="25px" viewBox="0 0 25 25" enable-background="new 0 0 25 25" xml:space="preserve">
-      	<g>
-    			<line fill="none" stroke-width="4" stroke-linecap="round" stroke-miterlimit="10"
-            style="stroke: var(--strokeColor, #FFFFFF)"
-            x1="2.5" y1="2.5" x2="22.5" y2="22.5"/>
-    			<line fill="none" stroke-width="4" stroke-linecap="round" stroke-miterlimit="10"
-            style="stroke: var(--strokeColor, #FFFFFF)"
-            x1="2.5" y1="22.5" x2="22.5" y2="2.5"/>
-      	</g>
-      </svg>
     </div>
 
     <subscriptions-course-selector></subscriptions-course-selector>
@@ -59,6 +46,10 @@
       </p>
     </div>
 
+    <div v-if="!userSubscription.stripe_connection_error">
+      (Note E to S) We can add this condtional to the div below to not display cards (add or edit modals too)
+      because they wont work without stripe connection
+    </div>
     <div class="content_block bg-green_mint_2">
       <h2 class="unspace-top">My Payment Cards</h2>
       <form>
@@ -237,6 +228,7 @@ module.exports = {
   components: {
     "subscriptions-payment-inputs": () => VComponents.get("vue/components/subscriptions/paymentInputs"),
     "subscriptions-course-selector": () => VComponents.get("vue/components/subscriptions/courseSelector"),
+    alertComponent: () => VComponents.get('vue/components/structure/alertComponent'),
     modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     dropdownDotsComponent: () => VComponents.get('vue/components/structure/dropdownDotsComponent')
@@ -329,13 +321,13 @@ module.exports = {
     defaultPaymentMethod(){
       return this.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
     },
-    creditCardMessage(){
-      return this.$store.state.creditCardMessage
+    creditCardAddSuccess(){
+      return this.$store.state.creditCardAddSuccess
     },
   },
   watch: {
-    creditCardMessage(newMessage, oldMessage){
-      if(newMessage.length){
+    creditCardAddSuccess(newStatus, oldStatus){
+      if(newStatus === true){
         this.$refs.paymentInputModal.toggleModalState()
         let wrapper = document.getElementById("main_wrapper")
         wrapper.classList.add("has_alert")

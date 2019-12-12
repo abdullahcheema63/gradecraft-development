@@ -49,5 +49,5 @@ json.included do
         json.default_payment_method false
       end
     end
-  end
+  end if @payment_methods
 end
