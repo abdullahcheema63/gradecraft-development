@@ -14,9 +14,6 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'form-container',
-  props: {
-    hello: "hello"
-  },
   data() {
     return {
       active: false
