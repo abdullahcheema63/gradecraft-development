@@ -41,13 +41,14 @@ class API::SubscriptionsController < ApplicationController
     end
 
     @subscription = create_new_subscription
+    # James used this line (good to check for courses subscriptions ? ): @subscription.courses = p[:courses].map {|c| Course.find c }
 
     if @subscription.save!
       puts("Created a subscription! #{@subscription.inspect}")
       redirect_back(fallback_location: fallback_location)
     else
       puts("Could not create a subscription for:  #{current_user.inspect}")
-
+      # James used this call: ?? return render_error subscription.errors, subscription.errors, 400
       return render json: { data: current_user.subscription, errors: [ "Error creating a new subscription!" ] }, status: 500
     end
   end
@@ -97,8 +98,6 @@ class API::SubscriptionsController < ApplicationController
     payment_method_id = params[:id]
     make_default = params[:default_payment_method]
 
-    puts "Params: #{params}"
-
     begin
       editCard(payment_method_id)
     rescue Stripe::CardError => e
@@ -137,44 +136,7 @@ class API::SubscriptionsController < ApplicationController
     Stripe::PaymentMethod.detach(payment_method_id)
   end
 
-  # PUT api/licenses/edit
-  # ~~~ James Method ~~~
-  def edit
-    @subscription = current_user.subscription
-    if !@subscription
-      return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
-    end
-    p = edit_params
-
-    #NOT NEEDED because there is no more "max courses" for a subscription
-    #needed this the license_type / package limit on a course
-    #
-    #
-    #if @subscription.max_courses && p[:courses].length > @subscription.max_courses
-    #  return render json: { data: { max_courses: @license.max_courses }, errors: [ "Max courses exceeded" ] }, status: 400
-    #end
-
-    @subscription.courses = p[:courses].map {|c| Course.find c }
-    professor_courses = get_courses_where_professor
-
-    @subscription.courses.each do |c|
-      if !professor_courses.include? c
-        return render_error "User is not a professor in course: " + c.id.to_s, c, 401
-      end
-    end
-    if @subscription.save
-      @billing_schemes = BillingScheme.all
-      #probably wont need this for the API to run ??
-
-      @courses = get_courses_where_professor
-      @payments = @subscription.payments.all
-      return render "api/subscriptions/index", success: true, status: 200
-    else
-      return render_error subscription.errors, subscription.errors, 400
-    end
-  end
-
-  # PUT api/subscriptions
+  # POST api/subscriptions
   def update
     @subscription = current_user.subscription
     @billing_schemes = BillingScheme.all
@@ -182,6 +144,9 @@ class API::SubscriptionsController < ApplicationController
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
+
+    success_messages = []
+    error_messages = []
 
     @subscribed_courses = @subscription.courses
     subscribed_course_ids = @subscribed_courses.map(&:id)
@@ -199,22 +164,34 @@ class API::SubscriptionsController < ApplicationController
     courses_to_subscribe = selected_course_ids - subscribed_course_ids
 
     if new_subscribed_courses_count == current_subscribed_courses_count
-      #check if courses are the same / swap courses, won't need to update Billing Scheme id
       if (selected_course_ids - subscribed_course_ids).empty?
-        puts("courses subscribed are the same as courses selected ")
+        success_messages << "courses subscribed are the same as courses selected "
+        return render_success success_messages
       else
         puts("Removing subscription from: #{courses_to_unsubscribe}")
-        @subscription.unsubscribe_courses(courses_to_unsubscribe)
-
         puts("adding subscription to: #{courses_to_subscribe}")
-        @subscription.subscribe_courses(courses_to_subscribe)
+        if (@subscription.unsubscribe_courses(courses_to_unsubscribe)) && (@subscription.subscribe_courses(courses_to_subscribe))
+          success_messages << "successfully switched courses on your subscription"
+          puts "success_messages: #{success_messages.inspect}"
+          return render_success success_messages
+        else
+          error_messages << "could not switch courses on your subscription"
+          puts "error_messages: #{error_messages.inspect}"
+          return render_error error_messages, 500
+        end
       end
-
     elsif new_subscribed_courses_count < current_subscribed_courses_count
       #remove a subscription from a course
-
       puts("Removing subscription from: #{courses_to_unsubscribe}")
-      @subscription.unsubscribe_courses(courses_to_unsubscribe)
+      if(@subscription.unsubscribe_courses(courses_to_unsubscribe))
+        success_messages << "successfully removed courses from your subscription"
+        puts "success_messages: #{success_messages.inspect}"
+        return render_success success_messages
+      else
+        error_messages << "could not remove courses from your subscription"
+        puts "error_messages: #{error_messages.inspect}"
+        return render_error error_messages, 500
+      end
       @subscription.update_billing_scheme
 
     else
@@ -223,13 +200,9 @@ class API::SubscriptionsController < ApplicationController
       courses_to_pay_for_count = new_subscribed_courses_count - current_subscribed_courses_count
       new_billing_scheme = determine_new_billing_scheme(new_subscribed_courses_count)
 
-      #Need to make a new function to pro-rate the days for amount to pay
       amount_to_pay = courses_to_pay_for_count * new_billing_scheme.price_per_course
-
       prorated_total = prorate_total(amount_to_pay)
-
       rounded_total = prorated_total.round(2, half: :up)
-
 
       puts("Cost to pay today: #{rounded_total}")
       puts("Removing subscription from: #{courses_to_unsubscribe}")
@@ -263,23 +236,34 @@ class API::SubscriptionsController < ApplicationController
       if intent && intent.status === "succeeded"
         puts "!!! Payment was a success !!!"
         if courses_to_unsubscribe.length
-          @subscription.unsubscribe_courses(courses_to_unsubscribe)
+          if(@subscription.unsubscribe_courses(courses_to_unsubscribe))
+            success_messages << "successfully unsubscribed courses from your subscription"
+          else
+            puts "Could add error message about not being able to unsubscribe course"
+          end
         end
         if courses_to_subscribe.length
-          @subscription.subscribe_courses(courses_to_subscribe)
+          if(@subscription.subscribe_courses(courses_to_subscribe))
+            success_messages << "successfully added courses from your subscription"
+            puts "successfully added coursses to subscription message: #{success_messages.inspect}"
+          else
+            error_messages << "Error adding courses to your subscription"
+            puts "issue stripe refund ?!! (Please double check your payment was refunded ? )"
+            render_error error_messages, 500
+          end
         end
+
         payment.status = "succeeded"
         payment.failed = false
         payment.save
         NotificationMailer.payment_received(payment).deliver_now
         @subscription.update_billing_scheme
         @subscription.extend_renewal_date
+        success_messages << "and payment was saved successfully"
+        return render_success success_messages
       else
         payment.update_attribute(:failed, true)
       end
-
-      # not sure how to return to the my subscriptions page
-      render "api/subscriptions/index", success: true, status: 200
     end
   end
 
@@ -400,28 +384,18 @@ class API::SubscriptionsController < ApplicationController
     )
   end
 
-  def render_error(message, errors, status=400)
+  def render_error(errors, status=400)
     render json: {
-      message: message,
       errors: errors,
       success: false
     }, status: status
   end
 
-  def payment_permitted_params
-    [ :first_name, :last_name, :organization, :phone, :addr1, :addr2, :country, :state, :city, :zip, :stripe_token ]
-  end
-
-  def buy_params
-    params.permit(:license_type_id, payment: payment_permitted_params)
-  end
-
-  def renew_params
-    params.permit(payment: payment_permitted_params)
-  end
-
-  def edit_params
-    params.permit(courses: [])
+  def render_success(message, status=200)
+    render json: {
+      message: message,
+      success: true
+    }, status: status
   end
 
   def get_courses_where_professor

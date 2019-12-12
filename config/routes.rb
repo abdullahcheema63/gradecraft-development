@@ -567,7 +567,6 @@ Rails.application.routes.draw do
       get :all_subscriptions, on: :collection
       post :update, on: :collection
       post :retry, on: :collection
-      put :edit, on: :collection
       post :add_card, on: :collection
       post :edit_card, on: :collection
       get :failed_payment, on: :collection

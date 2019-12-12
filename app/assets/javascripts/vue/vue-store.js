@@ -492,6 +492,7 @@ const store = new Vuex.Store({
         });
         const body = await resp.json();
         if (!resp.ok) {
+          console.log("update subscription resp", resp)
           this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
             ? body.errors
             : Object.entries(body.errors); //Need polyfill
@@ -499,10 +500,14 @@ const store = new Vuex.Store({
           console.error(this);
           console.error(resp);
           console.error(body);
+          body.error.forEach(e => commit('addErrorAlertMessage', e))
+
           return;
         }
         else {
-          window.location.replace(store.state.subscriptionsURL)
+          console.log("body: ", body)
+          store.dispatch("getUserSubscription");
+          body.message.forEach(m => commit('addSuccessAlertMessage', m))
         }
       },
       retryFailedPayment: async function({ commit }, paymentID){

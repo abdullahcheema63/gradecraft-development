@@ -96,7 +96,7 @@
           </label>
         </div>
 
-        <buttonModal button_class="action" v-if="userSubscription.failed_last_payment">
+        <buttonModal ref="checkoutSummaryModal" button_class="action" v-if="userSubscription.failed_last_payment">
           <template slot="button-text">Continue with failed payment</template>
           <template slot="heading">Last Payment</template>
           <template slot="content"> You failed your last payment
@@ -324,11 +324,21 @@ module.exports = {
     creditCardAddSuccess(){
       return this.$store.state.creditCardAddSuccess
     },
+    successAlertMessages(){
+      return this.$store.state.successAlertMessages
+    },
   },
   watch: {
     creditCardAddSuccess(newStatus, oldStatus){
       if(newStatus === true){
         this.$refs.paymentInputModal.toggleModalState()
+        let wrapper = document.getElementById("main_wrapper")
+        wrapper.classList.add("has_alert")
+      }
+    },
+    successAlertMessages(newMessages, oldMessages){
+      if(newMessages[0]){
+        this.$refs.checkoutSummaryModal.toggleModalState()
         let wrapper = document.getElementById("main_wrapper")
         wrapper.classList.add("has_alert")
       }
