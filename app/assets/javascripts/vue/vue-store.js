@@ -286,21 +286,6 @@ const store = new Vuex.Store({
         console.log("final data after apiResponseToData:", final);
         commit('addFailedPayment', final)
       },
-      getUserPaymentMethods: async function({commit, state}){
-        console.log("getUserPaymentMethods action dispatched")
-        const resp = await fetch("/api/subscriptions/payment_methods");
-        if (resp.status === 404){
-          console.log(resp.status);
-        }
-        else if (!resp.ok){
-          throw resp;
-        }
-        const json = await resp.json();
-        console.log(json);
-        const final = apiResponseToData(json);
-        console.log("getting user payment methods", final);
-        commit('addUserPaymentMethods', final)
-      },
       addCardToSubscription: async function({ commit, state }, paymentMethod) {
         console.log("addCardToSubscription action dispatched")
         const resp = await fetch("/api/subscriptions/add_card", {
@@ -333,8 +318,11 @@ const store = new Vuex.Store({
           console.log("errors?", help.errors)
           commit('addCreditCardError', help.errors)
         }
-        else
-          { window.location.replace(store.state.subscriptionsURL) }
+        else{
+          store.dispatch("getUserSubscription");
+          let message = "You've updated your payment card"
+          commit('addSuccessAlertMessage', message)
+        }
       },
       removePaymentMethod: async function({ commit }, paymentMethodID){
         console.log("removePaymentMethod action dispatched")
@@ -351,7 +339,7 @@ const store = new Vuex.Store({
         }
         else{
           store.dispatch("getUserSubscription");
-          let message = "Card deleted successfully"
+          let message = "You've deleted your payment card"
           commit('addSuccessAlertMessage', message)
         }
         console.log("resp")
@@ -363,12 +351,17 @@ const store = new Vuex.Store({
           headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(paymentMethodID),
-        }).then((response) => {
-          console.log(response)
-          window.location.replace(store.state.subscriptionsURL)
         })
-        console.log("resp")
-        console.log(resp)
+        if(!resp.ok){
+          console.log("errors from deleting card, response:", resp)
+          let message = "Sorry, there was an error trying to change your primary payment card"
+          commit('addErrorAlertMessage', message)
+        }
+        else{
+          store.dispatch("getUserSubscription");
+          let message = "You've changed your primary payment card"
+          commit('addSuccessAlertMessage', message)
+        }
       },
       getAllBillingSchemes: async function({ commit }){
         console.log("getAllBillingSchemes action dispatched")
@@ -796,9 +789,6 @@ const store = new Vuex.Store({
       },
       addFailedPayment (state, failedPayment){
         state.failedPayment = failedPayment
-      },
-      addUserPaymentMethods (state, paymentMethods){
-        state.userSubscription.paymentMethods = paymentMethods;
       },
       addUserSubscriptionInfo (state, subscriptionInfo){
         state.user.subscription = {...subscriptionInfo}

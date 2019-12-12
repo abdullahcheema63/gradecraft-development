@@ -346,12 +346,6 @@ module.exports = {
     close() {
       this.toggleModalState()
     },
-    closeAlert() {
-      document.getElementById("alert_msg").classList.add("closing")
-      setTimeout(function() {
-        document.getElementById("main_wrapper").classList.remove("has_alert")
-      }, 400);
-    },
     toggleModalState(){
       this.modalState = !this.modalState
     },
