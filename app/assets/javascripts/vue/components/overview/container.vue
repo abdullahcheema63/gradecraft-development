@@ -277,7 +277,6 @@ module.exports = {
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
     modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
     accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
-    formContainer: () => VComponents.get('vue/components/formContainer'),
     tabContainer: () => VComponents.get('vue/components/structure/tabContainer'),
     VueFlatpickr
   },
