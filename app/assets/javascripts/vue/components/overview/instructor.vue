@@ -14,7 +14,7 @@
         </p>
       </guideMessage>
 
-      <modalComponent v-if="onboarding" :modalState="modalState" @close="toggleModalState(); sawOnboarding();" class="component_container onboarding">
+      <modalComponent v-if="onboarding && showOnboarding" :modalState="modalState" @close="toggleModalState(); sawOnboarding();" class="component_container onboarding">
         <template slot="heading">Welcome to GradeCraft!</template>
         <template slot="content">
           <vue-slick class="onboarding_slides" :options="slickOptions">
