@@ -3,7 +3,6 @@
     <guideControl></guideControl>
 
     <div class="content_block intro">
-        <!-- Note to E from S: conditional for adding App or U-M depending on the database side  -->
         <h1>My {{environmentName}} Dashboard</h1>
 
         <guideMessage>

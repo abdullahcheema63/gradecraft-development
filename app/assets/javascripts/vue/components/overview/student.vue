@@ -13,7 +13,7 @@
         </p>
       </guideMessage>
 
-      <modalComponent v-if="onboarding" :modalState="modalState" @close="toggleModalState(); sawOnboarding();" class="component_container onboarding">
+      <modalComponent v-if="onboarding && showOnboarding" :modalState="modalState" @close="toggleModalState(); sawOnboarding();" class="component_container onboarding">
         <template slot="heading">Welcome to GradeCraft!</template>
         <template slot="content">
           <vue-slick :options="slickOptions" class="onboarding_slides">
@@ -102,7 +102,8 @@
             <template slot="content">
               <p class="unspace-bottom">
                 <br />
-                Published courses are visible to students, observers, assistants, and instructors added to each course.
+                Published courses are visible to students, observers,
+                {{environmentName}}s, and instructors added to each course.
               </p>
               <div class="course_box" v-if="publishedCourses.length">
                 <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"></courseCard>
@@ -121,7 +122,8 @@
             <template slot="content">
               <p class="unspace-bottom">
                 <br />
-                Unpublished courses are hidden from students and observers, but can be seen and edited by assistants and instructors.
+                Unpublished courses are hidden from students and observers, but can be seen and edited by
+                {{environmentName}}s and instructors.
               </p>
               <div v-if="unpublishedCourses.length">
                 <div class="course_box" v-if="unpublishedCourses.length">
@@ -140,7 +142,8 @@
         <div v-if="tabSection[0]==='Past'">
           <div class="content_block">
             <p>
-              This section includes any course in which you had a role of student, observer, or GSI. You can’t make changes to past courses but you can review them.
+              This section includes any course in which you had a role of student, observer, or
+              {{environmentName}}. You can’t make changes to past courses but you can review them.
             </p>
             <div v-if="pastCourses.length">
               <div class="table_functions">
@@ -276,6 +279,11 @@ module.exports = {
     },
     hasSeenOnboarding(){
       return this.$store.getters.hasSeenOnboarding;
+    },
+    environmentName(){
+      if (this.$store.state.user.environment === 'development'){return "teaching elf"}
+      if (this.$store.state.user.environment === 'production'){return "GSI"}
+      if (this.$store.state.user.environment === 'beta'){return "teaching assistant"}
     },
   },
   methods: {

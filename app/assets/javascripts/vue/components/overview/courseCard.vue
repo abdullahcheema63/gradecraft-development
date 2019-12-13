@@ -1,6 +1,6 @@
 <template>
   <div v-if="status=='published'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
-    <h4 :title="course.name">
+    <h4 :title="course.number + ' ' + course.name">
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
     </h4>
@@ -74,7 +74,7 @@
         </div>
       </div>
       <div class="empty" v-else>
-        <p v-if="is_staff"><em>There aren’t any {{course.termForAssignments}} coming up for this course</em></p>
+        <p v-if="is_staff"><em>There aren’t any upcoming {{course.termForAssignments}} for this course</em></p>
         <p v-else><em>
           You don’t have any {{course.termForAssignments}} coming up for this course
         </em></p>
@@ -105,13 +105,13 @@
   </div>
 
   <div v-else-if="status=='unpublished'" class="course_card" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
-    <h4>
+    <h4 :title="course.number + ' ' + course.name">
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
     </h4>
 
     <div class="course_status">
-      <p class="course_role">{{user_card_class}}</p>
+      <p class="course_role" :title="termForCourseRole()">{{ termForCourseRole() }}</p>
       <div v-if="course.role === 'professor' && paid_course_class">
         <p>Subscribed</p>
       </div>
@@ -152,18 +152,21 @@
   </div>
 
   <div v-else-if="status=='past'" class="course_card past" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another]">
-    <h4>
+    <h4 :title="course.number + ' ' + course.name">
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
     </h4>
 
     <div class="course_status">
-      <p class="course_role">{{course.role}}</p>
-      <div>
+      <p class="course_role" :title="termForCourseRole()">{{ termForCourseRole() }}</p>
+      <div v-if="course.role === 'professor' && paid_course_class">
+        <p>Subscribed</p>
+      </div>
+      <!-- <div>
         <p :class="'subscribed'" v-if="is_subscribed">
           Was Subscribed
         </p>
-      </div>
+      </div> -->
     </div>
 
     <div>
@@ -172,13 +175,13 @@
   </div>
 
   <div v-else-if="status=='archived'" class="course_card archived" :class="[user_card_class, paid_course_class, paid_by_another, created_by_another, hidden_from_students, request_pending]">
-    <h4>
+    <h4 :title="course.number + ' ' + course.name">
       <span>{{ course.number }} {{ course.name }}</span>
       <span>{{ course.term.name }} {{ course.term.year }}</span>
     </h4>
 
     <div class="course_status">
-      <p class="course_role">{{course.role}}</p>
+      <p class="course_role" :title="termForCourseRole()">{{ termForCourseRole() }}</p>
       <div>
         <p :class="'subscribed'" v-if="is_subscribed">
           Was subscribed

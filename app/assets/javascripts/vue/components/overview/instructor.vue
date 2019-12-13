@@ -163,7 +163,8 @@
             <template slot="content">
               <p class="unspace-bottom">
                 <br />
-                Published courses are visible to students, observers, teaching assistants, and instructors added to each course.
+                Published courses are visible to students, observers,
+                {{environmentName}}, and instructors added to each course.
               </p>
               <div class="course_box" v-if="publishedCourses.length">
                 <courseCard v-for="course in publishedCourses" :key="course.id" :course="course" status="published"
@@ -184,7 +185,8 @@
             <template slot="content">
               <p class="unspace-bottom">
                 <br />
-                Unpublished courses are hidden from students and observers, but can be seen and edited by teaching assistants and instructors.
+                Unpublished courses are hidden from students and observers, but can be seen and edited by
+                {{environmentName}} and instructors.
               </p>
               <div v-if="unpublishedCourses.length">
                 <div class="course_box" v-if="unpublishedCourses.length">
@@ -420,7 +422,8 @@
                 {{this.selectedCourse.number}} {{this.selectedCourse.name}}<span v-if="selectedCourse.term.name || selectedCourse.term.year">, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</span>.
               </strong>
               <br />
-              It will be <strong>hidden from students, GSIs, and observers</strong> in the course, but remain visible to any instructors in the course.
+              It will be <strong>hidden from students,
+              {{environmentName}}, and observers</strong> in the course, but remain visible to any instructors in the course.
             </p>
             <p>
               Hiding a course is useful if you only want to allow course instructors to review the past content.
@@ -435,7 +438,8 @@
               </strong>
             </p>
             <p>
-              It will be <strong>hidden from students and observers</strong> in the course, but remain visible to and editable by any GSIs and instructors in the course.
+              It will be <strong>hidden from students and observers</strong> in the course, but remain visible to and editable by any
+              {{environmentName}} and instructors in the course.
             </p>
 
             <p>
@@ -485,7 +489,8 @@
                 {{this.selectedCourse.number}} {{this.selectedCourse.name}}<span v-if="selectedCourse.term.name || selectedCourse.term.year">, {{this.selectedCourse.term.name}} {{this.selectedCourse.term.year}}</span>.
               </strong>
               <br />
-              It will be <strong>visible to all users</strong> in the course, and remain editable by any GSIs and instructors in the course.
+              It will be <strong>visible to all users</strong> in the course, and remain editable by any
+              {{environmentName}} and instructors in the course.
             </p>
           </template>
           <template slot="content" v-else-if="!selectedCourse.subscribed && selectedCourse.active">
@@ -662,6 +667,11 @@ module.exports = {
     },
     hasSeenOnboarding(){
       return this.$store.getters.hasSeenOnboarding;
+    },
+    environmentName(){
+      if (this.$store.state.user.environment === 'development'){return "teaching elves"}
+      if (this.$store.state.user.environment === 'production'){return "GSIs"}
+      if (this.$store.state.user.environment === 'beta'){return "teaching assistants"}
     },
   },
   methods: {
