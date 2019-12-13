@@ -225,13 +225,13 @@
                 <div class="filter_box">
                   <p><strong>Select which filters you want to apply:</strong></p>
                   <div>
-                    <span v-for="year in courseTermYear" :key="year">
+                    <span v-for="year in courseTermYear" :key="year" v-if="year.length > 0">
                       <input :id="year" type="checkbox" v-model="termYear" :value="year"/>
                       <label :for="year">{{year}}</label>
                     </span>
                   </div>
                   <div>
-                    <span v-for="term in courseTermName" :key="term">
+                    <span v-for="term in courseTermName" :key="term" v-if="term.length > 0">
                       <input :id="term" type="checkbox" v-model="termName" :value="term"/>
                       <label :for="term">{{term}}</label>
                     </span>
