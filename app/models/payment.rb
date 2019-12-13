@@ -14,10 +14,11 @@ class Payment < ApplicationRecord
 
     payment_method_id = get_payment_method_id(customer)
 
-    #return here if there are no payment_methods
+    # ?? i don't think below is needed because the begin / rescue will catch this
+      # return here if there are no payment_methods
 
     intent = create_payment_intent(customer_id)
-    self.update_attribute(:payment_intent_id, intent.id)
+    self.payment_intent_id = intent.id
 
     confirm_payment_intent(payment_method_id)
   end

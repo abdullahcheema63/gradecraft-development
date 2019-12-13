@@ -375,7 +375,6 @@ module.exports = {
       return Math.floor(price);
     },
     roundCents(dollars){
-      console.log("money before rounding: ", dollars)
       let cents = dollars * 100
       let roundedCents = Math.round(cents)
       return (roundedCents / 100)

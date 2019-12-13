@@ -500,7 +500,7 @@ const store = new Vuex.Store({
           console.error(this);
           console.error(resp);
           console.error(body);
-          body.error.forEach(e => commit('addErrorAlertMessage', e))
+          body.errors.forEach(e => commit('addErrorAlertMessage', e))
 
           return;
         }

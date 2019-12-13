@@ -219,18 +219,28 @@ class API::SubscriptionsController < ApplicationController
       begin
         intent = @subscription.initiate_payment(payment)
       rescue Stripe::CardError => e
-        puts "error error: #{e}"
-        payment.status = e.error.code
+        error_messages << e.error.message
+        handle_payment_failure error_messages
       rescue Stripe::RateLimitError => e
         # Too many requests made to the API too quickly
+        error_messages << e.error.message
+        handle_payment_failure error_messages
       rescue Stripe::AuthenticationError => e
         # Authentication with Stripe's API failed
+        error_messages << e.error.message
+        handle_payment_failure error_messages
       rescue Stripe::APIConnectionError => e
         # Network communication with Stripe failed
+        error_messages << e.error.message
+        handle_payment_failure error_messages
       rescue Stripe::StripeError => e
+        error_messages << e.error.message
+        handle_payment_failure error_messages
         # Display a very generic error to the user, and maybe send' yourself an email
       rescue => e
         # Something else happened, completely unrelated to Stripe
+        error_messages << "Payment failed for an unknown reason"
+        handle_payment_failure error_messages
       end
 
       if intent && intent.status === "succeeded"
@@ -244,7 +254,7 @@ class API::SubscriptionsController < ApplicationController
         end
         if courses_to_subscribe.length
           if(@subscription.subscribe_courses(courses_to_subscribe))
-            success_messages << "successfully added courses from your subscription"
+            success_messages << "successfully added courses to your subscription"
             puts "successfully added coursses to subscription message: #{success_messages.inspect}"
           else
             error_messages << "Error adding courses to your subscription"
@@ -261,8 +271,6 @@ class API::SubscriptionsController < ApplicationController
         @subscription.extend_renewal_date
         success_messages << "and payment was saved successfully"
         return render_success success_messages
-      else
-        payment.update_attribute(:failed, true)
       end
     end
   end
@@ -382,6 +390,11 @@ class API::SubscriptionsController < ApplicationController
         }
       }
     )
+  end
+
+  def handle_payment_failure(messages)
+    # Do we want to try to cancle the payment intent on stripes side ?? / make sure they were not charged
+    return render_error messages, 500
   end
 
   def render_error(errors, status=400)
