@@ -301,7 +301,7 @@ const store = new Vuex.Store({
         }
         else{
           store.dispatch("getUserSubscription");
-          let message = "Card added successfully"
+          let message = "You’ve added a payment card."
           commit('addCreditCardSuccessMessage', message)
         }
       },
@@ -320,7 +320,7 @@ const store = new Vuex.Store({
         }
         else{
           store.dispatch("getUserSubscription");
-          let message = "You've updated your payment card"
+          let message = "You’ve updated your payment card."
           commit('addSuccessAlertMessage', message)
         }
       },
@@ -334,12 +334,12 @@ const store = new Vuex.Store({
         })
         if(!resp.ok){
           console.log("errors from deleting card, response:", resp)
-          let message = "Card was not able to be deleted (?get error message from controller)"
+          let message = "Card could not be deleted. (?get error message from controller)"
           commit('addErrorAlertMessage', message)
         }
         else{
           store.dispatch("getUserSubscription");
-          let message = "You've deleted your payment card"
+          let message = "You’ve deleted your payment card"
           commit('addSuccessAlertMessage', message)
         }
         console.log("resp")
@@ -354,12 +354,12 @@ const store = new Vuex.Store({
         })
         if(!resp.ok){
           console.log("errors from deleting card, response:", resp)
-          let message = "Sorry, there was an error trying to change your primary payment card"
+          let message = "Sorry, there was an error trying to change your primary payment card."
           commit('addErrorAlertMessage', message)
         }
         else{
           store.dispatch("getUserSubscription");
-          let message = "You've changed your primary payment card"
+          let message = "You’ve changed your primary payment card."
           commit('addSuccessAlertMessage', message)
         }
       },
