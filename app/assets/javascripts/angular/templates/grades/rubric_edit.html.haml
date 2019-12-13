@@ -1,11 +1,14 @@
 %section#rubric-grader
-  .grade-section-label.collapse-toggler
-    Grade Assignment by Rubric
+  %a.grade-section-label.collapse-toggler
+    %h3
+      %i.fa.fa-chevron-circle-right.fa-fw
+      Grade Assignment with Rubric
 
   -# add .collapse to class list to enable a collapasable rubric
   -# will require additional styling
+  %p
+    %em Click to select the level earned for each criterion.
   #rubric-grade-edit.rubric.edit
-    .rubric-hint (click to select the level earned for each criterion)
     .criterion(ng-repeat="criterion in criteria")
       .criterion-heading
         %h4.criterion-name {{criterion.name}} {{(criterion.max_points || 0) | number:0}} Points

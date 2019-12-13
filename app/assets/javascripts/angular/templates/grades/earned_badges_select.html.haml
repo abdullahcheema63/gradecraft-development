@@ -1,4 +1,4 @@
-%a.grade-form-collapsible.collapse-toggler.collapsed(href="#")
+%a.collapse-toggler.collapsed(href="#")
   %h3
     %i.fa.fa-chevron-circle-right.fa-fw
     %span Award {{vm.BadgeService.termFor("badges")}}
@@ -9,7 +9,7 @@
       ng-repeat="badge in vm.BadgeService.badges"
       ng-class='{"unavailable":!vm.badgeIsActionable(badge), "awardable":vm.badgeIsAwardable(badge), "awarded":vm.badgeIsEarnedForGrade(badge)}'
       )
-      
+
       .badge-award-checkmark
         %input(id="{{vm.inputId(badge)}}"
         ng-if="vm.badgeIsActionable(badge)"
@@ -24,6 +24,5 @@
 
   %div(ng-repeat="badge in vm.BadgeService.badges" ng-if="vm.badgeIsEarnedForGrade(badge)"){:style => "margin-top: 40px;"}
     %h3(ng-if="vm.badgeIsEarnedForGrade(badge)")
-      Provide feedback for badge {{badge.name}}       
+      Provide feedback for badge {{badge.name}}
     %textarea(ng-model="vm.BadgeService.earnedBadgesFeedback[badge.id]" ng-model-options="{debounce: 1000}" ng-change="vm.setBadgeFeedback(badge)" ng-if="vm.badgeIsEarnedForGrade(badge)" froala)
-

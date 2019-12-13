@@ -1,17 +1,17 @@
 .pageContent
   = render partial: "layouts/alerts", locals: { model: @grade }
 
+  %h2= "#{term_for :assignment} Details"
   = render partial: "submissions/assignment_guidelines", locals: { assignment: @grade.assignment }
 
   - if @grade.assignment.accepts_submissions? && @submission.present? && SubmissionProctor.new(@submission).viewable?(current_user)
 
     %section
 
-      %h2.grade-form-header= "#{@grade.student.first_name}'s Submission"
+      %h4= "#{@grade.student.first_name}'s Submission"
       = render partial: "submissions/submission_content",
         locals: { presenter: Submissions::ShowPresenter.new(id: @submission.id,
             assignment_id: @grade.assignment.id, course: current_course) }
-    %hr.grading-divider
 
   %grade-edit{"data-assignment-id"=>"#{@grade.assignment.id}",
               "data-rubric-id"=>"#{@grade.assignment.rubric.try(:id)}",

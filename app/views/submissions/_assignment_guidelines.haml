@@ -1,5 +1,5 @@
 %section.grade-form-section.assignment-details
-  %h2.grade-form-header #{ assignment.assignment_type.name} Details:
+  %h4 #{ assignment.assignment_type.name} Details:
   - if assignment.pass_fail?
     %p= "#{term_for :pass}/#{term_for :fail} Assignment"
   - else
@@ -16,7 +16,7 @@
 
 - if assignment.description.present?
   %section.grade-form-section
-    %h2.grade-form-header= "#{term_for :assignment} Guidelines:"
+    %h4= "#{term_for :assignment} Guidelines:"
     - if assignment.assignment_files.present?
       %ul
         Downloads
@@ -27,7 +27,7 @@
 
 - if assignment.assignment_type.description.present?
   %section.grade-form-section
-    %h2.grade-form-header #{ assignment.assignment_type.name} Guidelines:
+    %h4 #{ assignment.assignment_type.name} Guidelines:
 
     %p.minimize= raw assignment.assignment_type.description
     %hr.grading-divider
@@ -36,9 +36,9 @@
   - group ||= @group
   %section.grade-form-section
     - if assignment.has_groups? && group.present?
-      %h2.grade-form-header= "Grade for #{group&.name}:"
+      %h2= "Grade for #{group&.name}:"
       %ul
         - group.students.each do |s|
           %li= link_to s.name, student_path(s)
     - elsif @grade.present?
-      %h2.grade-form-header= "Grade for #{@grade.student.first_name} #{@grade.student.last_name}:"
+      %h2= "Grade for #{@grade.student.first_name} #{@grade.student.last_name}:"
