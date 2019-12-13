@@ -162,11 +162,6 @@
       <div v-if="course.role === 'professor' && paid_course_class">
         <p>Subscribed</p>
       </div>
-      <!-- <div>
-        <p :class="'subscribed'" v-if="is_subscribed">
-          Was Subscribed
-        </p>
-      </div> -->
     </div>
 
     <div>
