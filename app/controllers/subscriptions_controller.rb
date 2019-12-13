@@ -11,7 +11,7 @@ class SubscriptionsController < ApplicationController
   # root
   # GET /
   def index
-    @title = "Subscriptions"
+    @title = "My Subscription"
     @user = current_user
     @stripePk = Rails.configuration.stripe[:publishable_key]
   end

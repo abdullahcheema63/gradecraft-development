@@ -9,7 +9,7 @@ class OverviewController < ApplicationController
   include ApplicationHelper
 
   def index
-    @title = "Overview"
+    @title = "My Dashboard"
   end
 
   def courses
