@@ -3,7 +3,7 @@
     <p>
       Results: <span class="displayed">{{itemDisplayRange}}</span> of <span class="total">{{totalPaginatedItems}}</span>
     </p>
-    <div>
+    <div v-if="totalPaginatedItems">
       <button class="table_prev" :disabled="currentPage === 0" @click="updateCurrentPage(currentPage - 1)"></button>
       <button v-for="page in pageNumbers" :key="page" :class="{active :currentPage === page}" @click="updateCurrentPage(page)">{{page + 1}}</button>
       <button class="table_next" :disabled="currentPage === maxPageNumber - 1" @click="updateCurrentPage(currentPage + 1)"></button>

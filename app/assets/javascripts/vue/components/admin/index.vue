@@ -74,7 +74,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="course in newCourses" :key="course.id">
+            <tr v-if="newCourses.length === 0">
+              <td colspan="12" class="empty">
+                <p>
+                  <em>No new courses were created in the past 10 days</em>
+                </p>
+              </td>
+            </tr>
+            <tr v-else v-for="course in newCourses" :key="course.id">
               <td><a :href="course.url">{{course.id}}</a> </td>
               <td><a :href="course.url">{{course.number}}</a></td>
               <td><a :href="course.url" class="table_truncate" :title="course.name">{{course.name}}</a> </td>
