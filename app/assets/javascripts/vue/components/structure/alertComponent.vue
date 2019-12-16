@@ -7,8 +7,8 @@
     </div>
 
     <div v-if="this.successMessages[0] && this.activeSuccess" class="success">
-      <div class="success" id="alert_msg" v-for="message in this.successMessages">
-        <p>{{message}} (E TO S: [Code] This and the failure_alert_msg id below will need to be v-bound and unique)</p>
+      <div class="alert_msg success" id="alert_msg_success">
+        <p v-for="message in this.successMessages">{{message}} (E TO S: [Code] This and the failure_alert_msg id below will need to be v-bound and unique)</p>
         <svg @click="closeSuccessAlert()" version="1.1" class="close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px"
         	 height="25px" viewBox="0 0 25 25" enable-background="new 0 0 25 25" xml:space="preserve">
         	<g>
@@ -24,8 +24,8 @@
     </div>
 
     <div v-if="this.errorMessages[0] && this.activeFailure" >
-      <div class="success" id="alert_msg" v-for="message in this.errorMessages">
-        <p>{{message}} (E TO S: this is actually a failure message and needs to be styled TwT )</p>
+      <div class="alert_msg failure" id="alert_msg_fail" v-for="message in this.errorMessages">
+        <p>{{message}}</p>
         <svg @click="closeFailureAlert()" version="1.1" class="close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px"
         	 height="25px" viewBox="0 0 25 25" enable-background="new 0 0 25 25" xml:space="preserve">
         	<g>
@@ -56,7 +56,7 @@ module.exports = {
     closeFailureAlert(){
       console.log("will need to pass in id for the svg to no which one to close")
       this.activeFailure = false
-      document.getElementById("alert_msg").classList.add("closing")
+      document.getElementById("alert_msg_fail").classList.add("closing")
       setTimeout(function() {
         document.getElementById("main_wrapper").classList.remove("has_alert")
       }, 400);
@@ -64,7 +64,7 @@ module.exports = {
     closeSuccessAlert(){
       console.log("will need to pass in id for the svg to no which one to close")
       this.activeFailure = false
-      document.getElementById("alert_msg").classList.add("closing")
+      document.getElementById("alert_msg_success").classList.add("closing")
       setTimeout(function() {
         document.getElementById("main_wrapper").classList.remove("has_alert")
       }, 400);

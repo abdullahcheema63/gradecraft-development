@@ -761,7 +761,7 @@ const store = new Vuex.Store({
         console.log("addUserSubscription", subscriptionObj)
         state.userSubscription = subscriptionObj
         if(subscriptionObj.stripe_connection_error){
-          state.errorAlertMessages.push("Oops! There was an error connecting to stripe")
+          state.errorAlertMessages.push("Oops! There was an error connecting to Stripe")
         }
       },
       toggleGuide (state){
