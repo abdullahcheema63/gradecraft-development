@@ -46,64 +46,91 @@
       </p>
     </div>
 
-    <div v-if="!userSubscription.stripe_connection_error">
-      (Note E to S) We can add this condtional to the div below to not display cards (add or edit modals too)
-      because they wont work without stripe connection
-    </div>
     <div class="content_block bg-green_mint_2">
       <h2 class="unspace-top">My Payment Cards</h2>
-      <form>
-        <div v-for="paymentMethod in userSubscription.payment_methods" class="form_options payment_method">
-          <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" :checked="paymentMethod.default_payment_method" name="payment_group" />
-          <div>
-            <p>
-              <strong>{{paymentMethod.nickname}}</strong>
-              ({{paymentMethod.brand}})
-              **** **** **** {{paymentMethod.last4}} <span></span> Expires {{paymentMethod.exp_month}}/{{paymentMethod.exp_year}}
-            </p>
-            <dropdownDotsComponent>
-              <template slot="content">
-                <ul>
-                  <li v-if="!paymentMethod.default_payment_method">
-                    <a @click="makePaymentMethodDefault(paymentMethod.id)">Make Primary</a>
-                  </li>
-                  <li>
-                    <a @click="openEditPaymentMethod(paymentMethod)">Edit</a>
-                  </li>
-                  <li>
-                    <a @click="removePaymentMethod(paymentMethod.id)">Delete</a>
-                  </li>
-                </ul>
-              </template>
-            </dropdownDotsComponent>
+      <div v-if="!userSubscription.stripe_connection_error" v-for="paymentMethod in userSubscription.payment_methods" class="form_options payment_method">
+        <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" :checked="paymentMethod.default_payment_method" name="payment_group" />
+        <div>
+          <p>
+            <strong>{{paymentMethod.nickname}}</strong>
+            ({{paymentMethod.brand}})
+            **** **** **** {{paymentMethod.last4}} <span></span> Expires {{paymentMethod.exp_month}}/{{paymentMethod.exp_year}}
+          </p>
+          <dropdownDotsComponent>
+            <template slot="content">
+              <ul>
+                <li v-if="!paymentMethod.default_payment_method">
+                  <a @click="makePaymentMethodDefault(paymentMethod.id)">Make Primary</a>
+                </li>
+                <li>
+                  <a @click="openEditPaymentMethod(paymentMethod)">Edit</a>
+                </li>
+                <li>
+                  <a @click="removePaymentMethod(paymentMethod.id)">Delete</a>
+                </li>
+              </ul>
+            </template>
+          </dropdownDotsComponent>
+        </div>
+      </div>
+
+      <buttonModal v-if="!userSubscription.stripe_connection_error" ref="paymentInputModal" button_class="secondary function add_something">
+        <template slot="button-text">Add a new card</template>
+        <template slot="heading">Add a new card</template>
+        <template slot="content">
+          <subscriptions-payment-inputs ref="paymentInputs" :stripePk="stripePk" />
+        </template>
+      </buttonModal>
+
+      <div v-if="userSubscription.stripe_connection_error" class="empty">
+        <p>
+          Uh oh! It looks like we can’t connect with Stripe right now. Please try again later!
+        </p>
+      </div>
+
+      <div class="form_options alt-2">
+        <input type="checkbox" id="service_terms_agreement" checked="checked" required="required" />
+        <label for="service_terms_agreement">I accept GradeCraft’s
+          <a href="https://gradecraft.com/terms_service/" target="_blank">Terms of Service</a>
+        </label>
+      </div>
+
+      <buttonModal ref="checkoutSummaryModal" button_class="action" v-if="userSubscription.failed_last_payment">
+        <template slot="button-text">Continue with failed payment</template>
+        <template slot="heading">Last Payment</template>
+        <template slot="content"> You failed your last payment
+          <div class="subscription_summary">
+            <h3>Courses to pay for</h3>
+            <ul class="pink_dots">
+              <li v-for="course of failedPayment.courses" :key="course.id">
+                <p> <strong>{{course.number}} {{course.name}}</strong>
+                  <br />
+                  <template v-if="course.published">Published</template>
+                </p>
+                <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
+                <p><strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
+              </li>
+            </ul>
           </div>
-        </div>
 
-        <buttonModal ref="paymentInputModal" button_class="secondary function add_something">
-          <template slot="button-text">Add a new card</template>
-          <template slot="heading">Add a new card</template>
-          <template slot="content">
-            <form>
-              <subscriptions-payment-inputs ref="paymentInputs" :stripePk="stripePk" />
-            </form>
-          </template>
-        </buttonModal>
+          <button type="button" class="action" @click="retryFailedPayment()">Submit</button>
+        </template>
+      </buttonModal>
 
-        <div class="form_options alt-2">
-          <input type="checkbox" id="service_terms_agreement" checked="checked" required="required" />
-          <label for="service_terms_agreement">I accept GradeCraft’s
-            <a href="https://gradecraft.com/terms_service/" target="_blank">Terms of Service</a>
-          </label>
-        </div>
-
-        <buttonModal ref="checkoutSummaryModal" button_class="action" v-if="userSubscription.failed_last_payment">
-          <template slot="button-text">Continue with failed payment</template>
-          <template slot="heading">Last Payment</template>
-          <template slot="content"> You failed your last payment
-            <div class="subscription_summary">
-              <h3>Courses to pay for</h3>
+      <buttonModal button_class="action">
+        <template slot="button-text">Apply changes</template>
+        <template slot="heading">Subscription Summary</template>
+        <template slot="content">
+          <h2>My Subscription Summary</h2>
+          <p>
+            Below is a summary of the changes you’re making to your subscription, including any costs you’ve incurred and will be charged for today.
+          </p>
+          <div class="subscription_summary">
+            <!-- v-if the user has ADDED courses -->
+            <div v-if="newSubscribingCourses.length">
+              <h3>Adding Courses</h3>
               <ul class="pink_dots">
-                <li v-for="course of failedPayment.courses" :key="course.id">
+                <li v-for="course of newSubscribingCourses" :key="course.id">
                   <p> <strong>{{course.number}} {{course.name}}</strong>
                     <br />
                     <template v-if="course.published">Published</template>
@@ -113,101 +140,73 @@
                 </li>
               </ul>
             </div>
+            <!-- v-if the user has REMOVED courses -->
+            <div v-if="removedSubscribedCourses.length">
+              <h3>Removing Courses</h3>
+              <ul class="pink_dots">
+                <li v-for="course of removedSubscribedCourses" :key="course.id">
+                  <p><strong>{{course.number}} {{course.name}}</strong>
+                    <br />
+                    <template v-if="course.published">Published</template>
+                  </p>
+                  <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
+                  <p class="removed">
+                    &ndash;
+                    <sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}
+                    per month
+                  </p>
+                </li>
+              </ul>
+            </div>
 
-            <button type="button" class="action" @click="retryFailedPayment()">Submit</button>
-          </template>
-        </buttonModal>
-
-        <buttonModal button_class="action">
-          <template slot="button-text">Apply changes</template>
-          <template slot="heading">Subscription Summary</template>
-          <template slot="content">
-            <h2>My Subscription Summary</h2>
-            <p>
-              Below is a summary of the changes you’re making to your subscription, including any costs you’ve incurred and will be charged for today.
-            </p>
-            <div class="subscription_summary">
-              <!-- v-if the user has ADDED courses -->
-              <div v-if="newSubscribingCourses.length">
-                <h3>Adding Courses</h3>
-                <ul class="pink_dots">
-                  <li v-for="course of newSubscribingCourses" :key="course.id">
-                    <p> <strong>{{course.number}} {{course.name}}</strong>
+            <div>
+                <h3>Continuing Courses</h3>
+                <ul class="pink_dots" >
+                  <li v-for="course of remainingSubscribedCourses" :key ="course.id">
+                    <p>
+                      <strong> {{course.number}} {{course.name}} </strong>
                       <br />
                       <template v-if="course.published">Published</template>
                     </p>
-                    <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                    <p><strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
-                  </li>
-                </ul>
-              </div>
-              <!-- v-if the user has REMOVED courses -->
-              <div v-if="removedSubscribedCourses.length">
-                <h3>Removing Courses</h3>
-                <ul class="pink_dots">
-                  <li v-for="course of removedSubscribedCourses" :key="course.id">
-                    <p><strong>{{course.number}} {{course.name}}</strong>
-                      <br />
-                      <template v-if="course.published">Published</template>
-                    </p>
-                    <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                    <p class="removed">
-                      &ndash;
-                      <sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}
+                    <p>
+                      <strong><sup>$</sup>{{ formatPrice(activeBillingRecord.pricePerCourse) }} </strong>
                       per month
                     </p>
                   </li>
                 </ul>
-              </div>
-
+            </div>
+            <div v-if="newCost > 0">
+              <h3>Selected Payment Method</h3>
+              <p>
+                {{defaultPaymentMethod[0].nickname}}
+                ({{defaultPaymentMethod[0].brand}})
+                **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}
+              </p>
+            </div>
+            <div class="total">
               <div>
-                  <h3>Continuing Courses</h3>
-                  <ul class="pink_dots" >
-                    <li v-for="course of remainingSubscribedCourses" :key ="course.id">
-                      <p>
-                        <strong> {{course.number}} {{course.name}} </strong>
-                        <br />
-                        <template v-if="course.published">Published</template>
-                      </p>
-                      <p>
-                        <strong><sup>$</sup>{{ formatPrice(activeBillingRecord.pricePerCourse) }} </strong>
-                        per month
-                      </p>
-                    </li>
-                  </ul>
+                <h3 class="teal_text">Today’s payment total</h3>
               </div>
-              <div v-if="newCost > 0">
-                <h3>Selected Payment Method</h3>
-                <p>
-                  {{defaultPaymentMethod[0].nickname}}
-                  ({{defaultPaymentMethod[0].brand}})
-                  **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}
-                </p>
-              </div>
-              <div class="total">
-                <div>
-                  <h3 class="teal_text">Today’s payment total</h3>
-                </div>
-                <div class="today">
-                  <h3><span class="lining_figures"><sup>$</sup>{{ roundCents(proratedTotal) }}</span></h3>
-                </div>
-              </div>
-              <div class="total">
-                <div>
-                  <h3>Monthly bill total</h3>
-                  <p>
-                    You will be billed this amount on the X of every month
-                  </p>
-                </div>
-                <div>
-                  <h3><span class="lining_figures"><sup>$</sup>{{totalCost}}</span></h3>
-                </div>
+              <div class="today">
+                <h3><span class="lining_figures"><sup>$</sup>{{ roundCents(proratedTotal) }}</span></h3>
               </div>
             </div>
-            <button type="button" class="action" @click="updateSubscription()">Submit</button>
-          </template>
-        </buttonModal>
-      </form>
+            <div class="total">
+              <div>
+                <h3>Monthly bill total</h3>
+                <p>
+                  You will be billed this amount on the X of every month
+                </p>
+              </div>
+              <div>
+                <h3><span class="lining_figures"><sup>$</sup>{{totalCost}}</span></h3>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="action" @click="updateSubscription()">Submit</button>
+        </template>
+      </buttonModal>
+
       <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
         <template slot="heading">Edit payment card</template>
         <template slot="content">
