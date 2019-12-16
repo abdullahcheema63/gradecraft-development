@@ -557,6 +557,12 @@ const store = new Vuex.Store({
         console.log("toggled guide control action")
         commit('toggleGuide')
       },
+      removeSuccessAlert({ commit}){
+        commit('removeSuccessAlert')
+      },
+      removeErrorAlert({ commit}){
+        commit('removeErrorAlert')
+      },
       changeGuide: async function({ commit, state }){
         console.log("make api request")
         const resp = await fetch("/api/users/change_guide", {
@@ -804,15 +810,24 @@ const store = new Vuex.Store({
       addCreditCardSuccessMessage( state, message){
         state.creditCardAddSuccess = true
         console.log("message for card succes: ", message)
+        state.errorAlertMessage = null
         state.successAlertMessage = message
       },
       addSuccessAlertMessage( state, message){
         console.log("message for succes: ", message)
+        state.errorAlertMessage = null
         state.successAlertMessage = message
+      },
+      removeSuccessAlert(state){
+        state.successAlertMessage = null
       },
       addErrorAlertMessage( state, message){
         console.log("message for error: ", message)
+        state.successAlertMessage = null
         state.errorAlertMessage = message
+      },
+      removeErrorAlert(state){
+        state.errorAlertMessage = null
       },
     },
     getters: {

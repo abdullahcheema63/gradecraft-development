@@ -54,22 +54,21 @@ module.exports = {
   },
   methods: {
     closeFailureAlert(){
-      console.log("will need to pass in id for the svg to no which one to close")
       this.activeFailure = false
       document.getElementById("alert_msg_fail").classList.add("closing")
       setTimeout(function() {
         document.getElementById("main_wrapper").classList.remove("has_alert")
       }, 400);
+      this.$store.dispatch('removeErrorAlert')
     },
     closeSuccessAlert(){
-      console.log("will need to pass in id for the svg to no which one to close")
-      this.activeFailure = false
+      this.activeSuccess = false
       document.getElementById("alert_msg_success").classList.add("closing")
       setTimeout(function() {
         document.getElementById("main_wrapper").classList.remove("has_alert")
       }, 400);
+      this.$store.dispatch('removeSuccessAlert')
     }
-
   },
   computed: {
     errorMessage(){
@@ -82,9 +81,11 @@ module.exports = {
   watch: {
     errorMessage(newMessages, oldMessages){
       let wrapper = document.getElementById("main_wrapper")
+      this.activeFailure = true
       wrapper.classList.add("has_alert")
     },
     successMessage(newMessages, oldMessages){
+      this.activeSuccess = true
       let wrapper = document.getElementById("main_wrapper")
       wrapper.classList.add("has_alert")
     }
