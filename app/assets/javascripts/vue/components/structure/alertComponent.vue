@@ -8,7 +8,7 @@
 
     <div v-if="this.successMessage && this.activeSuccess" class="success">
       <div class="alert_msg success" id="alert_msg_success">
-        <p>{{this.successMessage}} (E TO S: [Code] This and the failure_alert_msg id below will need to be v-bound and unique)</p>
+        <p>{{this.successMessage}}</p>
         <svg @click="closeSuccessAlert()" version="1.1" class="close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px"
         	 height="25px" viewBox="0 0 25 25" enable-background="new 0 0 25 25" xml:space="preserve">
         	<g>
@@ -83,11 +83,15 @@ module.exports = {
       let wrapper = document.getElementById("main_wrapper")
       this.activeFailure = true
       wrapper.classList.add("has_alert")
+
+      this.$scrollTo("#header", 100, {easing: 'linear'})
     },
     successMessage(newMessages, oldMessages){
       this.activeSuccess = true
       let wrapper = document.getElementById("main_wrapper")
       wrapper.classList.add("has_alert")
+
+      this.$scrollTo("#header", 100, {easing: 'linear'})
     }
   }
 }
