@@ -63,8 +63,8 @@ const store = new Vuex.Store({
     courseDashboardURL: "/dashboard",
     overviewURL: "/overview",
     subscriptionsURL: "/subscriptions",
-    errorAlertMessages: [],
-    successAlertMessages: [],
+    errorAlertMessage: "",
+    successAlertMessage: "",
     courseCopyError: "",
     courseCreationError: "",
     courseUnpublishError: "",
@@ -500,14 +500,14 @@ const store = new Vuex.Store({
           console.error(this);
           console.error(resp);
           console.error(body);
-          body.errors.forEach(e => commit('addErrorAlertMessage', e))
+          commit('addErrorAlertMessage', body.errors[0])
 
           return;
         }
         else {
           console.log("body: ", body)
           store.dispatch("getUserSubscription");
-          body.message.forEach(m => commit('addSuccessAlertMessage', m))
+          commit('addSuccessAlertMessage', body.message[0])
         }
       },
       retryFailedPayment: async function({ commit }, paymentID){
@@ -761,7 +761,7 @@ const store = new Vuex.Store({
         console.log("addUserSubscription", subscriptionObj)
         state.userSubscription = subscriptionObj
         if(subscriptionObj.stripe_connection_error){
-          state.errorAlertMessages.push("Oops! There was an error connecting to Stripe")
+          state.errorAlertMessage = "Oops! There was an error connecting to Stripe"
         }
       },
       toggleGuide (state){
@@ -803,13 +803,16 @@ const store = new Vuex.Store({
       },
       addCreditCardSuccessMessage( state, message){
         state.creditCardAddSuccess = true
-        state.successAlertMessages.push(message)
+        console.log("message for card succes: ", message)
+        state.successAlertMessage = message
       },
       addSuccessAlertMessage( state, message){
-        state.successAlertMessages.push(message)
+        console.log("message for succes: ", message)
+        state.successAlertMessage = message
       },
       addErrorAlertMessage( state, message){
-        state.errorAlertMessages.push(message)
+        console.log("message for error: ", message)
+        state.errorAlertMessage = message
       },
     },
     getters: {

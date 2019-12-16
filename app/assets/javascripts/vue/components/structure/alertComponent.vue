@@ -6,9 +6,9 @@
       </div>
     </div>
 
-    <div v-if="this.successMessages[0] && this.activeSuccess" class="success">
+    <div v-if="this.successMessage && this.activeSuccess" class="success">
       <div class="alert_msg success" id="alert_msg_success">
-        <p v-for="message in this.successMessages">{{message}} (E TO S: [Code] This and the failure_alert_msg id below will need to be v-bound and unique)</p>
+        <p>{{this.successMessage}} (E TO S: [Code] This and the failure_alert_msg id below will need to be v-bound and unique)</p>
         <svg @click="closeSuccessAlert()" version="1.1" class="close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px"
         	 height="25px" viewBox="0 0 25 25" enable-background="new 0 0 25 25" xml:space="preserve">
         	<g>
@@ -23,9 +23,9 @@
       </div>
     </div>
 
-    <div v-if="this.errorMessages[0] && this.activeFailure" >
-      <div class="alert_msg failure" id="alert_msg_fail" v-for="message in this.errorMessages">
-        <p>{{message}}</p>
+    <div v-if="this.errorMessage && this.activeFailure" >
+      <div class="alert_msg failure" id="alert_msg_fail">
+        <p>{{this.errorMessage}}</p>
         <svg @click="closeFailureAlert()" version="1.1" class="close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px"
         	 height="25px" viewBox="0 0 25 25" enable-background="new 0 0 25 25" xml:space="preserve">
         	<g>
@@ -72,19 +72,19 @@ module.exports = {
 
   },
   computed: {
-    errorMessages(){
-      return this.$store.state.errorAlertMessages
+    errorMessage(){
+      return this.$store.state.errorAlertMessage
     },
-    successMessages(){
-      return this.$store.state.successAlertMessages
+    successMessage(){
+      return this.$store.state.successAlertMessage
     }
   },
   watch: {
-    errorMessages(newMessages, oldMessages){
+    errorMessage(newMessages, oldMessages){
       let wrapper = document.getElementById("main_wrapper")
       wrapper.classList.add("has_alert")
     },
-    successMessages(newMessages, oldMessages){
+    successMessage(newMessages, oldMessages){
       let wrapper = document.getElementById("main_wrapper")
       wrapper.classList.add("has_alert")
     }
