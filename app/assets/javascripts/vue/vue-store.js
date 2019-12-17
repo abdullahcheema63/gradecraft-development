@@ -67,8 +67,6 @@ const store = new Vuex.Store({
     successAlertMessage: null,
     courseCopyError: "",
     courseCreationError: "",
-    courseUnpublishError: "",
-    coursePublishError: "",
     courseArchiveError: "",
     courseUnarchiveError: "",
     creditCardError: "",
@@ -424,10 +422,17 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(courseID),
         }).then((response) => {
-          window.location.replace(store.state.overviewURL)
+          if (!response.ok){
+            store.dispatch("getCourseMemberships");
+            let message = "There was a problem unpublishing your course"
+            commit('addErrorAlertMessage', message)
+          }
+          else{
+            store.dispatch("getCourseMemberships");
+            let message = "You've successfully unpublished your course"
+            commit('addSuccessAlertMessage', message)
+          }
         })
-        state.courseUnpublishError = resp
-        console.log("inside unpublishCourse action", resp)
       },
       publishCourse: async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/publish", {
@@ -436,10 +441,17 @@ const store = new Vuex.Store({
           credentials: 'same-origin',
           body: JSON.stringify(courseID),
         }).then((response) => {
-          window.location.replace(store.state.overviewURL)
+          if (!response.ok){
+            store.dispatch("getCourseMemberships");
+            let message = "There was a problem publishing your course"
+            commit('addErrorAlertMessage', message)
+          }
+          else{
+            store.dispatch("getCourseMemberships");
+            let message = "You've successfully published your course"
+            commit('addSuccessAlertMessage', message)
+          }
         })
-        state.coursePublishError = resp
-        console.log("inside publishCourse action", resp)
       },
       archiveCourse: async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/archive", {

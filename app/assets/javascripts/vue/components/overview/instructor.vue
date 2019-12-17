@@ -1,5 +1,6 @@
 <template>
   <div>
+    <alertComponent></alertComponent>
     <div class="content_block intro">
       <h1>My Dashboard</h1>
       <guideMessage>
@@ -546,6 +547,7 @@
 module.exports = {
   name: 'instructor',
   components: {
+    alertComponent: () => VComponents.get('vue/components/structure/alertComponent'),
     courseCard: () => VComponents.get('vue/components/overview/courseCard'),
     accordionComponent: () => VComponents.get('vue/components/structure/accordionComponent'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
