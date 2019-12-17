@@ -50,6 +50,9 @@ module.exports = {
     return {
       activeSuccess: true,
       activeFailure: true,
+      options: {
+        easing: 'ease-in',
+      },
     }
   },
   methods: {
@@ -58,7 +61,7 @@ module.exports = {
       document.getElementById("alert_msg_fail").classList.add("closing")
       setTimeout(function() {
         document.getElementById("main_wrapper").classList.remove("has_alert")
-      }, 400);
+      }, 200);
       this.$store.dispatch('removeErrorAlert')
     },
     closeSuccessAlert(){
@@ -66,7 +69,7 @@ module.exports = {
       document.getElementById("alert_msg_success").classList.add("closing")
       setTimeout(function() {
         document.getElementById("main_wrapper").classList.remove("has_alert")
-      }, 400);
+      }, 200);
       this.$store.dispatch('removeSuccessAlert')
     }
   },
@@ -83,15 +86,13 @@ module.exports = {
       let wrapper = document.getElementById("main_wrapper")
       this.activeFailure = true
       wrapper.classList.add("has_alert")
-
-      this.$scrollTo("#header", 100, {easing: 'linear'})
+      this.$scrollTo("#main_wrapper", 300, this.options)
     },
     successMessage(newMessages, oldMessages){
       this.activeSuccess = true
       let wrapper = document.getElementById("main_wrapper")
       wrapper.classList.add("has_alert")
-
-      this.$scrollTo("#header", 100, {easing: 'linear'})
+      this.$scrollTo("#main_wrapper", 300, this.options)
     }
   }
 }
