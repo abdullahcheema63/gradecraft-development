@@ -546,6 +546,12 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'instructor',
+  mounted(){
+    this.$root.$on('revertToDefault', data => {
+      console.log("Triggered revertToDefault from mounted method in instructor component")
+      this.revertToDefault()
+    });
+  },
   components: {
     alertComponent: () => VComponents.get('vue/components/structure/alertComponent'),
     courseCard: () => VComponents.get('vue/components/overview/courseCard'),
@@ -602,6 +608,7 @@ module.exports = {
           end: null
         },
       },
+      modalState: true,
       copyCourseForm: false,
       copyingCourse: false,
       deleteCourseModal: false,
@@ -614,7 +621,6 @@ module.exports = {
       unpublishingCourse: false,
       publishCourseModal: false,
       publishingCourse: false,
-      modalState: true,
       creatingCourse: false,
     }
   },
@@ -789,6 +795,23 @@ module.exports = {
       this.unpublishCourseModal = false
       this.publishCourseModal = false
       this.showOnboarding = false
+      this.selectedCourse = {}
+    },
+    revertToDefault(){
+      this.copyCourseForm = false
+      this.copyingCourse = false
+      this.deleteCourseModal = false
+      this.deletingCourse = false
+      this.deleteConfirmation = ""
+      this.deleteCourseError = false
+      this.archiveCourseModal = false
+      this.archivingCourse = false
+      this.unpublishCourseModal = false
+      this.unpublishingCourse = false
+      this.publishCourseModal = false
+      this.publishingCourse = false
+      this.creatingCourse = false
+      this.selectedCourse = {}
     },
     sawOnboarding(){
       if(!this.hasSeenOnboarding){
