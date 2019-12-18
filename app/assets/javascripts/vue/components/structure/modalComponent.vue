@@ -26,6 +26,12 @@ module.exports = {
       type: Boolean
     }
   },
+  mounted(){
+    this.$root.$on('closeAllModals', data => {
+      console.log("Triggered closeallModals from mounted method in modal component")
+      this.close()
+    });
+  },
   methods: {
     close() {
       this.$emit("close");

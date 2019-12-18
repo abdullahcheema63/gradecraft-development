@@ -87,12 +87,14 @@ module.exports = {
       this.activeFailure = true
       wrapper.classList.add("has_alert")
       this.$scrollTo("#main_wrapper", 300, this.options)
+      this.$root.$emit('closeAllModals')
     },
     successMessage(newMessages, oldMessages){
       this.activeSuccess = true
       let wrapper = document.getElementById("main_wrapper")
       wrapper.classList.add("has_alert")
       this.$scrollTo("#main_wrapper", 300, this.options)
+      this.$root.$emit('closeAllModals')
     }
   }
 }

@@ -22,6 +22,12 @@
 module.exports = {
   name: 'button-modal-pair',
   props: ['button_class'],
+  mounted(){
+    this.$root.$on('closeAllModals', data => {
+      console.log("Triggered closeallModals from mounted method in buttonmodal component")
+      this.close()
+    });
+  },
   components: {
     modalComponent: () => VComponents.get('vue/components/structure/modalComponent')
   },

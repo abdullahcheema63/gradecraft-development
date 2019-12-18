@@ -513,7 +513,6 @@ const store = new Vuex.Store({
           console.error(resp);
           console.error(body);
           commit('addErrorAlertMessage', body.errors[0])
-
           return;
         }
         else {
