@@ -82,16 +82,39 @@ class NotificationMailer < ApplicationMailer
     send_student_email "#{@course.course_number} - You've unlocked #{@unlocked_item.name}!"
   end
 
-  def payment_received(payment)
+  def inapp_payment_received(payment)
     @payment = payment
-    @subscription = payment.subscription
-    @user = payment.subscription.user
+    @subscription = @payment.subscription
+    @user = @subscription.user
+    @courses = @payment.courses
     mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
       format.text
       format.html
     end
   end
 
+  def monthly_payment_received(payment)
+    @payment = payment
+    @subscription = @payment.subscription
+    @user = @subscription.user
+    @courses = @payment.courses
+    mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
+      format.text
+      format.html
+    end
+  end
+
+  def monthly_payment_failed(payment)
+    @payment = payment
+    @subscription = @payment.subscription
+    @user = @subscription.user
+    @courses = @payment.courses
+    mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
+      format.text
+      format.html
+    end
+  end
+  
   private
 
   def send_assignment_email_to_professor(professor, submission_id, subject)

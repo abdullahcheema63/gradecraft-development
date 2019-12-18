@@ -311,7 +311,7 @@ class API::SubscriptionsController < ApplicationController
       payment.status = "succeeded"
       payment.failed = false
       payment.save
-      NotificationMailer.payment_received(payment).deliver_now
+      NotificationMailer.inapp_payment_received(payment).deliver_now
       @subscription.update_billing_scheme
       @subscription.extend_renewal_date
     else

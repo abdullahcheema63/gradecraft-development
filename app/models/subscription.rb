@@ -12,6 +12,8 @@ class Subscription < ApplicationRecord
   accepts_nested_attributes_for :payments
 
   def is_expired?
+    return true
+    #adding the return true so that the offline payment will always trigger
     renewal_date < DateTime.current if renewal_date
   end
 
@@ -102,16 +104,22 @@ class Subscription < ApplicationRecord
     rescue Stripe::CardError => e
       puts "error error: #{e}"
       payment.status = e.error.code
+      handle_payment_failure(e.error.message)
     rescue Stripe::RateLimitError => e
+      handle_payment_failure(e.error.message)
       # Too many requests made to the API too quickly
     rescue Stripe::AuthenticationError => e
+      handle_payment_failure(e.error.message)
       # Authentication with Stripe's API failed
     rescue Stripe::APIConnectionError => e
+      handle_payment_failure(e.error.message)
       # Network communication with Stripe failed
     rescue Stripe::StripeError => e
+      handle_payment_failure(e.error.message)
       # Display a very generic error to the user, and maybe send
       # yourself an email
     rescue => e
+      handle_payment_failure(e.error.message)
       # Something else happened, completely unrelated to Stripe
     end
 
@@ -120,11 +128,13 @@ class Subscription < ApplicationRecord
       payment.status = "succeeded"
       payment.save
       self.extend_renewal_date
-      NotificationMailer.payment_received(payment).deliver_now
-    else
-      #puts "failed payment intent: #{intent.inspect}"
-      puts "!~FAILED PAYMETN~!"
-      payment.update_attribute(:failed, true)
+      NotificationMailer.monthly_payment_received(payment).deliver_now
     end
+  end
+
+  def handle_payment_failure(error)
+    puts "!~FAILED PAYMENT~! Error: #{error}"
+    NotificationMailer.monthly_payment_failed(payment).deliver_now
+    payment.update_attribute(:failed, true)
   end
 end
