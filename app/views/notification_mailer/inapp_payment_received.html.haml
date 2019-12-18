@@ -1,4 +1,54 @@
-%h2{:align => "center"}
-  %strong Hi #{ @user.first_name }!
-%p Thanks for purchasing a GradeCraft subscription! We received your payment, and we're thrilled to have you aboard.
-  Here are the details for your subscription:
+%td.hero_img
+  = image_tag "email-hero_Happy.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+
+%td
+  %h1
+    Hi, #{ @user.first_name }
+
+  %p
+    Thanks for purchasing a GradeCraft subscription! We received your payment, and we’re thrilled to have you aboard.
+  %p
+    Here are the details for your subscription:
+
+  %div
+    %p
+      %strong Subscription type:
+      [insert type here] (Automatic Renewal) (Monthly)
+      %br
+      %strong Number of included courses:
+      [insert number here]
+      %br
+      %strong Subscription cost:
+      [insert cost per month here]/month
+      %br
+      %strong Subscription cost:
+      [insert cost per month here]
+      %br
+      %strong Renews on:
+      [insert first renewal date here]
+    %p
+      %strong Billing Information:
+      %br
+      [Name]
+      %br
+      [Address]
+      %br
+      [Email]
+      %br
+      [Phone number]
+
+    %p
+      %strong Your currently subscribed courses:
+      %br
+      [Course name]
+      %br
+      [Course name]
+
+  %p
+    Your subscription will renew monthly on the renewal date until you end your subscription.
+  %p
+    Please don’t hesitate to reach out to us if you have any questions!
+  %p
+    Kindly,
+    %br
+    GradeCraft

@@ -1,3 +1,55 @@
-%h2{:align => "center"}
-  %strong Hi #{ @user.first_name }!
-%p ):
+%td.hero_img
+  = image_tag "email-hero_Sad.png", alt: "a yeti illustration is here!", width: "1200", height: "435"
+
+%td
+  %h1
+    Hi, #{ @user.first_name }
+
+  %p
+    Oh no! We tried to process your payment, but unfortunately it was not successful.
+  %p
+    =link_to "Please log in to GradeCraft", subscriptions_url
+    to update your account details so we can keep the trains running!
+  %p
+    As a reminder, here are the details for your subscription:
+
+  %div
+    %p
+      %strong Subscription type:
+      [insert type here] (Automatic Renewal) (Monthly)
+      %br
+      %strong Number of included courses:
+      [insert number here]
+      %br
+      %strong Subscription cost:
+      [insert cost per month here]/month
+      %br
+      %strong Subscription cost:
+      [insert cost per month here]
+      %br
+      %strong Renews on:
+      [insert first renewal date here]
+    %p
+      %strong Billing Information:
+      %br
+      [Name]
+      %br
+      [Address]
+      %br
+      [Email]
+      %br
+      [Phone number]
+
+    %p
+      %strong Your currently subscribed courses:
+      %br
+      [Course name]
+      %br
+      [Course name]
+
+  %p
+    Please don’t hesitate to reach out to us if you have any questions!
+  %p
+    Kindly,
+    %br
+    GradeCraft

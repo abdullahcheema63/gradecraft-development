@@ -104,22 +104,22 @@ class Subscription < ApplicationRecord
     rescue Stripe::CardError => e
       puts "error error: #{e}"
       payment.status = e.error.code
-      handle_payment_failure(e.error.message)
+      handle_payment_failure(e.error.message, payment)
     rescue Stripe::RateLimitError => e
-      handle_payment_failure(e.error.message)
+      handle_payment_failure(e.error.message, payment)
       # Too many requests made to the API too quickly
     rescue Stripe::AuthenticationError => e
-      handle_payment_failure(e.error.message)
+      handle_payment_failure(e.error.message, payment)
       # Authentication with Stripe's API failed
     rescue Stripe::APIConnectionError => e
-      handle_payment_failure(e.error.message)
+      handle_payment_failure(e.error.message, payment)
       # Network communication with Stripe failed
     rescue Stripe::StripeError => e
-      handle_payment_failure(e.error.message)
+      handle_payment_failure(e.error.message, payment)
       # Display a very generic error to the user, and maybe send
       # yourself an email
     rescue => e
-      handle_payment_failure(e.error.message)
+      handle_payment_failure(e.error.message, payment)
       # Something else happened, completely unrelated to Stripe
     end
 
@@ -132,7 +132,7 @@ class Subscription < ApplicationRecord
     end
   end
 
-  def handle_payment_failure(error)
+  def handle_payment_failure(error, payment)
     puts "!~FAILED PAYMENT~! Error: #{error}"
     NotificationMailer.monthly_payment_failed(payment).deliver_now
     payment.update_attribute(:failed, true)
