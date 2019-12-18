@@ -65,10 +65,6 @@ const store = new Vuex.Store({
     subscriptionsURL: "/subscriptions",
     errorAlertMessage: null,
     successAlertMessage: null,
-    courseCopyError: "",
-    courseCreationError: "",
-    courseArchiveError: "",
-    courseUnarchiveError: "",
     creditCardError: "",
     creditCardAddSuccess: null,
     allUsers: [],
@@ -382,13 +378,16 @@ const store = new Vuex.Store({
           headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(course)
-        }).then((response) => {
-          console.log("should this go to their new course page? ")
-          window.location.replace(store.state.overviewURL)
-          console.log("inside add resp action" , response)
         })
-        state.courseCreationError = resp
-        console.log("inside addNewCourse action" , resp)
+        if(!resp.ok){
+          let message = "There was an error creating your new course."
+          commit('addErrorAlertMessage', message)
+        }
+        else{
+          store.dispatch("getCourseMemberships");
+          let message = "You’ve successfully created a new course!"
+          commit('addSuccessAlertMessage', message)
+        }
       },
       copyCourse: async function({commit, state}, course){
         const resp = await fetch("/api/courses/copy", {
@@ -396,12 +395,16 @@ const store = new Vuex.Store({
           headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(course)
-        }).then((response) => {
-          console.log("should this go to their new course page? ")
-          window.location.replace(store.state.overviewURL)
         })
-        state.courseCopyError = resp
-        console.log("inside copyCourse action", resp)
+        if(!resp.ok){
+          let message = "There was an error copying your course."
+          commit('addErrorAlertMessage', message)
+        }
+        else{
+          store.dispatch("getCourseMemberships");
+          let message = "You’ve successfully copied your course!"
+          commit('addSuccessAlertMessage', message)
+        }
       },
       deleteCourse: async function({commit, state}, courseID ){
         var api = "/api/courses/" + courseID
@@ -410,10 +413,16 @@ const store = new Vuex.Store({
           headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(courseID)
-        }).then((response) => {
-          window.location.replace(state.overviewURL)
         })
-        console.log("inside deleteCourse action", resp)
+        if(!resp.ok){
+          let message = "There was an error deleting your course."
+          commit('addErrorAlertMessage', message)
+        }
+        else{
+          store.dispatch("getCourseMemberships");
+          let message = "You’ve successfully deleted your course!"
+          commit('addSuccessAlertMessage', message)
+        }
       },
       unpublishCourse: async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/unpublish", {
@@ -459,11 +468,16 @@ const store = new Vuex.Store({
           headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(courseID),
-        }).then((response) => {
-          window.location.replace(store.state.overviewURL)
         })
-        state.courseArchiveError = resp
-        console.log("inside archiveCourse action", resp)
+        if(!resp.ok){
+          let message = "There was an error archiving your course."
+          commit('addErrorAlertMessage', message)
+        }
+        else{
+          store.dispatch("getCourseMemberships");
+          let message = "You’ve successfully archived your course!"
+          commit('addSuccessAlertMessage', message)
+        }
       },
       unarchiveCourse: async function({ commit, state }, courseID){
         const resp = await fetch("/api/courses/unarchive", {
@@ -471,11 +485,16 @@ const store = new Vuex.Store({
           headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(courseID),
-        }).then((response) => {
-          window.location.replace(store.state.overviewURL)
         })
-        state.courseUnarchiveError = resp
-        console.log("inside unarchiveCourse action", resp)
+        if(!resp.ok){
+          let message = "There was an error unarchiving a course."
+          commit('addErrorAlertMessage', message)
+        }
+        else{
+          store.dispatch("getCourseMemberships");
+          let message = "You’ve successfully unarchived a course!"
+          commit('addSuccessAlertMessage', message)
+        }
       },
       createSubscription: async function({ commit }){
         const resp = await fetch("/api/subscriptions", {
@@ -516,7 +535,6 @@ const store = new Vuex.Store({
           return;
         }
         else {
-          console.log("body: ", body)
           store.dispatch("getUserSubscription");
           commit('addSuccessAlertMessage', body.message[0])
         }
@@ -565,7 +583,6 @@ const store = new Vuex.Store({
         }
       },
       toggleGuideControl({ commit }){
-        console.log("toggled guide control action")
         commit('toggleGuide')
       },
       removeSuccessAlert({ commit}){
@@ -575,14 +592,13 @@ const store = new Vuex.Store({
         commit('removeErrorAlert')
       },
       changeGuide: async function({ commit, state }){
-        console.log("make api request")
+        console.log("making api request to change persisted guide state")
         const resp = await fetch("/api/users/change_guide", {
           method: 'PUT',
           headers: requestHeaders,
           credentials: 'same-origin',
           body: JSON.stringify(state.user.showGuide)
         });
-        const body = await resp.json();
         if (!resp.ok) {
           this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
             ? body.errors
@@ -825,7 +841,6 @@ const store = new Vuex.Store({
         state.successAlertMessage = message
       },
       addSuccessAlertMessage( state, message){
-        console.log("message for succes: ", message)
         state.errorAlertMessage = null
         state.successAlertMessage = message
       },
@@ -833,7 +848,6 @@ const store = new Vuex.Store({
         state.successAlertMessage = null
       },
       addErrorAlertMessage( state, message){
-        console.log("message for error: ", message)
         state.successAlertMessage = null
         state.errorAlertMessage = message
       },

@@ -103,7 +103,13 @@
               <buttonModal button_class="action" ref="buttonModal_add">
                 <template slot="button-text">Add a course</template>
                 <template slot="heading">Add a course</template>
-                <template slot="content">
+                <template v-if="addingCourse" slot="content" >
+                  <div class="yeti-loading_spin">
+                    <div></div>
+                    <h4>Your course is being added!</h4>
+                  </div>
+                </template>
+                <template v-else slot="content">
                   <h2>Let’s add a new course!</h2>
                   <h4>Essential Course Info</h4>
                   <form>
@@ -579,7 +585,6 @@ module.exports = {
         dateFormat: "D, M d, Y at h:i K",
         static: true,
       },
-      selectedCourse: {},
       termYear: [],
       termName: [],
       searchArchivedCourses: "",
@@ -609,6 +614,9 @@ module.exports = {
         },
       },
       modalState: true,
+      selectedCourse: {},
+      addCourseModal: false,
+      addingCourse: false,
       copyCourseForm: false,
       copyingCourse: false,
       deleteCourseModal: false,
@@ -621,7 +629,6 @@ module.exports = {
       unpublishingCourse: false,
       publishCourseModal: false,
       publishingCourse: false,
-      creatingCourse: false,
     }
   },
   created: function() {
@@ -773,7 +780,7 @@ module.exports = {
       this.checkAddCourseForm()
 
       if(!this.newCourseErrors){
-        this.creatingCourse = true
+        this.addingCourse = true
         this.$store.dispatch('addNewCourse', this.newCourse)
       }
     },
@@ -795,6 +802,7 @@ module.exports = {
       this.unpublishCourseModal = false
       this.publishCourseModal = false
       this.showOnboarding = false
+      this.addCourseModal = false
       this.selectedCourse = {}
     },
     revertToDefault(){
@@ -810,7 +818,8 @@ module.exports = {
       this.unpublishingCourse = false
       this.publishCourseModal = false
       this.publishingCourse = false
-      this.creatingCourse = false
+      this.addingCourse = false
+      this.addCourseModal = false
       this.selectedCourse = {}
     },
     sawOnboarding(){

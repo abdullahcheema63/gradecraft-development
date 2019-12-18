@@ -27,8 +27,6 @@ module.exports = {
       this.debouncedGuide()
     },
     persistGuideState(){
-      console.log("persisteGuideState called")
-      console.log("showGuide:", this.showGuide)
       this.$store.dispatch('changeGuide')
     },
     scrollGuide(e) {
