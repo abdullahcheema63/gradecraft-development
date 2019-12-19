@@ -13,33 +13,22 @@
   %div
     %p
       %strong Subscription type:
-      [insert type here] (Automatic Renewal) (Monthly)
+      ????? What is this type, thinking all are probably: Automatic monthly renewal
       %br
       %strong Number of included courses:
-      [insert number here]
+      #{ @subscription.courses.count }
       %br
       %strong Subscription cost:
-      [insert cost per month here]/month
+      &#36;#{ @subscription.cost_per_month }/month
       %br
       %strong Renews on:
-      [insert first renewal date here]
-    %p
-      %strong Billing Information:
-      %br
-      [Name]
-      %br
-      [Address]
-      %br
-      [Email]
-      %br
-      [Phone number]
+      #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
 
     %p
       %strong Your currently subscribed courses:
       %br
-      [Course name]
-      %br
-      [Course name]
+      - @subscription.courses.each do |course|
+        %p= course.name
 
   %p
     Your subscription will renew monthly on the renewal date until you end your subscription.

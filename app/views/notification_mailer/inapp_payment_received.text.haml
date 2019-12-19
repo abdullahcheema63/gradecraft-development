@@ -4,20 +4,19 @@ Thanks for purchasing a GradeCraft subscription! We received your payment, and w
 
 Here are the details for your subscription:
 
-Subscription type: [insert type here] (Automatic Renewal) (Monthly)
-Number of included courses: [insert number here]
-Subscription cost: [insert cost per month here]/month
-Renews on: [insert first renewal date here]
+Subscription type: ????? What is this type Automatic Monthly Renewal
+Number of included courses: #{ @subscription.courses.count }
+Todays payment total: &#36;#{ sprintf("%.2f", @payment.amount_usd) }
+Subscription cost: $#{ @subscription.cost_per_month }/month
+Renews on: #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
 
-Billing Information:
-[Name]
-[Address]
-[Email]
-[Phone number]
+Courses added to your subscription with this payment:
+- @payment.courses.each do |course|
+  = course.name
 
 Your currently subscribed courses:
-[Course name]
-[Course name]
+- @subscription.courses.each do |course|
+  = course.name
 
 Your subscription will renew monthly on the renewal date until you end your subscription.
 

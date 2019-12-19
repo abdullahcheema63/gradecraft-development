@@ -26,8 +26,7 @@ class Subscription < ApplicationRecord
 
   def initiate_off_session_payment
     if renewal_date && self.is_expired? && courses.count
-      self.update_billing_scheme # Should the billing scheme be updated here ??
-      amount_to_pay = courses.count * self.billing_scheme.price_per_course
+      amount_to_pay = self.cost_per_month
       payment = Payment.new({
         amount_usd: amount_to_pay,
         billing_scheme_id: self.billing_scheme_id,
@@ -88,12 +87,16 @@ class Subscription < ApplicationRecord
     self.update_attribute(:renewal_date, Date.current.at_beginning_of_month.next_month)
   end
 
+  def cost_per_month
+    self.update_billing_scheme # Should the billing scheme be updated here ??
+    return courses.count * self.billing_scheme.price_per_course
+  end
+
   private
 
   def payment_note
     #self.license_type.name + " Exp.: " + self.expires.to_s
     "Subscription for " + self.user.last.name + " exp.: " + self.renewal_date.to_s
-
   end
 
   def add_off_session_payment(payment)

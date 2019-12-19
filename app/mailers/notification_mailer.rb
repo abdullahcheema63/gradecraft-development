@@ -86,7 +86,6 @@ class NotificationMailer < ApplicationMailer
     @payment = payment
     @subscription = @payment.subscription
     @user = @subscription.user
-    @courses = @payment.courses
     mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
       format.text
       format.html
@@ -97,7 +96,6 @@ class NotificationMailer < ApplicationMailer
     @payment = payment
     @subscription = @payment.subscription
     @user = @subscription.user
-    @courses = @payment.courses
     mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
       format.text
       format.html
@@ -108,13 +106,12 @@ class NotificationMailer < ApplicationMailer
     @payment = payment
     @subscription = @payment.subscription
     @user = @subscription.user
-    @courses = @payment.courses
     mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
       format.text
       format.html
     end
   end
-  
+
   private
 
   def send_assignment_email_to_professor(professor, submission_id, subject)

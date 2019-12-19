@@ -13,33 +13,31 @@
   %div
     %p
       %strong Subscription type:
-      [insert type here] (Automatic Renewal) (Monthly)
+      ????? What is this type Automatic Monthly Renewal
       %br
       %strong Number of included courses:
-      [insert number here]
+      #{ @subscription.courses.count }
+      %br
+      %strong Todays payment total:
+      &#36;#{ sprintf("%.2f", @payment.amount_usd) }
       %br
       %strong Subscription cost:
-      [insert cost per month here]/month
+      &#36;#{ @subscription.cost_per_month }/month
       %br
       %strong Renews on:
-      [insert first renewal date here]
+      Renews on: #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
+
     %p
-      %strong Billing Information:
+      %strong Courses added to you subscription with this payment:
       %br
-      [Name]
-      %br
-      [Address]
-      %br
-      [Email]
-      %br
-      [Phone number]
+      - @payment.courses.each do |course|
+        %p= course.name
 
     %p
       %strong Your currently subscribed courses:
       %br
-      [Course name]
-      %br
-      [Course name]
+      - @subscription.courses.each do |course|
+        %p= course.name
 
   %p
     Your subscription will renew monthly on the renewal date until you end your subscription.

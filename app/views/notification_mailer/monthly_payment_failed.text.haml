@@ -8,20 +8,14 @@ subscriptions_url
 
 As a reminder, here are the details for your subscription:
 
-Subscription type: [insert type here] (Automatic Renewal) (Monthly)
-Number of included courses: [insert number here]
-Subscription cost: [insert cost per month here]/month
-Renews on: [insert first renewal date here]
-
-Billing Information:
-[Name]
-[Address]
-[Email]
-[Phone number]
+Subscription type: ????? What is this type Automatic Monthly Renewal
+Number of included courses: #{ @subscription.courses.count }
+Subscription cost: $#{ @subscription.cost_per_month }/month
+Renews on: #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
 
 Your currently subscribed courses:
-[Course name]
-[Course name]
+- @subscription.courses.each do |course|
+  = course.name
 
 Please don’t hesitate to reach out to us if you have any questions!
 
