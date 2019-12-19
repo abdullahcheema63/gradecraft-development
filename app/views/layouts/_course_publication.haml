@@ -6,3 +6,4 @@
       = link_to glyph(:rocket) + "Publish", publish_course_path(current_course), method: :put, class: "button action"
     - else
       This Course Must Be Paid Before It Can Be Published
+      = link_to glyph(:eye) + "__" + glyph(:eye), subscriptions_path, class: "button action"

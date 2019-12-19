@@ -20,7 +20,7 @@ class CourseProctor
 
   # Defines whether the user has the ability to publish the course
   def publishable?(user)
-    return true unless Rails.env.beta?
+    return true unless Rails.env.beta? || Rails.env.development?
     return true if user.is_admin? @course
     @course.is_subscribed?
   end

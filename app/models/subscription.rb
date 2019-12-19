@@ -12,8 +12,6 @@ class Subscription < ApplicationRecord
   accepts_nested_attributes_for :payments
 
   def is_expired?
-    return true
-    #adding the return true so that the offline payment will always trigger
     renewal_date < DateTime.current if renewal_date
   end
 
