@@ -22,7 +22,7 @@
                 Manage and view all current courses.
               </p>
               <div>
-                <a class="button action secondary next" href="courses/new">Add a course</a>
+                <a class="button action secondary next" href="/courses/new">Add a course</a>
               </div>
             </div>
 
@@ -154,6 +154,128 @@
         <div v-if="tabSection[0]==='Archived'">
           <div class="content_block">
             <p>Manage and view all archived courses. </p>
+            <div class="table_functions">
+              <div class="filter_box">
+                <p><b>Select which filters you want to apply:</b> </p>
+                <div>
+                  <span>
+                    <input id="publishedArchived" type="checkbox" value="true" v-model="showPublishedArchived" />
+                    <label for="publishedArchived">Published</label>
+                  </span>
+                  <span>
+                    <input id="unpublishedArchived" type="checkbox" value="true" v-model="showUnpublishedArchived" />
+                    <label for="unpublishedArchived">Unpublished</label>
+                  </span>
+                  <span>
+                    <input id="subscribedArchived" type="checkbox" value="subscribed" v-model="showSubscribedArchived" />
+                    <label for="subscribedArchived">Subscribed</label>
+                  </span>
+                  <span>
+                    <input id="unsubscribedArchived" type="checkbox" value="unsubscribed" v-model="showUnsubscribedArchived" />
+                    <label for="unsubscribedArchived">Unsubscribed</label>
+                  </span>
+                </div>
+                <div>
+                  <span v-for="year in archivedCourseTermYear" :key="year">
+                    <input :id="year" type="checkbox" v-model="archivedTermYear" :value="year"/>
+                    <label :for="year">{{year}}</label>
+                  </span>
+                </div>
+                <div>
+                  <span v-for="term in archivedCourseTermName" :key="term">
+                    <input :id="term" type="checkbox" v-model="archivedTermName" :value="term"/>
+                    <label :for="term">{{term}}</label>
+                  </span>
+                </div>
+              </div>
+              <div class="search_box">
+                <div class="form_elem">
+                  <input type="search" id="searchArchivedCourseName" v-model="searchArchivedCourseName" placeholder="Search all archived courses" />
+                  <label for="searchArchivedCourseName">Search courses</label>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="currentPageArchivedCourses.length">
+              <div class="table_container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID </th>
+                      <th>Course # </th>
+                      <th>Course Name </th>
+                      <th>Published</th>
+                      <th>Subscribed </th>
+                      <th>Instructor(s)</th>
+                      <th># Students </th>
+                      <th>Semester </th>
+                      <th>Year </th>
+                      <th>Created </th>
+                      <th>Actions </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="course in currentPageArchivedCourses">
+                      <td><a :href="course.url">{{course.id}}</a></td>
+                      <td><a :href="course.url">{{course.number}}</a></td>
+                      <td><a class="table_truncate" :href="course.url">{{course.name}}</a></td>
+                      <td><span :class="{checked: course.published}">&nbsp;</span></td>
+                      <td><span :class="{checked: course.subscribed}">&nbsp;</span></td>
+                      <td>
+                        <ul><li v-for="instructor in course.instructors"><a :href="instructor.url">{{instructor.text}}</a></li></ul>
+                      </td>
+                      <td>{{course.studentNumber}}</td>
+                      <td>{{course.term}}</td>
+                      <td>{{course.year}}</td>
+                      <td>{{formatDate(course.created)}}</td>
+                      <td class="no_wrap">
+                        <buttonDropdown>
+                          <template slot="button_text">Export</template>
+                          <template slot="content">
+                            <ul>
+                              <li><a :href="course.earnedBadgesURL">Export Earned Badges</a> </li>
+                              <li><a :href="course.researchGradesURL">Research Grades</a> </li>
+                              <li><a :href="course.finalGradesURL">Final Grades</a> </li>
+                              <li><a :href="course.submissionsURL">Assignment Submissions</a> </li>
+                              <li><a :href="course.assignmentStructureURL">Assignment Structure</a> </li>
+                              <li><a :href="course.assignmentTypeSummaryURL">Assignment Type Summaries</a> </li>
+                              <li><a :href="course.gradebookURL">Full Gradebook</a> </li>
+                              <li><a :href="course.badgeStructureURL">Export Badges Structure</a> </li>
+                              <li><a :href="course.gradeSchemeStructureURL">Grading Scheme</a> </li>
+                            </ul>
+                          </template>
+                        </buttonDropdown>
+
+                        <buttonDropdown>
+                          <template slot="button_text">Options</template>
+                          <template slot="content">
+                            <ul>
+                              <li><a :href="course.editURL">Edit</a> </li>
+                              <li v-if="course.active"><a @click.prevent="archiveCourse(course.id)">Archive</a> </li>
+                              <li v-if="!course.active"><a @click.prevent="unarchiveCourse(course.id)">Unarchive</a> </li>
+                              <li><a @click.prevent="copyCourse(course.id)">Copy</a> </li>
+                              <li><a :href="course.copyStudentsURL">
+                                Copy + Students
+                                <!-- (remove for course / LO (need API)) -->
+                              </a> </li>
+                              <li><a @click.prevent="deleteCourse(course.id)">Delete</a></li>
+                            </ul>
+                          </template>
+                        </buttonDropdown>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <tablePagination :items="filteredArchivedCourses" :paginateBy="currentPageItemMax" @paginate="paginateItems"></tablePagination>
+              <button type="button" class="action secondary">Export this table view</button>
+              <p style="background: aquamarine;">
+                ^ Not done
+              </p>
+            </div>
+            <div v-else>
+              <h4 class="pink_text">No archived courses were found with the selected filters. </h4>
+            </div>
           </div>
         </div>
       </template>
@@ -180,16 +302,23 @@ module.exports = {
       currentPageItemMin: 0,
       currentPageItemMax: 10,
       searchCourseName: '',
+      searchArchivedCourseName: '',
       showSubscribed: false,
       showUnsubscribed: false,
       showPublished: false,
       showUnpublished: false,
-      showActive: false,
-      showInactive: false,
+      showSubscribedArchived: false,
+      showUnsubscribedArchived: false,
+      showPublishedArchived: false,
+      showUnpublishedArchived: false,
       courseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
       courseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
+      archivedCourseTermYear: ['2014', '2015', '2016', '2017', '2018', '2019'],
+      archivedCourseTermName: ['Fall', 'Winter', 'Spring', 'Summer'],
       termName: [],
       termYear: [],
+      archivedTermName: [],
+      archivedTermYear: [],
     }
   },
   computed: {
@@ -198,14 +327,24 @@ module.exports = {
       return options
     },
     allCourses(){
-      return this.$store.state.allCourses;
+      return this.$store.getters.allActiveCourses;
+    },
+    allArchivedCourses(){
+      return this.$store.getters.allArchivedCourses;
     },
     filteredAllCourses(){
       var allCourses = this.allCourses;
       return allCourses.filter(this.filterAllCourses)
     },
+    filteredArchivedCourses(){
+      var allArchivedCourses = this.allArchivedCourses;
+      return allArchivedCourses.filter(this.filterArchivedCourses)
+    },
     currentPageAllCourses(){
       return this.filteredAllCourses.slice(this.currentPageItemMin, this.currentPageItemMax)
+    },
+    currentPageArchivedCourses(){
+      return this.filteredArchivedCourses.slice(this.currentPageItemMin, this.currentPageItemMax)
     },
     user(){
       return this.$store.getters.user;
@@ -233,9 +372,6 @@ module.exports = {
       if(this.showSubscribed != this.showUnsubscribed){
         if(this.showSubscribed != course.subscribed){return false}
       }
-      if(this.showActive != this.showInactive){
-        if (this.showActive != course.active){return false}
-      }
       if(this.showPublished != this.showUnpublished){
         if(this.showPublished != course.published){return false}
       }
@@ -244,6 +380,26 @@ module.exports = {
       }
       if(this.termYear.length){
         if (!(this.termYear.includes(course.year))) {return false}
+      }
+      return course
+    },
+    filterArchivedCourses(course){
+      if (this.searchArchivedCourseName){
+        var name = course.name
+        name = name.toLowerCase()
+        if(!(name.includes(this.searchArchivedCourseName.toLowerCase()))){return false}
+      }
+      if(this.showSubscribedArchived != this.showUnsubscribedArchived){
+        if(this.showSubscribedArchived != course.subscribed){return false}
+      }
+      if(this.showPublishedArchived != this.showUnpublishedArchived){
+        if(this.showPublishedArchived != course.published){return false}
+      }
+      if(this.archivedTermName.length){
+        if (!(this.archivedTermName.includes(course.term))) {return false}
+      }
+      if(this.archivedTermYear.length){
+        if (!(this.archivedtermYear.includes(course.year))) {return false}
       }
       return course
     },

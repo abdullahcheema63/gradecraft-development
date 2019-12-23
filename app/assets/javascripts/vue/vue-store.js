@@ -862,6 +862,12 @@ const store = new Vuex.Store({
       newActivity: state => {
         return state.newActivity
       },
+      allActiveCourses: state => {
+        return state.allCourses.filter( course => course.active)
+      },
+      allArchivedCourses: state => {
+        return state.allCourses.filter( course => !course.active)
+      },
       removedSubscribedCourses: state => {
         return state.previouslySubscribedCourses.filter(course =>
           state.currentSubscribedCourses.indexOf(course) === -1)
