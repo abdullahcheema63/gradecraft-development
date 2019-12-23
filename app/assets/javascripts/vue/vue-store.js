@@ -200,7 +200,7 @@ const store = new Vuex.Store({
         const json = await resp.json();
         //console.log(json);
         const final = apiResponseToData(json);
-        //console.log(final);
+        //console.log("Get all users" ,final);
         commit('addAllUsers', final)
       },
       getAllInstructors: async function({ commit }){
@@ -736,6 +736,7 @@ const store = new Vuex.Store({
               score: course.score,
               year: course.year,
               url: course.change_course_path,
+              active: course.active
             }))
           }
         })

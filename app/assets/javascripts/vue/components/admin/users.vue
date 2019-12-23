@@ -46,22 +46,22 @@
               <template v-if="user.courses.length">
                 <td>
                   <ul>
-                    <li v-for="course in user.courses" :key="course.id">
+                    <li v-for="course in userActiveCourses(user.courses)" :key="course.id">
                       <a :href="course.url" class="table_truncate" :title="course.name">{{course.name}}</a>
                     </li>
                   </ul>
                 </td>
                 <td>
-                  <ul><li v-for="course in user.courses" :key="course.id">{{course.role}}&nbsp;</li></ul>
+                  <ul><li v-for="course in userActiveCourses(user.courses)" :key="course.id">{{course.role}}&nbsp;</li></ul>
                 </td>
                 <td>
-                  <ul><li  v-for="course in user.courses" :key="course.id">{{course.semester}}&nbsp;</li></ul>
+                  <ul><li  v-for="course in userActiveCourses(user.courses)" :key="course.id">{{course.semester}}&nbsp;</li></ul>
                 </td>
                 <td>
-                  <ul><li v-for="course in user.courses" :key="course.id">{{course.year}}&nbsp;</li></ul>
+                  <ul><li v-for="course in userActiveCourses(user.courses)" :key="course.id">{{course.year}}&nbsp;</li></ul>
                 </td>
                 <td>
-                  <ul><li v-for="course in user.courses" :key="course.id">{{course.score}}&nbsp;</li></ul>
+                  <ul><li v-for="course in userActiveCourses(user.courses)" :key="course.id">{{course.score}}&nbsp;</li></ul>
                 </td>
               </template>
               <template v-else>
@@ -136,7 +136,10 @@ module.exports = {
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;
       this.currentPageItemMax = itemRange.max;
-    }
+    },
+    userActiveCourses(courses){
+      return courses.filter(course => course.active)
+    },
   }
 }
 `</script>

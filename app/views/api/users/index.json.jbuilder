@@ -41,6 +41,7 @@ json.included do
         json.year course.year
         json.semester course.semester
         json.change_course_path change_course_path(course)
+        json.active course.active?
       end
     end
   end

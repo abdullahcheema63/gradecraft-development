@@ -1,6 +1,6 @@
 <template>
   <div class="content_block">
-    <p>Manage and view all instructor accounts. </p>
+    <p>Manage and view all instructor accounts.</p>
 
     <div class="table_functions">
       <div class="filter_box">
@@ -8,15 +8,15 @@
         <div>
           <span>
             <input id="subscribed_acccounts" type="checkbox" value="subscribed" v-model="showSubscribed" />
-            <label for="subscribed_acccounts">Subscribed Accounts</label>
+            <label for="subscribed_acccounts">Active Subscription</label>
           </span>
           <span>
             <input id="unsubscribed_accounts" type="checkbox" value="unsubscribed" v-model="showUnsubscribed" />
-            <label for="unsubscribed_accounts">Unsubscribed accounts</label>
+            <label for="unsubscribed_accounts">No subscription</label>
           </span>
           <span>
-            <input id="active_accounts" type="checkbox" value="active" v-model="showInActiveCourse" />
-            <label for="active_accounts">In Active Course</label>
+            <input id="active_accounts" type="checkbox" value="published" v-model="showInPublishedCourse" />
+            <label for="active_accounts">In a Published Course</label>
           </span>
         </div>
       </div>
@@ -125,7 +125,7 @@ module.exports = {
       searchName: "",
       showSubscribed: "",
       showUnsubscribed: "",
-      showInActiveCourse: "",
+      showInPublishedCourse: "",
     }
   },
   computed: {
@@ -150,8 +150,8 @@ module.exports = {
       if (this.showSubscribed != this.showUnsubscribed){
         if(this.showSubscribed != instructor.subscribed){return false}
       }
-      if(this.showInActiveCourse){
-        if(this.hasActiveCourse(instructor.courses) != true){return false}
+      if(this.showInPublishedCourse){
+        if(this.hasPublishedCourse(instructor.courses) != true){return false}
       }
       return instructor
     },
@@ -162,12 +162,12 @@ module.exports = {
     userActiveCourses(courses){
       return courses.filter(course => course.active)
     },
-    hasActiveCourse(courses){
-      var isActive = false
+    hasPublishedCourse(courses){
+      var isPublished = false
       courses.forEach(function (course) {
-        if(course.active === true){isActive = true}
+        if(course.published === true){isPublished = true}
       });
-      return isActive
+      return isPublished
     }
   }
 }
