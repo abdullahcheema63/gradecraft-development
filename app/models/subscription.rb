@@ -11,6 +11,9 @@ class Subscription < ApplicationRecord
 
   accepts_nested_attributes_for :payments
 
+  scope :expired, -> {where("renewal_date < ? ", DateTime.current)}
+  # does not return the subscription if renewal_date is nil 
+
   def is_expired?
     renewal_date < DateTime.current if renewal_date
   end
@@ -25,7 +28,7 @@ class Subscription < ApplicationRecord
   end
 
   def initiate_off_session_payment
-    if renewal_date && self.is_expired? && courses.count
+    if courses.count
       amount_to_pay = self.cost_per_month
       payment = Payment.new({
         amount_usd: amount_to_pay,

@@ -11,6 +11,18 @@
     description: "This job triggers a score recalculation job for every student \
                   belonging to an active course."
 
+  charge_monthly_subscriptions:
+    cron: "0 1 1-10/2 * *"
+    class: ChargeMonthlySubscriptionsJob
+    description: "This job triggers a charge for monthly users that have \
+                  expired subscriptions"
+
+  unpublish_expired_subscribed_courses:
+    cron: "50 23 10 * *"
+    class: UnpublishExpiredSubscribedCoursesJob
+    description: "At the end of the tenth day of a being subscribed without making \
+    their subscription payment all courses subscribed and published will become unpublished"
+
 :queues:
   - high
   - default

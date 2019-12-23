@@ -106,7 +106,17 @@ class NotificationMailer < ApplicationMailer
     @payment = payment
     @subscription = @payment.subscription
     @user = @subscription.user
-    mail(to: @user.email, subject: "GradeCraft Payment Recieved") do |format|
+    mail(to: @user.email, subject: "GradeCraft Payment Failed, Action Needed!") do |format|
+      format.text
+      format.html
+    end
+  end
+
+  def unpublished_courses(courses, subscription)
+    @courses = courses
+    @subscription = subscription
+    @user = @subscription.user
+    mail(to: @user.email, subject: "GradeCraft Courses Unpublished") do |format|
       format.text
       format.html
     end
