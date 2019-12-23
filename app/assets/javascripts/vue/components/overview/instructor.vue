@@ -488,7 +488,7 @@
               <h4 v-else>Your course is coming out of hiding!</h4>
             </div>
           </template>
-          <template slot="content" v-else-if="selectedCourse.subscribed && selectedCourse.active">
+          <template slot="content" v-else-if="(selectedCourse.subscribed || this.isUmichEnv) && selectedCourse.active">
             <h2>Please confirm you want to publish your course</h2>
             <p>
               You’re about to publish
@@ -687,6 +687,10 @@ module.exports = {
       if (this.$store.state.user.environment === 'development'){return "teaching elves"}
       if (this.$store.state.user.environment === 'production'){return "GSIs"}
       if (this.$store.state.user.environment === 'beta'){return "teaching assistants"}
+    },
+    isUmichEnv(){
+      if (this.$store.state.user.environment === 'production'){return true}
+      else {return false}
     },
   },
   methods: {
