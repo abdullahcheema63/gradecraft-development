@@ -529,7 +529,7 @@
           </template>
 
           <template slot="submit-button" v-if="publishingCourse"> </template>
-          <template slot="submit-button" v-else-if="selectedCourse.subscribed && selectedCourse.active">
+          <template slot="submit-button" v-else-if="(selectedCourse.subscribed || this.isUmichEnv) && selectedCourse.active">
             <button type="button" class="action" style="margin-bottom: 1em;" @click="publishCourse(selectedCourse.id)">Publish my course</button>
             <br />
           </template>
