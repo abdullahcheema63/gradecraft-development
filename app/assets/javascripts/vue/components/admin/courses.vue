@@ -102,23 +102,6 @@
                       <td>{{formatDate(course.created)}}</td>
                       <td class="no_wrap">
                         <buttonDropdown>
-                          <template slot="button_text">Export</template>
-                          <template slot="content">
-                            <ul>
-                              <li><a :href="course.earnedBadgesURL">Export Earned Badges</a> </li>
-                              <li><a :href="course.researchGradesURL">Research Grades</a> </li>
-                              <li><a :href="course.finalGradesURL">Final Grades</a> </li>
-                              <li><a :href="course.submissionsURL">Assignment Submissions</a> </li>
-                              <li><a :href="course.assignmentStructureURL">Assignment Structure</a> </li>
-                              <li><a :href="course.assignmentTypeSummaryURL">Assignment Type Summaries</a> </li>
-                              <li><a :href="course.gradebookURL">Full Gradebook</a> </li>
-                              <li><a :href="course.badgeStructureURL">Export Badges Structure</a> </li>
-                              <li><a :href="course.gradeSchemeStructureURL">Grading Scheme</a> </li>
-                            </ul>
-                          </template>
-                        </buttonDropdown>
-
-                        <buttonDropdown>
                           <template slot="button_text">Options</template>
                           <template slot="content">
                             <ul>
@@ -229,23 +212,6 @@
                       <td>{{course.year}}</td>
                       <td>{{formatDate(course.created)}}</td>
                       <td class="no_wrap">
-                        <buttonDropdown>
-                          <template slot="button_text">Export</template>
-                          <template slot="content">
-                            <ul>
-                              <li><a :href="course.earnedBadgesURL">Export Earned Badges</a> </li>
-                              <li><a :href="course.researchGradesURL">Research Grades</a> </li>
-                              <li><a :href="course.finalGradesURL">Final Grades</a> </li>
-                              <li><a :href="course.submissionsURL">Assignment Submissions</a> </li>
-                              <li><a :href="course.assignmentStructureURL">Assignment Structure</a> </li>
-                              <li><a :href="course.assignmentTypeSummaryURL">Assignment Type Summaries</a> </li>
-                              <li><a :href="course.gradebookURL">Full Gradebook</a> </li>
-                              <li><a :href="course.badgeStructureURL">Export Badges Structure</a> </li>
-                              <li><a :href="course.gradeSchemeStructureURL">Grading Scheme</a> </li>
-                            </ul>
-                          </template>
-                        </buttonDropdown>
-
                         <buttonDropdown>
                           <template slot="button_text">Options</template>
                           <template slot="content">
