@@ -78,7 +78,10 @@ const store = new Vuex.Store({
     allInstructors: [],
     allInstitutions: [],
     allBillingSchemes: [],
-    allSubscriptions: [],
+    allSubscriptions: {
+      payments: [],
+      courses: [],
+    },
     userSubscription: {},
     newSubscribingCourses: [],
     currentSubscribedCourses: [],
@@ -709,10 +712,16 @@ const store = new Vuex.Store({
             id: subscription.id,
             userID: subscription.user_id,
             renewalDate: subscription.renewal_date,
+            firstName: subscription.first_name,
+            lastName: subscription.last_name,
+            email: subscription.email,
+            costPerMonth: subscription.cost_per_month,
+            subscribedCourses: subscription.subscribed_courses,
             createdAt: subscription.created_at,
             updatedAt: subscription.updated_at,
             billing_scheme_id: subscription.billing_scheme_id,
-            payments: {...subscription.payments}
+            payments: {...subscription.payments},
+            courses: {...subscription.courses}
           }
         })
       },
@@ -853,6 +862,9 @@ const store = new Vuex.Store({
       },
       newActivity: state => {
         return state.newActivity
+      },
+      adminAllSubscriptions: state => {
+        return state.allSubscriptions
       },
       allActiveCourses: state => {
         return state.allCourses.filter( course => course.active)
