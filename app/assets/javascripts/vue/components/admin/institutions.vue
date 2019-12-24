@@ -10,7 +10,7 @@
     <div class="content_block">
       <div class="table_functions">
         <div class="filter_box">
-          <a class="button action secondary next" href="institutions/new">Add an institution</a>
+          <a class="button action secondary next" href="/institutions/new">Add an institution</a>
         </div>
         <div class="search_box">
           <form>
