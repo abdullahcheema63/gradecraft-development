@@ -10,6 +10,19 @@
     <div class="content_block">
       <div class="table_functions">
         <div class="filter_box">
+          <p><b>Select which filters you want to apply:</b> </p>
+          <div>
+            <span>
+              <input id="unpublished_course" type="checkbox" value="unpublished" v-model="showUnpublishedCourse" />
+              <label for="unpublished_course">Has Unpublished Course</label>
+            </span>
+          </div>
+          <div>
+            <span>
+              <input id="failed_payment" type="checkbox" value="failed" v-model="showFailedPayment" />
+              <label for="failed_payment">Failed Last Payment</label>
+            </span>
+          </div>
         </div>
         <div class="search_box">
           <form>
@@ -114,7 +127,8 @@ module.exports = {
       currentPageItemMax: 10,
       searchName: "",
       showSubscribed: "",
-      showUnsubscribed: "",
+      showUnpublishedCourse: false,
+      showFailedPayment: false,
       showInActiveCourse: "",
       currentPageAllSubscriptions: {},
       filteredAllSubscriptions: {}
@@ -153,8 +167,12 @@ module.exports = {
         name = name.toLowerCase();
         if(!(name.includes(this.searchName.toLowerCase()))) {return false}
       }
-      if(this.showInActiveCourse){
-        if(this.hasActiveCourse(subscriber.courses) != true){return false}
+      if(this.showFailedPayment){
+        if(this.showFailedPayment == subscriber.failedLastPayment) {return false}
+      }
+      if(this.showUnpublishedCourse){
+        if(!subscriber.courses){return false}
+        if(this.hasUnpublishedCourse(subscriber.courses) == true){return false}
       }
       return subscriber
     },
@@ -162,12 +180,14 @@ module.exports = {
       this.currentPageItemMin = itemRange.min - 1;
       this.currentPageItemMax = itemRange.max;
     },
-    hasActiveCourse(courses){
-      var isActive = false
-      courses.forEach(function (course) {
-        if(course.active === true){isActive = true}
-      });
-      return isActive
+    hasUnpublishedCourse(courses){
+      var isUnpublished = false
+      if(courses.length){
+        courses.forEach(function (course) {
+          if(!course.published){isUnpublished = true}
+        });
+      }
+      return isUnpublished
     }
   }
 }
