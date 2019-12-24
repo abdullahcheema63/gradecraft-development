@@ -20,7 +20,7 @@
           </form>
         </div>
       </div>
-      <div v-if="currentPageAllInstructors.length">
+      <div v-if="currentPageAllSubscriptions.length">
         <div class="table_container">
           <table>
             <thead>
@@ -28,7 +28,7 @@
                 <th>First Name </th>
                 <th>Last Name </th>
                 <th>Subscription Renewal Date </th>
-
+                <th>Failed Last Payment </th>
                 <th># Subscribed Courses </th>
                 <th>Monthly Cost ($)</th>
 
@@ -41,45 +41,50 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="instructor in currentPageAllInstructors" :key="instructor.id">
+              <tr v-for="subscriber in currentPageAllSubscriptions" :key="subscriber.id">
                 <!-- <td><a href="#">{{instructor.firstName}}</a> </td>
                 <td class="no_wrap"><a href="#">{{instructor.lastName}}</a> </td> -->
                 <!-- In the future, the users' name links will work -->
-                <td>{{instructor.firstName}} </td>
-                <td class="no_wrap">{{instructor.lastName}} </td>
+                <td>{{subscriber.firstName}} </td>
+                <td class="no_wrap">{{subscriber.lastName}} </td>
 
-                <td>{{instructor.subscriptionExpires}} </td>
+                <td>{{formatDate(subscriber.renewalDate)}} </td>
+                <td><span :class="{alert: !subscriber.failedLastPayment}">&nbsp;</span></td>
+                <td>{{subscriber.subscribedCourses}} </td>
+                <td>{{subscriber.costPerMonth}} </td>
 
-                <td>Number </td>
-                <td>Price </td>
-
-                <template v-if="instructor.courses.length">
+                <template v-if="subscriber.courses">
                   <td>
                     <ul>
-                      <li v-for="course in instructor.courses" :key="course.id">
-                        <a :href="course.changeCoursePath" class="table_truncate" :title="course.name">{{course.name}}</a>
+                      <li v-for="course in subscriber.courses" :key="course.id">
+                        <a :href="course.url" class="table_truncate" :title="course.name">{{course.name}}</a>
                       </li>
                     </ul>
                   </td>
                   <td>
                     <ul>
-                      <li v-for="course in instructor.courses" :key="course.id">
+                      <li v-for="course in subscriber.courses" :key="course.id">
                         <span :class="{alert: !course.published}">&nbsp;</span>
                       </li>
                     </ul>
                   </td>
                 </template>
+                <template v-else>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </template>
 
-                <td>Date </td>
+                <td>{{formatDate(subscriber.lastPaymentDate)}} </td>
 
                 <td>
-                  <a class="button secondary" :href="'mailto:' + instructor.email">Email</a>
+                  <a class="button secondary" :href="'mailto:' + subscriber.email">Email</a>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <tablePagination :items="filteredAllInstructors" @paginate="paginateItems"></tablePagination>
+        <tablePagination :items="filteredAllSubscriptions" @paginate="paginateItems"></tablePagination>
         <button type="button" class="action secondary">Export this table view</button>
         <p style="background: aquamarine;">
           ^ Not done
@@ -94,13 +99,13 @@
 
 <script lang='coffee'>`
 module.exports = {
-  name: 'instructors',
+  name: 'subscriptions',
   props: ['maincontentClass'],
   components: {
     tablePagination: () => VComponents.get('vue/components/structure/tablePagination'),
   },
   created: function() {
-    this.$store.dispatch("getAllInstructors");
+    this.$store.dispatch("getAllSubscriptions");
   },
   data() {
     return {
@@ -111,18 +116,27 @@ module.exports = {
       showSubscribed: "",
       showUnsubscribed: "",
       showInActiveCourse: "",
+      currentPageAllSubscriptions: {},
+      filteredAllSubscriptions: {}
     }
   },
   computed: {
-    allInstructors(){
-      return this.$store.state.allInstructors;
+    allSubscriptions(){
+      return this.$store.getters.adminAllSubscriptions;
     },
-    filteredAllInstructors(){
-      var allInstructors = this.allInstructors
-      return allInstructors.filter(this.filterAllInstructors)
+    filteredAllSubscriptions1(){
+      var allSubscriptions = this.allSubscriptions
+      console.log("all subscritpions: ", this.allSubscriptions)
+      return allSubscriptions.filter(this.filterAllSubscriptions)
     },
-    currentPageAllInstructors(){
-      return this.filteredAllInstructors.slice(this.currentPageItemMin, this.currentPageItemMax);
+    currentPageAllSubscriptions1(){
+      return this.filteredAllSubscriptions.slice(this.currentPageItemMin, this.currentPageItemMax);
+    }
+  },
+  watch: {
+    allSubscriptions(newVal, oldVal){
+      this.filteredAllSubscriptions = newVal.filter(this.filterAllSubscriptions)
+      this.currentPageAllSubscriptions = this.filteredAllSubscriptions.slice(this.currentPageItemMin, this.currentPageItemMax);
     }
   },
   methods: {
@@ -130,19 +144,19 @@ module.exports = {
       this.active = !this.active;
       this.$emit('shiftContent', this.active)
     },
-    filterAllInstructors(instructor){
+    formatDate(date){
+      return moment(String(date)).format('LLLL')
+    },
+    filterAllSubscriptions(subscriber){
       if(this.searchName){
-        var name = instructor.firstName + " " + instructor.lastName
+        var name = subscriber.firstName + " " + subscriber.lastName
         name = name.toLowerCase();
         if(!(name.includes(this.searchName.toLowerCase()))) {return false}
       }
-      if (this.showSubscribed != this.showUnsubscribed){
-        if(this.showSubscribed != instructor.subscribed){return false}
-      }
       if(this.showInActiveCourse){
-        if(this.hasActiveCourse(instructor.courses) != true){return false}
+        if(this.hasActiveCourse(subscriber.courses) != true){return false}
       }
-      return instructor
+      return subscriber
     },
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;

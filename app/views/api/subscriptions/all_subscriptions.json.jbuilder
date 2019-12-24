@@ -12,6 +12,8 @@ json.data @subscriptions do |subscription|
     json.subscribed_courses subscription.courses.count
     json.created_at subscription.created_at
     json.updated_at subscription.updated_at
+    json.failed_last_payment subscription.payments.last.failed
+    json.last_payment_date subscription.payments.last.created_at
     json.billing_scheme_id subscription.billing_scheme_id
   end
 
