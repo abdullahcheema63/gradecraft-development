@@ -83,6 +83,12 @@ class GradesController < ApplicationController
     grade.destroy
     score_recalculator(grade.student)
 
+    if params[:final_destination] == "student dashboard"
+      redirect_to student_path(grade.student),
+        notice: "#{grade.student.name}'s #{grade.assignment.name} grade was "\
+                "successfully deleted." and return
+    end
+
     redirect_to assignment_path(grade.assignment),
       notice: "#{grade.student.name}'s #{grade.assignment.name} grade was "\
               "successfully deleted."
