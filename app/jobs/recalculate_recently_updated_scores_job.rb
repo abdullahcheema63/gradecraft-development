@@ -8,13 +8,16 @@ class RecalculateRecentlyUpdatedScoresJob
 
   def perform
     # call recalculate once per unique student_id, course_id combination
-    teams = []
+    teams_student_and_course = []
     updated_challenge_grades.each do |challenge_grade|
-      teams << challenge_grade.team
+      if challenge_grade.team.students.count
+        challenge_grade.team.students.ids.in_groups_of(1) { |student_id|
+          teams_student_and_course << ( student_id << challenge_grade.team.course.id )
+        }
+      end
     end
-    teams = teams.uniq
-    # ? For some reason a team from this returns a nil student id in the unique_grades below
-    unique_grades = (updated_grades.pluck(:student_id, :course_id) + updated_earned_badges.pluck(:student_id, :course_id) + teams.pluck(:student_id, :course_id)).uniq
+
+    unique_grades = (updated_grades.pluck(:student_id, :course_id) + updated_earned_badges.pluck(:student_id, :course_id) + teams_student_and_course).uniq
     unique_grades.each { |student_id, course_id| ScoreRecalculatorJob.perform_async(student_id, course_id) }
   end
 
