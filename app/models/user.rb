@@ -58,6 +58,8 @@ class User < ApplicationRecord
 
   mount_uploader :avatar_file_name, AvatarUploader
 
+  has_many :visits, class_name: "Ahoy::Visit"
+
   has_many :authorizations, class_name: "UserAuthorization", dependent: :destroy
   has_many :course_memberships, dependent: :destroy, inverse_of: :user
   has_many :courses, through: :course_memberships
