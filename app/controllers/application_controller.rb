@@ -88,7 +88,9 @@ class ApplicationController < ActionController::Base
   protected
 
   def track_action
-    ahoy.track "Application Event", request.path_parameters
+    if request.format != "application/json"
+      ahoy.track "Application Event", request.path_parameters
+    end
   end
 
   def use_current_course
