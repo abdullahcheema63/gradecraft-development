@@ -35,6 +35,8 @@
         = f.file_field :syllabus
         - if current_course.syllabus.present?
           .italic= link_to "Current Syllabus", current_course.syllabus_url
+          = f.check_box :remove_syllabus
+          Remove Syllabus
 
   - unless @course.new_record?
     %section.form-section
