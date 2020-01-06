@@ -1,4 +1,5 @@
 class PredictedEarnedChallenge < ApplicationRecord
+  visitable :ahoy_visit
   belongs_to :challenge
   belongs_to :student, class_name: "User"
 

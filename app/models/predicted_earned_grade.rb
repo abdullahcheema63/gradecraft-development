@@ -1,4 +1,6 @@
 class PredictedEarnedGrade < ApplicationRecord
+  visitable :ahoy_visit
+
   belongs_to :assignment
   belongs_to :student, class_name: "User"
 
