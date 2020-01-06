@@ -1,4 +1,5 @@
 class PredictedEarnedBadge < ApplicationRecord
+  visitable :ahoy_visit
   belongs_to :badge
   belongs_to :student, class_name: "User"
 

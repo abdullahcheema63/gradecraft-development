@@ -7,6 +7,10 @@ class API::GradesController < ApplicationController
   # GET api/assignments/:assignment_id/students/:student_id/grade
   def show
     if Assignment.exists?(params[:assignment_id].to_i) && User.exists?(params[:student_id].to_i)
+      # Called when first creating the Grade, wanted to add tracking to this method but the find_or_create
+      # method returns a saved grade object so @grade.new_record? always returns false
+      # could work around this by seperating out and not using the find_or_create method
+        # but looking for it then creating a new grade object if its not found 
       @grade = Grade.find_or_create(params[:assignment_id], params[:student_id])
     else
       render json: {
@@ -26,6 +30,8 @@ class API::GradesController < ApplicationController
         GradeUpdaterJob.perform_async(grade.id)
       end
       @grade = result.grade
+      ahoy.track "Grade Event", grade: @grade, submitted: params[:submit] if params[:submit]
+      #currently only tracks the grade when it is submitted
       render "api/grades/show", success: true, status: 200
     else
       render json: {
