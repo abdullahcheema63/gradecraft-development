@@ -11,9 +11,9 @@ class RecalculateRecentlyUpdatedScoresJob
     teams_student_and_course = []
     updated_challenge_grades.each do |challenge_grade|
       if challenge_grade.team.students.count
-        challenge_grade.team.students.ids.in_groups_of(1) { |student_id|
-          teams_student_and_course << ( student_id << challenge_grade.team.course.id )
-        }
+        challenge_grade.team.students.ids.each do |student_id|
+          teams_student_and_course << [ student_id, challenge_grade.team.course.id ]
+        end
       end
     end
 
