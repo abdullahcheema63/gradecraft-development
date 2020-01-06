@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_20_195823) do
+ActiveRecord::Schema.define(version: 2020_01_06_200658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -750,6 +750,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_195823) do
     t.integer "predicted_times_earned", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.bigint "ahoy_visit_id"
     t.index ["badge_id", "student_id"], name: "index_predidcted_badge_on_student_badge", unique: true
   end
 
@@ -759,6 +760,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_195823) do
     t.integer "predicted_points", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.bigint "ahoy_visit_id"
     t.index ["challenge_id", "student_id"], name: "index_predidcted_challenge_on_student_challenge", unique: true
   end
 
@@ -768,6 +770,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_195823) do
     t.integer "predicted_points", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.bigint "ahoy_visit_id"
     t.index ["assignment_id", "student_id"], name: "index_predidcted_grade_on_student_assignment", unique: true
   end
 
