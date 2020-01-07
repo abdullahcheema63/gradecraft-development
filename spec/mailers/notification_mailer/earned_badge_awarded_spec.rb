@@ -78,10 +78,6 @@ describe NotificationMailer do
         it "declares a doctype" do
           should include "DOCTYPE"
         end
-
-        it "contains the badges url" do
-          should include badges_url
-        end
       end
 
       describe "earned badge feedback" do

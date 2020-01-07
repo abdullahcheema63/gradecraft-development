@@ -59,7 +59,6 @@ describe ExportsMailer do
     describe "html part body" do
       subject { html_part.body }
       it_behaves_like "a complete submissions export email body"
-      it_behaves_like "a submissions export email with archive data"
       it_behaves_like "an email html part"
     end
   end
