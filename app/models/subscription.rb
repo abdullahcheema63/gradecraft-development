@@ -22,6 +22,10 @@ class Subscription < ApplicationRecord
     payments.last.failed if payments.any?
   end
 
+  def last_payment_date
+    payments.last.created_at if payments.any?
+  end
+
   def initiate_payment(payment)
     #Payment used for in-session payments between monthly cycle
     payment.charge_customer
