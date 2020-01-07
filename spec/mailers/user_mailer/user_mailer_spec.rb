@@ -4,6 +4,11 @@ describe UserMailer do
 
   include Toolkits::Mailers::EmailToolkit::SharedExamples # brings in shared examples for emails and parts
   let(:user) { create :user, reset_password_token: "blah" }
+  let(:course) { build :course }
+
+  before(:each) do
+    user.current_course = course
+  end
 
   describe "#reset_password_email" do
     before(:each) { UserMailer.reset_password_email(user).deliver_now }
