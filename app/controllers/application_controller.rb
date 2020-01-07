@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def track_action
-    if request.format != "application/json"
+    if !request.format.json?
       ahoy.track "Application Event", request.path_parameters
     end
   end

@@ -32,6 +32,7 @@ class EarnedBadgesController < ApplicationController
     result = Services::CreatesEarnedBadge.call earned_badge_params.merge(awarded_by: current_user)
 
     if result.success?
+      ahoy.track "Earned Badge Event", earned_badge: result.earned_badge
       redirect_to badge_path(result.earned_badge.badge),
         notice: "The #{result.earned_badge.badge.name} #{term_for :badge} was successfully awarded to #{result.earned_badge.student.name}"
     else
