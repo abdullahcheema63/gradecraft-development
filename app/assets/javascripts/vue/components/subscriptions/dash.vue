@@ -112,7 +112,7 @@
         </template>
       </buttonModal>
 
-      <buttonModal button_class="action">
+      <buttonModal button_class="action" v-else>
         <template slot="button-text">Apply changes</template>
         <template slot="heading">Subscription Summary</template>
         <template slot="content">
