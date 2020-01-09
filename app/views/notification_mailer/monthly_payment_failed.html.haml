@@ -24,8 +24,9 @@
       %strong Subscription cost:
       &#36;#{ @subscription.cost_per_month }/month
       %br
-      %strong Renews on:
-      #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
+      - if @subscription.renewal_date
+        %strong Renews on:
+        #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
 
     %p
       %strong Your currently subscribed courses:

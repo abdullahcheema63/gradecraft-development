@@ -32,7 +32,9 @@ class Subscription < ApplicationRecord
   end
 
   def initiate_off_session_payment
-    if courses.count
+    if failed_last_payment? && (courses.count == self.payment.last.courses.count)
+      add_off_session_payment payment
+    elsif courses.count
       self.update_billing_scheme # Should the billing scheme be updated here ??
       amount_to_pay = self.cost_per_month
       payment = Payment.new({
@@ -110,8 +112,6 @@ class Subscription < ApplicationRecord
     begin
       intent = payment.charge_customer_off_session
     rescue Stripe::CardError => e
-      puts "error error: #{e}"
-      payment.status = e.error.code
       handle_payment_failure(e.error.message, payment)
     rescue Stripe::RateLimitError => e
       handle_payment_failure(e.error.message, payment)
@@ -132,8 +132,7 @@ class Subscription < ApplicationRecord
     end
 
     if intent && intent.status === "succeeded"
-      puts "!!! Payment was a success !!!"
-      payment.status = "succeeded"
+      payment.update_attributes(:failed => false, :status => "succeeded")
       payment.save
       self.extend_renewal_date
       NotificationMailer.monthly_payment_received(payment).deliver_now
@@ -142,7 +141,8 @@ class Subscription < ApplicationRecord
 
   def handle_payment_failure(error, payment)
     puts "!~FAILED PAYMENT~! Error: #{error}"
+    payment.update_attributes(:failed => true, :status => error)
+    payment.save
     NotificationMailer.monthly_payment_failed(payment).deliver_now
-    payment.update_attribute(:failed, true)
   end
 end

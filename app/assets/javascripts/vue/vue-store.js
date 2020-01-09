@@ -282,6 +282,8 @@ const store = new Vuex.Store({
         const final = apiResponseToDataDataItem(json);
         console.log("final data after apiResponseToData:", final);
         commit('addFailedPayment', final)
+        let message = "Your monthly subscription payment failed because " + final.status
+        commit('addErrorAlertMessage', message)
       },
       addCardToSubscription: async function({ commit, state }, paymentMethod) {
         console.log("addCardToSubscription action dispatched")

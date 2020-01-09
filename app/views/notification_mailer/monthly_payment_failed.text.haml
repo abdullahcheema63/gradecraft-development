@@ -11,7 +11,8 @@ As a reminder, here are the details for your subscription:
 Subscription type: ????? What is this type Automatic Monthly Renewal
 Number of included courses: #{ @subscription.courses.count }
 Subscription cost: $#{ @subscription.cost_per_month }/month
-Renews on: #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
+- if @subscription.renewal_date
+  Renews on: #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
 
 Your currently subscribed courses:
 - @subscription.courses.each do |course|
