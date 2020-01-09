@@ -546,7 +546,7 @@ describe Course do
       subject.has_paid = true
       expect(subject.is_subscribed?).to eq(true)
     end
-    
+
     it "returns true if has unexpired license" do
       subject.has_paid = false
       subject.license = create(:standard_license)

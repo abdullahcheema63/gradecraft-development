@@ -254,7 +254,6 @@ describe CoursesController do
     describe "protected routes" do
       it "redirect to root" do
         [
-          -> { post :copy },
           -> { post :activate_all_students },
           -> { post :recalculate_student_scores, params: { id: course.id } },
           -> { get :overview }
