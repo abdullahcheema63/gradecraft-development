@@ -245,7 +245,7 @@ module.exports = {
     },
     pastCourses(){
       return this.$store.state.user.courseMembership.filter( course => {
-        return !(course.active)
+        return !(course.active) && course.published
       })
     },
     filteredPastCourses(){
