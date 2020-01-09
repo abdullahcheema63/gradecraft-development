@@ -97,14 +97,14 @@ class API::CoursesController < ApplicationController
   def publish
     course_id = params[:_json]
     @course = Course.find(course_id)
-    if @course && @course.subscription_id
+    if @course && (@course.subscription_id || Rails.env.production?)
       authorize! :update, @course
       authorize! :publish, @course
       @course.update(published: true)
     end
     if @course && !@course.active?
       authorize! :update, @course
-      authorize! :publish, @course
+      # authorize! :publish, @course (EB: for some reason this line does not allow you to publish "show" the course )
       @course.update(published: true)
     end
   end
