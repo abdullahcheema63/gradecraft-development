@@ -1,10 +1,10 @@
 <template>
   <div>
-    <button :class=button_class @click.prevent="toggleModalState">
+    <button :class=button_class @click.prevent="openModalState">
       <slot name="button-text"></slot>
     </button>
 
-    <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
+    <modalComponent :modalState="modalState" @close="close" class="component_container">
       <template slot="heading">
         <slot name="heading"></slot>
       </template>
@@ -38,11 +38,14 @@ module.exports = {
   },
   methods: {
     close() {
-      this.toggleModalState()
+      this.closeModalState()
     },
-    toggleModalState(){
-      this.modalState = !this.modalState
-    }
+    closeModalState(){
+      this.modalState = false
+    },
+    openModalState(){
+      this.modalState = true
+    },
   },
   computed: {
     modalClass() {

@@ -202,7 +202,7 @@
         </template>
       </buttonModal>
 
-      <modalComponent :modalState="modalState" @close="toggleModalState" class="component_container">
+      <modalComponent :modalState="modalState" @close="close()" class="component_container">
         <template slot="heading">Edit payment card</template>
         <template slot="content">
           <form>
@@ -325,14 +325,14 @@ module.exports = {
   watch: {
     creditCardAddSuccess(newStatus, oldStatus){
       if(newStatus === true){
-        this.$refs.paymentInputModal.toggleModalState()
+        this.$refs.paymentInputModal.close()
         let wrapper = document.getElementById("main_wrapper")
         wrapper.classList.add("has_alert")
       }
     },
     successAlertMessages(newMessages, oldMessages){
       if(newMessages[0]){
-        this.$refs.checkoutSummaryModal.toggleModalState()
+        this.$refs.checkoutSummaryModal.close()
         let wrapper = document.getElementById("main_wrapper")
         wrapper.classList.add("has_alert")
       }
@@ -348,10 +348,13 @@ module.exports = {
       this.$refs.editPaymentInputs.selectedCardToEdit(paymentMethod)
     },
     close() {
-      this.toggleModalState()
+      this.closeModalState()
     },
-    toggleModalState(){
-      this.modalState = !this.modalState
+    closeModalState(){
+      this.modalState = false
+    },
+    openModalState(){
+      this.modalState = true
     },
     removePaymentMethod(pID){
       this.$store.dispatch('removePaymentMethod', pID)

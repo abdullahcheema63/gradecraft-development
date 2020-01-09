@@ -36,9 +36,6 @@ module.exports = {
     close() {
       this.$emit("close");
     },
-    toggleModalState(){
-      this.modalState = !this.modalState
-    }
   },
   computed: {
     modalClass() {

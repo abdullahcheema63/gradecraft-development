@@ -15,7 +15,7 @@
         </p>
       </guideMessage>
 
-      <modalComponent v-if="onboarding && showOnboarding" :modalState="modalState" @close="toggleModalState(); sawOnboarding();" class="component_container onboarding">
+      <modalComponent v-if="onboarding && showOnboarding" :modalState="modalState" @close="close(); sawOnboarding();" class="component_container onboarding">
         <template slot="heading">Welcome to GradeCraft!</template>
         <template slot="content">
           <vue-slick class="onboarding_slides" :options="slickOptions">
@@ -75,7 +75,7 @@
                   Easily keep track of what students are completing in your course and what competency level they’ve reached.
                 </p>
                 <h3>Ready to go?</h3>
-                <button @click="toggleModalState" type="button" class="action" style="margin-top: 0.75em;">Let’s get started!</button>
+                <button @click="close" type="button" class="action" style="margin-top: 0.75em;">Let’s get started!</button>
               </div>
             </div>
           </vue-slick>
@@ -266,7 +266,7 @@
           </div>
         </div>
 
-        <modalComponent v-if="copyCourseForm" :modalState="modalState" @close="toggleModalState" class="component_container">
+        <modalComponent v-if="copyCourseForm" :modalState="modalState" @close="close" class="component_container">
           <template slot="heading">Copy a course</template>
           <template slot="content" v-if="copyingCourse">
             <div class="yeti-loading_spin">
@@ -339,7 +339,7 @@
           <template slot="cancel-link" v-if="copyingCourse"> &nbsp; </template>
         </modalComponent>
 
-        <modalComponent v-if="deleteCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+        <modalComponent v-if="deleteCourseModal" :modalState="modalState" @close="close" class="component_container">
           <template slot="heading">Delete Course Confirmation</template>
           <template slot="content" v-if="deletingCourse">
             <div class="yeti-loading_spin">
@@ -379,7 +379,7 @@
           <template slot="cancel-link" v-if="deletingCourse"> &nbsp; </template>
         </modalComponent>
 
-        <modalComponent v-if="archiveCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+        <modalComponent v-if="archiveCourseModal" :modalState="modalState" @close="close" class="component_container">
           <template slot="heading">Archive Course Confirmation</template>
           <template slot="content" v-if="archivingCourse">
             <div class="yeti-loading_spin">
@@ -410,7 +410,7 @@
           <template slot="cancel-link" v-if="archivingCourse"> &nbsp; </template>
         </modalComponent>
 
-        <modalComponent v-if="unpublishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+        <modalComponent v-if="unpublishCourseModal" :modalState="modalState" @close="close" class="component_container">
           <template slot="heading" v-if="selectedCourse.active">Unpublish Course Confirmation</template>
           <template slot="heading" v-else>Hide Course Confirmation</template>
 
@@ -474,7 +474,7 @@
           <template slot="cancel-link" v-if="unpublishingCourse"> &nbsp; </template>
         </modalComponent>
 
-        <modalComponent v-if="publishCourseModal" :modalState="modalState" @close="toggleModalState" class="component_container">
+        <modalComponent v-if="publishCourseModal" :modalState="modalState" @close="close" class="component_container">
           <template slot="heading" v-if="selectedCourse.active">Publish Course Confirmation</template>
           <template slot="heading" v-else>Show Course Confirmation</template>
 
@@ -796,10 +796,10 @@ module.exports = {
       }
     },
     close() {
-      this.toggleModalState()
+      this.closeModalState()
     },
-    toggleModalState(){
-      this.modalState = !this.modalState
+    closeModalState(){
+      this.modalState = false
       this.copyCourseForm = false
       this.deleteCourseModal = false
       this.archiveCourseModal = false

@@ -13,7 +13,7 @@
         </p>
       </guideMessage>
 
-      <modalComponent v-if="onboarding && showOnboarding" :modalState="modalState" @close="toggleModalState(); sawOnboarding();" class="component_container onboarding">
+      <modalComponent v-if="onboarding && showOnboarding" :modalState="modalState" @close="close(); sawOnboarding();" class="component_container onboarding">
         <template slot="heading">Welcome to GradeCraft!</template>
         <template slot="content">
           <vue-slick :options="slickOptions" class="onboarding_slides">
@@ -67,7 +67,7 @@
                   Gameful courses support risk-taking. If you get a low score on an assignment, look for ways to recover points&mdash;like resubmitting assignments multiple times, or choosing extra assignments to earn more points toward your goal.
                 </p>
                 <h3>Ready to go?</h3>
-                <button @click="toggleModalState" type="button" class="action" style="margin-top: 0.75em;">Let’s get started!</button>
+                <button @click="close()" type="button" class="action" style="margin-top: 0.75em;">Let’s get started!</button>
               </div>
             </div>
           </vue-slick>
@@ -302,10 +302,10 @@ module.exports = {
       return course
     },
     close() {
-      this.toggleModalState()
+      this.closeModalState()
     },
-    toggleModalState(){
-      this.modalState = !this.modalState
+    closeModalState(){
+      this.modalState = false
     },
     sawOnboarding(){
       if(!this.hasSeenOnboarding){

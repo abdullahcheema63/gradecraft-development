@@ -28,7 +28,6 @@ module.exports = {
     return {
       prevScrollPos: null,
       activeUsername: false,
-      modalState: false,
     }
   },
   computed: {
@@ -83,12 +82,6 @@ module.exports = {
         window.removeEventListener('click', this.closeDropdowns);
       }
     },
-    close() {
-      this.toggleModalState()
-    },
-    toggleModalState(){
-      this.modalState = !this.modalState
-    }
   },
   directives: {
     focus: {
