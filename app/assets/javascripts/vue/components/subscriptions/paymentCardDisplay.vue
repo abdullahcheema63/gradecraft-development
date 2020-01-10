@@ -1,6 +1,6 @@
 <template>
   <div class="content_block bg-green_mint_2">
-    <h2 class="unspace-top">My Payment Cards DISPLAY COMPONENT</h2>
+    <h2 class="unspace-top">My Payment Cards</h2>
 
     <div v-if="userSubscription.payment_methods" v-for="paymentMethod in userSubscription.payment_methods" class="form_options payment_method">
       <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" :checked="paymentMethod.default_payment_method" name="payment_group" />

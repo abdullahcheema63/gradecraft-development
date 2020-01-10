@@ -82,7 +82,9 @@ const store = new Vuex.Store({
       payments: {},
       courses: {},
     },
-    userSubscription: {},
+    userSubscription: {
+      payment_methods: {}
+    },
     newSubscribingCourses: [],
     currentSubscribedCourses: [],
     previouslySubscribedCourses: [],
@@ -266,7 +268,7 @@ const store = new Vuex.Store({
             console.log("User failed their last payment ")
             store.dispatch("loadFailedPayment")
           }
-          commit('addUserSubscription', final)  
+          commit('addUserSubscription', final)
         }
       },
       loadFailedPayment: async function({ commit }){
@@ -887,6 +889,12 @@ const store = new Vuex.Store({
       userSubscriptionInfo: state =>{
         if(state.user.subscription) return state.user.subscription
         return null
+      },
+      defaultPaymentMethod: state => {
+        if(state.userSubscription.payment_methods.length){
+          console.log("inside if of dPM")
+          return state.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
+        }
       },
       userGuideStatus: state => {
         return state.user.showGuide;

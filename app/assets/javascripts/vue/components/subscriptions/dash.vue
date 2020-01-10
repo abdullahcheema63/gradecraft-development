@@ -136,12 +136,12 @@
                   </li>
                 </ul>
             </div>
-            <div v-if="this.userSubscription.payment_methods.length > 0">
+            <div v-if="this.defaultPaymentMethod">
               <h3>Selected Payment Method</h3>
-              <p>
+              <p v-if="this.defaultPaymentMethod">
                 {{defaultPaymentMethod[0].nickname}}
                 ({{defaultPaymentMethod[0].brand}})
-                **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}
+                **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}}
               </p>
             </div>
             <div class="total">
@@ -164,10 +164,10 @@
               </div>
             </div>
           </div>
-          <div v-if="!this.userSubscription.payment_methods.length > 0 && newCost > 0">
-            <p> You must add a payment method before you continue with your subscription </p>
+          <div v-if="!this.defaultPaymentMethod && newCost > 0">
+            <p>(?Words and Stylleee) You must add a payment method before you continue with your subscription </p>
           </div>
-          <button type="button" class="action" :disabled="!this.userSubscription.payment_methods.length > 0 && newCost > 0" @click="updateSubscription()">Submit</button>
+          <button type="button" class="action" :disabled="!this.defaultPaymentMethod && newCost > 0" @click="updateSubscription()">Submit</button>
         </template>
       </buttonModal>
     </div>
@@ -273,11 +273,7 @@ module.exports = {
       return this.$store.state.failedPayment
     },
     defaultPaymentMethod(){
-      if(this.userSubscription.payment_methods){
-        console.log("inside defaultPaymentMethod")
-        console.log("inside defaultPaymentMethod, user subscription:", this.userSubscription.payment_methods)
-        return this.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
-      }
+      return this.$store.getters.defaultPaymentMethod
     },
     successAlertMessages(){
       return this.$store.state.successAlertMessages
