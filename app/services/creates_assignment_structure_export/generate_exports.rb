@@ -1,6 +1,6 @@
 module Services
   module Actions
-    class GenerateExport
+    class GenerateExports
       extend LightService::Action
       expects :course_id, :user_id, :host_url, :csv_file
       promises :course, :current_user, :images_directory

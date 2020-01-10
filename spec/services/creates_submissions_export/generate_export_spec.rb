@@ -5,7 +5,8 @@ describe Services::Actions::GenerateExport do
   let(:context) do
     {
       submissions_export: submissions_export,
-      csv_file_path: csv_file_path
+      csv_file_path: csv_file_path,
+      host_url: "http://app.gradecraft.com"
     }
   end
 
