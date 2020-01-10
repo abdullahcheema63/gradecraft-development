@@ -41,51 +41,17 @@
       </p>
     </div>
 
+    <subscriptions-payment-card-display v-if="!userSubscription.stripe_connection_error" :stripePk="stripePk"></subscriptions-payment-card-display>
+    <div v-else class="content_block bg-green_mint_2">
+      <p>
+        Uh oh! It looks like we can’t connect with Stripe right now. Please try again later!
+      </p>
+    </div>
+
     <div class="content_block bg-green_mint_2">
-      <h2 class="unspace-top">My Payment Cards</h2>
-      <div v-if="!userSubscription.stripe_connection_error" v-for="paymentMethod in userSubscription.payment_methods" class="form_options payment_method">
-        <input type="radio" :id="paymentMethod.id" :value="paymentMethod.id" :checked="paymentMethod.default_payment_method" name="payment_group" />
-        <div>
-          <p>
-            <strong>{{paymentMethod.nickname}}</strong>
-            ({{paymentMethod.brand}})
-            **** **** **** {{paymentMethod.last4}} <span></span> Expires {{paymentMethod.exp_month}}/{{paymentMethod.exp_year}}
-          </p>
-          <dropdownDotsComponent>
-            <template slot="content">
-              <ul>
-                <li v-if="!paymentMethod.default_payment_method">
-                  <a @click="makePaymentMethodDefault(paymentMethod.id)">Make Primary</a>
-                </li>
-                <li>
-                  <a @click="openEditPaymentMethod(paymentMethod)">Edit</a>
-                </li>
-                <li>
-                  <a @click="removePaymentMethod(paymentMethod.id)">Delete</a>
-                </li>
-              </ul>
-            </template>
-          </dropdownDotsComponent>
-        </div>
-      </div>
-
-      <buttonModal v-if="!userSubscription.stripe_connection_error" ref="paymentInputModal" button_class="secondary function add_something">
-        <template slot="button-text">Add a new card</template>
-        <template slot="heading">Add a new card</template>
-        <template slot="content">
-          <subscriptions-payment-inputs ref="paymentInputs" :stripePk="stripePk" />
-        </template>
-      </buttonModal>
-
-      <div v-if="userSubscription.stripe_connection_error" class="empty">
-        <p>
-          Uh oh! It looks like we can’t connect with Stripe right now. Please try again later!
-        </p>
-      </div>
-
       <div class="form_options alt-2">
-        <input type="checkbox" id="service_terms_agreement" checked="checked" required="required" />
-        <label for="service_terms_agreement">I accept GradeCraft’s
+        <input type="checkbox" :id="termsOfService" v-model="termsOfService" :value="termsOfService" required="required" />
+        <label :for="termsOfService">I accept GradeCraft’s
           <a href="https://gradecraft.com/terms_service/" target="_blank">Terms of Service</a>
         </label>
       </div>
@@ -154,7 +120,7 @@
               </ul>
             </div>
 
-            <div>
+            <div v-if="remainingSubscribedCourses.length">
                 <h3>Continuing Courses</h3>
                 <ul class="pink_dots" >
                   <li v-for="course of remainingSubscribedCourses" :key ="course.id">
@@ -170,7 +136,7 @@
                   </li>
                 </ul>
             </div>
-            <div v-if="newCost > 0">
+            <div v-if="this.userSubscription.payment_methods.length > 0">
               <h3>Selected Payment Method</h3>
               <p>
                 {{defaultPaymentMethod[0].nickname}}
@@ -198,19 +164,12 @@
               </div>
             </div>
           </div>
-          <button type="button" class="action" @click="updateSubscription()">Submit</button>
+          <div v-if="!this.userSubscription.payment_methods.length > 0 && newCost > 0">
+            <p> You must add a payment method before you continue with your subscription </p>
+          </div>
+          <button type="button" class="action" :disabled="!this.userSubscription.payment_methods.length > 0 && newCost > 0" @click="updateSubscription()">Submit</button>
         </template>
       </buttonModal>
-
-      <modalComponent :modalState="modalState" @close="close()" class="component_container">
-        <template slot="heading">Edit payment card</template>
-        <template slot="content">
-          <form>
-            <subscriptions-payment-inputs ref="editPaymentInputs" :stripePk="stripePk"/>
-          </form>
-        </template>
-        <template slot="submit-button"> </template>
-      </modalComponent>
     </div>
   </div>
 </template>
@@ -220,8 +179,8 @@
 module.exports = {
   name: "subscriptions-dash",
   components: {
-    "subscriptions-payment-inputs": () => VComponents.get("vue/components/subscriptions/paymentInputs"),
     "subscriptions-course-selector": () => VComponents.get("vue/components/subscriptions/courseSelector"),
+    "subscriptions-payment-card-display": () => VComponents.get("vue/components/subscriptions/paymentCardDisplay"),
     alertComponent: () => VComponents.get('vue/components/structure/alertComponent'),
     modalComponent: () => VComponents.get('vue/components/structure/modalComponent'),
     buttonModal: () => VComponents.get('vue/components/structure/buttonModal'),
@@ -233,6 +192,7 @@ module.exports = {
         errors: [],
         showRenew: false,
         modalState: false,
+        termsOfService: false,
       };
   },
   props: {
@@ -313,23 +273,17 @@ module.exports = {
       return this.$store.state.failedPayment
     },
     defaultPaymentMethod(){
-      return this.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
-    },
-    creditCardAddSuccess(){
-      return this.$store.state.creditCardAddSuccess
+      if(this.userSubscription.payment_methods){
+        console.log("inside defaultPaymentMethod")
+        console.log("inside defaultPaymentMethod, user subscription:", this.userSubscription.payment_methods)
+        return this.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
+      }
     },
     successAlertMessages(){
       return this.$store.state.successAlertMessages
     },
   },
   watch: {
-    creditCardAddSuccess(newStatus, oldStatus){
-      if(newStatus === true){
-        this.$refs.paymentInputModal.close()
-        let wrapper = document.getElementById("main_wrapper")
-        wrapper.classList.add("has_alert")
-      }
-    },
     successAlertMessages(newMessages, oldMessages){
       if(newMessages[0]){
         this.$refs.checkoutSummaryModal.close()
@@ -341,26 +295,6 @@ module.exports = {
   methods: {
     toggleRenew() {
       this.showRenew = !this.showRenew;
-    },
-    openEditPaymentMethod(paymentMethod){
-      console.log("editing payment method: ", paymentMethod)
-      this.modalState = true
-      this.$refs.editPaymentInputs.selectedCardToEdit(paymentMethod)
-    },
-    close() {
-      this.closeModalState()
-    },
-    closeModalState(){
-      this.modalState = false
-    },
-    openModalState(){
-      this.modalState = true
-    },
-    removePaymentMethod(pID){
-      this.$store.dispatch('removePaymentMethod', pID)
-    },
-    makePaymentMethodDefault(pID){
-      this.$store.dispatch('makePaymentMethodDefault', pID)
     },
     updateSubscription(){
       this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)

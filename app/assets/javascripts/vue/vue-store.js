@@ -253,21 +253,21 @@ const store = new Vuex.Store({
         console.log("getUserSubscriptions action dispatched")
         const resp = await fetch("/api/subscriptions");
         if (resp.status === 404){
-          console.log(resp.status);
-          store.dispatch("createSubscription");
+          console.log("No subscription found")
+          // console.log(resp.status);
+          // store.dispatch("createSubscription");
         }
-        else if (!resp.ok){
-          throw resp;
+        else{
+          const json = await resp.json();
+          console.log("json from user subscription", json);
+          const final = apiResponseToDataDataItem(json);
+          console.log("user subscription", final);
+          if (final.failed_last_payment) {
+            console.log("User failed their last payment ")
+            store.dispatch("loadFailedPayment")
+          }
+          commit('addUserSubscription', final)  
         }
-        const json = await resp.json();
-        console.log("json from user subscription", json);
-        const final = apiResponseToDataDataItem(json);
-        console.log("user subscription", final);
-        if (final.failed_last_payment) {
-          console.log("User failed their last payment ")
-          store.dispatch("loadFailedPayment")
-        }
-        commit('addUserSubscription', final)
       },
       loadFailedPayment: async function({ commit }){
         const resp = await fetch("/api/subscriptions/failed_payment")
@@ -541,6 +541,7 @@ const store = new Vuex.Store({
         }
         else {
           store.dispatch("getUserSubscription");
+          store.dispatch("getCourseMemberships");
           commit('addSuccessAlertMessage', body.message[0])
         }
       },
