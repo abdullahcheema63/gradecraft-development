@@ -892,7 +892,6 @@ const store = new Vuex.Store({
       },
       defaultPaymentMethod: state => {
         if(state.userSubscription.payment_methods.length){
-          console.log("inside if of dPM")
           return state.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
         }
       },

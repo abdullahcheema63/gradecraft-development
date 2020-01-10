@@ -140,7 +140,7 @@ class Course < ApplicationRecord
   end
 
   def unsubscribe
-    self.update_attribute(:subscription_id, nil)
+    self.update_attributes(:subscription_id => nil, :published => false)
   end
 
   def subscribe(subscription_id)
