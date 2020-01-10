@@ -546,6 +546,7 @@ const store = new Vuex.Store({
           store.dispatch("getCourseMemberships");
           console.log("inside subscription update body message: ", body.message)
           commit('addSuccessAlertMessage', body.message)
+          commit('resetNewSubscribingCourses')
         }
       },
       retryFailedPayment: async function({ commit }, paymentID){
@@ -852,6 +853,9 @@ const store = new Vuex.Store({
       addSuccessAlertMessage( state, message){
         state.errorAlertMessage = null
         state.successAlertMessage = message
+      },
+      resetNewSubscribingCourses(state){
+        state.newSubscribingCourses = []
       },
       removeSuccessAlert(state){
         state.successAlertMessage = null

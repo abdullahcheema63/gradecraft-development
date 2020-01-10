@@ -263,7 +263,7 @@ class API::SubscriptionsController < ApplicationController
         payment.status = "succeeded"
         payment.failed = false
         payment.save
-        NotificationMailer.inapp_payment_received(payment).deliver_now
+        NotificationMailer.inapp_payment_received(payment).deliver_now #needs errors turned on locally or will error here
         @subscription.update_billing_scheme
         @subscription.extend_renewal_date
         return render_success success_message
