@@ -145,8 +145,8 @@ class API::SubscriptionsController < ApplicationController
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
 
-    success_messages = []
-    error_messages = []
+    success_message = ""
+    error_messages = ""
 
     @subscribed_courses = @subscription.courses
     subscribed_course_ids = @subscribed_courses.map(&:id)
@@ -165,32 +165,28 @@ class API::SubscriptionsController < ApplicationController
 
     if new_subscribed_courses_count == current_subscribed_courses_count
       if (selected_course_ids - subscribed_course_ids).empty?
-        success_messages << "courses subscribed are the same as courses selected "
-        return render_success success_messages
+        success_message =  "courses subscribed are the same as courses selected "
+        return render_success success_message
       else
         puts("Removing subscription from: #{courses_to_unsubscribe}")
         puts("adding subscription to: #{courses_to_subscribe}")
         if (@subscription.unsubscribe_courses(courses_to_unsubscribe)) && (@subscription.subscribe_courses(courses_to_subscribe))
-          success_messages << "successfully switched courses on your subscription"
-          puts "success_messages: #{success_messages.inspect}"
-          return render_success success_messages
+          success_message = "successfully switched courses on your subscription"
+          return render_success success_message
         else
-          error_messages << "could not switch courses on your subscription"
-          puts "error_messages: #{error_messages.inspect}"
-          return render_error error_messages, 500
+          error_message = "could not switch courses on your subscription"
+          return render_error error_message, 500
         end
       end
     elsif new_subscribed_courses_count < current_subscribed_courses_count
       #remove a subscription from a course
       puts("Removing subscription from: #{courses_to_unsubscribe}")
       if(@subscription.unsubscribe_courses(courses_to_unsubscribe))
-        success_messages << "successfully removed courses from your subscription"
-        puts "success_messages: #{success_messages.inspect}"
-        return render_success success_messages
+        success_message = "successfully removed courses from your subscription"
+        return render_success success_message
       else
-        error_messages << "could not remove courses from your subscription"
-        puts "error_messages: #{error_messages.inspect}"
-        return render_error error_messages, 500
+        error_message = "could not remove courses from your subscription"
+        return render_error error_message, 500
       end
       @subscription.update_billing_scheme
 
@@ -247,19 +243,20 @@ class API::SubscriptionsController < ApplicationController
         puts "!!! Payment was a success !!!"
         if courses_to_unsubscribe.length
           if(@subscription.unsubscribe_courses(courses_to_unsubscribe))
-            success_messages << "successfully unsubscribed courses from your subscription"
+            success_message = "successfully unsubscribed courses from your subscription"
+            puts "success message: #{success_message}"
           else
             puts "Could add error message about not being able to unsubscribe course"
           end
         end
         if courses_to_subscribe.length
           if(@subscription.subscribe_courses(courses_to_subscribe))
-            success_messages << "successfully added courses to your subscription"
-            puts "successfully added coursses to subscription message: #{success_messages.inspect}"
+            success_message = "successfully added courses to your subscription"
+            puts "success message: #{success_message}"
           else
-            error_messages << "Error adding courses to your subscription"
+            error_message = "Error adding courses to your subscription"
             puts "issue stripe refund ?!! (Please double check your payment was refunded ? )"
-            render_error error_messages, 500
+            render_error error_message, 500
           end
         end
 
@@ -269,8 +266,7 @@ class API::SubscriptionsController < ApplicationController
         NotificationMailer.inapp_payment_received(payment).deliver_now
         @subscription.update_billing_scheme
         @subscription.extend_renewal_date
-        success_messages << "and payment was saved successfully"
-        return render_success success_messages
+        return render_success success_message
       end
     end
   end
@@ -397,9 +393,9 @@ class API::SubscriptionsController < ApplicationController
     return render_error messages, 500
   end
 
-  def render_error(errors, status=400)
+  def render_error(error, status=400)
     render json: {
-      errors: errors,
+      errors: error,
       success: false
     }, status: status
   end

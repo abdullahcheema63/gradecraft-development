@@ -538,13 +538,14 @@ const store = new Vuex.Store({
           console.error(this);
           console.error(resp);
           console.error(body);
-          commit('addErrorAlertMessage', body.errors[0])
+          commit('addErrorAlertMessage', body.errors)
           return;
         }
         else {
           store.dispatch("getUserSubscription");
           store.dispatch("getCourseMemberships");
-          commit('addSuccessAlertMessage', body.message[0])
+          console.log("inside subscription update body message: ", body.message)
+          commit('addSuccessAlertMessage', body.message)
         }
       },
       retryFailedPayment: async function({ commit }, paymentID){
