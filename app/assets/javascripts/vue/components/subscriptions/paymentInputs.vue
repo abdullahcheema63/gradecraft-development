@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="hasCardError" class="inline_alert_msg">
+    <div v-if="hasCardError" class="inline_alert_msg" id="paymentCardError">
       <p>
         {{cardError}}
       </p>
@@ -10,7 +10,7 @@
         {{creditCardError}}
       </p>
     </div>
-    <div v-if="errors.length" class="inline_alert_msg">
+    <div v-if="errors.length" class="inline_alert_msg" id="genericPaymentError">
       <div v-for="error in errors">
         <p>
           {{error}}
@@ -114,7 +114,10 @@ module.exports = {
         last4: null,
         exp_month: null,
         exp_year: null,
-      }
+      },
+      options: {
+        easing: 'ease-in',
+      },
     }
   },
   props: {
@@ -129,6 +132,20 @@ module.exports = {
     },
     creditCardError() {
       return this.$store.state.creditCardError
+    }
+  },
+  watch: {
+    errors(newError, oldError){
+      console.log("I'M TRYING TO SCROLL BUT ITS HARD IN HERE ): come find meee")
+      this.$scrollTo("#genericPaymentError", 300, this.options)
+    },
+    cardError(newCardError, oldCardError){
+      console.log("I'M TRYING TO SCROLL BUT ITS HARD IN HERE ): come find meee")
+      this.$scrollTo("#paymentCardError", 300, this.options)
+    },
+    creditCardError(newCreditCardError, oldCreditCardError){
+      console.log("I'M TRYING TO SCROLL BUT ITS HARD IN HERE ): come find meee")
+      this.$scrollTo("#paymentCardError", 300, this.options)
     }
   },
   methods: {
