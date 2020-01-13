@@ -70,13 +70,13 @@ class AssignmentExporter
 
   def remove_froala_html(assignment_structure_details, type, assignment_name)
     assignment_structure_details_html = Nokogiri::HTML(assignment_structure_details)
-    count = 0
+    count = 1
 
     assignment_structure_details_html.search('img').each do |inline_image_upload|
       image_upload_link = @host_url + inline_image_upload['src']
       image_name = "#{assignment_name} - #{type} - Image #{count}"
       count += 1
-      inline_image_upload.replace("<p> [ image inserted here is included as #{image_upload_link} in the archive ] </p>")
+      inline_image_upload.replace("<p> [ image inserted here is included as #{image_name} in the archive ] </p>")
     end
 
     assignment_structure_details_html.xpath("//text()").to_s
