@@ -34,27 +34,6 @@ describe Services::Actions::CreateSubmissionFiles do
       end
     end
 
-    context "for teams" do
-      let(:team) { create :team }
-      let(:submissions) { create_list :full_submission, 2, assignment: assignment }
-      let!(:team_memberships) { create_list :team_membership, 2, team: team }
-      let(:submissions_export) { create :submissions_export, team: team, assignment: assignment}
-
-      before(:each) do
-        team_memberships.each_with_index { |tm, i| submissions[i].update student: tm.student }
-        context[:submitter_directory_names] = team.students.inject({}) { |m, s| m.update(s.id => s.name) }
-      end
-
-      it "creates a submission file for each team submission" do
-        described_class.execute context
-        content = file_like_object.string
-        submissions.each do |s|
-          expect(content).to include \
-            "Submission items from #{s.student.last_name}, #{s.student.first_name}\n\ntext comment: #{s.text_comment}\n\nlink: #{s.link}"
-        end
-      end
-    end
-
     context "for individuals" do
       let(:submissions_export) { create :submissions_export }
 
