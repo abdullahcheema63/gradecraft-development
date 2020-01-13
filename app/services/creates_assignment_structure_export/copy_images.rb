@@ -23,6 +23,7 @@ module Services
                                                  "#{assignment.name} - Purpose - Image")
         end
 
+        puts "====================================================="
         puts "Image paths: "
 
         images_paths.each do |image_path|
@@ -32,6 +33,10 @@ module Services
         context.has_images = false
 
         context.has_images = true if images_paths.length > 0
+
+        puts "context_has_images: #{context.has_images}"
+        puts "context: #{context}"
+        puts "====================================================="
 
         if context.has_images
           self.copy_images(images_paths, context.images_directory)

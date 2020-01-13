@@ -6,9 +6,15 @@ module Services
       promises :course, :has_images, :current_user, :export_archive_path
 
       executed do |context|
-        context.export_archive_path = "#{context.images_directory}.zip"
+        if context.has_images
+          puts "Context has images, archiving"
+          context.export_archive_path = "#{context.images_directory}.zip"
 
-        Archive::Zip.archive(context.export_archive_path, context.images_directory)
+          Archive::Zip.archive(context.export_archive_path, context.images_directory)
+        else
+          puts "**Context does not have images**"
+          context.export_archive_path = nil
+        end
       end
     end
   end

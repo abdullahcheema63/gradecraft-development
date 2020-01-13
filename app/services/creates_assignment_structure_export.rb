@@ -14,9 +14,6 @@ module Services
         Actions::CreateTempDirectories,
         Actions::GenerateExports,
         Actions::CopyImages,
-        reduce_if(-> (context) { !context[:has_images] }, [
-            Actions::NotifyOnCompletion
-        ]),
         Actions::ArchiveExportedFiles,
         Actions::NotifyOnCompletion
       )
