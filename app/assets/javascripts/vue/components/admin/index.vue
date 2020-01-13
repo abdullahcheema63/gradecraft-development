@@ -29,8 +29,8 @@
           <p><strong>{{this.newPublishedCoursesCount}}</strong>
             published
           </p>
-          <p><strong>{{this.newTrialCoursesCount}}</strong>
-            trial <span>courses</span>
+          <p><strong>{{this.newUnpublishedCoursesCount}}</strong>
+            unpublished
           </p>
         </div>
       </div>
@@ -162,10 +162,10 @@ module.exports = {
     allSubscriptions(){
       return this.$store.state.allSubscriptions;
     },
-    newTrialCoursesCount(){
+    newUnpublishedCoursesCount(){
       if(this.newCourses.length >= 0){
         var count = this.newCourses.reduce(function(n, course){
-          return n + (course.subscribed === false);
+          return n + (course.published === false);
         }, 0);
         return count
       }

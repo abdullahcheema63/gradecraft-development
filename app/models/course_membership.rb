@@ -25,7 +25,7 @@ class CourseMembership < ApplicationRecord
   scope :participants, -> { where.not(role: "admin") }
   scope :active, -> { where(active: true) }
 
-  scope :instructors, -> {User.where(id: (where(role: "professor").or(CourseMembership.where(role: "gsi")).pluck(:user_id).uniq))}
+  scope :instructors, -> {User.where(id: (where(role: "professor").pluck(:user_id).uniq))}
 
   validates_presence_of :course, :user, :role
 
