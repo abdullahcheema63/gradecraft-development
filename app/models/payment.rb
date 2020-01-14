@@ -7,6 +7,8 @@ class Payment < ApplicationRecord
 
   validates_presence_of :amount_usd
 
+  scope :recently_paid_courses_count, -> {where("payments.created_at > ? ", 10.days.ago).where(status: "succeeded").joins(:courses).count}
+
   def charge_customer
     #Used for payments made between monthly subscription charges
     customer_id = self.subscription.customer_id

@@ -16,5 +16,6 @@ class API::DashboardController < ApplicationController
     @courses = Course.where("created_at > ? ", 10.days.ago)
     @instructors_count = CourseMembership.instructors.where("created_at > ? ", 10.days.ago).count
     @subscriptions_count = Subscription.where("created_at > ? ", 10.days.ago).count
+    @paid_courses_count = Payment.recently_paid_courses_count
   end
 end

@@ -17,7 +17,7 @@
         <p>In the past 10 days: </p>
       </div>
       <div>
-        <h3 class="lining_figures">{{newInstructorsCount}}</h3>
+        <h3 class="lining_figures">{{newActivity.newInstructorsCount}}</h3>
         <div>
           <h4>New Instructor Accounts</h4>
         </div>
@@ -35,17 +35,12 @@
         </div>
       </div>
       <div>
-        <h3 class="lining_figures app">{{newSubscriptionsCount}}</h3>
+        <h3 class="lining_figures app">{{newActivity.newSubscriptionsCount}}</h3>
         <div>
-          <h4>Subscriptions</h4>
+          <h4>New Subscriptions</h4>
           <p>
-            <strong>10?</strong>
-            Continued
-            <!-- To E from S: continued courses are the same as renewing your subscription -->
-          </p>
-          <p>
-            <strong>{{newSubscriptionsCount}}</strong>
-            new
+            <strong>{{newActivity.paidCoursesCount}}</strong>
+            Paid courses
           </p>
         </div>
       </div>
@@ -152,12 +147,6 @@ module.exports = {
     },
     newCourses(){
       return this.newActivity.courses
-    },
-    newInstructorsCount(){
-      return this.newActivity.newInstructorsCount
-    },
-    newSubscriptionsCount(){
-      return this.newActivity.newSubscriptionsCount
     },
     allSubscriptions(){
       return this.$store.state.allSubscriptions;

@@ -72,7 +72,8 @@ const store = new Vuex.Store({
     newActivity: {
       courses: {},
       newInstructorsCount: 0,
-      newSubscriptionsCount: 0
+      newSubscriptionsCount: 0,
+      paidCoursesCount: 0
     },
     failedPayment: {},
     allInstructors: [],
@@ -173,12 +174,11 @@ const store = new Vuex.Store({
         const json = await resp.json();
         console.log("json: (before apiResponseToData)", json)
         var newInstructorsCount = json.instructors_count
-        console.log("newInstructorsCount: ", newInstructorsCount)
+        var paidCoursesCount = json.paid_courses_count
         var newSubscriptionsCount = json.subscriptions_count
-        console.log("newSubscriptionsCount: ", newSubscriptionsCount)
         const courses = apiResponseToData(json);
         console.log("final: (after apiResponseToData)", courses)
-        commit('addNewActivity', {courses, newSubscriptionsCount, newInstructorsCount});
+        commit('addNewActivity', {courses, newSubscriptionsCount, newInstructorsCount, paidCoursesCount});
       },
       getAllCourses: async function({ commit }){
         const resp = await fetch("/api/courses");
@@ -673,7 +673,7 @@ const store = new Vuex.Store({
         state.previouslySubscribedCourses = subscribedCourses
 
       },
-      addNewActivity(state, { courses, newSubscriptionsCount, newInstructorsCount}){
+      addNewActivity(state, { courses, newSubscriptionsCount, newInstructorsCount, paidCoursesCount}){
         state.newActivity.courses = courses.map(course => {
           return {
             id: course.id,
@@ -693,6 +693,7 @@ const store = new Vuex.Store({
         })
         state.newActivity.newSubscriptionsCount = newSubscriptionsCount
         state.newActivity.newInstructorsCount = newInstructorsCount
+        state.newActivity.paidCoursesCount = paidCoursesCount
       },
       addAdminCourses(state, courses){
         //console.log("inside addAdminCourses mutation")

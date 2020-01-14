@@ -41,4 +41,5 @@ json.included do
   end
 end
 json.subscriptions_count @subscriptions_count
+json.paid_courses_count @paid_courses_count
 json.instructors_count @instructors_count
