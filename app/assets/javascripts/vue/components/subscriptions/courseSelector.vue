@@ -36,7 +36,10 @@
               <input type="checkbox" :id="c.id" :value="c" v-model="currentSubscribedCourses"/>
               <label :for="c.id">&nbsp; </label>
             </td>
-            <!-- SOPHIA to ERIK: another v-if is if someone else has paid, then you can adapt the disabled static option I have above -->
+            <td v-else-if="userSubscription.failed_last_payment" class="form_options alt-2">
+              <input type="checkbox" :id="c.id" disabled="disabled" />
+              <label :for="c.id">&nbsp;</label>
+            </td>
             <td v-else class="form_options alt-2">
               <input type="checkbox" :id="c.id" :value="c" v-model="newSubscribingCourses"/>
               <label :for="c.id">&nbsp; </label>
@@ -64,6 +67,9 @@ module.exports = {
     }
   },
   computed: {
+    userSubscription(){
+      return this.$store.state.userSubscription
+    },
     subscribedCourses(){
       return this.$store.state.userSubscription.courses
     },

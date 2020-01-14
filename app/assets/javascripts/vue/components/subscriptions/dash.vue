@@ -2,6 +2,10 @@
   <div>
     <alertComponent></alertComponent>
 
+    <div v-if="userSubscription.failed_last_payment">
+      <p> OH SNAP!! Looks like you got no more moneys ): what a shame </p>
+    </div>
+
     <subscriptions-course-selector></subscriptions-course-selector>
 
     <div class="content_block bg-green_mint_2">
@@ -31,6 +35,10 @@
         Currently paying (except if you upgrade enough to lower the price per course):
         {{originalCost}}
       </p>
+
+      <div v-if="userSubscription.failed_last_payment">
+        <p> OH SNAP!! x2!!  Looks like you still got no more moneys ): still a shame </p>
+      </div>
 
       <h3>Subscription Timing</h3>
       <p>
