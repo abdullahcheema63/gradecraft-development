@@ -21,7 +21,7 @@
         </p>
       </div>
 
-      <div class="payment_today" v-if="newCost > 0">
+      <div class="payment_today">
         <h3>Today’s payment total:</h3>
         <h3><sup>$</sup><span class="lining_figures">{{roundCents(proratedTotal)}}</span></h3>
       </div>
