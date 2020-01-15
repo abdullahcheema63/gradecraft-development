@@ -5,6 +5,10 @@
       Select courses you want to pay for and choose payment methods. When the course is done, come back here to turn off the payments.
     </p>
 
+    <div v-if="userSubscription.failed_last_payment" class="inline_alert_msg">
+      <p> There was a problem with your monthly auto-payment. You can remove courses, but you can’t add new ones until you fix the problem. </p>
+    </div>
+
     <div class="table_container">
       <table class="form_options-present my_subscription">
         <thead>

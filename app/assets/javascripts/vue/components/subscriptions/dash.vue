@@ -2,10 +2,6 @@
   <div>
     <alertComponent></alertComponent>
 
-    <div v-if="userSubscription.failed_last_payment">
-      <p> OH SNAP!! Looks like you got no more moneys ): what a shame </p>
-    </div>
-
     <subscriptions-course-selector></subscriptions-course-selector>
 
     <div class="content_block bg-green_mint_2">
@@ -36,10 +32,6 @@
         {{originalCost}}
       </p>
 
-      <div v-if="userSubscription.failed_last_payment">
-        <p> OH SNAP!! x2!!  Looks like you still got no more moneys ): still a shame </p>
-      </div>
-
       <h3>Subscription Timing</h3>
       <p>
         You will be <strong>billed on the X of every month.</strong>
@@ -65,9 +57,13 @@
       </div>
 
       <buttonModal ref="checkoutSummaryModal" button_class="action" v-if="userSubscription.failed_last_payment">
-        <template slot="button-text">Continue with failed payment</template>
-        <template slot="heading">Last Payment</template>
+        <template slot="button-text">Apply changes</template>
+        <template slot="heading">Subscription Summary</template>
         <template slot="content">
+          <h2>My Subscription Summary</h2>
+          <p>
+            Below is a summary of the changes you’re making to your subscription, including any costs you’ve incurred and will be charged for today.
+          </p>
           <div class="subscription_summary">
             <div v-if="removedSubscribedCourses.length">
               <h3>Removing Courses</h3>
@@ -99,7 +95,42 @@
                 </li>
               </ul>
             </div>
+            <div v-if="this.defaultPaymentMethod">
+              <h3>Selected Payment Method</h3>
+              <p v-if="this.defaultPaymentMethod">
+                {{defaultPaymentMethod[0].nickname}}
+                ({{defaultPaymentMethod[0].brand}})
+                **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}}
+              </p>
+            </div>
+            <div class="total">
+              <div>
+                <h3 class="teal_text">Today’s payment total</h3>
+              </div>
+              <div class="today">
+                <h3><span class="lining_figures"><sup>$</sup>{{ roundCents(proratedTotal) }}</span></h3>
+                <p>
+                  This amount reflects both your missed payment for courses you want to continue, as well as any courses you want to remove from your subscription.
+                </p>
+              </div>
+            </div>
+            <div class="total">
+              <div>
+                <h3>Monthly bill total</h3>
+                <p>
+                  You will be billed this amount on the X of every month
+                </p>
+              </div>
+              <div>
+                <h3><span class="lining_figures"><sup>$</sup>{{totalCost}}</span></h3>
+              </div>
+            </div>
           </div>
+          <div v-if="remainingSubscribedCourses.length === 0" class="bg-blue_2">
+            <h2> Thanks for using GradeCraft! </h2>
+            <p>It looks like you’re deactivating your GradeCraft subscription. Hopefully you enjoyed our tool, and we look forward to seeing you again in the future! Go gameful!</p>
+          </div>
+
           <button type="button" class="action" @click="retryFailedPayment()">Submit</button>
         </template>
       </buttonModal>

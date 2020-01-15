@@ -385,7 +385,7 @@ class API::SubscriptionsController < ApplicationController
       @subscription.update_billing_scheme #not needed here ?
       @subscription.extend_renewal_date
 
-      success_message = "Successfully fixed failed payment"
+      success_message = "You successfully fixed your monthly auto-payment error. Thanks!"
 
       return render_success success_message
     end
