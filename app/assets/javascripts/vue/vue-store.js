@@ -554,15 +554,17 @@ const store = new Vuex.Store({
           commit('resetNewSubscribingCourses')
         }
       },
-      retryFailedPayment: async function({ commit }, paymentID){
+      retryFailedPayment: async function({ commit }, [paymentID, continuingCourses]){
+        console.log("continueing courses: ", continuingCourses)
         const resp = await fetch("/api/subscriptions/retry", {
           method: 'POST',
           headers: requestHeaders,
           credentials: 'same-origin',
-          body: JSON.stringify(paymentID),
+          body: JSON.stringify({paymentID: paymentID, courses: continuingCourses}),
         });
         const body = await resp.json();
         if (!resp.ok) {
+          console.log("retry failed payment subscription resp", resp)
           this.errors = (Array.isArray(body.errors) || typeof body.errors !== "object")
             ? body.errors
             : Object.entries(body.errors); //Need polyfill
@@ -570,10 +572,13 @@ const store = new Vuex.Store({
           console.error(this);
           console.error(resp);
           console.error(body);
+          commit('addErrorAlertMessage', body.errors)
           return;
         }
         else {
-          window.location.replace(store.state.subscriptionsURL)
+          store.dispatch("getUserSubscription");
+          store.dispatch("getCourseMemberships");
+          commit('addSuccessAlertMessage', body.message)
         }
       },
       seenOnboarding: async function({ commit }){

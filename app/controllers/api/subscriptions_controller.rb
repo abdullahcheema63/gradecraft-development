@@ -119,6 +119,7 @@ class API::SubscriptionsController < ApplicationController
     end
     customer_id = @subscription.customer_id
     payment_method_id = params[:_json]
+    #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
 
     set_card_as_default(customer_id, payment_method_id)
 
@@ -132,6 +133,7 @@ class API::SubscriptionsController < ApplicationController
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
     payment_method_id = params[:_json]
+    #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
 
     Stripe::PaymentMethod.detach(payment_method_id)
   end
@@ -153,6 +155,7 @@ class API::SubscriptionsController < ApplicationController
     current_subscribed_courses_count = @subscribed_courses.length
 
     selected_courses = params[:_json]
+    #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
     selected_course_ids = selected_courses.map{ |c| c["id"].to_i }
     new_subscribed_courses_count = selected_courses.length
 
@@ -273,13 +276,54 @@ class API::SubscriptionsController < ApplicationController
 
   def retry
     puts "inside api subscriptions retry method!!! "
-    paymentID = params[:_json]
+    paymentID = params[:paymentID]
 
     payment = Payment.find(paymentID)
     @subscription = payment.subscription
 
     if !@subscription || !payment
       return render json: { data: nil, errors: [ "Subscription or payment not found" ] }, status: 404
+    end
+
+    selected_courses = params[:courses]
+    selected_course_ids = selected_courses.map{ |c| c["id"].to_i }
+    payment_course_ids = payment.course_ids
+
+#Determine if number of courses on the payment is the same (or less) than the selected_course_ids length
+    if selected_course_ids.length == 0
+      # cancel subscription
+      courses_to_unsubscribe = payment.course_ids
+
+      payment.status = "canceled"
+      payment.failed = false
+      payment.amount_usd = 0
+      payment.save!
+
+      # ? cancel payment on Stripe's side using the payment.payment_intent_id
+      # Need to wrap this in a begin / rescue ?
+
+      if(@subscription.unsubscribe_courses(courses_to_unsubscribe))
+        success_message = "successfully removed all courses from your subscription"
+        return render_success success_message
+      end
+
+      #return from this point / render success message
+
+    elsif selected_courses_ids.length < payment_course_ids.length
+      courses_to_unsubscribe = payment_course_ids - selected_course_ids
+
+      #determine billing scheme / change on payment
+      new_billing_scheme = determine_new_billing_scheme(new_subscribed_courses_count)
+
+      payment.course_ids = selected_course_ids
+      #determine new cost of payment & adjust payment then try again after this conditonal block
+
+      #Will we need to adjust the amount on the payment on stripes end ? because the payment_intent was already created ?
+
+
+    else
+      # retry payment as is ? no need for this else area ?
+
     end
 
     begin

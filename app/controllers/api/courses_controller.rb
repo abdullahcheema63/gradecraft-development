@@ -86,6 +86,7 @@ class API::CoursesController < ApplicationController
   # PUT /api/courses/unpublish
   def unpublish
     course_id = params[:_json]
+    #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
     @course = Course.find(course_id)
     if @course
       authorize! :update, @course
@@ -96,6 +97,7 @@ class API::CoursesController < ApplicationController
   # PUT /api/courses/publish
   def publish
     course_id = params[:_json]
+    #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
     @course = Course.find(course_id)
     if @course && (@course.subscription_id || Rails.env.production?)
       authorize! :update, @course
@@ -111,6 +113,7 @@ class API::CoursesController < ApplicationController
 
   def archive
     course_id = params[:_json]
+    #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
     @course = Course.find(course_id)
     if @course
       authorize! :update, @course
@@ -121,6 +124,7 @@ class API::CoursesController < ApplicationController
 
   def unarchive
     course_id = params[:_json]
+    #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
     @course = Course.find(course_id)
     if @course
       authorize! :update, @course

@@ -67,21 +67,39 @@
       <buttonModal ref="checkoutSummaryModal" button_class="action" v-if="userSubscription.failed_last_payment">
         <template slot="button-text">Continue with failed payment</template>
         <template slot="heading">Last Payment</template>
-        <template slot="content"> You failed your last payment
+        <template slot="content">
           <div class="subscription_summary">
-            <h3>Courses to pay for</h3>
-            <ul class="pink_dots">
-              <li v-for="course of failedPayment.courses" :key="course.id">
-                <p> <strong>{{course.number}} {{course.name}}</strong>
-                  <br />
-                  <template v-if="course.published">Published</template>
-                </p>
-                <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
-                <p><strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
-              </li>
-            </ul>
+            <div v-if="removedSubscribedCourses.length">
+              <h3>Removing Courses</h3>
+              <ul class="pink_dots">
+                <li v-for="course of removedSubscribedCourses" :key="course.id">
+                  <p><strong>{{course.number}} {{course.name}}</strong>
+                    <br />
+                    <template v-if="course.published">Published</template>
+                  </p>
+                  <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
+                  <p class="removed">
+                    &ndash;
+                    <sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}
+                    per month
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div v-if="remainingSubscribedCourses.length">
+              <h3>Courses to pay for</h3>
+              <ul class="pink_dots">
+                <li v-for="course of remainingSubscribedCourses" :key="course.id">
+                  <p> <strong>{{course.number}} {{course.name}}</strong>
+                    <br />
+                    <template v-if="course.published">Published</template>
+                  </p>
+                  <!--- What price do we want to show for the course here? possibly have an old price vs what the new price per course is ??? -->
+                  <p><strong><sup>$</sup>{{formatPrice(activeBillingRecord.pricePerCourse)}}</strong> per month</p>
+                </li>
+              </ul>
+            </div>
           </div>
-
           <button type="button" class="action" @click="retryFailedPayment()">Submit</button>
         </template>
       </buttonModal>
@@ -304,7 +322,7 @@ module.exports = {
       this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)
     },
     retryFailedPayment(){
-      this.$store.dispatch('retryFailedPayment', this.failedPayment.id)
+      this.$store.dispatch('retryFailedPayment', [this.failedPayment.id, this.selectedSubscribedCourses])
     },
     formatPrice(price){
       return Math.floor(price);
