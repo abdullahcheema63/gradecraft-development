@@ -82,8 +82,9 @@
                 </li>
               </ul>
             </div>
+
             <div v-if="remainingSubscribedCourses.length">
-              <h3>Courses to pay for</h3>
+              <h3>Continuing courses</h3>
               <ul class="pink_dots">
                 <li v-for="course of remainingSubscribedCourses" :key="course.id">
                   <p> <strong>{{course.number}} {{course.name}}</strong>
@@ -95,6 +96,7 @@
                 </li>
               </ul>
             </div>
+
             <div v-if="this.defaultPaymentMethod">
               <h3>Selected Payment Method</h3>
               <p v-if="this.defaultPaymentMethod">
@@ -103,17 +105,19 @@
                 **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}}
               </p>
             </div>
+
             <div class="total">
               <div>
                 <h3 class="teal_text">Today’s payment total</h3>
               </div>
               <div class="today">
                 <h3><span class="lining_figures"><sup>$</sup>{{ roundCents(proratedTotal) }}</span></h3>
-                <p>
-                  This amount reflects both your missed payment for courses you want to continue, as well as any courses you want to remove from your subscription.
-                </p>
               </div>
             </div>
+            <p class="teal_text">
+              This amount reflects both your missed payment for courses you want to continue, as well as any courses you want to remove from your subscription.
+            </p>
+
             <div class="total">
               <div>
                 <h3>Monthly bill total</h3>
@@ -125,10 +129,11 @@
                 <h3><span class="lining_figures"><sup>$</sup>{{totalCost}}</span></h3>
               </div>
             </div>
-          </div>
-          <div v-if="remainingSubscribedCourses.length === 0" class="bg-blue_2">
-            <h2> Thanks for using GradeCraft! </h2>
-            <p>It looks like you’re deactivating your GradeCraft subscription. Hopefully you enjoyed our tool, and we look forward to seeing you again in the future! Go gameful!</p>
+
+            <div v-if="remainingSubscribedCourses.length === 0" class="content_block bg-blue_2">
+              <h2>Thanks for using GradeCraft!</h2>
+              <p>It looks like you’re deactivating your GradeCraft subscription. Hopefully you enjoyed our tool, and we look forward to seeing you again in the future! Go gameful!</p>
+            </div>
           </div>
 
           <button type="button" class="action" @click="retryFailedPayment()">Submit</button>
