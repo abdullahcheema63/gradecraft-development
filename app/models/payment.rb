@@ -20,7 +20,9 @@ class Payment < ApplicationRecord
       # return here if there are no payment_methods
 
     intent = create_payment_intent(customer_id)
-    self.payment_intent_id = intent.id
+    self.update_attribute(:payment_intent_id, intent.id)
+
+    puts "inside payment #charge_customer, paymet: #{payment.inspect}"
 
     confirm_payment_intent(payment_method_id)
   end
@@ -74,8 +76,10 @@ class Payment < ApplicationRecord
   #STRIPE has option for 'recipt_email' --> wondering what is in this email / if we want to use it
   def confirm_payment_intent(payment_method_id)
     Stripe::PaymentIntent.confirm( self.payment_intent_id,
-      { payment_method: payment_method_id }
-    )
+      {
+        off_session: false,
+        payment_method: payment_method_id
+      })
   end
 
   def confirm_off_session_payment_intent(payment_method_id)

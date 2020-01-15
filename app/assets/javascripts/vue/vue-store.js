@@ -327,11 +327,6 @@ const store = new Vuex.Store({
       },
       removePaymentMethod: async function({ commit, state }, paymentMethodID){
         console.log("removePaymentMethod action dispatched")
-        if (state.userSubscription.payment_methods.length === 1 && state.userSubscription.courses.length >= 1){
-          let message = "You cannont remove all of your payment cards while you still have a course subscribed"
-          commit('addErrorAlertMessage', message)
-          return;
-        }
         const resp = await fetch("/api/subscriptions/remove_card", {
           method: 'POST',
           headers: requestHeaders,
@@ -339,9 +334,8 @@ const store = new Vuex.Store({
           body: JSON.stringify(paymentMethodID),
         })
         if(!resp.ok){
-          console.log("errors from deleting card, response:", resp)
-          let message = "Card could not be deleted. (?get error message from controller)"
-          commit('addErrorAlertMessage', message)
+          const help = await resp.json();
+          commit('addErrorAlertMessage', help.errors)
         }
         else{
           store.dispatch("getUserSubscription");

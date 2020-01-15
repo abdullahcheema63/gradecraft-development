@@ -132,10 +132,15 @@ class API::SubscriptionsController < ApplicationController
     if !@subscription
       return render json: { data: nil, errors: [ "Subscription not found" ] }, status: 404
     end
-    payment_method_id = params[:_json]
-    #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
+    if card_is_removable?
+      payment_method_id = params[:_json]
+      #realized why these are :_json, see retryFailedPayment action to give name to variable in JSON.stringify
 
-    Stripe::PaymentMethod.detach(payment_method_id)
+      Stripe::PaymentMethod.detach(payment_method_id)
+    else
+      error_message = "You cannot remove all of your payment cards while you still have a course subscribed"
+      return render_error error_message, 400
+    end
   end
 
   # POST api/subscriptions
@@ -267,7 +272,7 @@ class API::SubscriptionsController < ApplicationController
         payment.failed = false
         payment.save
         NotificationMailer.inapp_payment_received(payment).deliver_now #needs errors turned on locally or will error here
-        @subscription.update_billing_scheme
+        @subscription.update_billing_scheme #not needed here ?  I think this was already updated & saved in this method?
         @subscription.extend_renewal_date
         return render_success success_message
       end
@@ -285,9 +290,13 @@ class API::SubscriptionsController < ApplicationController
       return render json: { data: nil, errors: [ "Subscription or payment not found" ] }, status: 404
     end
 
+    puts "hello"
+
     selected_courses = params[:courses]
     selected_course_ids = selected_courses.map{ |c| c["id"].to_i }
     payment_course_ids = payment.course_ids
+
+    puts "just before conditonal if block "
 
 #Determine if number of courses on the payment is the same (or less) than the selected_course_ids length
     if selected_course_ids.length == 0
@@ -302,29 +311,40 @@ class API::SubscriptionsController < ApplicationController
       # ? cancel payment on Stripe's side using the payment.payment_intent_id
       # Need to wrap this in a begin / rescue ?
 
+      #Stripe::PaymentIntent.cancel(
+        #payment.payment_intent_id,
+        #cancellation_reason: "abandoned"
+      #)
+
       if(@subscription.unsubscribe_courses(courses_to_unsubscribe))
         success_message = "successfully removed all courses from your subscription"
         return render_success success_message
       end
 
-      #return from this point / render success message
-
-    elsif selected_courses_ids.length < payment_course_ids.length
+    elsif selected_course_ids.length < payment_course_ids.length
+      puts "inside elsif (courses removed from subscription)"
       courses_to_unsubscribe = payment_course_ids - selected_course_ids
+
+      @subscription.unsubscribe_courses(courses_to_unsubscribe)
 
       #determine billing scheme / change on payment
       new_billing_scheme = determine_new_billing_scheme(new_subscribed_courses_count)
 
+      amount_to_pay = selected_course_ids.length * new_billing_scheme.price_per_course
+      # Make sure this is in cents ?
+
+      puts "amount_to_pay: #{amount_to_pay}"
+
+      puts "payment before updated attributes: #{payment.inspect}"
+
+      payment.update_attributes(:amount_usd => amount_to_pay, :billing_scheme_id => new_billing_scheme.id)
+
       payment.course_ids = selected_course_ids
-      #determine new cost of payment & adjust payment then try again after this conditonal block
 
-      #Will we need to adjust the amount on the payment on stripes end ? because the payment_intent was already created ?
-
-
-    else
-      # retry payment as is ? no need for this else area ?
-
+      puts "\n\n payment after updated_attributes: #{payment.inspect}"
     end
+
+    puts "inside #retry method, after if conditonal block, about to initiate payment, payment: #{payment.inspect}"
 
     begin
       intent = @subscription.initiate_payment(payment)
@@ -333,14 +353,24 @@ class API::SubscriptionsController < ApplicationController
       payment.status = e.error.code
     rescue Stripe::RateLimitError => e
       # Too many requests made to the API too quickly
+      error_message = e.error.message
+      handle_payment_failure error_message
     rescue Stripe::AuthenticationError => e
       # Authentication with Stripe's API failed
+      error_message = e.error.message
+      handle_payment_failure error_message
     rescue Stripe::APIConnectionError => e
       # Network communication with Stripe failed
+      error_message = e.error.message
+      handle_payment_failure error_message
     rescue Stripe::StripeError => e
       # Display a very generic error to the user, and maybe send' yourself an email
+      error_message = e.error.message
+      handle_payment_failure error_message
     rescue => e
       # Something else happened, completely unrelated to Stripe
+      error_message = "Payment failed for an unknown reason"
+      handle_payment_failure error_message
     end
 
     if intent && intent.status === "succeeded"
@@ -352,15 +382,13 @@ class API::SubscriptionsController < ApplicationController
       payment.failed = false
       payment.save
       NotificationMailer.inapp_payment_received(payment).deliver_now
-      @subscription.update_billing_scheme
+      @subscription.update_billing_scheme #not needed here ?
       @subscription.extend_renewal_date
-    else
-      payment.update_attribute(:failed, true)
+
+      success_message = "Successfully fixed failed payment"
+
+      return render_success success_message
     end
-
-    # not sure how to return to the my subscriptions page
-    render "api/subscriptions/index", success: true, status: 200
-
   end
 
   private
@@ -430,6 +458,16 @@ class API::SubscriptionsController < ApplicationController
         }
       }
     )
+  end
+
+  def card_is_removable?
+    return true if !@subscription.courses.any?
+    response = Stripe::PaymentMethod.list({customer: @subscription.customer_id, type: 'card'})
+    if response.data.length > 1
+      return true
+    else
+      return false
+    end
   end
 
   def handle_payment_failure(message)
