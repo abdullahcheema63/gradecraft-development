@@ -230,9 +230,15 @@ textarea,
           background: url('/assets/icon-form_CheckboxChecked_2.svg') no-repeat center left
           background-size: auto 22px
 
-        &:disabled + label
+      &:disabled
+        & + label
+          background: url('/assets/icon-form_CheckboxUncheckedDisabled_2.svg') no-repeat center left
+          background-size: auto 22px
+
+        &:checked + label
           background: url('/assets/icon-form_CheckboxCheckedDisabled_2.svg') no-repeat center left
           background-size: auto 22px
+
 
   &.payment_method
     p
