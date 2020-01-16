@@ -22,7 +22,7 @@ class Payment < ApplicationRecord
     intent = create_payment_intent(customer_id)
     self.update_attribute(:payment_intent_id, intent.id)
 
-    puts "inside payment #charge_customer, paymet: #{payment.inspect}"
+    puts "inside payment #charge_customer, paymet: #{self.inspect}"
 
     confirm_payment_intent(payment_method_id)
   end
@@ -49,6 +49,10 @@ class Payment < ApplicationRecord
 
   def amount_cents
     (amount_usd * 100).to_i
+  end
+
+  def retrieve_stripe_payment_intent
+    Stripe::PaymentIntent.retrieve(self.payment_intent_id)
   end
 
   private

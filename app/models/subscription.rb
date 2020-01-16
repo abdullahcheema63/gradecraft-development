@@ -101,6 +101,10 @@ class Subscription < ApplicationRecord
     courses.count * self.billing_scheme.price_per_course
   end
 
+  def retrieve_stripe_cards
+    Stripe::PaymentMethod.list({customer: self.customer_id, type: 'card'})
+  end
+
   private
 
   def payment_note
