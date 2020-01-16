@@ -350,39 +350,23 @@ class API::SubscriptionsController < ApplicationController
       intent = @subscription.initiate_payment(payment)
     rescue Stripe::CardError => e
       puts "error error: #{e}"
-      payment.status = e.error.message
-      payment.save #should this be put within #handle_payment_failure
-      handle_payment_failure e.error.message
+      handle_payment_retry_failure payment, e.error.message
     rescue Stripe::RateLimitError => e
       # Too many requests made to the API too quickly
-      payment.status = e.error.message
-      payment.save
-      error_message = e.error.message
-      handle_payment_failure error_message
+      handle_payment_retry_failure payment, e.error.message
     rescue Stripe::AuthenticationError => e
       # Authentication with Stripe's API failed
-      payment.status = e.error.message
-      payment.save
-      error_message = e.error.message
-      handle_payment_failure error_message
+      handle_payment_retry_failure payment, e.error.message
     rescue Stripe::APIConnectionError => e
       # Network communication with Stripe failed
-      payment.status = e.error.message
-      payment.save
-      error_message = e.error.message
-      handle_payment_failure error_message
+      handle_payment_retry_failure payment, e.error.message
     rescue Stripe::StripeError => e
       # Display a very generic error to the user, and maybe send' yourself an email
-      payment.status = e.error.message
-      payment.save
-      error_message = e.error.message
-      handle_payment_failure error_message
+      handle_payment_retry_failure payment, e.error.message
     rescue => e
       # Something else happened, completely unrelated to Stripe
       error_message = "Payment failed for an unknown reason"
-      payment.status = error_message
-      payment.save
-      handle_payment_failure error_message
+      handle_payment_retry_failure payment, error_message
     end
 
     if intent && intent.status === "succeeded"
@@ -484,6 +468,12 @@ class API::SubscriptionsController < ApplicationController
 
   def handle_payment_failure(message)
     # Do we want to try to cancle the payment intent on stripes side ?? / make sure they were not charged
+    return render_error message, 500
+  end
+
+  def handle_payment_retry_failure(payment, message)
+    payment.status = message
+    payment.save
     return render_error message, 500
   end
 
