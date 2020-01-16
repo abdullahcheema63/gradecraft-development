@@ -88,7 +88,6 @@ module.exports = {
       wrapper.classList.add("has_alert")
       this.$scrollTo("#main_wrapper", 300, this.options)
       this.$root.$emit('closeAllModals')
-      this.$root.$emit('revertToDefault')
     },
     successMessage(newMessages, oldMessages){
       this.activeSuccess = true
@@ -96,7 +95,6 @@ module.exports = {
       wrapper.classList.add("has_alert")
       this.$scrollTo("#main_wrapper", 300, this.options)
       this.$root.$emit('closeAllModals')
-      this.$root.$emit('revertToDefault')
     }
   }
 }

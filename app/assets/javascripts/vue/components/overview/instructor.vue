@@ -552,12 +552,6 @@
 <script lang='coffee'>`
 module.exports = {
   name: 'instructor',
-  mounted(){
-    this.$root.$on('revertToDefault', data => {
-      console.log("Triggered revertToDefault from mounted method in instructor component")
-      this.revertToDefault()
-    });
-  },
   components: {
     alertComponent: () => VComponents.get('vue/components/structure/alertComponent'),
     courseCard: () => VComponents.get('vue/components/overview/courseCard'),
@@ -568,6 +562,11 @@ module.exports = {
     guideMessage: () => VComponents.get('vue/components/structure/guideMessage'),
     VueFlatpickr,
     vueSlickCarousel
+  },
+  mounted(){
+    this.$root.$on('closeAllModals', data => {
+      this.close();
+    });
   },
   data() {
     return {
@@ -801,16 +800,6 @@ module.exports = {
     closeModalState(){
       this.modalState = false
       this.copyCourseForm = false
-      this.deleteCourseModal = false
-      this.archiveCourseModal = false
-      this.unpublishCourseModal = false
-      this.publishCourseModal = false
-      this.showOnboarding = false
-      this.addCourseModal = false
-      this.selectedCourse = {}
-    },
-    revertToDefault(){
-      this.copyCourseForm = false
       this.copyingCourse = false
       this.deleteCourseModal = false
       this.deletingCourse = false
@@ -822,8 +811,9 @@ module.exports = {
       this.unpublishingCourse = false
       this.publishCourseModal = false
       this.publishingCourse = false
-      this.addingCourse = false
+      this.showOnboarding = false
       this.addCourseModal = false
+      this.addingCourse = false
       this.selectedCourse = {}
     },
     sawOnboarding(){
