@@ -27,6 +27,7 @@
               <th>First Name </th>
               <th>Last Name </th>
               <th>Email </th>
+              <th>Last Login At</th>
               <th>Courses </th>
               <th>Course User Type</th>
               <th>Semester </th>
@@ -43,6 +44,7 @@
               <td class="no_wrap">{{user.firstName}} </td>
               <td class="no_wrap">{{user.lastName}} </td>
               <td class="no_wrap">{{user.email}}</td>
+              <td class="no_wrap">{{formatDate(user.lastLoginAt)}}</td>
               <template v-if="user.courses.length">
                 <td>
                   <ul>
@@ -139,6 +141,13 @@ module.exports = {
     },
     userActiveCourses(courses){
       return courses.filter(course => course.active)
+    },
+    formatDate(date){
+      if(date){
+        return moment(String(date)).format('LLLL')
+      }
+      else
+        return "No Date"
     },
   }
 }

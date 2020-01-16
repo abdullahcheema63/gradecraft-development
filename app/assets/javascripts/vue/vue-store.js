@@ -748,6 +748,7 @@ const store = new Vuex.Store({
             firstName: user.first_name,
             lastName: user.last_name,
             email: user.email,
+            lastLoginAt: user.last_login_at,
             createdAt: user.created_at,
             url: user.user_url,
             subscription: "trial",

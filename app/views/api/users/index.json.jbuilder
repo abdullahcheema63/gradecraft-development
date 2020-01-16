@@ -8,6 +8,7 @@ json.data @users.includes(:course_memberships) do |user|
     json.first_name user.first_name
     json.last_name user.last_name
     json.created_at user.created_at
+    json.last_login_at user.last_login_at
     if user.course_memberships.length && user.current_course #Admins don't have paths to their user page because they have no course memberships
       if user.is_staff?(user.current_course)
         json.user_url staff_path(user)
