@@ -1,13 +1,1 @@
 <%= yield %>
-
-<% if @current_user.subscription %>
-  <% content_for :scripts do %>
-    <script type="text/javascript">
-      var userSubscription = {
-        currentCourses: <%= @current_user.subscription.courses.length %>,
-        expires: "<%= @current_user.subscription.renewal_date %>"
-      }
-      store.dispatch("addUserSubscriptionInfo", userSubscription)
-    </script>
-  <% end %>
-<% end %>

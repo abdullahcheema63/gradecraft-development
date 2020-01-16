@@ -845,7 +845,24 @@ const store = new Vuex.Store({
         state.failedPayment = failedPayment
       },
       addUserSubscriptionInfo (state, subscriptionInfo){
+        console.log("inside addUserSubscriptionInfo", subscriptionInfo)
         state.user.subscription = {...subscriptionInfo}
+        if(subscriptionInfo.failedLastPayment === "true"){
+          let today = new Date()
+          let expires = new Date.parse(subscriptionInfo.expires)
+
+          if((today.getFullYear() == expires.getFullYear()) && (today.getMonth() == expires.getMonth()) && (today.getDate() <= 10)){
+            //Within Grace Period!!
+            let message = "There was a problem with your monthly auto-payment! You have " + (11 - today.getDate()) + " days to fix the problem for your subscribed courses. Please go to your subscription to fix this issue."
+            state.errorAlertMessage = message
+          }
+          else{
+            let end_of_grace_period = Date.parse(expires.getMonth() + " 10 " + expires.getFullYear())
+            let eogp = moment(String(end_of_grace_period)).format('LL')
+            let message = "There was a problem with your monthly auto-payment! The grace period ended " + eogp + ". To re-subscribe and re-publish any courses, please go to your subscription."
+            state.errorAlertMessage = message
+          }
+        }
       },
       addCreditCardError( state, message){
         state.creditCardError = message
