@@ -17,6 +17,11 @@ class ChallengeGrade < ApplicationRecord
   validates_presence_of :team_id
   validates_numericality_of :raw_points, :final_points, :adjustment_points, allow_nil: true, length: { maximum: 9 }
 
+  def contributes_to_student_score?
+    # ? Move this attribute off of the course and make it per challenge  (requires more frontend work to redo)
+    self.challenge.course.add_team_score_to_student
+  end
+
   def score
     final_points
   end
