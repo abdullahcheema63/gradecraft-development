@@ -33,7 +33,7 @@ class Subscription < ApplicationRecord
   end
 
   def display_end_of_grace_period
-    return (end_of_grace_period - 1.day).strftime("%a %b %e %Y")
+    return (end_of_grace_period - 1.day).strftime("%B %e, %Y")
   end
 
   def dashboard_message
