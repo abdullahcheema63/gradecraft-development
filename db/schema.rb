@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_12_04_172404) do
+=======
+ActiveRecord::Schema.define(version: 2020_01_17_163258) do
+>>>>>>> master-efs
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -361,7 +365,7 @@ ActiveRecord::Schema.define(version: 2019_12_04_172404) do
     t.string "time_zone", default: "Eastern Time (US & Canada)"
     t.boolean "has_multipliers", default: false, null: false
     t.boolean "has_paid", default: false, null: false
-    t.boolean "allows_canvas", default: true, null: false
+    t.boolean "allows_canvas", default: false, null: false
     t.boolean "published", default: false, null: false
     t.integer "institution_id"
     t.text "dashboard_message"

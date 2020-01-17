@@ -8,6 +8,7 @@ class Course < ApplicationRecord
   # Callbacks
   before_validation :reset_weight_fields_if_unused
   before_create :mark_umich_as_paid
+  before_create :umich_allows_canvas
   after_create :create_admin_memberships
 
   # Note: we are setting the role scopes as instance methods,
@@ -236,6 +237,12 @@ class Course < ApplicationRecord
     end
   end
 
+  def recalculate_active_student_scores
+    ordered_active_student_ids.each do |student_id|
+      ScoreRecalculatorJob.perform_async(student_id, self.id)
+    end
+  end
+
   def formatted_long_name
     if semester.present? && year.present?
       "#{self.course_number} #{self.name} #{(self.semester).capitalize} #{self.year}"
@@ -256,6 +263,15 @@ class Course < ApplicationRecord
     User
       .joins(:course_memberships)
       .where("course_memberships.course_id = ? and course_memberships.role = ?", self.id, "student")
+      .select(:id) # only need the ids, please
+      .order("id ASC")
+      .collect(&:id)
+  end
+
+  def ordered_active_student_ids
+    User
+      .joins(:course_memberships)
+      .where("course_memberships.course_id = ? and course_memberships.role = ? and course_memberships.active = ?", self.id, "student", true)
       .select(:id) # only need the ids, please
       .order("id ASC")
       .collect(&:id)
@@ -301,6 +317,10 @@ class Course < ApplicationRecord
 
   def mark_umich_as_paid
     self.has_paid = true if Rails.env.production?
+  end
+
+  def umich_allows_canvas
+    self.allows_canvas = true if Rails.env.production?
   end
 
   def copy_with_associations(attributes, associations)
