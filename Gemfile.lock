@@ -191,7 +191,7 @@ GEM
     erubis (2.7.0)
     et-orbi (1.2.2)
       tzinfo
-    excon (0.62.0)
+    excon (0.71.0)
     execjs (2.7.0)
     factory_bot (4.11.1)
       activesupport (>= 3.0.0)
@@ -389,7 +389,7 @@ GEM
     public_suffix (3.0.3)
     puma (3.12.2)
     raabro (1.1.6)
-    rack (2.0.6)
+    rack (2.0.8)
     rack-mini-profiler (1.0.0)
       rack (>= 1.2.0)
     rack-protection (2.0.7)
