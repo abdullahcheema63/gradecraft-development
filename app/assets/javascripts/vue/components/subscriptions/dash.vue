@@ -301,9 +301,6 @@ module.exports = {
       let subtractedCount = originalCourseCount - currentSubscriptionCount;
       return this.activeBillingRecord ? this.activeBillingRecord.pricePerCourse * subtractedCount : 0;
     },
-    paymentNeeded(){
-      return this.newCost > 0;
-    },
     billingSchemeTiers(){
       return this.$store.state.allBillingSchemes
     },
@@ -372,6 +369,9 @@ module.exports = {
       return Math.floor(price);
     },
     roundCents(dollars){
+      if (dollars < 0){
+        return 0
+      }
       let cents = dollars * 100
       let roundedCents = Math.round(cents)
       return (roundedCents / 100)
