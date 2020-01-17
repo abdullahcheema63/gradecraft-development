@@ -24,12 +24,6 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>HSWW 456</td>
-            <td>Hogwarts Fourth Years</td>
-            <td>Fall 2020</td>
-            <td> </td>
-          </tr>
           <tr v-for="c of userCourses" :key="c.id">
             <td v-if="c.subscribed && !subscribedByUser(c.id)" class="form_options alt-2">
               <input type="checkbox" :id="c.id" checked="checked" disabled="disabled" />
