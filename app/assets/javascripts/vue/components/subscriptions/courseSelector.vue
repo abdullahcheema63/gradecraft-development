@@ -5,8 +5,11 @@
       Select courses you want to pay for and choose payment methods. When the course is done, come back here to turn off the payments.
     </p>
 
-    <div v-if="userSubscription.failed_last_payment" class="inline_alert_msg">
+    <div v-if="userSubscription.failed_last_payment && userSubscription.within_grace_period" class="inline_alert_msg">
       <p> There was a problem with your monthly auto-payment. You can remove courses, but you can’t add new ones until you fix the problem. </p>
+    </div>
+    <div v-else class="inline_alert_msg">
+      <p>Because your last monthly auto-payment failed and you are outside the grace period, we removed your subscribed courses and unpublished those that were published. Once you fix the issue with your card, you can re-subscribe and re-publish any courses.</p>
     </div>
 
     <div class="table_container">
