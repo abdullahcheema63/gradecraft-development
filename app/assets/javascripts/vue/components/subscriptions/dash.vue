@@ -23,7 +23,10 @@
 
       <div class="payment_today">
         <h3>Today’s payment total:</h3>
-        <h3><sup>$</sup><span class="lining_figures">{{roundCents(proratedTotal)}}</span></h3>
+        <h3><sup>$</sup>
+          <span v-if="userSubscription.failed_last_payment" class="lining_figures">{{ totalCost }}</span>
+          <span v-else class="lining_figures">{{roundCents(proratedTotal)}}</span>
+        </h3>
       </div>
 
       <p>
@@ -111,7 +114,12 @@
                 <h3 class="teal_text">Today’s payment total</h3>
               </div>
               <div class="today">
-                <h3><span class="lining_figures"><sup>$</sup>{{ roundCents(proratedTotal) }}</span></h3>
+                <h3 v-if="userSubscription.failed_last_payment">
+                  <span class="lining_figures"><sup>$</sup>{{ totalCost }}</span>
+                </h3>
+                <h3 v-else>
+                  <span class="lining_figures"><sup>$</sup>{{ roundCents(proratedTotal) }}</span>
+                </h3>
               </div>
             </div>
             <p class="teal_text">
