@@ -1,11 +1,12 @@
 <div class="wrapper dashboard" id="main_wrapper">
   <% if current_user.any_course_professor? %>
-    <% if @current_user.subscription %>
+    <% if @current_user.subscription && @current_user.subscription.failed_last_payment? %>
       <% content_for :scripts do %>
         <script type="text/javascript">
           var userSubscription = {
             expires: "<%= @current_user.subscription.renewal_date %>",
-            failedLastPayment: "<%= @current_user.subscription.failed_last_payment? %>"
+            failedLastPayment: "<%= @current_user.subscription.failed_last_payment? %>",
+            dashboardMessage: "<%= @current_user.subscription.dashboard_message %>"
           }
           store.dispatch("addUserSubscriptionInfo", userSubscription)
         </script>

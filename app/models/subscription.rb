@@ -22,6 +22,29 @@ class Subscription < ApplicationRecord
     payments.last.failed if payments.any?
   end
 
+  def end_of_grace_period
+    Date.parse("11 #{renewal_date.month} #{renewal_date.year}")
+  end
+
+  def within_grace_period?
+    if self.failed_last_payment?
+      return true if Date.current < self.end_of_grace_period
+    end
+  end
+
+  def display_end_of_grace_period
+    return (end_of_grace_period - 1.day).strftime("%a %b %e %Y")
+  end
+
+  def dashboard_message
+    if !self.within_grace_period?
+      message = "There was a problem with your monthly auto-payment! You have #{end_of_grace_period.day - Date.current.day} days to fix the problem for your subscribed courses. Please go to your subscription to fix this issue."
+    else
+      message = "There was a problem with your monthly auto-payment! The grace period ended #{display_end_of_grace_period}. To re-subscribe and re-publish any courses, please go to your subscription."
+    end
+    return message
+  end
+
   def last_payment_date
     payments.last.created_at if payments.any?
   end
@@ -32,8 +55,8 @@ class Subscription < ApplicationRecord
   end
 
   def initiate_off_session_payment
-    if failed_last_payment? && (courses.count == self.payment.last.courses.count)
-      add_off_session_payment payment
+    if failed_last_payment? && (courses.count == self.payments.last.courses.count)
+      add_off_session_payment self.payments.last
     elsif courses.count
       self.update_billing_scheme # Should the billing scheme be updated here ??
       amount_to_pay = self.cost_per_month
