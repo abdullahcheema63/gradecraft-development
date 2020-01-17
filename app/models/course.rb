@@ -8,6 +8,7 @@ class Course < ApplicationRecord
   # Callbacks
   before_validation :reset_weight_fields_if_unused
   before_create :mark_umich_as_paid
+  before_create :umich_allows_canvas
   after_create :create_admin_memberships
 
   # Note: we are setting the role scopes as instance methods,
@@ -277,6 +278,10 @@ class Course < ApplicationRecord
 
   def mark_umich_as_paid
     self.has_paid = true if Rails.env.production?
+  end
+
+  def umich_allows_canvas
+    self.allows_canvas = true if Rails.env.production?
   end
 
   def copy_with_associations(attributes, associations)
