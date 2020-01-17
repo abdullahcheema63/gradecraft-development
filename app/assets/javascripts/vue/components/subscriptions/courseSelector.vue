@@ -25,10 +25,6 @@
         </thead>
         <tbody>
           <tr>
-            <td class="form_options alt-2">
-              <input type="checkbox" id="course_select_3" checked="checked" disabled="disabled" />
-              <label for="course_select_3">Madame Maxime </label>
-            </td>
             <td>HSWW 456</td>
             <td>Hogwarts Fourth Years</td>
             <td>Fall 2020</td>
@@ -42,6 +38,10 @@
             <td v-else-if="c.subscribed" class="form_options alt-2">
               <input type="checkbox" :id="c.id" :value="c" v-model="currentSubscribedCourses"/>
               <label :for="c.id">&nbsp; </label>
+            </td>
+            <td v-else-if="userSubscription.failed_last_payment && removedAfterFailedPayment(c.id)" class="form_options alt-2">
+              <input type="checkbox" :id="c.id" :value="c" v-model="newSubscribingCourses" />
+              <label :for="c.id"><em class="pink_text">Removed</em></label>
             </td>
             <td v-else-if="userSubscription.failed_last_payment" class="form_options alt-2">
               <input type="checkbox" :id="c.id" disabled="disabled" />
@@ -68,11 +68,6 @@
 
 module.exports = {
   name: "subscriptions-course-selector",
-  data() {
-    return {
-
-    }
-  },
   computed: {
     userSubscription(){
       return this.$store.state.userSubscription
@@ -82,6 +77,12 @@ module.exports = {
     },
     userCourses(){
       return this.$store.getters.userActiveCourseMemberships
+    },
+    failedPayment(){
+      return this.$store.state.failedPayment
+    },
+    removedCourseIds(){
+      return this.failedPayment.courses.map(course => course.id)
     },
     subscribedCourseIds(){
       return this.$store.state.previouslySubscribedCourses.map(course => course.id)
@@ -105,10 +106,17 @@ module.exports = {
   },
   methods: {
     subscribedByUser(courseId){
-      if ( this.subscribedCourseIds.indexOf(courseId) === -1 ) {
+      if( this.subscribedCourseIds.indexOf(courseId) === -1 ) {
         return false;
       } else {
       return true;
+      }
+    },
+    removedAfterFailedPayment(courseId){
+      if( this.removedCourseIds.indexOf(courseId) === -1 ){
+        return false
+      }else{
+        return true
       }
     },
     isSubscribed(course) {

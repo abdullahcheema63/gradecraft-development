@@ -75,7 +75,9 @@ const store = new Vuex.Store({
       newSubscriptionsCount: 0,
       paidCoursesCount: 0
     },
-    failedPayment: {},
+    failedPayment: {
+      courses: []
+    },
     allInstructors: [],
     allInstitutions: [],
     allBillingSchemes: [],
