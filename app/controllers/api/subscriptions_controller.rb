@@ -271,9 +271,9 @@ class API::SubscriptionsController < ApplicationController
         payment.status = "succeeded"
         payment.failed = false
         payment.save
-        NotificationMailer.inapp_payment_received(payment).deliver_now #needs errors turned on locally or will error here
         @subscription.update_billing_scheme #not needed here ?  I think this was already updated & saved in this method?
         @subscription.extend_renewal_date
+        NotificationMailer.inapp_payment_received(payment).deliver_now #needs errors turned on locally or will error here
         return render_success success_message
       end
     end
@@ -377,12 +377,11 @@ class API::SubscriptionsController < ApplicationController
       payment.status = "succeeded"
       payment.failed = false
       payment.save
-      NotificationMailer.inapp_payment_received(payment).deliver_now
       @subscription.update_billing_scheme #not needed here ?
       @subscription.extend_renewal_date
+      NotificationMailer.inapp_payment_received(payment).deliver_now
 
       success_message = "You successfully fixed your monthly auto-payment error. Thanks!"
-
       return render_success success_message
     end
   end
