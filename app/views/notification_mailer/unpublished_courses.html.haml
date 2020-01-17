@@ -6,26 +6,11 @@
     Hi, #{ @user.first_name }
 
   %p
-    Oh no! We tried to process your payment, but unfortunately it was not successful.
-  %p
-    =link_to "Please log in to GradeCraft", subscriptions_url
-    to update your account details so we can keep the trains running!
-  %p
-    As a reminder, here are the details for your subscription:
-
-  %div
-    %p
-      %strong Subscription type:
-      ????? What is this type, thinking all are probably: Automatic monthly renewal
-      %br
-      %strong Number of included courses:
-      #{ @subscription.courses.count }
-      %br
-      %strong Subscription cost:
-      &#36;#{ @subscription.cost_per_month }/month
-      %br
-      %strong Renews on:
-      #{ @subscription.renewal_date.strftime("%A, %B %e, %Y") }
+    We have been unable to process your payment for the past ten days,
+    and have deactivated your account. Don’t worry - all of your data is still
+    there, and whenever you’re ready you can
+    = link_to "log in to GradeCraft", subscriptions_url
+    and update your account details so we can turn the lights back on!
 
     %p
       %strong Courses subscribed that we have now unpublished:
