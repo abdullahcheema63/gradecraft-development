@@ -81,10 +81,7 @@ const store = new Vuex.Store({
     allInstructors: [],
     allInstitutions: [],
     allBillingSchemes: [],
-    allSubscriptions: {
-      payments: {},
-      courses: {},
-    },
+    allSubscriptions: [],
     userSubscription: {
       payment_methods: {}
     },
@@ -736,7 +733,7 @@ const store = new Vuex.Store({
             failedLastPayment: subscription.failed_last_payment,
             lastPaymentDate: subscription.last_payment_date,
             billing_scheme_id: subscription.billing_scheme_id,
-            courses: {...subscription.courses},
+            courses: [...subscription.courses],
             payments: {...subscription.payments},
           }
         })

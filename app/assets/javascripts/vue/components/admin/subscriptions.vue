@@ -130,27 +130,18 @@ module.exports = {
       showUnpublishedCourse: false,
       showFailedPayment: false,
       showInActiveCourse: "",
-      currentPageAllSubscriptions: {},
-      filteredAllSubscriptions: {}
     }
   },
   computed: {
     allSubscriptions(){
       return this.$store.getters.adminAllSubscriptions;
     },
-    filteredAllSubscriptions1(){
+    filteredAllSubscriptions(){
       var allSubscriptions = this.allSubscriptions
-      console.log("all subscritpions: ", this.allSubscriptions)
-      return allSubscriptions.filter(this.filterAllSubscriptions)
+      return this.allSubscriptions.filter(this.filterAllSubscriptions)
     },
-    currentPageAllSubscriptions1(){
+    currentPageAllSubscriptions(){
       return this.filteredAllSubscriptions.slice(this.currentPageItemMin, this.currentPageItemMax);
-    }
-  },
-  watch: {
-    allSubscriptions(newVal, oldVal){
-      this.filteredAllSubscriptions = newVal.filter(this.filterAllSubscriptions)
-      this.currentPageAllSubscriptions = this.filteredAllSubscriptions.slice(this.currentPageItemMin, this.currentPageItemMax);
     }
   },
   methods: {
@@ -162,17 +153,23 @@ module.exports = {
       return moment(String(date)).format('LLLL')
     },
     filterAllSubscriptions(subscriber){
-      if(this.searchName){
+      if(this.searchName.length > 0){
         var name = subscriber.firstName + " " + subscriber.lastName
         name = name.toLowerCase();
         if(!(name.includes(this.searchName.toLowerCase()))) {return false}
       }
-      if(this.showFailedPayment){
-        if(this.showFailedPayment == subscriber.failedLastPayment) {return false}
+      if(this.showFailedPayment === true && this.showUnpublishedCourse === true){
+        var pay = true
+        var unpublish = true
+        if(!subscriber.failedLastPayment == true){pay = false}
+        if(this.hasUnpublishedCourse(subscriber.courses)){unpublish = false}
+        if (pay && unpublish){return false}
       }
-      if(this.showUnpublishedCourse){
-        if(!subscriber.courses){return false}
-        if(this.hasUnpublishedCourse(subscriber.courses) == true){return false}
+      else if(this.showFailedPayment === true){
+        if(subscriber.failedLastPayment == true) {return false}
+      }
+      else if(this.showUnpublishedCourse === true){
+        if(!this.hasUnpublishedCourse(subscriber.courses) == true){return false}
       }
       return subscriber
     },
@@ -181,13 +178,14 @@ module.exports = {
       this.currentPageItemMax = itemRange.max;
     },
     hasUnpublishedCourse(courses){
-      var isUnpublished = false
-      if(courses.length){
-        courses.forEach(function (course) {
-          if(!course.published){isUnpublished = true}
-        });
-      }
-      return isUnpublished
+      var hold = false
+      courses.some(function(course){
+        if(course.published === false){
+          hold = true
+          return hold
+        }
+      })
+      return hold
     }
   }
 }
