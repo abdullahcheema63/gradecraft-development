@@ -33,7 +33,7 @@
               <input type="checkbox" :id="c.id" :value="c" v-model="currentSubscribedCourses"/>
               <label :for="c.id">&nbsp; </label>
             </td>
-            <td v-else-if="userSubscription.failed_last_payment && removedAfterFailedPayment(c.id)" class="form_options alt-2">
+            <td v-else-if="userSubscription.abandoned_last_payment && removedAfterGracePeriod(c.id)" class="form_options alt-2">
               <input type="checkbox" :id="c.id" :value="c" v-model="newSubscribingCourses" />
               <label :for="c.id"><em class="pink_text">Removed</em></label>
             </td>
@@ -72,11 +72,11 @@ module.exports = {
     userCourses(){
       return this.$store.getters.userActiveCourseMemberships
     },
-    failedPayment(){
-      return this.$store.state.failedPayment
+    lastPayment(){
+      return this.$store.state.lastPayment
     },
     removedCourseIds(){
-      return this.failedPayment.courses.map(course => course.id)
+      return this.lastPayment.courses.map(course => course.id)
     },
     subscribedCourseIds(){
       return this.$store.state.previouslySubscribedCourses.map(course => course.id)
@@ -106,7 +106,7 @@ module.exports = {
       return true;
       }
     },
-    removedAfterFailedPayment(courseId){
+    removedAfterGracePeriod(courseId){
       if( this.removedCourseIds.indexOf(courseId) === -1 ){
         return false
       }else{

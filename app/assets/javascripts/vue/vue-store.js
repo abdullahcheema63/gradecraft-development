@@ -285,9 +285,10 @@ const store = new Vuex.Store({
         console.log("final data after apiResponseToData:", final);
         commit('addLastPayment', final)
 
-        console.log("~~~ADD MORE CONDITONAL HERE FOR FAILED VS ABANDONED~~~")
-        let message = "There was a problem with your monthly auto-payment: " + final.status
-        commit('addErrorAlertMessage', message)
+        if(final.failed === true){
+          let message = "There was a problem with your monthly auto-payment: " + final.status
+          commit('addErrorAlertMessage', message)
+        }
       },
       addCardToSubscription: async function({ commit, state }, paymentMethod) {
         console.log("addCardToSubscription action dispatched")
