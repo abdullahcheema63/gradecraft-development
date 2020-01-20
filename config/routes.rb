@@ -569,7 +569,7 @@ Rails.application.routes.draw do
       post :retry, on: :collection
       post :add_card, on: :collection
       post :edit_card, on: :collection
-      get :failed_payment, on: :collection
+      get :last_payment, on: :collection
       post :make_payment_method_default, on: :collection
       post :remove_card, on: :collection
     end

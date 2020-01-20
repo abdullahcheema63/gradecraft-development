@@ -13,6 +13,7 @@ json.data @subscriptions do |subscription|
     json.created_at subscription.created_at
     json.updated_at subscription.updated_at
     json.failed_last_payment subscription.failed_last_payment?
+    json.abandoned_last_payment subscription.abandoned_last_payment?
     json.last_payment_date subscription.last_payment_date
     json.billing_scheme_id subscription.billing_scheme_id
   end

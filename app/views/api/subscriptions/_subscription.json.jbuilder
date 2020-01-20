@@ -7,6 +7,7 @@ json.attributes do
   json.stripe_connection_error @stripe_connection_error
   json.is_expired subscription.is_expired?
   json.failed_last_payment subscription.failed_last_payment?
+  json.abandoned_last_payment subscription.abandoned_last_payment?
   json.within_grace_period subscription.within_grace_period?
   json.expires subscription.renewal_date
   json.billing_scheme_id subscription.billing_scheme_id.to_s

@@ -53,11 +53,11 @@ class API::SubscriptionsController < ApplicationController
     end
   end
 
-  # Get api/subscriptions/failed_payment
-  def failed_payment
-    subscription = Subscription.find_by(user_id: current_user.id)
-    return if !subscription.failed_last_payment?
-    @failed_payment = subscription.payments.last
+  # Get api/subscriptions/last_payment
+  def last_payment
+    subscription = current_user.subscription
+    return if !subscription.failed_last_payment? && !subscription.abandoned_last_payment?
+    @last_payment = subscription.payments.last
   end
 
   # POST api/subscriptions/add_card

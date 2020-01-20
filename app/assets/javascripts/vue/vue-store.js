@@ -75,7 +75,7 @@ const store = new Vuex.Store({
       newSubscriptionsCount: 0,
       paidCoursesCount: 0
     },
-    failedPayment: {
+    lastPayment: {
       courses: []
     },
     allInstructors: [],
@@ -263,15 +263,16 @@ const store = new Vuex.Store({
           console.log("json from user subscription", json);
           const final = apiResponseToDataDataItem(json);
           console.log("user subscription", final);
-          if (final.failed_last_payment) {
-            console.log("User failed their last payment ")
-            store.dispatch("loadFailedPayment")
+          if (final.failed_last_payment || final.abandoned_last_payment) {
+            console.log("User failed or abandoned their last payment ")
+            store.dispatch("loadLastPayment")
           }
           commit('addUserSubscription', final)
         }
       },
-      loadFailedPayment: async function({ commit }){
-        const resp = await fetch("/api/subscriptions/failed_payment")
+      loadLastPayment: async function({ commit }){
+        console.log("inside load last payment")
+        const resp = await fetch("/api/subscriptions/last_payment")
         if (resp.status === 404){
           console.log(resp.status);
         }
@@ -279,10 +280,12 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        console.log("json response from failed payment: ", json);
+        console.log("json response from last payment: ", json);
         const final = apiResponseToDataDataItem(json);
         console.log("final data after apiResponseToData:", final);
-        commit('addFailedPayment', final)
+        commit('addLastPayment', final)
+
+        console.log("~~~ADD MORE CONDITONAL HERE FOR FAILED VS ABANDONED~~~")
         let message = "There was a problem with your monthly auto-payment: " + final.status
         commit('addErrorAlertMessage', message)
       },
@@ -731,6 +734,7 @@ const store = new Vuex.Store({
             createdAt: subscription.created_at,
             updatedAt: subscription.updated_at,
             failedLastPayment: subscription.failed_last_payment,
+            abandonedLastPayment: subscription.abandoned_last_payment,
             lastPaymentDate: subscription.last_payment_date,
             billing_scheme_id: subscription.billing_scheme_id,
             courses: [...subscription.courses],
@@ -840,8 +844,8 @@ const store = new Vuex.Store({
         state.user.hasSeenOnboarding = user.has_seen_onboarding
         state.user.environment = user.environment
       },
-      addFailedPayment (state, failedPayment){
-        state.failedPayment = failedPayment
+      addLastPayment (state, lastPayment){
+        state.lastPayment = lastPayment
       },
       addUserSubscriptionInfo (state, subscriptionInfo){
         console.log("inside addUserSubscriptionInfo", subscriptionInfo)

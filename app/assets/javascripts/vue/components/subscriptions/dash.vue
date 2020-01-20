@@ -336,8 +336,8 @@ module.exports = {
         || (this.$refs.paymentInputs && this.$refs.paymentInputs.errors.length)
         || (this.$refs.paymentInputs && this.$refs.paymentInputs.cardError);
     },
-    failedPayment(){
-      return this.$store.state.failedPayment
+    lastPayment(){
+      return this.$store.state.lastPayment
     },
     defaultPaymentMethod(){
       return this.$store.getters.defaultPaymentMethod
@@ -363,7 +363,7 @@ module.exports = {
       this.$store.dispatch('updateSubscription', this.selectedSubscribedCourses)
     },
     retryFailedPayment(){
-      this.$store.dispatch('retryFailedPayment', [this.failedPayment.id, this.selectedSubscribedCourses])
+      this.$store.dispatch('retryFailedPayment', [this.lastPayment.id, this.selectedSubscribedCourses])
     },
     formatPrice(price){
       return Math.floor(price);
