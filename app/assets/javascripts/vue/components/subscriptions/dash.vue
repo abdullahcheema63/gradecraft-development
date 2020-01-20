@@ -53,8 +53,8 @@
 
     <div class="content_block bg-green_mint_2">
       <div class="form_options alt-2">
-        <input type="checkbox" :id="termsOfService" v-model="termsOfService" :value="termsOfService" required="required" />
-        <label :for="termsOfService">I accept GradeCraft’s
+        <input type="checkbox" id="termsOfService" v-model="termsOfService" required="required" />
+        <label for="termsOfService" :value="termsOfService">I accept GradeCraft’s
           <a href="https://gradecraft.com/terms_service/" target="_blank">Terms of Service</a>
         </label>
       </div>
