@@ -691,8 +691,31 @@ module.exports = {
       if (this.$store.state.user.environment === 'production'){return true}
       else {return false}
     },
+    userSubscriptionInfo(){
+      return this.$store.state.user.subscription
+    },
+  },
+  mounted(){
+    this.checkUserSubscription()
   },
   methods: {
+    formatGracePeriod(date){
+      console.log("Do we subtract a day from this to show that it eneded the 10th not 11th")
+      return moment(String(date)).format('LL')
+    },
+    checkUserSubscription(){
+      if(this.userSubscriptionInfo.failedLastPayment === "true"){
+        var today = new Date();
+        var gp = new Date(this.userSubscriptionInfo.endOfGracePeriod)
+        var days_left_in_gp = gp.getDate() - today.getDate()
+        let message = "There was a problem with your monthly auto-payment! You have " + days_left_in_gp + " days to fix the problem for your subscribed courses. Please go to your subscription to fix this issue."
+        this.$store.dispatch('addErrorAlertMessage', message)
+      }
+      else if(this.userSubscriptionInfo.abandonedLastPayment === "true"){
+        let message = "There was a problem with your monthly auto-payment! The grace period ended " + this.formatGracePeriod(this.userSubscriptionInfo.endOfGracePeriod) + ". To re-subscribe and re-publish any courses, please go to your subscription."
+        this.$store.dispatch('addErrorAlertMessage', message)
+      }
+    },
     filterArchivedCourses(course){
       if (this.searchArchivedCourses.length){
         var name = course.name.toLowerCase()

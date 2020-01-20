@@ -44,19 +44,6 @@ class Subscription < ApplicationRecord
     end
   end
 
-  def display_end_of_grace_period
-    return (end_of_grace_period - 1.day).strftime("%B %e, %Y")
-  end
-
-  def dashboard_message
-    if self.within_grace_period?
-      message = "There was a problem with your monthly auto-payment! You have #{end_of_grace_period.day - Date.current.day} days to fix the problem for your subscribed courses. Please go to your subscription to fix this issue."
-    else
-      message = "There was a problem with your monthly auto-payment! The grace period ended #{display_end_of_grace_period}. To re-subscribe and re-publish any courses, please go to your subscription."
-    end
-    return message
-  end
-
   def last_payment_date
     payments.last.created_at if payments.any?
   end

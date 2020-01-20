@@ -629,6 +629,9 @@ const store = new Vuex.Store({
       },
       addUserSubscriptionInfo({ commit }, subscriptionInfo){
         commit('addUserSubscriptionInfo', subscriptionInfo)
+      },
+      addErrorAlertMessage({commit}, message){
+        commit('addErrorAlertMessage', message)
       }
     },
     mutations: {
@@ -851,7 +854,6 @@ const store = new Vuex.Store({
       addUserSubscriptionInfo (state, subscriptionInfo){
         console.log("inside addUserSubscriptionInfo", subscriptionInfo)
         state.user.subscription = {...subscriptionInfo}
-        state.errorAlertMessage = subscriptionInfo.dashboardMessage
       },
       addCreditCardError( state, message){
         state.creditCardError = message

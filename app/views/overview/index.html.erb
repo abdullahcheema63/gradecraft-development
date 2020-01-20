@@ -1,14 +1,16 @@
 <div class="wrapper dashboard" id="main_wrapper">
   <% if current_user.any_course_professor? %>
-    <% if @current_user.subscription && @current_user.subscription.failed_last_payment? %>
+    <% if @current_user.subscription && (@current_user.subscription.failed_last_payment? || @current_user.subscription.abandoned_last_payment?) %>
       <% content_for :scripts do %>
         <script type="text/javascript">
-          var userSubscription = {
+          var userSubscriptionInfo = {
             expires: "<%= @current_user.subscription.renewal_date %>",
             failedLastPayment: "<%= @current_user.subscription.failed_last_payment? %>",
-            dashboardMessage: "<%= @current_user.subscription.dashboard_message %>"
+            abandonedLastPayment: "<%= @current_user.subscription.abandoned_last_payment? %>",
+            withinGracePeriod: "<%= @current_user.subscription.within_grace_period? %>",
+            endOfGracePeriod: "<%= @current_user.subscription.end_of_grace_period %>",
           }
-          store.dispatch("addUserSubscriptionInfo", userSubscription)
+          store.dispatch("addUserSubscriptionInfo", userSubscriptionInfo)
         </script>
       <% end %>
     <% end %>
