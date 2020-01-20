@@ -144,7 +144,7 @@
             </div>
           </div>
 
-          <button type="button" class="action" @click="retryFailedPayment()">Submit</button>
+          <button type="button" class="action" @click="retryFailedPayment()" :disabled="!this.termsOfService">Submit</button>
         </template>
       </buttonModal>
 
@@ -237,7 +237,7 @@
           <div v-if="!this.defaultPaymentMethod && newCost > 0">
             <p>(?Words and Stylleee) You must add a payment method before you continue with your subscription </p>
           </div>
-          <button type="button" class="action" :disabled="!this.defaultPaymentMethod && newCost > 0" @click="updateSubscription()">Submit</button>
+          <button type="button" class="action" :disabled="(!this.defaultPaymentMethod && newCost > 0) || !this.termsOfService" @click="updateSubscription()">Submit</button>
         </template>
       </buttonModal>
     </div>
