@@ -6,19 +6,19 @@ class UnpublishExpiredSubscribedCoursesJob
   def perform
     expired_subscriptions = Subscription.expired
 
-    # Thinking we could add a `grace_period` variable to the subscription to check
-    # within this method in case we ever allow users to set when their renewal date is
-
     expired_subscriptions.each do |subscription|
-      course_ids = subscription.course_ids
-      courses = subscription.courses
-      subscription.unsubscribe_courses(course_ids)
-
-      NotificationMailer.unpublished_courses(courses, subscription).deliver_now
+      if(DateTime.current >= subscription.end_of_grace_period) && subscription.courses.any?
+        course_ids = subscription.course_ids
+        courses = subscription.courses
+        subscription.unsubscribe_courses(course_ids)
+        subscription.abandon_last_payment
+        puts "subscription before NotificationMailer: ", subscription.inspect
+        NotificationMailer.unpublished_courses(courses, subscription).deliver_now
+      end
     end
 
     #Notify admin's of the courses that were unpublished, maybe create csv
-      # during the loop above to generate just one email for the admins? 
+      # during the loop above to generate just one email for the admins?
 
   end
 end

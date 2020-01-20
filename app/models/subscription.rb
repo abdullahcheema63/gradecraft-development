@@ -14,6 +14,8 @@ class Subscription < ApplicationRecord
   scope :expired, -> {where("renewal_date < ? ", DateTime.current)}
   # does not return the subscription if renewal_date is nil
 
+  scope :outside_grace_period, -> {where(DateTime.current >= end_of_grace_period )}
+
   def is_expired?
     renewal_date < DateTime.current if renewal_date
   end
@@ -22,8 +24,18 @@ class Subscription < ApplicationRecord
     payments.last.failed if payments.any?
   end
 
+  def abandoned_last_payment?
+    payments.last.abandoned if payments.any?
+  end
+
   def end_of_grace_period
     Date.parse("11 #{renewal_date.month} #{renewal_date.year}")
+  end
+
+  def abandon_last_payment
+    if payments.any?
+      payments.last.update_attributes(abandoned: true, failed: false)
+    end
   end
 
   def within_grace_period?

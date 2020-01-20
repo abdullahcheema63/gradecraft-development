@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_163258) do
+ActiveRecord::Schema.define(version: 2020_01_20_004532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -710,6 +710,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_163258) do
     t.integer "billing_scheme_id"
     t.string "payment_intent_id"
     t.boolean "failed", default: false
+    t.boolean "abandoned", default: false
     t.index ["subscription_id"], name: "index_payments_on_subscription_id"
   end
 
