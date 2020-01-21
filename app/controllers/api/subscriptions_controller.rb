@@ -173,7 +173,7 @@ class API::SubscriptionsController < ApplicationController
 
     if new_subscribed_courses_count == current_subscribed_courses_count
       if (selected_course_ids - subscribed_course_ids).empty?
-        success_message =  "courses subscribed are the same as courses selected "
+        success_message =  "The courses you selected are already in your subscription"
         return render_success success_message
       else
         puts("Removing subscription from: #{courses_to_unsubscribe}")
