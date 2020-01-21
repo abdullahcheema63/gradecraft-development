@@ -101,8 +101,8 @@
                 This section has all your current courses, including those that other instructors or course managers may share with you. You can add a new course and publish or unpublish courses at any time.
               </p>
               <buttonModal button_class="action add_something" ref="buttonModal_add">
-                <template slot="button-text">Add a course</template>
-                <template slot="heading">Add a course</template>
+                <template slot="button-text">Add course</template>
+                <template slot="heading">Add a new course</template>
                 <template v-if="addingCourse" slot="content" >
                   <div class="yeti-loading_spin">
                     <div></div>
@@ -158,7 +158,7 @@
                       </div>
                     </div>
 
-                    <button class="action" type="button" @click.prevent="addCourse()">Add course</button>
+                    <button class="action add_something" type="button" @click.prevent="addCourse()">Add course</button>
                   </form>
                 </template>
               </buttonModal>
