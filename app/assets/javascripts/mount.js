@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   for (el of rootElems) {
-    console.log(el);
     new Vue({
       el,
       store,
