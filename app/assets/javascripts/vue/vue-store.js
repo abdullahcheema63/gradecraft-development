@@ -251,27 +251,21 @@ const store = new Vuex.Store({
         commit('addAllInstitutions', final);
       },
       getUserSubscription: async function({ commit }){
-        console.log("getUserSubscriptions action dispatched")
         const resp = await fetch("/api/subscriptions");
         if (resp.status === 404){
           console.log("No subscription found")
-          // console.log(resp.status);
-          // store.dispatch("createSubscription");
         }
         else{
           const json = await resp.json();
-          console.log("json from user subscription", json);
           const final = apiResponseToDataDataItem(json);
-          console.log("user subscription", final);
+          //console.log("user subscription", final);
           if (final.failed_last_payment || final.abandoned_last_payment) {
-            console.log("User failed or abandoned their last payment ")
             store.dispatch("loadLastPayment")
           }
           commit('addUserSubscription', final)
         }
       },
       loadLastPayment: async function({ commit, state }){
-        console.log("inside load last payment")
         const resp = await fetch("/api/subscriptions/last_payment")
         if (resp.status === 404){
           console.log(resp.status);
@@ -280,15 +274,11 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        console.log("json response from last payment: ", json);
         const final = apiResponseToDataDataItem(json);
-        console.log("final data after apiResponseToData:", final);
+        //console.log("final data after apiResponseToData:", final);
         commit('addLastPayment', final)
 
-        console.log("inside loadLastPayment, state.successAlertMessage.length: ", state.successAlertMessage)
-
         if((final.failed === true) && !state.successAlertMessage){
-          console.log("inside if for load last payment")
           let message = "There was a problem with your monthly auto-payment: " + final.status
           commit('addErrorAlertMessage', message)
         }
@@ -370,7 +360,6 @@ const store = new Vuex.Store({
         }
       },
       getAllBillingSchemes: async function({ commit }){
-        console.log("getAllBillingSchemes action dispatched")
         const resp = await fetch("/api/subscriptions/billing_scheme_tiers");
         if (resp.status === 404){
           console.log(resp.status);
@@ -379,9 +368,8 @@ const store = new Vuex.Store({
           throw resp;
         }
         const json = await resp.json();
-        console.log(json);
         const final = apiResponseToData(json);
-        console.log(final);
+        //console.log(final);
         commit('addAllBillingSchemes', final)
       },
       addNewCourse: async function({commit, state}, course){
@@ -817,7 +805,6 @@ const store = new Vuex.Store({
         state.allBillingSchemes = billingSchemes
       },
       addUserSubscription (state, subscriptionObj){
-        console.log("addUserSubscription", subscriptionObj)
         state.userSubscription = subscriptionObj
         if(subscriptionObj.stripe_connection_error){
           state.errorAlertMessage = "Oops! There was an error connecting to Stripe"
