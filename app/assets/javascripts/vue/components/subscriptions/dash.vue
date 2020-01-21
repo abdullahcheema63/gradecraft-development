@@ -239,9 +239,16 @@
               </div>
             </div>
           </div>
-          <div v-if="!this.defaultPaymentMethod && newCost > 0">
-            <p>(?Words and Stylleee) You must add a payment method before you continue with your subscription </p>
+
+          <div v-if="!this.termsOfService" class="inline_alert_msg">
+            <p>
+              You must accept GradeCraft’s Terms of Service if you want to submit your changes. Close this modal to do so.
+            </p>
           </div>
+          <div v-if="!this.defaultPaymentMethod && newCost > 0" class="inline_alert_msg">
+            <p>You must add a payment method if you want to submit your changes. Close this modal to do so. </p>
+          </div>
+
           <button type="button" class="action" :disabled="(!this.defaultPaymentMethod && newCost > 0) || !this.termsOfService" @click="updateSubscription()">Submit</button>
         </template>
       </buttonModal>
