@@ -209,9 +209,7 @@ module.exports = {
     }
   },
   created: function() {
-    console.log("pk stripe key", this.stripePk)
-    console.log("for some reason Vue or Stripe don't like it when this.stripePk is used to initate connection with stripe")
-    stripe = Stripe('pk_test_P34y48VrjTGbgCrh3ry80Qec');
+    stripe = Stripe(this.stripePk);
   },
   mounted: function() {
     var style = {
