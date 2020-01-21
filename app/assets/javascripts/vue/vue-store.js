@@ -270,7 +270,7 @@ const store = new Vuex.Store({
           commit('addUserSubscription', final)
         }
       },
-      loadLastPayment: async function({ commit }){
+      loadLastPayment: async function({ commit, state }){
         console.log("inside load last payment")
         const resp = await fetch("/api/subscriptions/last_payment")
         if (resp.status === 404){
@@ -285,7 +285,10 @@ const store = new Vuex.Store({
         console.log("final data after apiResponseToData:", final);
         commit('addLastPayment', final)
 
-        if(final.failed === true){
+        console.log("inside loadLastPayment, state.successAlertMessage.length: ", state.successAlertMessage)
+
+        if((final.failed === true) && !state.successAlertMessage){
+          console.log("inside if for load last payment")
           let message = "There was a problem with your monthly auto-payment: " + final.status
           commit('addErrorAlertMessage', message)
         }

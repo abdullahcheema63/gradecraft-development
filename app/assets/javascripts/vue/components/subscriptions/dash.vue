@@ -144,6 +144,11 @@
             </div>
           </div>
 
+          <div v-if="!this.termsOfService" class="inline_alert_msg">
+            <p>
+              You must accept GradeCraft’s Terms of Service if you want to submit your changes. Close this modal to do so.
+            </p>
+          </div>
           <button type="button" class="action" @click="retryFailedPayment()" :disabled="!this.termsOfService">Submit</button>
         </template>
       </buttonModal>
