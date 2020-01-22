@@ -13,8 +13,9 @@
       scope.isSubmitted = false
       
       scope.submitGrade = (returnURL)->
-        scope.isSubmitted = true
-        GradeService.submitGrade(returnURL)
+        status = GradeService.submitGrade(returnURL)
+
+        if status != false then scope.isSubmitted = true
 
       scope.textForButton = ()->
         if GradeService.isSetToComplete() then "Submit Grade" else "Save as Draft"
