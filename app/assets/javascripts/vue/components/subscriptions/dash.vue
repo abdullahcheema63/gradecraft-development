@@ -103,9 +103,9 @@
             <div v-if="this.defaultPaymentMethod">
               <h3>Selected Payment Method</h3>
               <p v-if="this.defaultPaymentMethod">
-                {{defaultPaymentMethod[0].nickname}}
-                ({{defaultPaymentMethod[0].brand}})
-                **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}}
+                {{defaultPaymentMethod.nickname}}
+                ({{defaultPaymentMethod.brand}})
+                **** {{defaultPaymentMethod.last4}} &bull; expires {{defaultPaymentMethod.exp_month}}/{{defaultPaymentMethod.exp_year}}}
               </p>
             </div>
 
@@ -214,9 +214,9 @@
             <div v-if="this.defaultPaymentMethod">
               <h3>Selected Payment Method</h3>
               <p v-if="this.defaultPaymentMethod">
-                {{defaultPaymentMethod[0].nickname}}
-                ({{defaultPaymentMethod[0].brand}})
-                **** {{defaultPaymentMethod[0].last4}} &bull; expires {{defaultPaymentMethod[0].exp_month}}/{{defaultPaymentMethod[0].exp_year}}}
+                {{defaultPaymentMethod.nickname}}
+                ({{defaultPaymentMethod.brand}})
+                **** {{defaultPaymentMethod.last4}} &bull; expires {{defaultPaymentMethod.exp_month}}/{{defaultPaymentMethod.exp_year}}}
               </p>
             </div>
             <div class="total">
@@ -352,7 +352,15 @@ module.exports = {
       return this.$store.state.lastPayment
     },
     defaultPaymentMethod(){
-      return this.$store.getters.defaultPaymentMethod
+      var payment_method = {}
+      if(this.userSubscription.payment_methods.length){
+        payment_method = this.userSubscription.payment_methods.filter(pm => pm.default_payment_method)
+        if(payment_method.length){payment_method = payment_method[0]}
+      }
+      if(!payment_method.length && this.userSubscription.payment_methods.length){
+        payment_method = this.userSubscription.payment_methods[0]
+      }
+      return payment_method
     },
     successAlertMessages(){
       return this.$store.state.successAlertMessages

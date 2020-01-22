@@ -899,11 +899,6 @@ const store = new Vuex.Store({
         if(state.user.subscription) return state.user.subscription
         return null
       },
-      defaultPaymentMethod: state => {
-        if(state.userSubscription.payment_methods.length){
-          return state.userSubscription.payment_methods.filter(paymentMethod => paymentMethod.default_payment_method)
-        }
-      },
       userGuideStatus: state => {
         return state.user.showGuide;
       },
