@@ -233,7 +233,7 @@
                   </tbody>
                 </table>
               </div>
-              <tablePagination :items="filteredArchivedCourses" :paginateBy="currentPageItemMax" @paginate="paginateItems"></tablePagination>
+              <tablePagination :items="filteredArchivedCourses" :paginateBy="archivedCurrentPageItemMax" @paginate="paginateItems"></tablePagination>
               <button type="button" class="action secondary">Export this table view</button>
               <p style="background: aquamarine;">
                 ^ Not done
@@ -267,6 +267,8 @@ module.exports = {
       tabSection: ["Current"],
       currentPageItemMin: 0,
       currentPageItemMax: 10,
+      archivedCurrentPageItemMin: 0,
+      archivedCurrentPageItemMax: 10,
       searchCourseName: '',
       searchArchivedCourseName: '',
       showSubscribed: false,
@@ -310,7 +312,7 @@ module.exports = {
       return this.filteredAllCourses.slice(this.currentPageItemMin, this.currentPageItemMax)
     },
     currentPageArchivedCourses(){
-      return this.filteredArchivedCourses.slice(this.currentPageItemMin, this.currentPageItemMax)
+      return this.filteredArchivedCourses.slice(this.archivedCurrentPageItemMin, this.archivedCurrentPageItemMax)
     },
     user(){
       return this.$store.getters.user;
@@ -384,6 +386,10 @@ module.exports = {
     paginateItems(itemRange){
       this.currentPageItemMin = itemRange.min - 1;
       this.currentPageItemMax = itemRange.max;
+    },
+    paginateArchivedItems(itemRange){
+      this.archivedCurrentPageItemMin = itemRange.min - 1;
+      this.archivedCurrentPageItemMax = itemRange.max;
     }
   }
 }
